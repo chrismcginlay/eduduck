@@ -1,0 +1,5 @@
+<p>This is the user registration template</p>
+<form action="/accounts/register/" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>

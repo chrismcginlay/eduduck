@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Quizzes for {{course.course_name}}</h1>
+{% endblock %}
+
+{% block content %}
+{% for quiz in quizset %}
+    <li>{{quiz.quiz_name}}</li>
+{% empty %}
+    <p>No quizzes in this course</p>
+{% endfor %}
+
+{% endblock content %}

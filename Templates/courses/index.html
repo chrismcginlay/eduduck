@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>EduDuck Course Area</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>Welcome to the Full Course List</h2>
+    <p>EduDuck is currently hosting {{ course_count }} 
+    course{{ course_count|pluralize:",s"}}.</p>
+    
+    <ul>
+        {% for course in course_list %}
+        <li>{{ course.course_code }} 
+        <a href='/courses/{{course.pk}}/'>{{ course.course_name }}</a> 
+        ({{ course.lesson_set.count }} 
+        lesson{{ course.lesson_set.count|pluralize:",s"}}). 
+        Level {{ course.course_level }}, {{ course.course_credits }}
+        point{{course.course_credits|pluralize:",s"}}.
+        Contact {{ course.course_organiser }}</li>
+        {% empty %}
+        <li>There are no courses yet!</li>
+        {% endfor %}
+    </ul>
+{% endblock content%}
+
+
+

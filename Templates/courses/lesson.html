@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Course: {{course.course_name}}</h1>
+{% endblock %}
+
+{% block content %}
+    <span class='prevnext'>
+        {% if lesson.get_prev %}
+            &lt; 
+            <a href='/courses/{{course.pk}}/lesson/{{lesson.get_prev.pk}}/'>
+            {{lesson.get_prev}}</a> 
+        {% else %}
+            ---
+        {% endif %}
+        | {{ lesson.lesson_code }} | 
+        {% if lesson.get_next %}
+            <a href='/courses/{{course.pk}}/lesson/{{lesson.get_next.pk}}/'>
+            {{ lesson.get_next }}</a> &gt;
+        {% else %}
+            ---
+        {% endif %} 
+    </span>
+
+    <h2>Lesson: {{lesson.lesson_code}} {{lesson.lesson_name}}</h2>
+    <p>{{lesson.abstract}}</p>
+
+    <h2>Your Progress</h2>
+        <ol>                
+        {% for l in user_lessons %}
+        <li>{{ l.lesson.lesson_name }} /
+            {{ l.date_complete }} /
+            {{ l.mark_complete}}
+        </li>
+        {% endfor %}
+        </ol>
+
+    <h3>Videos for this Lesson</h3>
+    <ol>
+    {% for v in lesson.video_set.all %}
+        <li>{{ v.video_code}} {{v.video_name}}: {{v.url}}</li>
+        <iframe width="560" height="315" src='{{ v.url }}' 
+        frameborder="0" allowfullscreen></iframe>
+    {% empty %}
+        <li>No videos for this lesson</li>
+    {% endfor %}
+    </ol>
+
+    <h3>Attachments for this Lesson</h3>
+    <ol>
+    {% for a in lesson.attachments_set.all %}
+        <li>{{ a.att_code}} 
+            <a href='{{a.att_url}}'>{{a.att_name}}</a>: {{a.att_desc}}
+        </li>
+    {% empty %}
+        <li>No attachments in this lesson</li>
+    {% endfor %}
+    </ol>    
+
+{% endblock content%}
