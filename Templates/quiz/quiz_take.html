@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Take a Quiz</h1>
+{% endblock %}
+
+{% block content %}
+    <p>Quiz: {{quiz.quiz_title}}, Attempt by {{user.get_full_name}}</p>
+    <p>{{qanda}}</p>
+    {% if error_message %}
+        <p class="formerr">{{ error_message }}</p>
+    {% endif %}
+    
+    <form action="/quiz_take/{{ quiz_id }}/" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form_take.as_table }}
+        </table>
+        <input type="submit" value="Save" />
+    </form>
+    
+{% endblock %}

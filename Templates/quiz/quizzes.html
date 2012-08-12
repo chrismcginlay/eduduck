@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Quizzes</h1>
+{% endblock %}
+
+{% block content %}
+    <a href="/quiz_add/">+Quiz</a>
+    {% if quiz_list %}
+        <table border=1>
+            <tr>
+                <th>Quiz</th>
+                <th>Lesson</th>
+                <th></th> 
+            </tr>
+            {% for quiz in quiz_list %}
+            <tr>
+                <td>
+                    <a href="/quiz_edit/{{ quiz.id }}/">
+                    {{ quiz.quiz_title }}
+                    </a>
+                </td>
+                <td>{{ quiz.lesson.lesson_name }}</td>
+                <td>
+                    <a href="/quiz_edit/{{ quiz.id }}/">edit</a>
+                    <a href="/quiz_delete/{{ quiz.id }}/">delete</a>
+                    <a href="/quiz_take/{{ quiz.id }}/">Take!</a>
+                </td>      
+            </tr>
+            {% endfor %}    
+        </table>
+    {% else %}
+        <p>No quizzes yet!</p>
+    {% endif %}
+{% endblock content %}

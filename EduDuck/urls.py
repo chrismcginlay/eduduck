@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+#TODO decouple quiz app URLs from courses - see p38
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'EduDuck.views.home', name='home'),
@@ -13,7 +14,30 @@ urlpatterns = patterns('',
 
     url(r'^courses/(?P<course_id>\d+)/lesson/(?P<lesson_id>\d+)/$',
         'courses.views.lesson'),
-    url(r'^courses/(?P<course_id>\d+)/quizzes/$', 'quiz.views.quiz_central'),    
+    #TODO consider deletion of item below
+    url(r'^courses/(?P<course_id>\d+)/quizzes/$', 'quiz.views.quizzes'),    
+    
+    #temporary question handler
+    url(r'^questions/$', 'quiz.views.questions'),
+    url(r'^question_add/$', 'quiz.views.question_add'),    
+    url(r'^question_edit/(?P<question_id>\d+)/$', 'quiz.views.question_edit'),
+    url(r'^question_delete/(?P<question_id>\d+)/$', 'quiz.views.question_delete'),
+    
+    #temporary answer handler
+    url(r'^answers/$', 'quiz.views.answers'),
+    url(r'^answer_add/$', 'quiz.views.answer_add'),    
+    url(r'^answer_edit/(?P<answer_id>\d+)/$', 'quiz.views.answer_edit'),
+    url(r'^answer_delete/(?P<answer_id>\d+)/$', 'quiz.views.answer_delete'),
+
+    #temporary quiz handler
+    url(r'^quizzes/$', 'quiz.views.quizzes'),
+    url(r'^quiz_add/$', 'quiz.views.quiz_add'),    
+    url(r'^quiz_edit/(?P<quiz_id>\d+)/$', 'quiz.views.quiz_edit'),
+    url(r'^quiz_delete/(?P<quiz_id>\d+)/$', 'quiz.views.quiz_delete'),
+    url(r'^quiz_take/(?P<quiz_id>\d+)/$', 'quiz.views.quiz_take'),
+
+    #testing only
+    url(r'^questiontest/$', 'quiz.views.testquestion'),    
     
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),

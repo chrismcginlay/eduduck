@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Answers</h1>
+{% endblock %}
+
+{% block content %}
+    <a href="/answer_add/">+Answer</a>
+    {% if answer_list %}
+        <table border=1>
+            <tr>
+                <th>Answer</th>
+                <th>Explanation</th>
+                <th></th> 
+            </tr>
+            {% for answer in answer_list %}
+            <tr>
+                <td>
+                    <a href="/answer_edit/{{ answer.id }}/">
+                    {{ answer.answer_text }}
+                    </a>
+                </td>
+                <td>{{ answer.explan_text }}</td>
+                <td>
+                    <a href="/answer_edit/{{ answer.id }}/">edit</a>
+                    <a href="/answer_delete/{{ answer.id }}/">delete</a>
+                </td>      
+            </tr>
+            {% endfor %}    
+        </table>
+    {% else %}
+        <p>No answers yet!</p>
+    {% endif %}
+{% endblock content %}

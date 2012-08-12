@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy
 from courses.models import Lesson
 
 # TODO eventually create other types of quiz, using an abstract base class
@@ -27,7 +28,7 @@ class Question(models.Model):
     
     def __unicode__(self):
         return self.question_text
-    
+
         
 class Quiz(models.Model):
     """A multi-choice quiz"""
@@ -38,6 +39,10 @@ class Quiz(models.Model):
     author = models.ForeignKey(User)
     questions = models.ManyToManyField(Question)
     
+    class Meta:
+        verbose_name = ugettext_lazy('quiz')
+        verbose_name_plural = ugettext_lazy('quizzes')
+        
     def __unicode__(self):
         return self.quiz_title
 

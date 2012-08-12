@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Editing a Quiz</h1>
+{% endblock %}
+
+{% block content %}
+    
+    {% if error_message %}
+        <p class="formerr">{{ error_message }}</p>
+    {% endif %}
+    
+    <form action="/quiz_edit/{{ quiz_id }}/" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form_edit.as_table }}
+        </table>
+        <input type="submit" value="Save" />
+    </form>
+    
+{% endblock %}

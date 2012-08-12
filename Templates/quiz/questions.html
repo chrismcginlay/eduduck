@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Questions</h1>
+{% endblock %}
+
+{% block content %}
+    <a href="/question_add/">+Question</a>
+    {% if question_list %}
+        <table border=1>
+            <tr>
+                <th>Question</th>
+                <th></th>    
+            </tr>
+            {% for question in question_list %}
+            <tr>
+                <td>
+                    <a href="/question_edit/{{ question.id }}/">
+                    {{ question.question_text }}
+                    </a>
+                </td>
+                <td>
+                    <a href="/question_edit/{{ question.id }}/">edit</a>
+                    <a href="/question_delete/{{ question.id }}/">delete</a>
+                </td>      
+            </tr>
+            {% endfor %}    
+        </table>
+    {% else %}
+        <p>No questions yet!</p>
+    {% endif %}
+{% endblock content %}

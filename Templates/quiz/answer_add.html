@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Adding an Answer</h1>
+{% endblock %}
+
+{% block content %}
+    
+    {% if error_message %}
+        <p class="formerr">{{ error_message }}</p>
+    {% endif %}
+    
+    <form action="/answer_add/" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form_add.as_table }}
+        </table>
+        <input type="submit" value="Add" />
+    </form>
+    
+{% endblock %}
