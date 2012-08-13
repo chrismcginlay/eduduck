@@ -212,7 +212,7 @@ def quiz_take(request, quiz_id):
     
     return render_to_response(template, context_data, context_instance)
     
-from django.forms.formsets import formset_factory
+#from django.forms.formsets import formset_factory
 def testquestion(request):
     """See if I can get a single question up"""
     
@@ -222,11 +222,10 @@ def testquestion(request):
         if form.is_valid():
             return redirect(Question)
     else:
-        data = {'answer':question.answers.all()}
-        form = QuestionTakeForm(initial=data)
-        QuestionFormSet = formset_factory(QuestionTakeForm, extra=2)
-        formset = QuestionFormSet()
+        form = QuestionTakeForm(instance=question)
+#        QuestionFormSet = formset_factory(QuestionTakeForm, extra=2)
+#        formset = QuestionFormSet(data)
       
-    context_data = { 'form': form, 'fs': formset, 'q':question.question_text}
+    context_data = { 'form': form, 'q':question.question_text}
     return render_to_response('quiz/testquestion.html',context_data,RequestContext(request))
-    
+    return render_to_response(form)   

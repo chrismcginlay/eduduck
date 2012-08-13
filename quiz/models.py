@@ -15,6 +15,7 @@ class Answer(models.Model):
     
     answer_text = models.TextField()
     explan_text = models.TextField()
+    
     def __unicode__(self):
         return self.answer_text
         

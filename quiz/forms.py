@@ -15,9 +15,14 @@ class QuizForm(forms.ModelForm):
     class Meta:
         model = Quiz
 
-class QuestionTakeForm(forms.Form):
-    #question = forms.CharField()
-    answer = forms.CharField()
+#http://stackoverflow.com/questions/5907193/how-to-create-a-dynamically-created-radio-buttons-form-in-django
+class QuestionTakeForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = ('question_text', 'answers')
+        widgets = {
+            'answers': forms.RadioSelect()
+        }    
     
 class QuizTakeForm(forms.ModelForm):
     class Meta:
