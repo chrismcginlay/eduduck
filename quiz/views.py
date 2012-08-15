@@ -2,9 +2,9 @@ from django.template import RequestContext
 from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.contrib.auth.decorators import login_required
 
-from quiz.models import Quiz, Question, Answer
-from quiz.forms import QuestionForm, AnswerForm, QuizForm, QuizTakeForm, QuestionTakeForm
-
+from quiz.models import Quiz, Question, Answer, Attempt
+from quiz.forms import QuestionForm, AnswerForm, QuizForm, QuizTakeForm, QuestionAttemptForm
+from courses.models import User
 #TODO Use generic views?
 
 #http://www.peachybits.com/2011/09/django-1-3-form-api-modelform-example/
@@ -213,19 +213,42 @@ def quiz_take(request, quiz_id):
     return render_to_response(template, context_data, context_instance)
     
 #from django.forms.formsets import formset_factory
+#def testquestion(request):
+#    """See if I can get a single question up"""
+#    
+#    question = Question.objects.get(pk=1)
+#    answerlist = question.answers.all()
+#    answerset = [(a.id,a.answer_text) for a in answerlist]
+#    if request.method == 'POST':
+#        form = QuestionTakeForm(request.POST, data=answerset)
+#        if form.is_valid():
+#            return redirect(Question)
+#    else:
+#        form = QuestionTakeForm(instance=question, data=answerset)
+##        QuestionFormSet = formset_factory(QuestionTakeForm, extra=2)
+##        formset = QuestionFormSet(data)
+#      
+#    context_data = { 'form': form, 'q':question.question_text}
+#    return render_to_response('quiz/testquestion.html',context_data,RequestContext(request))
+#    return render_to_response(form)   
+
 def testquestion(request):
-    """See if I can get a single question up"""
-    
-    question = Question.objects.get(pk=1)
+    #For development purposes, hardcoding the following
+    q = Quiz.objects.get(pk = 1)     #capital cities quiz
+    #u = request.user
+    u = User.objects.get(pk =1) #chris
+    question = Question.objects.get(pk=1)   #The sweden question
+    partial_attempt_data = Attempt(user=u, quiz=q, question=question)
+    answerlist = [(a.id, a.answer_text) for a in question.answers.all()]
     if request.method == 'POST':
-        form = QuestionTakeForm(request.POST)
+        form = QuestionAttemptForm(request.POST, choices=answerlist, instance=partial_attempt_data)
         if form.is_valid():
-            return redirect(Question)
+            #TODO calculate_score
+            form.save()
+            return redirect(Question) #TODO where to redirect to?
     else:
-        form = QuestionTakeForm(instance=question)
-#        QuestionFormSet = formset_factory(QuestionTakeForm, extra=2)
-#        formset = QuestionFormSet(data)
-      
-    context_data = { 'form': form, 'q':question.question_text}
-    return render_to_response('quiz/testquestion.html',context_data,RequestContext(request))
-    return render_to_response(form)   
+        form = QuestionAttemptForm(choices=answerlist, instance=partial_attempt_data)
+                
+    context_data = {'form':form, 'question':question, 'answerlist':answerlist}    
+    return render_to_response('quiz/testquestion.html', context_data, RequestContext(request))
+    

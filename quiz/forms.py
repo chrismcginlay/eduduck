@@ -15,17 +15,33 @@ class QuizForm(forms.ModelForm):
     class Meta:
         model = Quiz
 
-#http://stackoverflow.com/questions/5907193/how-to-create-a-dynamically-created-radio-buttons-form-in-django
-class QuestionTakeForm(forms.ModelForm):
+class QuestionAttemptForm(forms.ModelForm):
+    """Generate form for a single question"""
     class Meta:
-        model = Question
-        fields = ('question_text', 'answers')
+        model = Attempt
+        exclude = ('user', 'quiz', 'question')
         widgets = {
-            'answers': forms.RadioSelect()
-        }    
+            'answer_given': forms.RadioSelect()
+        }
+        
+    def __init__(self, *args, **kwargs):
+        choices = kwargs.pop('choices', None)
+        super(QuestionAttemptForm, self).__init__(*args, **kwargs)
+        if choices is not None:
+            self.fields['answer_given'].choices = choices
+        
+
+#http://stackoverflow.com/questions/5907193/how-to-create-a-dynamically-created-radio-buttons-form-in-django
+#class QuestionTakeForm(forms.ModelForm):
+#    class Meta:
+#        model = Question
+#        fields = ('question_text', 'answers')
+#        widgets = {
+#            'answers': forms.RadioSelect()
+#        }    
     
 class QuizTakeForm(forms.ModelForm):
     class Meta:
         model = Attempt
         exclude = {'user','quiz'}
-    QuestionFormSet = formset_factory(QuestionTakeForm, extra=2)
+    QuestionFormSet = formset_factory(QuestionAttemptForm, extra=2)
