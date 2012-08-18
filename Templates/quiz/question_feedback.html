@@ -1,0 +1,10 @@
+{% block banner %}
+    <h1>Single Question Feedback</h1>
+{% endblock %}
+
+{% block content %}
+    <p>{{question.question_text}}</p>
+    Your answer <em>"{{answer_given}}" </em>
+    <br /><strong>scored {{score}}</strong>
+    <p>Advice: TOFIX {{question.explan_text}}</p>
+{% endblock content %}
