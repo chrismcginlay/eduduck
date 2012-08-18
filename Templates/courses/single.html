@@ -2,10 +2,10 @@
 
 {% block banner %}
     <h1>Single Course Detail View</h1>
-    <h2>Course: {{course.course_name}}</h2>
 {% endblock %}
 
 {% block content %}
+    <h2>Course: {{course.course_name}}</h2>
     <h3>Course Information & Introduction</h3>
     <ol>
     {% for v in course.video_set.all %}
