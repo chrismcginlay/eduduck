@@ -3,8 +3,13 @@ from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.contrib.auth.decorators import login_required
 
 from quiz.models import Quiz, Question, Answer, Attempt
-from quiz.forms import QuestionForm, AnswerForm, QuizForm, QuizTakeForm, QuestionAttemptForm
+from quiz.forms import QuestionForm, AnswerForm, QuizForm, QuizTakeForm
+from quiz.forms import QuestionAttemptForm, make_question_attempt_form
+from quiz.forms import quiz_forms
+from django.forms.formsets import formset_factory
 from courses.models import User
+
+from django.utils.functional import curry
 #TODO Use generic views?
 
 #http://www.peachybits.com/2011/09/django-1-3-form-api-modelform-example/
@@ -184,45 +189,54 @@ def quiz_delete(request, quiz_id):
     
 ###########################
 #see p170
-#@login_required
+@login_required
 def quiz_take(request, quiz_id):
     """An attempt by a user to take a quiz"""
 
-    #Following builds a dictionary with questions and answers.
-    q = get_object_or_404(Quiz, pk=quiz_id)
-    qanda_data = dict()
-    for question in q.questions.all():
-        qanda_data[question] = (question.answers.all(), question.correct_answer)
-            
-    if request.method == 'POST':
-        form = QuizTakeForm(request.POST, instance=quiz_take)
-        if form.is_valid():
-            #process data in form.cleaned_data
-            #form.save()
-            return HttpResponseRedirect('some kind of result page')
-    else:
-        form = QuizTakeForm()
-            
-    template = 'quiz/quiz_take.html'
-    context_data = {    'form_take': form,
-                        'quiz': q,
-                        'qanda': qanda_data,
-                    }
-    context_instance = RequestContext(request)
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    question_list = quiz.questions.all()
     
-    return render_to_response(template, context_data, context_instance)
-    
+    #list_answer_lists is a list of lists of possible answers,
+    #one list per question
+    list_answer_lists = list()
+    for question in question_list:
+        #list_answer_lists.append([(a.id, a.answer_text) for a in question.answers.all()])
+        list_answer_lists.append(question.answers.all())
+    QuestionFormSet = formset_factory(QuestionAttemptForm)
+    QuestionFormSet.form = staticmethod(curry(QuestionAttemptForm, choices=list_answer_lists ))
 
+    if request.method == 'POST':
+        formset = QuestionFormSet(request.POST, instance=quiz)
+        if formset.is_valid():
+            #process cleaned data, save
+            return redirect(quizzes)
+            
+    else:
+        formset = QuestionFormSet()
+        
+    template = 'quiz/quiz_take.html'
+    context_data = {    'formset': formset,
+                        'quiz': quiz,
+                    }
+                    
+    return render_to_response(template, context_data, RequestContext(request))
+    
+    
+@login_required
 def testquestion(request):
     #For development purposes, hardcoding the following
     q = Quiz.objects.get(pk = 1)     #capital cities quiz
-    #u = request.user
-    u = User.objects.get(pk =1) #chris
+    u = request.user
     question = Question.objects.get(pk=1)   #The sweden question
     partial_attempt_data = Attempt(user=u, quiz=q, question=question)
     answerlist = [(a.id, a.answer_text) for a in question.answers.all()]
     if request.method == 'POST':
-        form = QuestionAttemptForm(request.POST, choices=answerlist, instance=partial_attempt_data)
+        #Method A
+        #form = QuestionAttemptForm(request.POST, choices=answerlist, instance=partial_attempt_data)
+        
+        #Method B
+        form_cls = make_question_attempt_form(question)
+        form = form_cls(request.POST)
         if form.is_valid():
             answer_given = form.cleaned_data['answer_given']
             form.save(commit=False)
@@ -238,15 +252,67 @@ def testquestion(request):
             return render_to_response('quiz/question_feedback.html', feedback_data)
             
     else:
-        form = QuestionAttemptForm(choices=answerlist, instance=partial_attempt_data)
+        #Method A
+        #form = QuestionAttemptForm(choices=answerlist, instance=partial_attempt_data)
+
+        #Method B        
+        form = make_question_attempt_form(question)
                 
     context_data = {'form':form, 'question':question, 'answerlist':answerlist}    
     return render_to_response('quiz/single_question.html', context_data, RequestContext(request))
-    
 
-def question_feedback(response):
-    #For development purposes, hardcoding the following
-    q = Quiz.objects.get(pk = 1)     #capital cities quiz
-    #u = request.user
-    u = User.objects.get(pk =1) #chris
-    question = Question.objects.get(pk=1)   #The sweden question
+
+def question_pose(request, q_id, quiz_id):
+    """Pose a single question"""
+    question = Question.objects.get(pk=q_id)
+    u = request.user
+    quiz = Quiz.objects.get(pk=quiz_id)
+    partial_attempt_data = Attempt(user=u, quiz=quiz, question=question)
+    answerlist = [(a.id, a.answer_text) for a in question.answers.all()]
+    if request.method == 'POST':
+        form = QuestionAttemptForm(request.POST, 
+                                   choices=answerlist, 
+                                   instance=partial_attempt_data)
+        if form.is_valid():
+            answer_given = form.cleaned_data['answer_given']
+            form.save(commit=False)
+            if question.correct_answer == answer_given:
+                form.score = 1
+            else:
+                form.score = 0
+            form.save()
+            feedback_data = {'score': form.score,
+                             'question': question,
+                             'answer_given': answer_given,
+                            }
+            return render_to_response('quiz/question_feedback.html', 
+                                      feedback_data)
+            
+    else:
+        form = QuestionAttemptForm(choices=answerlist, 
+                                   instance=partial_attempt_data)
+                
+    context_data = {'form':form, 
+                    'question':question, 
+                    'answerlist':answerlist}    
+    return render_to_response('quiz/single_question.html', 
+                              context_data, 
+                              RequestContext(request))
+
+
+#another attempt to get this figured out
+@login_required
+def quiz_take2(request, quiz_id):
+    """An attempt by a user to take a quiz"""
+
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    if request.method == 'POST':
+        form_list = quiz_forms(request.POST, quiz)
+        return redirect(quizzes)    #temporary
+        
+    else:
+        form_list = quiz_forms(quiz)
+    
+    return render_to_response('quiz/quiz_take2.html', 
+                              {'quiz':quiz, 'form_list':form_list}, 
+                                RequestContext(request))

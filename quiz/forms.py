@@ -30,9 +30,31 @@ class QuestionAttemptForm(forms.ModelForm):
         if choices is not None:
             self.fields['answer_given'].choices = choices
           
-    
+#Refer: http://stackoverflow.com/questions/622982/django-passing-custom-form-parameters-to-formset
+def make_question_attempt_form(question):
+    class QuestionAttemptForm2(forms.Form):
+        """Generate form for a single question using 'closure'"""
+        answer_given = forms.ModelChoiceField(
+            queryset=Answer.objects.filter(question=question),
+            widget = forms.RadioSelect
+        )
+        class Meta:
+            widgets = {
+                'answer_given': forms.RadioSelect()
+            }
+    return QuestionAttemptForm2
+
+        
 class QuizTakeForm(forms.ModelForm):
     class Meta:
         model = Attempt
         exclude = {'user','quiz'}
     QuestionFormSet = formset_factory(QuestionAttemptForm, extra=2)
+
+
+def quiz_forms(quiz, data=None):
+    questions = Question.objects.filter(quiz=quiz)
+    form_list = []
+    for idx, question in enumerate(questions):
+        form_list.append(make_question_attempt_form(question))
+    return form_list

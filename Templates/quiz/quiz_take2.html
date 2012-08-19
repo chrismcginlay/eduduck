@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Take a Quiz</h1>
+{% endblock %}
+
+{% block content %}
+    <p>Quiz: {{quiz.quiz_title}}, Attempt by {{user.get_full_name}}</p>
+    {% if error_message %}
+        <p class="formerr">{{ error_message }}</p>
+    {% endif %}
+    
+    <form action="/quiz_take2/{{ quiz_id }}/" method="post">
+        {% csrf_token %}
+        {% for form in form_list %}
+            <fieldset>
+                <legend>{{ form.question_text }}</legend>
+                {{ form.as_p }}
+            </fieldset>
+        {% endfor %}
+        <input type="submit" value="Save" />
+    </form>
+    
+{% endblock %}
