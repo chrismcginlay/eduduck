@@ -189,37 +189,37 @@ def quiz_delete(request, quiz_id):
     
 ###########################
 #see p170
-@login_required
-def quiz_take(request, quiz_id):
-    """An attempt by a user to take a quiz"""
-
-    quiz = get_object_or_404(Quiz, pk=quiz_id)
-    question_list = quiz.questions.all()
-    
-    #list_answer_lists is a list of lists of possible answers,
-    #one list per question
-    list_answer_lists = list()
-    for question in question_list:
-        #list_answer_lists.append([(a.id, a.answer_text) for a in question.answers.all()])
-        list_answer_lists.append(question.answers.all())
-    QuestionFormSet = formset_factory(QuestionAttemptForm)
-    QuestionFormSet.form = staticmethod(curry(QuestionAttemptForm, choices=list_answer_lists ))
-
-    if request.method == 'POST':
-        formset = QuestionFormSet(request.POST, instance=quiz)
-        if formset.is_valid():
-            #process cleaned data, save
-            return redirect(quizzes)
-            
-    else:
-        formset = QuestionFormSet()
-        
-    template = 'quiz/quiz_take.html'
-    context_data = {    'formset': formset,
-                        'quiz': quiz,
-                    }
-                    
-    return render_to_response(template, context_data, RequestContext(request))
+#@login_required
+#def quiz_take(request, quiz_id):
+#    """An attempt by a user to take a quiz"""
+#
+#    quiz = get_object_or_404(Quiz, pk=quiz_id)
+#    question_list = quiz.questions.all()
+#    
+#    #list_answer_lists is a list of lists of possible answers,
+#    #one list per question
+#    list_answer_lists = list()
+#    for question in question_list:
+#        #list_answer_lists.append([(a.id, a.answer_text) for a in question.answers.all()])
+#        list_answer_lists.append(question.answers.all())
+#    QuestionFormSet = formset_factory(QuestionAttemptForm)
+#    QuestionFormSet.form = staticmethod(curry(QuestionAttemptForm, choices=list_answer_lists ))
+#
+#    if request.method == 'POST':
+#        formset = QuestionFormSet(request.POST, instance=quiz)
+#        if formset.is_valid():
+#            #process cleaned data, save
+#            return redirect(quizzes)
+#            
+#    else:
+#        formset = QuestionFormSet()
+#        
+#    template = 'quiz/quiz_take.html'
+#    context_data = {    'formset': formset,
+#                        'quiz': quiz,
+#                    }
+#                    
+#    return render_to_response(template, context_data, RequestContext(request))
     
     
 @login_required
@@ -306,13 +306,22 @@ def quiz_take2(request, quiz_id):
     """An attempt by a user to take a quiz"""
 
     quiz = get_object_or_404(Quiz, pk=quiz_id)
+    question_set = quiz.questions.all()
+    question_list = [q.question_text for q in question_set]
+    
     if request.method == 'POST':
-        form_list = quiz_forms(request.POST, quiz)
+        form_list = quiz_forms(request.POST, quiz, question_list)
+        zip_list = zip(form_list, question_list)
         return redirect(quizzes)    #temporary
         
     else:
-        form_list = quiz_forms(quiz)
+        form_list = quiz_forms(quiz, question_list)
+        zip_list = zip(form_list, question_list)
     
     return render_to_response('quiz/quiz_take2.html', 
-                              {'quiz':quiz, 'form_list':form_list}, 
+                              {'quiz':quiz, 
+                               'form_list':form_list,
+                               'zip_list': zip_list,
+                               'question_list': question_list,
+                               }, 
                                 RequestContext(request))

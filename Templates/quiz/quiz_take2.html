@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+    <h2>This does not work - id sequencing problem</h2>
     <p>Quiz: {{quiz.quiz_title}}, Attempt by {{user.get_full_name}}</p>
     {% if error_message %}
         <p class="formerr">{{ error_message }}</p>
@@ -12,10 +13,10 @@
     
     <form action="/quiz_take2/{{ quiz_id }}/" method="post">
         {% csrf_token %}
-        {% for form in form_list %}
+        {% for question in zip_list %}
             <fieldset>
-                <legend>{{ form.question_text }}</legend>
-                {{ form.as_p }}
+                <legend>{{ question.1 }}</legend>
+                {{ question.0 }}
             </fieldset>
         {% endfor %}
         <input type="submit" value="Save" />

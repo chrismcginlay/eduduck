@@ -38,10 +38,13 @@ def make_question_attempt_form(question):
             queryset=Answer.objects.filter(question=question),
             widget = forms.RadioSelect
         )
+    
         class Meta:
             widgets = {
                 'answer_given': forms.RadioSelect()
             }
+        
+            
     return QuestionAttemptForm2
 
         
