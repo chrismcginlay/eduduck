@@ -19,7 +19,10 @@ class Answer(models.Model):
     def __unicode__(self):
         return self.answer_text
         
-        
+#TODO Question needs a sequence number (i.e. sequence in quiz)        
+# Would be used to order and label questions
+# Should be unique to a quiz and question numbers should be contiguous
+# within each quiz.
 class Question(models.Model):
     """Multichoice question"""
     

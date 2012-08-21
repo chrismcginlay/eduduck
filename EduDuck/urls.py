@@ -5,7 +5,12 @@ from django.contrib import admin
 admin.autodiscover()
 
 #TODO decouple quiz app URLs from courses - see p38
-urlpatterns = patterns('',
+
+urlpatterns = patterns('django.views.generic.simple',
+    (r'^$',    'direct_to_template', {'template': 'home.html'}),
+)
+
+urlpatterns += patterns('',
     # Examples:
     # url(r'^$', 'EduDuck.views.home', name='home'),
     # url(r'^EduDuck/', include('EduDuck.foo.urls')),
