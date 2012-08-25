@@ -12,7 +12,7 @@
         <p class="formerr">{{ error_message }}</p>
     {% endif %}
     
-    <form action="/quiz_take2/{{ quiz_id }}/" method="post">
+    <form action="/quiz_take/{{ quiz.id }}/" method="post">
         {% csrf_token %}
         {% for question in zip_list %}
             <fieldset>

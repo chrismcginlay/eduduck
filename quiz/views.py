@@ -6,10 +6,7 @@ from quiz.models import Quiz, Question, Answer, Attempt
 from quiz.forms import QuestionForm, AnswerForm, QuizForm, QuizTakeForm
 from quiz.forms import QuestionAttemptForm, make_question_attempt_form
 from quiz.forms import quiz_forms
-from django.forms.formsets import formset_factory
-from courses.models import User
 
-from django.utils.functional import curry
 #TODO Use generic views?
 
 #http://www.peachybits.com/2011/09/django-1-3-form-api-modelform-example/
@@ -232,11 +229,12 @@ def testquestion(request):
     answerlist = [(a.id, a.answer_text) for a in question.answers.all()]
     if request.method == 'POST':
         #Method A
-        #form = QuestionAttemptForm(request.POST, choices=answerlist, instance=partial_attempt_data)
+        form = QuestionAttemptForm(request.POST, choices=answerlist, instance=partial_attempt_data)
         
         #Method B
-        form_cls = make_question_attempt_form(question)
-        form = form_cls(request.POST)
+        #form_cls = make_question_attempt_form(question)
+        #form = form_cls(request.POST)
+        
         if form.is_valid():
             answer_given = form.cleaned_data['answer_given']
             form.save(commit=False)
@@ -253,15 +251,18 @@ def testquestion(request):
             
     else:
         #Method A
-        #form = QuestionAttemptForm(choices=answerlist, instance=partial_attempt_data)
+        form = QuestionAttemptForm(choices=answerlist, instance=partial_attempt_data)
 
         #Method B        
-        form = make_question_attempt_form(question)
+        #form = make_question_attempt_form(question)
                 
     context_data = {'form':form, 'question':question, 'answerlist':answerlist}    
     return render_to_response('quiz/single_question.html', context_data, RequestContext(request))
 
 
+# The following paradigm works fine for a single question.
+# Not so amenable to multiquestion quiz. Initially I had thought to re-use 
+# this to generate an entire quiz.
 def question_pose(request, q_id, quiz_id):
     """Pose a single question"""
     question = Question.objects.get(pk=q_id)
@@ -310,9 +311,29 @@ def quiz_take2(request, quiz_id):
     question_list = [q.question_text for q in question_set]
     
     if request.method == 'POST':
-        form_list = quiz_forms(request.POST, quiz, question_list)
+        form_list = quiz_forms(quiz, question_list, request.POST)
         zip_list = zip(form_list, question_list)
-        return redirect(quizzes)    #temporary
+        
+        #Validity Check, score and save
+        valid_count = 0    
+        total_score = 0
+        for zitem in zip_list:
+            f = zitem[0]
+            q = zitem[1]
+            if f.is_valid():
+                valid_count+= 1
+                f.calculate_score
+                total_score += f.score
+                
+        feedback_data = {    'zip_list': zip_list, #debug
+                             'quiz': quiz,
+                             'valid_count': valid_count,
+                             'total_score': total_score,
+                             'form_list': form_list,  #debug 
+                        }                
+        return render_to_response('quiz/quiz_feedback.html',
+                                  feedback_data,
+                                  RequestContext(request))
         
     else:
         form_list = quiz_forms(quiz, question_list)
