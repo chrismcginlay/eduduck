@@ -15,7 +15,8 @@ MANAGERS = ADMINS
 
 #get the path name to prepend to other settings
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
-SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+SITE_ROOT = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), os.path.pardir)
 
 #set the base URL, not sure if this is the django way of doing it
 SITE_URL = 'http://caicectus:8000'
@@ -23,8 +24,8 @@ SITE_URL = 'http://caicectus:8000'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/chris/coding/EduDuck/EduDuck.db',  #Or path to database file if using sqlite3.
-#        'NAME': os.path.join(SITE_ROOT, 'EduDuck.db'),
+        #'NAME': '/home/chris/coding/EduDuck/EduDuck.db',  #Or path to database file if using sqlite3.
+        'NAME': os.path.join(SITE_ROOT, 'EduDuck.db'),
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -35,8 +36,9 @@ DATABASES = {
 # Fixture Directory - for development purposes, realoading test data
 # after changes to models.
 
-FIXTURE_DIRS = ( 
-    '/home/chris/coding/EduDuck/Fixtures/',
+FIXTURE_DIRS = (
+    os.path.join(SITE_ROOT, 'Fixtures')
+    #'/home/chris/coding/EduDuck/Fixtures/',
 )
 
 # User Profile model 
@@ -71,12 +73,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/home/chris/coding/EduDuck/Media/'
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'Media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'caicectus:8000/media/'
+MEDIA_URL = SITE_URL+'/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -91,8 +93,8 @@ STATIC_URL = '/static/'
 # Additional locations of static files
 
 STATICFILES_DIRS = (
-    "/home/chris/coding/EduDuck/static",
-    "/home/chris/coding/EduDuck/EduDuck/static/",
+    os.path.join(SITE_ROOT, 'static'),
+    os.path.join(SITE_ROOT, 'EduDuck/static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -130,7 +132,7 @@ WSGI_APPLICATION = 'EduDuck.wsgi.application'
 
 #TODO: Ensure templates aren't under docroot for production version
 TEMPLATE_DIRS = (
-    '/home/chris/coding/EduDuck/Templates',
+    os.path.join(SITE_ROOT, 'Templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
