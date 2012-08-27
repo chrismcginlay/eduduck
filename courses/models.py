@@ -43,17 +43,21 @@ class Lesson(models.Model):
 
     def get_next(self):
         '''Return the next lesson in the course'''
-        next = Lesson.objects.filter(id__gt=self.id)
+        next = Lesson.objects.filter(course=self.course).filter(id__gt=self.id)
         if next:
             return next[0]
         return False
         
     def get_prev(self):
         '''Return the previous lesson in the course'''
-        prev = Lesson.objects.filter(id__lt=self.id)
+        prev = Lesson.objects.filter(course=self.course).filter(id__lt=self.id).order_by('-id')
         if prev:
             return prev[0]
         return False
+        
+    def get_id(self):
+        '''For debug purposes'''
+        return self.id
     
     def __unicode__(self):
         return self.lesson_name

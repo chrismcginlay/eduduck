@@ -1,5 +1,5 @@
 from courses.models import Course, Lesson, UserProfile_Lesson
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
@@ -34,11 +34,12 @@ def single(request, course_id):
 def lesson(request, course_id, lesson_id):
     """Detail of individual lesson"""
     
-    course = get_object_or_404(Course, pk=course_id)
-    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    course = get_object_or_404(Course, id=course_id)
+    lesson = get_object_or_404(Lesson, id=lesson_id)
     
     #data on user interaction with lesson
     user_lessons = lesson.userprofile_lesson_set.all()
+    
     template = 'courses/lesson.html'
     context_data =  {'course':  course,
                      'lesson':  lesson,

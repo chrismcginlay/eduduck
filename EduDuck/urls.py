@@ -46,6 +46,7 @@ urlpatterns += patterns('',
     #testing only
     url(r'^questiontest/$', 'quiz.views.testquestion'),    
     
+    #account log- in/out/shakeitallabout
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
     url(r'^accounts/register/$', 'courses.views.register'),
