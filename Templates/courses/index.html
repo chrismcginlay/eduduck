@@ -12,7 +12,7 @@
     <ul>
         {% for course in course_list %}
         <li>{{ course.course_code }} 
-        <a href='/courses/{{course.pk}}/'>{{ course.course_name }}</a> 
+        <a href='{{ course.get_absolute_url }}'>{{ course.course_name }}</a> 
         ({{ course.lesson_set.count }} 
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 
         Level {{ course.course_level }}, {{ course.course_credits }}

@@ -29,7 +29,10 @@ class Course(models.Model):
     
     def __unicode__(self):
         return self.course_name
-        
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('courses.views.single', [str(self.id)])
         
 class Lesson(models.Model):
     """A digestible chunk of learning material within a course.
@@ -63,6 +66,12 @@ class Lesson(models.Model):
     
     def __unicode__(self):
         return self.lesson_name
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('courses.views.lesson', (), {
+                'course_id': self.course.id,
+                'lesson_id': self.id })
         
 class Video(models.Model):
     """Details of video resources used in lessons.
@@ -89,6 +98,11 @@ class Video(models.Model):
     
     def __unicode__(self):
         return self.video_name
+
+# No video view defined yet 
+#    @models.permalink
+#    def get_absolute_url(self):
+#        return ('TODO')
         
         
 class Attachments(models.Model):
@@ -122,7 +136,12 @@ class Attachments(models.Model):
         
     def __unicode__(self):
         return self.att_name
-        
+
+# No attachment view defined yet 
+#    @models.permalink
+#    def get_absolute_url(self):
+#        return ('TODO')   
+
 
 class UserProfile(models.Model):
     """Extend User module with additional data.
@@ -147,7 +166,11 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
         
-
+    @models.permalink
+    def get_absolute_url(self):
+        return ('courses.views.user_profile', [str(self.id)])
+        
+        
 #########################################
 #Table join classes, i.e. intermediary models
 #########################################

@@ -8,14 +8,14 @@
     <span class='prevnext'>
         {% if lesson.get_prev %}
             &lt; 
-            <a href='/courses/{{course.pk}}/lesson/{{lesson.get_prev.pk}}/'>
+            <a href='{{ lesson.get_prev.get_absolute_url }}'>
             {{lesson.get_prev}}</a> 
         {% else %}
             ---
         {% endif %}
         | {{ lesson.lesson_code }} | 
         {% if lesson.get_next %}
-            <a href='/courses/{{course.pk}}/lesson/{{lesson.get_next.pk}}/'>
+            <a href='{{ lesson.get_next.get_absolute_url }}'>
             {{ lesson.get_next }}</a> &gt;
         {% else %}
             ---

@@ -33,7 +33,7 @@
         {% for lesson in course.lesson_set.all %}
             <li>
                 {{ lesson.lesson_code}}, 
-                <a href='/courses/{{course.pk}}/lesson/{{lesson.pk}}'>
+                <a href='{{ lesson.get_absolute_url }}'>
                     {{ lesson.lesson_name }}
                 </a>
                 <em>&nbsp;&nbsp;{{ lesson.abstract}}</em>
