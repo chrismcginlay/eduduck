@@ -39,7 +39,7 @@ urlpatterns += patterns('quiz.views',
     url(r'^quiz_add/$', 'quiz_add'),    
     url(r'^quiz_edit/(?P<quiz_id>\d+)/$', 'quiz_edit'),
     url(r'^quiz_delete/(?P<quiz_id>\d+)/$', 'quiz_delete'),
-    url(r'^quiz_take/(?P<quiz_id>\d+)/$', 'quiz_take2'),
+    url(r'^quiz_take/(?P<quiz_id>\d+)/$', 'quiz_take'),
 
     #testing only
     url(r'^questiontest/$', 'testquestion'),

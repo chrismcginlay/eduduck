@@ -3,9 +3,8 @@ from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.contrib.auth.decorators import login_required
 
 from quiz.models import Quiz, Question, Answer, Attempt
-from quiz.forms import QuestionForm, AnswerForm, QuizForm, QuizTakeForm
-from quiz.forms import QuestionAttemptForm, make_question_attempt_form
-from quiz.forms import quiz_forms
+from quiz.forms import QuestionForm, AnswerForm, QuizForm
+from quiz.forms import QuestionAttemptForm
 
 #TODO Use generic views?
 
@@ -183,6 +182,15 @@ def quiz_delete(request, quiz_id):
     
     return redirect(quizzes)
 
+
+@login_required
+def quiz_take(request, quiz_id):
+    """An attempt by a user to complete a quiz"""
+    
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    return  render_to_response('quiz/quiz_take.html', 
+                               {'quiz':quiz},
+                                context_instance=RequestContext(request))
     
 @login_required
 def testquestion(request):

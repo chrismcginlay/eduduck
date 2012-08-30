@@ -1,5 +1,4 @@
 from django import forms
-from django.forms.formsets import formset_factory
 from quiz.models import Quiz, Question, Answer, Attempt
     
 #http://www.peachybits.com/2011/09/django-1-3-form-api-modelform-example/
