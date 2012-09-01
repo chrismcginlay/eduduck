@@ -1,11 +1,13 @@
 from django.template import RequestContext
 from django.shortcuts import redirect, get_object_or_404, render_to_response
+from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
 from quiz.models import Quiz, Question, Answer, Attempt
 from quiz.forms import QuestionForm, AnswerForm, QuizForm
 from quiz.forms import QuestionAttemptForm
 
+from django.http import HttpResponse, HttpResponseRedirect
 #TODO Use generic views?
 
 #http://www.peachybits.com/2011/09/django-1-3-form-api-modelform-example/
@@ -188,9 +190,28 @@ def quiz_take(request, quiz_id):
     """An attempt by a user to complete a quiz"""
     
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    return  render_to_response('quiz/quiz_take.html', 
-                               {'quiz':quiz},
-                                context_instance=RequestContext(request))
+    try:
+        selected_answer = dict()
+        for question in quiz.questions.all():
+            qstring = "Q" + str(question.id)
+            selected_answer[qstring] = question.answers.get(pk=request.POST[qstring])
+    except (KeyError, Answer.DoesNotExist):
+        #Redisplay quiz form
+        return render_to_response('quiz/quiz_take.html', 
+                                  {'quiz': quiz,
+                                   'error_message': "You didn't answer all the questions.",
+                                  },
+                                  context_instance=RequestContext(request))
+    else:
+        #save the quiz attempt, display results.
+        #also need attempt id
+        return HttpResponseRedirect(reverse('quiz.views.quiz_results', args=(quiz.id,)))
+    
+    
+def quiz_results(request, quiz_id):
+    """Show the results of the quiz attempt"""
+    
+    return HttpResponse("TODO")
     
 @login_required
 def testquestion(request):
