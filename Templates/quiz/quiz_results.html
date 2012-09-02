@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Quiz Feedback</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>{{quiz.quiz_title}}</h2>
+    <p>Attempt by {{user.get_full_name}}</p>
+    <ul>
+    {% for attempt in attempts %}        
+        <li>{{attempt.question}}<br />
+            Your Answer: {{attempt.answer_given}}<br />
+            Explanation: {{attempt.answer_given.explan_text}}<br />
+            Correct Answer: {{attempt.question.correct_answer}}<br />
+            Score: {{attempt.score}}<br />
+            Date of Attempt: {{attempt.taken_dt}}
+        </li>
+        <hr />
+    {% empty %}
+        <p>It seems you have no attempts in this quiz.</p>
+    {% endfor %}
+    </ul>
+{% endblock content %}

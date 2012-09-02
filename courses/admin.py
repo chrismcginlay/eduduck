@@ -10,6 +10,9 @@ from courses.models import UserProfile, UserProfile_Lesson
 from quiz.models import Quiz, Question, Answer, Attempt
 from django.contrib import admin
 
+class AttemptAdmin(admin.ModelAdmin):
+    readonly_fields = ("taken_dt",)
+
 admin.site.register(Course)
 admin.site.register(Lesson)
 admin.site.register(Video)
@@ -20,4 +23,4 @@ admin.site.register(UserProfile_Lesson)
 admin.site.register(Quiz)
 admin.site.register(Question)
 admin.site.register(Answer)
-admin.site.register(Attempt)
+admin.site.register(Attempt, AttemptAdmin)

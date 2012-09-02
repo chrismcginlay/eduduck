@@ -190,28 +190,53 @@ def quiz_take(request, quiz_id):
     """An attempt by a user to complete a quiz"""
     
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    try:
-        selected_answer = dict()
-        for question in quiz.questions.all():
-            qstring = "Q" + str(question.id)
-            selected_answer[qstring] = question.answers.get(pk=request.POST[qstring])
-    except (KeyError, Answer.DoesNotExist):
-        #Redisplay quiz form
-        return render_to_response('quiz/quiz_take.html', 
-                                  {'quiz': quiz,
-                                   'error_message': "You didn't answer all the questions.",
-                                  },
-                                  context_instance=RequestContext(request))
-    else:
+    if request.method == "POST": #form is submitted
+        try:
+            selected_answer = dict()
+            for question in quiz.questions.all():
+                qstring = "Q" + str(question.id)
+                selected_answer[qstring] = question.answers.get(pk=request.POST[qstring])
+        except (KeyError, Answer.DoesNotExist):
+            #Redisplay quiz form
+            return render_to_response('quiz/quiz_take.html', 
+                                      {'quiz': quiz,
+                                       'error_message': "Please answer all of the questions.",},
+                                      context_instance=RequestContext(request))
+        #form is submitted and complete, process it
         #save the quiz attempt, display results.
         #also need attempt id
-        return HttpResponseRedirect(reverse('quiz.views.quiz_results', args=(quiz.id,)))
-    
+        for question in quiz.questions.all():
+            qstring = "Q" + str(question.id)
+            answer_given = Answer.objects.get(pk=int(request.POST[qstring]))
+            if answer_given == question.correct_answer:
+                score = 1
+            else:
+                score = 0
+            attempt = Attempt(user = request.user, 
+                              quiz = quiz, 
+                              question= question, 
+                              answer_given = answer_given, 
+                              score = score) 
+            attempt.save()
+        return HttpResponseRedirect(reverse('quiz.views.quiz_results', args=(quiz_id,)))
+
+    else: #unbound
+        return render_to_response('quiz/quiz_take.html',
+                                  {'quiz': quiz,},
+                                    context_instance=RequestContext(request))
+
+            
     
 def quiz_results(request, quiz_id):
     """Show the results of the quiz attempt"""
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    attempts = Attempt.objects.filter(quiz=quiz, 
+                                      user=request.user).order_by('taken_dt')
     
-    return HttpResponse("TODO")
+    return render_to_response('quiz/quiz_results.html',
+                              {'quiz': quiz,
+                               'attempts': attempts,},
+                              context_instance=RequestContext(request))
     
 @login_required
 def testquestion(request):

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block banner %}
+    <h1>Quiz Attempt</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>{{ quiz.quiz_title }}</h2>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <form action="/quiz_take/{{ quiz.id }}/" method="post">
+    {% csrf_token %}
+    {% for question in quiz.questions.all %}
+        <p class="question">Q{{ forloop.counter }}. {{ question.question_text }}</p>
+        {% for answer in question.answers.all %}
+            <input type="radio" name="Q{{ question.id }}" id="Q{{ question.id}}A{{ forloop.counter }}" value="{{ answer.id }}" .>
+            <label for="Q{{ question.id}}A{{ forloop.counter }}">{{ answer.answer_text }}</label><br />
+        {% empty %}
+            <span>Er, there seems to be no answer to this, enigmatic, question.</span>        
+        {% endfor %}
+        <br />
+    {% empty %}
+        <p>There are no questions in this quiz!</p>
+    {% endfor %}
+    <input type="submit" value="Mark It!" />
+    </form>
+{% endblock content %}

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy
 from courses.models import Lesson
+import datetime
 
 # TODO eventually create other types of quiz, using an abstract base class
 # Early days: get everything working with simple multichoice.
@@ -93,9 +94,13 @@ class Attempt(models.Model):
     question = models.ForeignKey(Question)
     answer_given = models.ForeignKey(Answer)
     score = models.IntegerField(default=0)
-#TODO intercept signal on attempt create/alter to calculate score or maybe 
-#just do in form
 
+    def save(self, *args, **kwargs):
+        """Set timestamp on save"""
+        if not self.id:
+            self.taken_dt = datetime.datetime.now()
+        super(Attempt, self).save(*args, **kwargs)
+        
     def __unicode__(self):
-        return "User: %s, Quiz: %s" % (self.user, self.quiz)
+        return "User: %s, Quiz: %s, Question: %s, Score: %s" % (self.user, self.quiz, self.question, self.score)
     
