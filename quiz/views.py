@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 
 from quiz.models import Quiz, Question, Answer, Attempt
 from quiz.forms import QuestionForm, AnswerForm, QuizForm
-from quiz.forms import QuestionAttemptForm
 
 from django.http import HttpResponse, HttpResponseRedirect
 #TODO Use generic views?
@@ -231,51 +230,11 @@ def quiz_results(request, quiz_id):
     """Show the results of the quiz attempt"""
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     attempts = Attempt.objects.filter(quiz=quiz, 
-                                      user=request.user).order_by('taken_dt')
+                                      user=request.user).order_by('-taken_dt')
     
     return render_to_response('quiz/quiz_results.html',
                               {'quiz': quiz,
                                'attempts': attempts,},
                               context_instance=RequestContext(request))
-    
-@login_required
-def testquestion(request):
-    #For development purposes, hardcoding the following
-    q = Quiz.objects.get(pk = 1)     #capital cities quiz
-    u = request.user
-    question = Question.objects.get(pk=1)   #The sweden question
-    partial_attempt_data = Attempt(user=u, quiz=q, question=question)
-    answerlist = [(a.id, a.answer_text) for a in question.answers.all()]
-    if request.method == 'POST':
-        #Method A
-        form = QuestionAttemptForm(request.POST, choices=answerlist, instance=partial_attempt_data)
-        
-        #Method B
-        #form_cls = make_question_attempt_form(question)
-        #form = form_cls(request.POST)
-        
-        if form.is_valid():
-            answer_given = form.cleaned_data['answer_given']
-            form.save(commit=False)
-            if question.correct_answer == answer_given:
-                form.score = 1
-            else:
-                form.score = 0
-            form.save()
-            feedback_data = {   'score': form.score,
-                                 'question': question,
-                                 'answer_given': answer_given,
-                            }
-            return render_to_response('quiz/question_feedback.html', feedback_data)
-            
-    else:
-        #Method A
-        form = QuestionAttemptForm(choices=answerlist, instance=partial_attempt_data)
-
-        #Method B        
-        #form = make_question_attempt_form(question)
-                
-    context_data = {'form':form, 'question':question, 'answerlist':answerlist}    
-    return render_to_response('quiz/single_question.html', context_data, RequestContext(request))
 
 

@@ -25,7 +25,8 @@
     </ol>    
 
     <h3>Lessons</h3>
-    <p>There are {{course.lesson_set.count}} 
+    <p>There 
+    {{course.lesson_set|pluralize:"is,are"}} {{course.lesson_set.count}} 
     lesson{{course.lesson_set.count|pluralize:",s"}} in this course.</p>
 
     {% regroup course.lesson_set.all by lesson.lesson_code as lesson_list %}
@@ -37,10 +38,16 @@
                     {{ lesson.lesson_name }}
                 </a>
                 <em>&nbsp;&nbsp;{{ lesson.abstract}}</em>
+                {% if lesson.quiz_set.all %}
+                    {% for quiz in lesson.quiz_set.all %}
+                    <br />Quiz: <a href='/quiz_take/{{ quiz.id }}'>{{ quiz.quiz_title }}</a>
+                    {% endfor %}
+                {% endif %}
                 <hr />
             </li>
         {% empty %}
             <li>No lessons in this course yet</li>
         {% endfor %}
     </ol>
+
 {% endblock %}

@@ -14,18 +14,4 @@ class QuizForm(forms.ModelForm):
     class Meta:
         model = Quiz
 
-class QuestionAttemptForm(forms.ModelForm):
-    """Generate form for a single question"""
-    class Meta:
-        model = Attempt
-        exclude = ('user', 'quiz', 'question', 'score')
-        widgets = {
-            'answer_given': forms.RadioSelect()
-        }
-        
-    def __init__(self, *args, **kwargs):
-        choices = kwargs.pop('choices', None)
-        super(QuestionAttemptForm, self).__init__(*args, **kwargs)
-        if choices is not None:
-            self.fields['answer_given'].choices = choices
           

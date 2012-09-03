@@ -41,9 +41,6 @@ urlpatterns += patterns('quiz.views',
     url(r'^quiz_delete/(?P<quiz_id>\d+)/$', 'quiz_delete'),
     url(r'^quiz_take/(?P<quiz_id>\d+)/$', 'quiz_take'),
     url(r'^quiz_results/(?P<quiz_id>\d+)/$', 'quiz_results'),
-
-    #testing only
-    url(r'^questiontest/$', 'testquestion'),
 )
 
 urlpatterns += patterns('',    
