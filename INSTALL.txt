@@ -1,0 +1,36 @@
+Thanks for trying EduDuck. To install and test it do as follows:
+
+1. Clone the git repo, probably the master branch. (Perhaps I'll get 
+more sophisticated with branching, but right now it's just the master)
+If you downloaded the tarball, just unpack it someplace under your home
+directory. Say /home/bob/eduduck
+
+2. Install Python version >=2.5, but not version 3.x, http://www.python.org/
+
+3. Install Django version >=1.4.x. https://www.djangoproject.com/download/.
+Or you can git clone the django development repo.
+
+git clone https://github.com/django/django.git
+
+4. Edit eduduck/EduDuck/settings.py, modify the SITE_URL to point to the 
+hostname or IP address of your workstation. Mine is called caicectus 
+because that is what Magnus calls a cactus.
+
+SITE_URL = 'http://caicectus:8000'
+
+The rest of the settings constants should be deduced automatically from the
+SITE_URL and SITE_ROOT. The latter of these two is determined
+programmatically.
+
+5. Run the development server. In terminal, navigate to the directory you just unpacked or cloned 
+eduduck into:
+    
+cd /home/bob/eduduck
+python manage.py runserver http://127.0.0.1:8000 
+
+Use whatever IP address or hostname is sensible.
+
+6. You should be good to go. Username chris has password chris.
+
+
+
