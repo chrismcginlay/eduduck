@@ -1,0 +1,9 @@
+EduDuck is Copyright (c) 2012 Chris McGinlay 
+All Rights Reserved
+
+'EduDuck' is all the files contained within this repository with 
+the exception of stock illustrations and mobility CSS.
+
+
+
+
