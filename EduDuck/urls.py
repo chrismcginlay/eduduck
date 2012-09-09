@@ -18,8 +18,6 @@ urlpatterns += patterns('courses.views',
         'lesson'),
     url(r'^users/$', 'user_profile'),
 )
-    #TODO consider deletion of item below
-#   url(r'^courses/(?P<course_id>\d+)/quizzes/$', 'quiz.views.quizzes'),    
     
     #temporary question handler
 urlpatterns += patterns('quiz.views',

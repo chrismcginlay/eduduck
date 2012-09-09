@@ -211,7 +211,7 @@ def quiz_take(request, quiz_id):
                 score = 1
             else:
                 score = 0
-            attempt = Attempt(user = request.user, 
+            Attempt = Attempt(user = request.user, 
                               quiz = quiz, 
                               question= question, 
                               answer_given = answer_given, 

@@ -17,8 +17,9 @@ class Answer(models.Model):
     
     """
     
-    answer_text = models.TextField()
-    explan_text = models.TextField()
+    answer_text = models.TextField("possible answer")
+    explan_text = models.TextField("answer advice", 
+                                   help_text="Advice on how relevant this answer is")
     
     def __unicode__(self):
         return self.answer_text
@@ -39,8 +40,10 @@ class Question(models.Model):
     
 #TODO ensure that answers includes correct_answer, possibly could do this
 #when the question is included in a quiz
-    question_text = models.TextField()
-    answers = models.ManyToManyField(Answer)
+    question_text = models.TextField(help_text="The question as presented "
+        "to the user")
+    #TODO change the following field to 1-2-many
+    answers = models.ManyToManyField(Answer, verbose_name="possible answers")    
     correct_answer = models.ForeignKey(Answer, related_name="valid")
     
     def __unicode__(self):
@@ -60,7 +63,7 @@ class Quiz(models.Model):
     """
     quiz_title = models.CharField(max_length=200)
     lesson = models.ForeignKey(Lesson)
-    create_date = models.DateField(auto_now=True)
+    create_date = models.DateField("date quiz created", auto_now=True)
     author = models.ForeignKey(User)
     questions = models.ManyToManyField(Question)
     
@@ -90,9 +93,9 @@ class Attempt(models.Model):
     
     user = models.ForeignKey(User)
     quiz = models.ForeignKey(Quiz)
-    taken_dt = models.DateTimeField(auto_now_add = True)
+    taken_dt = models.DateTimeField("date of quiz attempt")
     question = models.ForeignKey(Question)
-    answer_given = models.ForeignKey(Answer)
+    answer_given = models.ForeignKey(Answer, verbose_name="user's answer")
     score = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
