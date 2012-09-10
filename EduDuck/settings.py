@@ -89,12 +89,12 @@ STATIC_ROOT = ''
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 
-STATIC_URL = '/static/'
+STATIC_URL = '/Static/'
 # Additional locations of static files
 
 STATICFILES_DIRS = (
-    os.path.join(SITE_ROOT, 'static'),
-    os.path.join(SITE_ROOT, 'EduDuck/static'),
+    os.path.join(SITE_ROOT, 'Static'),
+    os.path.join(SITE_ROOT, 'EduDuck/Static'),
 )
 
 # List of finder classes that know how to find static files in

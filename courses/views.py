@@ -75,6 +75,7 @@ def register(request):
             form.save()
             u = form.cleaned_data['username']
             userprof = "/users/" + u + "/"
+            #TODO this should use reverse()
             return HttpResponseRedirect(userprof)
     else:
         form = UserCreationForm()

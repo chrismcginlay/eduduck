@@ -224,7 +224,6 @@ def quiz_take(request, quiz_id):
                                     context_instance=RequestContext(request))
 
             
-    
 def quiz_results(request, quiz_id):
     """Show the results of the quiz attempt"""
     quiz = get_object_or_404(Quiz, pk=quiz_id)
