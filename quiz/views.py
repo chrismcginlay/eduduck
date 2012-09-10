@@ -203,7 +203,6 @@ def quiz_take(request, quiz_id):
                                       context_instance=RequestContext(request))
         #form is submitted and complete, process it
         #save the quiz attempt, display results.
-        #also need attempt id
         for question in quiz.questions.all():
             qstring = "Q" + str(question.id)
             answer_given = Answer.objects.get(pk=int(request.POST[qstring]))
@@ -211,7 +210,7 @@ def quiz_take(request, quiz_id):
                 score = 1
             else:
                 score = 0
-            Attempt = Attempt(user = request.user, 
+            attempt = Attempt(user = request.user, 
                               quiz = quiz, 
                               question= question, 
                               answer_given = answer_given, 

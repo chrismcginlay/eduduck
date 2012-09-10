@@ -18,14 +18,20 @@ class Course(models.Model):
        
     """
 
-    course_code = models.CharField(max_length=10)
-    course_name = models.CharField(max_length=150)
-    course_abstract = models.TextField()
-    
+    course_code = models.CharField(max_length=10, 
+                                   help_text="arbitrary course code for "
+                                   "author's reference")
+    course_name = models.CharField(max_length=150, 
+                                   help_text="human readable name of "
+                                   "the course")
+    course_abstract = models.TextField(help_text="summary of the course "
+                                       "in a couple of paragraphs")
+                                           
     #TODO change this to ForeignKey(UserPrf)
     course_organiser = models.CharField(max_length=100)
-    course_level = models.CharField(max_length=10, blank=True, null=True)
-    course_credits = models.IntegerField(blank=True, null=True)
+    course_level = models.CharField(max_length=10, blank=True, null=True,
+                                    help_text="e.g. SCQF level")
+    course_credits = models.IntegerField(blank=True, null=True,)
     
     def __unicode__(self):
         return self.course_name
@@ -45,10 +51,15 @@ class Lesson(models.Model):
         
     """
     
-    lesson_code = models.CharField(max_length=10, blank=True, null=True)
+    lesson_code = models.CharField(max_length=10, blank=True, null=True,
+                                   help_text="arbitrary lesson code for "
+                                   "author's reference")
     lesson_name = models.CharField(max_length=200)
-    course = models.ForeignKey(Course)
-    abstract = models.TextField()
+    course = models.ForeignKey(Course, 
+                               help_text="course to which this "
+                               "lesson belongs")
+    abstract = models.TextField(help_text="summary of the lesson "
+                                       "in a couple of paragraphs")
 
     def get_next(self):
         """Return the next lesson in the course"""
@@ -158,7 +169,8 @@ class UserProfile(models.Model):
     """
     
     user = models.OneToOneField(User)
-    lessons = models.ManyToManyField(Lesson, through='UserProfile_Lesson')
+    lessons = models.ManyToManyField(Lesson, through='UserProfile_Lesson',
+                                     help_text="lessons viewed")
     accepted_terms = models.BooleanField()
     signature_line = models.CharField(max_length=200)
     registered_courses = models.ManyToManyField(Course)
@@ -190,7 +202,9 @@ class UserProfile_Lesson(models.Model):
 #is set True.
     userprofile = models.ForeignKey(UserProfile)
     lesson = models.ForeignKey(Lesson)
-    mark_complete = models.BooleanField(default=False)
+    mark_complete = models.BooleanField(default=False,
+                                        help_text="true if the lesson is "
+                                        "'complete'")
     date_complete = models.DateField(blank=True, null=True)
     
     def __unicode__(self):
