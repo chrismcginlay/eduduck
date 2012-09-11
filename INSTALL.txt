@@ -32,5 +32,12 @@ Use whatever IP address or hostname is sensible.
 
 6. You should be good to go. Username chris has password chris.
 
+7. OPTIONAL post install. If at any time you wish to reset the database to the 
+same state as when you pulled the git repo, you can run:
+
+python manage.db flush
+
+This command will return database to default state, 
+then load Fixtures/initial_data.json (which is a symlink). 
 
 

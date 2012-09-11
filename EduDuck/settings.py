@@ -38,7 +38,6 @@ DATABASES = {
 
 FIXTURE_DIRS = (
     os.path.join(SITE_ROOT, 'Fixtures')
-    #'/home/chris/coding/EduDuck/Fixtures/',
 )
 
 # User Profile model 
