@@ -1,0 +1,2057 @@
+[
+    {
+        "pk": 15,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "answer",
+            "name": "answer",
+            "app_label": "quiz"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "attachments",
+            "name": "attachments",
+            "app_label": "courses"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "attempt",
+            "name": "attempt",
+            "app_label": "quiz"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "contenttype",
+            "name": "content type",
+            "app_label": "contenttypes"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "course",
+            "name": "course",
+            "app_label": "courses"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "group",
+            "name": "group",
+            "app_label": "auth"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "lesson",
+            "name": "lesson",
+            "app_label": "courses"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "logentry",
+            "name": "log entry",
+            "app_label": "admin"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "permission",
+            "name": "permission",
+            "app_label": "auth"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "question",
+            "name": "question",
+            "app_label": "quiz"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "quiz",
+            "name": "quiz",
+            "app_label": "quiz"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "registrationprofile",
+            "name": "registration profile",
+            "app_label": "registration"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "session",
+            "name": "session",
+            "app_label": "sessions"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "site",
+            "name": "site",
+            "app_label": "sites"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "user",
+            "name": "user",
+            "app_label": "auth"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "userprofile",
+            "name": "user profile",
+            "app_label": "courses"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "userprofile_lesson",
+            "name": "user profile_ lesson",
+            "app_label": "courses"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "video",
+            "name": "video",
+            "app_label": "courses"
+        }
+    },
+    {
+        "pk": "9d2c0779c67d62c2a3f442fcdcb54329",
+        "model": "sessions.session",
+        "fields": {
+            "expire_date": "2012-08-20T22:39:54.038Z",
+            "session_data": "MTRjMDdjZjU5OGI4Yjk1NTJiMmQ2MDZkOGRkZGUyYTIzY2FlOTYxNzqAAn1xAVUKdGVzdGNvb2tp\nZVUGd29ya2VkcQJzLg==\n"
+        }
+    },
+    {
+        "pk": "61e7b01f82bf2206f5c48c9b7e943066",
+        "model": "sessions.session",
+        "fields": {
+            "expire_date": "2012-08-22T22:47:31.009Z",
+            "session_data": "MmE5OGVmNjk1M2YwNGNmNzEzZjU3YjhmNGI1ODY5YjY4ODA2NzU0MDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "sites.site",
+        "fields": {
+            "domain": "example.com",
+            "name": "example.com"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "courses.course",
+        "fields": {
+            "course_name": "TEST Introduction to Blender",
+            "course_level": "1",
+            "course_organiser": "Chris McGinlay",
+            "course_credits": 15,
+            "course_abstract": "This demonstration course is not intended to be a usable learning resource. Its sole purpose is to assist in the development of our online learning platform. In the three lessons, we will introduce the Blender 3D package, review some Blender-made artwork, learn the basics of the user interface and of controlling the 3D viewport.",
+            "course_code": "GR10"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.course",
+        "fields": {
+            "course_name": "Capital Cities of Earth",
+            "course_level": "5",
+            "course_organiser": "Miss Piggy.",
+            "course_credits": 20,
+            "course_abstract": "Learn the capital cities of Earth. Fully equip yourself for your next visit (to Earth)",
+            "course_code": "B2"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "courses.lesson",
+        "fields": {
+            "course": 1,
+            "abstract": "Be clear what Blender is, where to download it, what it can achieve, sources of community support.\r\n",
+            "lesson_code": "BL1",
+            "lesson_name": "What is Blender for?"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.lesson",
+        "fields": {
+            "course": 1,
+            "abstract": "Develop basic familiarity with the main parts of the default user interface.",
+            "lesson_code": "BL2",
+            "lesson_name": "Basics of the User Interface"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "courses.lesson",
+        "fields": {
+            "course": 1,
+            "abstract": "Learn how to use the number pad to control your point of view in the 3D viewport.\r\nWatch the video that accompanies this lesson, then load the faceviewcube.blend file into blender and try it out for yourself.",
+            "lesson_code": "BL3",
+            "lesson_name": "Orientation in 3D Space"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "courses.lesson",
+        "fields": {
+            "course": 2,
+            "abstract": "Features of the 7 continents of Earth.",
+            "lesson_code": "CC1",
+            "lesson_name": "The Continents"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/A6TgJXpPDr8?rel=0",
+            "video_code": "BL1",
+            "lesson": null,
+            "course": 1,
+            "video_name": "TEST Blender Course Intro"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/tXyh_lvvQBU?rel=0",
+            "video_code": "BL2",
+            "lesson": 1,
+            "course": null,
+            "video_name": "What is Blender?"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/1uKZmb1O-os?rel=0",
+            "video_code": "BL4",
+            "lesson": 3,
+            "course": null,
+            "video_name": "Controlling Orientation"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/LXrA6Fz0Nxc?rel=0",
+            "video_code": "BL3",
+            "lesson": 2,
+            "course": null,
+            "video_name": "Basics of the User Interface"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "courses.attachments",
+        "fields": {
+            "att_url": "http://127.0.0.1/media/advice.txt",
+            "course": 1,
+            "att_code": "",
+            "att_seq": null,
+            "lesson": null,
+            "att_name": "Course Advice",
+            "att_desc": "Just some advice, dude."
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.attachments",
+        "fields": {
+            "att_url": "http://127.0.0.1/media/course_overview.odt",
+            "course": 1,
+            "att_code": "",
+            "att_seq": null,
+            "lesson": null,
+            "att_name": "Course Overview",
+            "att_desc": "Outline of the course content..."
+        }
+    },
+    {
+        "pk": 3,
+        "model": "courses.attachments",
+        "fields": {
+            "att_url": "http://127.0.0.1/media/dummy.txt",
+            "course": 1,
+            "att_code": "",
+            "att_seq": null,
+            "lesson": null,
+            "att_name": "Some other file",
+            "att_desc": "Just a blank file"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "courses.attachments",
+        "fields": {
+            "att_url": "http://127.0.0.1/media/lesson_notes1.odt",
+            "course": null,
+            "att_code": "",
+            "att_seq": null,
+            "lesson": 1,
+            "att_name": "Lesson 1 Notes",
+            "att_desc": "The background reading for Lesson 1"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "courses.attachments",
+        "fields": {
+            "att_url": "http://127.0.0.1/media/lesson_notes2.odt",
+            "course": null,
+            "att_code": "",
+            "att_seq": null,
+            "lesson": 2,
+            "att_name": "Lesson 2 Notes",
+            "att_desc": "Study notes for lesson 2"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "courses.attachments",
+        "fields": {
+            "att_url": "http://127.0.0.1/media/blender_ui.png",
+            "course": null,
+            "att_code": "",
+            "att_seq": null,
+            "lesson": 2,
+            "att_name": "Blender UI",
+            "att_desc": "The Blender User Interface"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "courses.attachments",
+        "fields": {
+            "att_url": "http://127.0.0.1/media/blender_ui_annotated.png",
+            "course": null,
+            "att_code": "",
+            "att_seq": null,
+            "lesson": 2,
+            "att_name": "Blender UI annotated",
+            "att_desc": "Annotated graphic of the UI"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "courses.attachments",
+        "fields": {
+            "att_url": "http://127.0.0.1/media/faceviewcube.blend",
+            "course": null,
+            "att_code": "",
+            "att_seq": null,
+            "lesson": 3,
+            "att_name": "FaceViewCube Blendfile",
+            "att_desc": "The blender file for this lesson."
+        }
+    },
+    {
+        "pk": 9,
+        "model": "courses.attachments",
+        "fields": {
+            "att_url": "http://127.0.0.1/media/lesson_notes3.odt",
+            "course": null,
+            "att_code": "",
+            "att_seq": null,
+            "lesson": 3,
+            "att_name": "Lesson 3 Notes",
+            "att_desc": "Course notes for lesson 3"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "courses.userprofile_lesson",
+        "fields": {
+            "lesson": 1,
+            "date_complete": "2012-08-10",
+            "mark_complete": true,
+            "userprofile": 2
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.userprofile_lesson",
+        "fields": {
+            "lesson": 2,
+            "date_complete": null,
+            "mark_complete": true,
+            "userprofile": 2
+        }
+    },
+    {
+        "pk": 3,
+        "model": "courses.userprofile_lesson",
+        "fields": {
+            "lesson": 3,
+            "date_complete": null,
+            "mark_complete": false,
+            "userprofile": 7
+        }
+    },
+    {
+        "pk": 2,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "No, that's the United Kingdom",
+            "answer_text": "London"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Yep. That's the one.",
+            "answer_text": "Stockholm"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "France is not actually a city, it is a country.",
+            "answer_text": "France"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Nope.",
+            "answer_text": "www.blender.net"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "That's the one.",
+            "answer_text": "www.blender.org"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Nope.",
+            "answer_text": "www.blender.com"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Not really. You can truncate audio files, but that's about it.",
+            "answer_text": "audio"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Not designed for editing photos, although Blender can use photos as materials.",
+            "answer_text": "photos"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "No. Possible, but very cumbersome for this task.",
+            "answer_text": "diagrams"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Yes, this is a primary design goal of Blender.",
+            "answer_text": "3D modelling"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Yes. This is a primary design goal of Blender.",
+            "answer_text": "animated sequences"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Yes. Blender has a power video sequence editor for producing movie files.",
+            "answer_text": "movie sequences"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "For a start try:\r\nblenderartists.org\r\nblenderunderground.com/forums\r\nblender.org/forum\r\nblenderguru.com\r\n",
+            "answer_text": "True"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Wrong. There are many forums, try:\r\n\r\nblenderartists.org\r\nblenderunderground.com/forums\r\nblender.org/forum\r\nblenderguru.com",
+            "answer_text": "False"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "No. It's free software.",
+            "answer_text": "proprietary"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "BSD offers certain commericialisable aspects, which Blender's licence does not permit.",
+            "answer_text": "BSD"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "quiz.answer",
+        "fields": {
+            "explan_text": "Yep, it's Free Software, under the GNU General Public Licence.",
+            "answer_text": "GNU GPL"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "quiz.question",
+        "fields": {
+            "correct_answer": 3,
+            "question_text": "Which of these cities is the capital of Sweden?",
+            "answers": [
+                2,
+                3,
+                4
+            ]
+        }
+    },
+    {
+        "pk": 2,
+        "model": "quiz.question",
+        "fields": {
+            "correct_answer": 6,
+            "question_text": "What is the address of the website from which you can download Blender?",
+            "answers": [
+                5,
+                6,
+                7
+            ]
+        }
+    },
+    {
+        "pk": 3,
+        "model": "quiz.question",
+        "fields": {
+            "correct_answer": 11,
+            "question_text": "Is blender good for creating or editing any of the following types of file (check all that apply - actually you can't at the moment)",
+            "answers": [
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+            ]
+        }
+    },
+    {
+        "pk": 4,
+        "model": "quiz.question",
+        "fields": {
+            "correct_answer": 14,
+            "question_text": "There are many online forums where I can ask for help and discuss my Blender projects. (T/F)",
+            "answers": [
+                14,
+                15
+            ]
+        }
+    },
+    {
+        "pk": 5,
+        "model": "quiz.question",
+        "fields": {
+            "correct_answer": 18,
+            "question_text": "Name the licence used to distribute Blender?",
+            "answers": [
+                16,
+                17,
+                18
+            ]
+        }
+    },
+    {
+        "pk": 19,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_logentry",
+            "name": "Can add log entry",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 20,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_logentry",
+            "name": "Can change log entry",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 21,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_logentry",
+            "name": "Can delete log entry",
+            "content_type": 7
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_group",
+            "name": "Can add group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 4,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_group",
+            "name": "Can change group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 7,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_group",
+            "name": "Can delete group",
+            "content_type": 2
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_permission",
+            "name": "Can add permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 5,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_permission",
+            "name": "Can change permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 8,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_permission",
+            "name": "Can delete permission",
+            "content_type": 1
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_user",
+            "name": "Can add user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 6,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_user",
+            "name": "Can change user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 9,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_user",
+            "name": "Can delete user",
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 10,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_contenttype",
+            "name": "Can add content type",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 11,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_contenttype",
+            "name": "Can change content type",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 12,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_contenttype",
+            "name": "Can delete content type",
+            "content_type": 4
+        }
+    },
+    {
+        "pk": 22,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_attachments",
+            "name": "Can add attachments",
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 28,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_attachments",
+            "name": "Can change attachments",
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 34,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_attachments",
+            "name": "Can delete attachments",
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 23,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_course",
+            "name": "Can add course",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 29,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_course",
+            "name": "Can change course",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 35,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_course",
+            "name": "Can delete course",
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 24,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_lesson",
+            "name": "Can add lesson",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 30,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_lesson",
+            "name": "Can change lesson",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 36,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_lesson",
+            "name": "Can delete lesson",
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 25,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_userprofile",
+            "name": "Can add user profile",
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 31,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_userprofile",
+            "name": "Can change user profile",
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 37,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_userprofile",
+            "name": "Can delete user profile",
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 26,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_userprofile_lesson",
+            "name": "Can add user profile_ lesson",
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 32,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_userprofile_lesson",
+            "name": "Can change user profile_ lesson",
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 38,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_userprofile_lesson",
+            "name": "Can delete user profile_ lesson",
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 27,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_video",
+            "name": "Can add video",
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 33,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_video",
+            "name": "Can change video",
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 39,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_video",
+            "name": "Can delete video",
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 43,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_answer",
+            "name": "Can add answer",
+            "content_type": 15
+        }
+    },
+    {
+        "pk": 47,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_answer",
+            "name": "Can change answer",
+            "content_type": 15
+        }
+    },
+    {
+        "pk": 51,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_answer",
+            "name": "Can delete answer",
+            "content_type": 15
+        }
+    },
+    {
+        "pk": 44,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_attempt",
+            "name": "Can add attempt",
+            "content_type": 18
+        }
+    },
+    {
+        "pk": 48,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_attempt",
+            "name": "Can change attempt",
+            "content_type": 18
+        }
+    },
+    {
+        "pk": 52,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_attempt",
+            "name": "Can delete attempt",
+            "content_type": 18
+        }
+    },
+    {
+        "pk": 45,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_question",
+            "name": "Can add question",
+            "content_type": 16
+        }
+    },
+    {
+        "pk": 49,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_question",
+            "name": "Can change question",
+            "content_type": 16
+        }
+    },
+    {
+        "pk": 53,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_question",
+            "name": "Can delete question",
+            "content_type": 16
+        }
+    },
+    {
+        "pk": 46,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_quiz",
+            "name": "Can add quiz",
+            "content_type": 17
+        }
+    },
+    {
+        "pk": 50,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_quiz",
+            "name": "Can change quiz",
+            "content_type": 17
+        }
+    },
+    {
+        "pk": 54,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_quiz",
+            "name": "Can delete quiz",
+            "content_type": 17
+        }
+    },
+    {
+        "pk": 40,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_registrationprofile",
+            "name": "Can add registration profile",
+            "content_type": 14
+        }
+    },
+    {
+        "pk": 41,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_registrationprofile",
+            "name": "Can change registration profile",
+            "content_type": 14
+        }
+    },
+    {
+        "pk": 42,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_registrationprofile",
+            "name": "Can delete registration profile",
+            "content_type": 14
+        }
+    },
+    {
+        "pk": 13,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_session",
+            "name": "Can add session",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 14,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_session",
+            "name": "Can change session",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 15,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_session",
+            "name": "Can delete session",
+            "content_type": 5
+        }
+    },
+    {
+        "pk": 16,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_site",
+            "name": "Can add site",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 17,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_site",
+            "name": "Can change site",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 18,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_site",
+            "name": "Can delete site",
+            "content_type": 6
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "chris",
+            "first_name": "Chris",
+            "last_name": "\u00dcberbiscuit",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2012-08-08T22:47:30Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$64IjYIHrovTK$pbjD4Ny9YTRA83zBRSr4l+W951EH+wdLK7xIaqak35w=",
+            "email": "ctmcginlay@gmail.com",
+            "date_joined": "2012-08-01T22:14:23Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "auth.user",
+        "fields": {
+            "username": "Nomski",
+            "first_name": "Nom",
+            "last_name": "Ski",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-08-02T23:03:03Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$Y5rpDi6PIzzz$ev7k9AV26KyEWGEioXGEPDPXQ0Zow2mKm5hlne1LQPY=",
+            "email": "dude@nomski.com",
+            "date_joined": "2012-08-02T23:03:03Z"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "username": "boris",
+            "first_name": "Boron",
+            "last_name": "Bolafoid",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-08-07T14:04:30Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$nFxkvrzp8ohN$+XhZFafwfy3boZt35hU3JZ1ozg0S05jary9i4jIaHJk=",
+            "email": "boris@example.com",
+            "date_joined": "2012-08-07T14:04:29Z"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "auth.user",
+        "fields": {
+            "username": "gordon",
+            "first_name": "Gordon",
+            "last_name": "Basiljet",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-08-08T21:07:38Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$A69eaHX2hi5T$C5lmEqct67XGc61kWZoDUZ7DLOyA1NnGoHAnn7Fxs4w=",
+            "email": "basiljet@example.com",
+            "date_joined": "2012-08-08T21:07:38Z"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "auth.user",
+        "fields": {
+            "username": "bert",
+            "first_name": "Bertimus",
+            "last_name": "Bertski",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-08-08T22:38:33Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$Wme9DK7EHZwh$xo2RTKBAJMCo+pnCLlgJ9V++zDJoo/Y2Wq3+0v5/PvU=",
+            "email": "berti@bertski.example.com",
+            "date_joined": "2012-08-08T22:38:33Z"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "auth.user",
+        "fields": {
+            "username": "tracy",
+            "first_name": "Tracy",
+            "last_name": "Wacy",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-08-08T22:41:50Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$WY4pVuDKVXmt$oaBy3OBEdGQNqyvibLk8g5gxnnNVH5qdq90nx/5na94=",
+            "email": "tracywacy@example.com",
+            "date_joined": "2012-08-08T22:41:50Z"
+        }
+    },
+    {
+        "pk": 55,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-11T22:03:38.524Z",
+            "object_repr": "The Continents",
+            "object_id": "4",
+            "change_message": "No fields changed.",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 54,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-11T22:03:14.250Z",
+            "object_repr": "The Continents",
+            "object_id": "4",
+            "change_message": "",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 53,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-11T22:02:13.470Z",
+            "object_repr": "Capital Cities of Earth",
+            "object_id": "2",
+            "change_message": "Changed course_name and course_abstract.",
+            "user": 1,
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 52,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-10T21:32:13.446Z",
+            "object_repr": "tracy",
+            "object_id": "9",
+            "change_message": "Changed signature_line and registered_courses.",
+            "user": 1,
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 51,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-10T21:32:00.872Z",
+            "object_repr": "bert",
+            "object_id": "7",
+            "change_message": "Changed signature_line and registered_courses.",
+            "user": 1,
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 50,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-10T21:31:36.913Z",
+            "object_repr": "gordon",
+            "object_id": "5",
+            "change_message": "Changed accepted_terms, signature_line and registered_courses.",
+            "user": 1,
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 49,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-10T21:30:48.857Z",
+            "object_repr": "Nothing At All",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 48,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-10T21:28:40.852Z",
+            "object_repr": "tracy",
+            "object_id": "9",
+            "change_message": "Changed password, first_name, last_name and email.",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 47,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-10T21:27:44.953Z",
+            "object_repr": "chris",
+            "object_id": "1",
+            "change_message": "Changed password, first_name and last_name.",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 46,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-10T21:27:03.656Z",
+            "object_repr": "gordon",
+            "object_id": "5",
+            "change_message": "Changed password, first_name, last_name and email.",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 45,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-10T21:26:28.848Z",
+            "object_repr": "boris",
+            "object_id": "3",
+            "change_message": "Changed password, first_name and last_name.",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 44,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-10T21:25:52.269Z",
+            "object_repr": "bert",
+            "object_id": "7",
+            "change_message": "Changed password, first_name, last_name and email.",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 43,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 3,
+            "action_time": "2012-08-10T21:25:12.867Z",
+            "object_repr": "ian",
+            "object_id": "11",
+            "change_message": "",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 42,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 3,
+            "action_time": "2012-08-10T21:25:12.665Z",
+            "object_repr": "gordon3",
+            "object_id": "6",
+            "change_message": "",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 41,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 3,
+            "action_time": "2012-08-10T21:25:12.467Z",
+            "object_repr": "fred@4",
+            "object_id": "4",
+            "change_message": "",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 40,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 3,
+            "action_time": "2012-08-10T21:25:12.238Z",
+            "object_repr": "flo",
+            "object_id": "10",
+            "change_message": "",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 39,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 3,
+            "action_time": "2012-08-10T21:25:12.040Z",
+            "object_repr": "dave",
+            "object_id": "12",
+            "change_message": "",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 38,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 3,
+            "action_time": "2012-08-10T21:25:11.868Z",
+            "object_repr": "berty",
+            "object_id": "8",
+            "change_message": "",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 37,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-09T23:23:25.087Z",
+            "object_repr": "UserProfile_Lesson object",
+            "object_id": "3",
+            "change_message": "",
+            "user": 1,
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 36,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-09T23:23:10.596Z",
+            "object_repr": "UserProfile_Lesson object",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 35,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-09T23:22:57.691Z",
+            "object_repr": "UserProfile_Lesson object",
+            "object_id": "1",
+            "change_message": "No fields changed.",
+            "user": 1,
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 34,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-09T23:20:54.504Z",
+            "object_repr": "UserProfile_Lesson object",
+            "object_id": "1",
+            "change_message": "",
+            "user": 1,
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 33,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-08T15:12:51.839Z",
+            "object_repr": "UserProfile object",
+            "object_id": "3",
+            "change_message": "Changed signature_line and registered_courses.",
+            "user": 1,
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 32,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-08T15:12:22.999Z",
+            "object_repr": "UserProfile object",
+            "object_id": "2",
+            "change_message": "No fields changed.",
+            "user": 1,
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 31,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-05T21:53:13.708Z",
+            "object_repr": "Basics of the User Interface",
+            "object_id": "4",
+            "change_message": "Changed url.",
+            "user": 1,
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 30,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-05T21:52:59.279Z",
+            "object_repr": "Controlling Orientation",
+            "object_id": "3",
+            "change_message": "Changed url.",
+            "user": 1,
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 29,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-05T21:52:41.902Z",
+            "object_repr": "What is Blender?",
+            "object_id": "2",
+            "change_message": "Changed url.",
+            "user": 1,
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 28,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-05T21:52:21.013Z",
+            "object_repr": "TEST Blender Course Intro",
+            "object_id": "1",
+            "change_message": "Changed url.",
+            "user": 1,
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 27,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-04T09:21:28.056Z",
+            "object_repr": "Basics of the User Interface",
+            "object_id": "4",
+            "change_message": "",
+            "user": 1,
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 26,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-04T09:20:42.263Z",
+            "object_repr": "Controlling Orientation",
+            "object_id": "3",
+            "change_message": "No fields changed.",
+            "user": 1,
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 25,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T22:28:26.368Z",
+            "object_repr": "Lesson 3 Notes",
+            "object_id": "9",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 24,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T22:27:40.595Z",
+            "object_repr": "FaceViewCube Blendfile",
+            "object_id": "8",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 23,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T22:26:23.588Z",
+            "object_repr": "Blender UI annotated",
+            "object_id": "7",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 22,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T22:25:51.961Z",
+            "object_repr": "Blender UI",
+            "object_id": "6",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 21,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T22:25:06.354Z",
+            "object_repr": "Lesson 2 Notes",
+            "object_id": "5",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 20,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T22:21:45.769Z",
+            "object_repr": "Lesson 1 Notes",
+            "object_id": "4",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 19,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-03T22:20:48.226Z",
+            "object_repr": "Some other file",
+            "object_id": "3",
+            "change_message": "Changed att_url.",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 18,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T22:20:41.032Z",
+            "object_repr": "Some other file",
+            "object_id": "3",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 17,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-03T22:20:13.976Z",
+            "object_repr": "Course Overview",
+            "object_id": "2",
+            "change_message": "No fields changed.",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 16,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T22:15:32.398Z",
+            "object_repr": "Course Overview",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 15,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-03T22:13:49.877Z",
+            "object_repr": "Course Advice",
+            "object_id": "1",
+            "change_message": "No fields changed.",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 14,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T22:10:58.780Z",
+            "object_repr": "Course Advice",
+            "object_id": "1",
+            "change_message": "",
+            "user": 1,
+            "content_type": 11
+        }
+    },
+    {
+        "pk": 13,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T21:38:32.793Z",
+            "object_repr": "Controlling Orientation",
+            "object_id": "3",
+            "change_message": "",
+            "user": 1,
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 12,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T21:34:17.871Z",
+            "object_repr": "What is Blender?",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 11,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-03T21:28:56.930Z",
+            "object_repr": "TEST Blender Course Intro",
+            "object_id": "1",
+            "change_message": "",
+            "user": 1,
+            "content_type": 10
+        }
+    },
+    {
+        "pk": 10,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-02T23:37:54.993Z",
+            "object_repr": "Orientation in 3D Space",
+            "object_id": "3",
+            "change_message": "",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 9,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-02T23:36:58.173Z",
+            "object_repr": "What is Blender for?",
+            "object_id": "1",
+            "change_message": "Changed lesson_name.",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 8,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-02T23:36:21.641Z",
+            "object_repr": "Basics of the User Interface",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 7,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-02T23:35:25.940Z",
+            "object_repr": "Basics of the User Interface",
+            "object_id": "1",
+            "change_message": "No fields changed.",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 6,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-02T23:35:11.862Z",
+            "object_repr": "Basics of the User Interface",
+            "object_id": "1",
+            "change_message": "",
+            "user": 1,
+            "content_type": 9
+        }
+    },
+    {
+        "pk": 5,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-02T23:17:24.582Z",
+            "object_repr": "UserProfile object",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 4,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-02T23:16:55.704Z",
+            "object_repr": "UserProfile object",
+            "object_id": "1",
+            "change_message": "Changed accepted_terms, signature_line and registered_courses.",
+            "user": 1,
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 3,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-02T23:07:53.627Z",
+            "object_repr": "TEST Introduction to Blender",
+            "object_id": "1",
+            "change_message": "",
+            "user": 1,
+            "content_type": 8
+        }
+    },
+    {
+        "pk": 2,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 2,
+            "action_time": "2012-08-02T23:04:02.816Z",
+            "object_repr": "Nomski",
+            "object_id": "2",
+            "change_message": "Changed password, first_name, last_name and email.",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 1,
+        "model": "admin.logentry",
+        "fields": {
+            "action_flag": 1,
+            "action_time": "2012-08-02T23:03:03.315Z",
+            "object_repr": "Nomski",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 3
+        }
+    },
+    {
+        "pk": 1,
+        "model": "courses.userprofile",
+        "fields": {
+            "signature_line": "Your invisible pal who's fun to be with",
+            "registered_courses": [
+                1
+            ],
+            "user": 2,
+            "accepted_terms": true
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.userprofile",
+        "fields": {
+            "signature_line": "Writing the code",
+            "registered_courses": [
+                1
+            ],
+            "user": 1,
+            "accepted_terms": true
+        }
+    },
+    {
+        "pk": 3,
+        "model": "courses.userprofile",
+        "fields": {
+            "signature_line": "Tremble and shake",
+            "registered_courses": [
+                1
+            ],
+            "user": 3,
+            "accepted_terms": false
+        }
+    },
+    {
+        "pk": 5,
+        "model": "courses.userprofile",
+        "fields": {
+            "signature_line": "Smoke me a kipper.",
+            "registered_courses": [
+                2
+            ],
+            "user": 5,
+            "accepted_terms": true
+        }
+    },
+    {
+        "pk": 7,
+        "model": "courses.userprofile",
+        "fields": {
+            "signature_line": "I'll bert back for borkfast.",
+            "registered_courses": [
+                1,
+                2
+            ],
+            "user": 7,
+            "accepted_terms": false
+        }
+    },
+    {
+        "pk": 9,
+        "model": "courses.userprofile",
+        "fields": {
+            "signature_line": "Erm.",
+            "registered_courses": [
+                2
+            ],
+            "user": 9,
+            "accepted_terms": false
+        }
+    },
+    {
+        "pk": 1,
+        "model": "quiz.quiz",
+        "fields": {
+            "lesson": 4,
+            "create_date": "2012-08-11",
+            "questions": [
+                1
+            ],
+            "quiz_title": "Capital Cities",
+            "author": 2
+        }
+    },
+    {
+        "pk": 2,
+        "model": "quiz.quiz",
+        "fields": {
+            "lesson": 1,
+            "create_date": "2012-08-11",
+            "questions": [
+                2,
+                3,
+                4,
+                5
+            ],
+            "quiz_title": "Basic Facts",
+            "author": 2
+        }
+    }
+]

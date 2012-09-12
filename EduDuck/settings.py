@@ -37,7 +37,7 @@ DATABASES = {
 # after changes to models.
 
 FIXTURE_DIRS = (
-    os.path.join(SITE_ROOT, 'Fixtures')
+    os.path.join(SITE_ROOT, 'fixtures')
 )
 
 # User Profile model 

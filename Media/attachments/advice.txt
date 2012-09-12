@@ -1,0 +1,3 @@
+Important Advice for the Course
+
+This dummy file of important advice just shows that a variety of files may be associated with the course as a whole, instead of individual lessons, could be terms and conditions, reading lists, etc.

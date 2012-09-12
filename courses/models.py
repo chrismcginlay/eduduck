@@ -115,8 +115,9 @@ class Video(models.Model):
 #    def get_absolute_url(self):
 #        return ('TODO')
         
-        
-class Attachments(models.Model):
+#TODO important to validate uploaded files
+#see PDF p796.
+class Attachment(models.Model):
     """Handle all forms of attachment except video.
     
     Attributes:
@@ -126,7 +127,7 @@ class Attachments(models.Model):
         course      ForeignKey - if attachment embedded in course
         att_desc    Paragraph describing contents of attachment
         att_seq     Optional unique sequence number of attachment
-        att_url     URL to file (local/external)
+        attachment  Django file model instance
 
     """
     
@@ -135,12 +136,14 @@ class Attachments(models.Model):
     
     att_code = models.CharField(max_length=10, blank=True, null=True)
     att_name = models.CharField(max_length=200)
-    #TODO: override __init__ to ensure precisely one of the following is not null
+    #TODO: override __init__ to ensure precisely one of the 
+    #following is not null, reflecting fact that attachment can be 
+    #linked to lesson or direct to parent course
     lesson = models.ForeignKey(Lesson, blank=True, null=True)
     course = models.ForeignKey(Course, blank=True, null=True)
     att_desc = models.TextField(blank=True, null=True)
     att_seq = models.IntegerField(blank=True, null=True)
-    att_url = models.URLField()
+    attachment = models.FileField(upload_to='attachments')
     
     class Meta:
         unique_together = (("lesson", "att_seq"),)   
