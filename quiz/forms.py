@@ -1,5 +1,5 @@
 from django import forms
-from quiz.models import Quiz, Question, Answer, Attempt
+from quiz.models import Quiz, Question, Answer
     
 #http://www.peachybits.com/2011/09/django-1-3-form-api-modelform-example/
 class QuestionForm(forms.ModelForm):

@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 
+#TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
 #TODO: improve request context:
 #http://lincolnloop.com/blog/2008/may/10/getting-requestcontext-your-templates/
 

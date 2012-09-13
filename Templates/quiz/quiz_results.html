@@ -21,4 +21,19 @@
         <p>It seems you have no attempts in this quiz.</p>
     {% endfor %}
     </ul>
+
+    {% regroup attempts by taken_dt as attempts_by_date %}
+    {% for attempt in attempts_by_date %}
+        <li>{{ attempt.grouper }}</li>
+        <ol>
+            {% for attempt in attempt.list %}
+            {{ attempt.question}}<br />
+            Your Answer: {{attempt.answer_given}}<br />
+            Explanation: {{attempt.answer_given.explan_text}}<br />
+            Correct Answer: {{attempt.question.correct_answer}}<br />
+            Score: {{attempt.score}}<br />
+            Date of Attempt: {{attempt.taken_dt}}
+            {% endfor %}
+        </ol>
+    {% endfor %}
 {% endblock content %}
