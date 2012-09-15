@@ -3,7 +3,7 @@ from django.shortcuts import redirect, get_object_or_404, render_to_response
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
-from quiz.models import Quiz, Question, Answer, Attempt
+from quiz.models import Quiz, Question, Answer, QuizAttempt, QuestionAttempt
 from quiz.forms import QuestionForm, AnswerForm, QuizForm
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -203,6 +203,8 @@ def quiz_take(request, quiz_id):
                                       context_instance=RequestContext(request))
         #form is submitted and complete, process it
         #save the quiz attempt, display results.
+        quiz_attempt = QuizAttempt(user = request.user, quiz = quiz)
+        quiz_attempt.save()
         for question in quiz.questions.all():
             qstring = "Q" + str(question.id)
             answer_given = Answer.objects.get(pk=int(request.POST[qstring]))
@@ -210,11 +212,10 @@ def quiz_take(request, quiz_id):
                 score = 1
             else:
                 score = 0
-            attempt = Attempt(user = request.user, 
-                              quiz = quiz, 
-                              question= question, 
-                              answer_given = answer_given, 
-                              score = score) 
+            attempt = QuestionAttempt(quiz_attempt = quiz_attempt,
+                                      question= question, 
+                                      answer_given = answer_given, 
+                                      score = score) 
             attempt.save()
         return HttpResponseRedirect(reverse('quiz.views.quiz_results', args=(quiz_id,)))
 
@@ -227,7 +228,7 @@ def quiz_take(request, quiz_id):
 def quiz_results(request, quiz_id):
     """Show the results of the quiz attempt"""
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    attempts = Attempt.objects.filter(quiz=quiz, 
+    attempts = QuizAttempt.objects.filter(quiz=quiz, 
                                       user=request.user).order_by('-taken_dt')
     
     return render_to_response('quiz/quiz_results.html',

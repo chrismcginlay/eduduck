@@ -74,7 +74,37 @@ class Quiz(models.Model):
     def __unicode__(self):
         return self.quiz_title
 
-class Attempt(models.Model):
+
+class QuizAttempt(models.Model):
+    """Record each time a user attempts a particular quiz
+    
+    Individual question responses are stored in QuestionAttempt
+    
+    Attributes:
+        user            ForeignKey - who is attempting the quiz
+        quiz            ForeignKey - the quiz
+        taken_dt        Date of this quiz attempt
+    """
+    quiz = models.ForeignKey(Quiz)
+    user = models.ForeignKey(User)
+    taken_dt = models.DateTimeField("date of quiz attempt")
+
+    def save(self, *args, **kwargs):
+        """Set timestamp on save"""
+        if not self.id:
+            self.taken_dt = datetime.datetime.now()
+        super(QuizAttempt, self).save(*args, **kwargs)
+
+    def score():
+        """Calculate total score of all questions in the attempt"""
+        return 10000
+        
+    def __unicode__(self):
+        return "User: %s, Quiz: %s, Total %s" % self.user, self.quiz, 
+        self.score()
+        
+        
+class QuestionAttempt(models.Model):
     """Responses made by user during an attempt of the quiz.attname
     
     Note that we DO need to record the question object here too, since we 
@@ -82,27 +112,16 @@ class Attempt(models.Model):
     will score each response separately.
     
     Attributes:
-        user            ForeignKey - who is attempting the quiz
-        quiz            ForeignKey - the quiz
-        taken_dt        Date quiz first taken
         question        ForeignKey - a question of the quiz
         answer_given    The answer object the user thinks to be 'correct'
         score           Points allocated to answer_given
     
     """
-    
-    user = models.ForeignKey(User)
-    quiz = models.ForeignKey(Quiz)
-    taken_dt = models.DateTimeField("date of quiz attempt")
+    quiz_attempt = models.ForeignKey(QuizAttempt)
     question = models.ForeignKey(Question)
     answer_given = models.ForeignKey(Answer, verbose_name="user's answer")
     score = models.IntegerField(default=0)
 
-    def save(self, *args, **kwargs):
-        """Set timestamp on save"""
-        if not self.id:
-            self.taken_dt = datetime.datetime.now()
-        super(Attempt, self).save(*args, **kwargs)
         
     def __unicode__(self):
         return "User: %s, Quiz: %s, Question: %s, Score: %s" % (self.user, self.quiz, self.question, self.score)
