@@ -100,8 +100,7 @@ class QuizAttempt(models.Model):
         return 10000
         
     def __unicode__(self):
-        return "User: %s, Quiz: %s, Total %s" % self.user, self.quiz, 
-        self.score()
+        return "User: %s, Quiz: %s" % (self.user, self.quiz)
         
         
 class QuestionAttempt(models.Model):
@@ -124,5 +123,5 @@ class QuestionAttempt(models.Model):
 
         
     def __unicode__(self):
-        return "User: %s, Quiz: %s, Question: %s, Score: %s" % (self.user, self.quiz, self.question, self.score)
+        return "Quiz Attempt: %s, Question: %s, Score: %s" % (self.quiz_attempt, self.question, self.score)
     

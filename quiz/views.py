@@ -191,6 +191,8 @@ def quiz_take(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     if request.method == "POST": #form is submitted
         try:
+            #Create a dictionary of submitted answers for each question,
+            #question => answer given by user
             selected_answer = dict()
             for question in quiz.questions.all():
                 qstring = "Q" + str(question.id)
@@ -228,12 +230,19 @@ def quiz_take(request, quiz_id):
 def quiz_results(request, quiz_id):
     """Show the results of the quiz attempt"""
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    attempts = QuizAttempt.objects.filter(quiz=quiz, 
+    quiz_attempts = QuizAttempt.objects.filter(quiz=quiz, 
                                       user=request.user).order_by('-taken_dt')
     
+    #Create a list of all the attempts at a quiz by a user
+    #each element of the list is a list of question responses
+#    attempt_digest = list()
+#    for qa in quiz_attempts:
+#        question_attempts = QuestionAttempt.objects.filter(quiz_attempt=qa)
+#        attempt_digest.append(question_attempts)
+        
     return render_to_response('quiz/quiz_results.html',
-                              {'quiz': quiz,
-                               'attempts': attempts,},
+                              {'quiz_attempts': quiz_attempts,
+                               },
                               context_instance=RequestContext(request))
 
 

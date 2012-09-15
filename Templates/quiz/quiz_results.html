@@ -5,35 +5,22 @@
 {% endblock %}
 
 {% block content %}
-    <h2>{{quiz.quiz_title}}</h2>
+    <h2>{{quiz_attempts.0.quiz.quiz_title}}</h2>
     <p>Attempt by {{user.get_full_name}}</p>
     <ul>
-    {% for attempt in attempts %}        
-        <li>{{attempt.question}}<br />
-            Your Answer: {{attempt.answer_given}}<br />
-            Explanation: {{attempt.answer_given.explan_text}}<br />
-            Correct Answer: {{attempt.question.correct_answer}}<br />
-            Score: {{attempt.score}}<br />
-            Date of Attempt: {{attempt.taken_dt}}
+    {% for quiz_attempt in quiz_attempts %}  
+        <li>Date/Time: {{quiz_attempt.taken_dt}}<br />
+            {% for question_attempt in quiz_attempt.questionattempt_set.all %}
+                    Question: {{question_attempt.question}}<br />
+                    Answer Given: {{ question_attempt.answer_given }} <br />
+                    Explanation: {{question_attempt.answer_given.explan_text}}<br />
+                    Correct Answer: {{question_attempt.question.correct_answer}}<br />
+                    Score: {{question_attempt.score}}<br />
+            {% endfor %}
         </li>
         <hr />
     {% empty %}
         <p>It seems you have no attempts in this quiz.</p>
     {% endfor %}
     </ul>
-
-    {% regroup attempts by taken_dt as attempts_by_date %}
-    {% for attempt in attempts_by_date %}
-        <li>{{ attempt.grouper }}</li>
-        <ol>
-            {% for attempt in attempt.list %}
-            {{ attempt.question}}<br />
-            Your Answer: {{attempt.answer_given}}<br />
-            Explanation: {{attempt.answer_given.explan_text}}<br />
-            Correct Answer: {{attempt.question.correct_answer}}<br />
-            Score: {{attempt.score}}<br />
-            Date of Attempt: {{attempt.taken_dt}}
-            {% endfor %}
-        </ol>
-    {% endfor %}
-{% endblock content %}
+ {% endblock %}
