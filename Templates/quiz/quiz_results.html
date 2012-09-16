@@ -9,16 +9,22 @@
     <p>Attempt by {{user.get_full_name}}</p>
     <ul>
     {% for quiz_attempt in quiz_attempts %}  
-        <li>Date/Time: {{quiz_attempt.taken_dt}}<br />
+        <li><h3>Attempt: {{quiz_attempt.taken_dt}} Score: {{quiz_attempt.quiz_score}}</h3>
             {% for question_attempt in quiz_attempt.questionattempt_set.all %}
-                    Question: {{question_attempt.question}}<br />
-                    Answer Given: {{ question_attempt.answer_given }} <br />
-                    Explanation: {{question_attempt.answer_given.explan_text}}<br />
-                    Correct Answer: {{question_attempt.question.correct_answer}}<br />
-                    Score: {{question_attempt.score}}<br />
+                    <b>Question:</b> <em>{{question_attempt.question}}</em><br />
+                    <table border='1'>
+                        <colgroup>
+                           <col span="1" style="width: 30%;" />
+                           <col span="1" style="width: 70%;" />
+                        </colgroup>
+                        <tr><td>Answer Given</td><td>{{ question_attempt.answer_given }}</td></tr>
+                        <tr><td>Explanation</td><td>{{question_attempt.answer_given.explan_text}}</td></tr>
+                        <tr><td>Correct Answer</td><td>{{question_attempt.question.correct_answer}}</td></tr>
+                        <tr><td>Score</td><td>{{question_attempt.score}}</td></tr>
+                    </table>
             {% endfor %}
         </li>
-        <hr />
+        <br />
     {% empty %}
         <p>It seems you have no attempts in this quiz.</p>
     {% endfor %}

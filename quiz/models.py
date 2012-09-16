@@ -2,10 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy
 from courses.models import Lesson
+from django.shortcuts import get_list_or_404
 import datetime
 
 # TODO eventually create other types of quiz, using an abstract base class
-# Early days: get everything working with simple multichoice.
+# DONE: get everything working with simple multichoice.
 class Answer(models.Model):
     """Multichoice style answer. 
     
@@ -18,8 +19,9 @@ class Answer(models.Model):
     """
     
     answer_text = models.TextField("possible answer")
-    explan_text = models.TextField("answer advice", 
-                                   help_text="Advice on how relevant this answer is")
+    explan_text = models.TextField(
+                    "answer advice", 
+                    help_text="Advice on how relevant this answer is")
     
     def __unicode__(self):
         return self.answer_text
@@ -95,12 +97,19 @@ class QuizAttempt(models.Model):
             self.taken_dt = datetime.datetime.now()
         super(QuizAttempt, self).save(*args, **kwargs)
 
-    def score():
+    def quiz_score(self):
         """Calculate total score of all questions in the attempt"""
-        return 10000
-        
+        question_attempt_set = get_list_or_404(QuestionAttempt, 
+                                               quiz_attempt = self.pk)
+        score = 0
+        for question_attempt in question_attempt_set:
+            score += question_attempt.score
+        return score
+    
     def __unicode__(self):
-        return "User: %s, Quiz: %s" % (self.user, self.quiz)
+        return "User: %s, Quiz: %s, Score: %s" % (self.user, 
+                                                  self.quiz, 
+                                                  self.quiz_score)
         
         
 class QuestionAttempt(models.Model):
@@ -123,5 +132,6 @@ class QuestionAttempt(models.Model):
 
         
     def __unicode__(self):
-        return "Quiz Attempt: %s, Question: %s, Score: %s" % (self.quiz_attempt, self.question, self.score)
+        return "Quiz Attempt: %s, Question: %s, Score: %s" % (
+        self.quiz_attempt, self.question, self.score)
     
