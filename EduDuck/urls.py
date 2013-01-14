@@ -42,11 +42,7 @@ urlpatterns += patterns('quiz.views',
 )
 
 urlpatterns += patterns('',    
-    #account log- in/out/shakeitallabout
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
-    url(r'^accounts/register/$', 'courses.views.register'),
-    url(r'^accounts/created/$', 'courses.views.created'),
+    url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
 

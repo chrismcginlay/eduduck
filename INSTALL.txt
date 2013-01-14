@@ -22,8 +22,15 @@ The rest of the settings constants should be deduced automatically from the
 SITE_URL and SITE_ROOT. The latter of these two is determined
 programmatically.
 
-5. Run the development server. In terminal, navigate to the directory you just unpacked or cloned 
-eduduck into:
+5. Django package dependencies.
+a. https://bitbucket.org/ubernostrum/django-registration
+
+This is used for two part email based activation of registration (issue #2).
+I installed via the manual method specified in the quickstart:
+https://bitbucket.org/ubernostrum/django-registration/src/27bccd108cde/docs/quickstart.rst?at=default
+
+5. Run the development server. In terminal, navigate to the directory you just
+ unpacked or cloned eduduck into:
     
 cd /home/bob/eduduck
 python manage.py runserver http://127.0.0.1:8000 

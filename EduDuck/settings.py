@@ -121,7 +121,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'EduDuck.urls'
@@ -137,9 +137,23 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-#For django-registration app
+#django-registration https://bitbucket.org/ubernostrum/django-registration
 #This allows new users 7 days to activate new accounts
-ACCOUNT_ACTIVATION_DAYS = 7 
+ACCOUNT_ACTIVATION_DAYS = 7
+
+#Set following to False to disable registration.
+REGISTRATION_OPEN = True
+
+#django-registration needs an MTA. For development just use console
+#smtp is the default, so for production, just get rid of this
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#Fill in for production
+#EMAIL_HOST = 'localhost'
+#EMAIL_PORT = 25
+#EMAIL_HOST_USER = 'bob'
+#EMAIL_HOST_PASSWORD = 'bobo'
+#EMAIL_USE_TLS = 'True'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -154,6 +168,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'courses',
     'quiz',
+    #following provided account activation via email via django-registration
+    'registration',
 )
 
 # A sample logging configuration. The only tangible logging

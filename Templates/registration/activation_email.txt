@@ -1,0 +1,7 @@
+Eduduck activation 
+
+Someone registered this email address on {{ site }}.
+If it was you, great, go ahead and activate by following this link or pasting
+ it into a browser:
+{{ site.domain }}/accounts/activate/{{ activation_key }}
+You have {{ expiration_days }} days left.
