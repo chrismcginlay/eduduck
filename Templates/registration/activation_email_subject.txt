@@ -1,1 +1,1 @@
-{{ site }} activation {{ activation_key }}
+{{ site }} activation request.

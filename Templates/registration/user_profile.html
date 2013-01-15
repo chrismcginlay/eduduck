@@ -1,28 +1,27 @@
 {% extends "base.html" %}
 
 {% block banner %}
-    <h1>User Profile - SKELETON</h1>
-    <h2>{{user.email}}</h2>
+    <h1>Profile: {{ user.username }}</h1>
 {% endblock %}
 
 {% block content %}
-    <h3>Basic Data</h3>
-        {{ user.username }} {{user.get_full_name}} {{user.email}}
-    <h3>Profile Data</h3>
-        <p>Signature: {{ profile.signature_line }}</p>
-        <p>Accepted T&C: {{ profile.accepted_terms }}</p>
-        <div>Registered Courses: 
-            {% for c in profile.registered_courses.all %}
-                <strong>{{c.course_name}}</strong>
-                <p>Lesson/DateAccessed/Completed</p>
-                <ol>                
-                {% for l in user_lessons %}
-                    <li>{{ l.lesson.lesson_name }} /
-                        {{ l.date_complete }} /
-                        {{ l.mark_complete}}
-                    </li>
-                {% endfor %}
-                </ol>
+<h2>Basic Data</h2>
+    {{ user.username }} {{user.get_full_name}} {{user.email}}
+<h2>Profile Data</h2>
+    <p>Signature: {{ profile.signature_line }}</p>
+    <p>Accepted T&C: {{ profile.accepted_terms }}</p>
+    <div>Registered Courses: 
+        {% for c in profile.registered_courses.all %}
+            <strong>{{c.course_name}}</strong>
+            <p>Lesson/DateAccessed/Completed</p>
+            <ol>                
+            {% for l in user_lessons %}
+                <li>{{ l.lesson.lesson_name }} /
+                    {{ l.date_complete }} /
+                    {{ l.mark_complete}}
+                </li>
             {% endfor %}
-        </div>
+            </ol>
+        {% endfor %}
+    </div>
 {% endblock content %}

@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load url from future %}
 
 {% block banner %}
-    <h1>Registration Activation Complete</h1>
+<h1>Account Activation Complete</h1>
 {% endblock %}
 
 {% block content %}
-<p>Activation Succeeded</p>
-<p>You can now login</p>
+<em>Activation Succeeded</em>
+<p>You can now <a href="{% url 'django.contrib.auth.views.login' %}">login</a></p>
 
 {% endblock %}

@@ -19,6 +19,8 @@ SITE_ROOT = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), os.path.pardir)
 
 #set the base URL, not sure if this is the django way of doing it
+#It's not. https://docs.djangoproject.com/en/dev/ref/contrib/sites/?from=olddocs
+#Nevertheless, SITE_URL is an efficient hack in this context.
 SITE_URL = 'http://caicectus:8000'
 
 DATABASES = {
@@ -57,6 +59,7 @@ TIME_ZONE = 'UTC'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-gb'
 
+#https://docs.djangoproject.com/en/dev/ref/contrib/sites/?from=olddocs
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
