@@ -1,3 +1,4 @@
 *.pyc
 .spyderproject
 .spyderworkspace
+.coverage
