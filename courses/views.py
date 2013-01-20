@@ -1,6 +1,7 @@
 from courses.models import Course, Lesson, UserProfile_Lesson
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.shortcuts import (render_to_response, get_object_or_404, 
+    get_list_or_404)
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -15,7 +16,7 @@ def index(request):
     course_count = Course.objects.count
     template = 'courses/index.html'
     context_data = {'course_list':   course_list,
-               'course_count':  course_count,
+                    'course_count':  course_count,
                    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
@@ -84,4 +85,5 @@ def register(request):
     template = 'registration/registration_form.html'
     context_data = { 'form': form}
     context_instance = RequestContext(request)
+    assert form
     return render_to_response(template, context_data, context_instance)

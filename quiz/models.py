@@ -23,6 +23,11 @@ class Answer(models.Model):
                     "answer advice", 
                     help_text="Advice on how relevant this answer is")
     
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super(Answer, self).__init__(*args, **kwargs)
+        assert self.answer_text 
+        
     def __unicode__(self):
         return self.answer_text
         
@@ -40,18 +45,23 @@ class Question(models.Model):
         
     """
     
-#TODO ensure that answers includes correct_answer, possibly could do this
-#when the question is included in a quiz
+#TODO ensure that answers includes correct_answer, do in a checkrep, call 
+#from init and if question is edited (use save presave signal)
     question_text = models.TextField(help_text="The question as presented "
         "to the user")
     #TODO change the following field to 1-2-many
     answers = models.ManyToManyField(Answer, verbose_name="possible answers")    
     correct_answer = models.ForeignKey(Answer, related_name="valid")
-    
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super(Question, self).__init__(*args, **kwargs)
+        assert self.question_text
+        
     def __unicode__(self):
         return self.question_text
 
-        
+     
 class Quiz(models.Model):
     """A multi-choice quiz.
     
@@ -72,6 +82,13 @@ class Quiz(models.Model):
     class Meta:
         verbose_name = ugettext_lazy('quiz')
         verbose_name_plural = ugettext_lazy('quizzes')
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super(Quiz, self).__init__(*args, **kwargs)
+        assert self.quiz_title
+        assert self.lesson
+        assert self.author
         
     def __unicode__(self):
         return self.quiz_title
@@ -104,13 +121,19 @@ class QuizAttempt(models.Model):
         score = 0
         for question_attempt in question_attempt_set:
             score += question_attempt.score
+        assert score >= 0
         return score
-    
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super(QuizAttempt, self).__init__(*args, **kwargs)
+        assert self.quiz
+        assert self.user
+        
     def __unicode__(self):
         return "User: %s, Quiz: %s, Score: %s" % (self.user, 
                                                   self.quiz, 
                                                   self.quiz_score)
-        
         
 class QuestionAttempt(models.Model):
     """Responses made by user during an attempt of the quiz.attname
@@ -130,6 +153,13 @@ class QuestionAttempt(models.Model):
     answer_given = models.ForeignKey(Answer, verbose_name="user's answer")
     score = models.IntegerField(default=0)
 
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super(QuestionAttempt, self).__init__(*args, **kwargs)
+        assert self.quiz_attempt
+        assert self.question
+        assert self.answer_given
+        assert self.score >= 0
         
     def __unicode__(self):
         return "Quiz Attempt: %s, Question: %s, Score: %s" % (

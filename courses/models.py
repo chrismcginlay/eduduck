@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.http import Http404
 
 #TODO implement get_absolute_url() methods
 
@@ -32,12 +33,22 @@ class Course(models.Model):
     course_level = models.CharField(max_length=10, blank=True, null=True,
                                     help_text="e.g. SCQF level")
     course_credits = models.IntegerField(blank=True, null=True,)
-    
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super (Course, self).__init__(*args, **kwargs)
+        assert self.course_code
+        assert self.course_name
+        assert self.course_organiser
+        assert self.course_level >= 0
+        assert self.course_credits >= 0
+        
     def __unicode__(self):
         return self.course_name
     
     @models.permalink
     def get_absolute_url(self):
+        assert self.id >=1
         return ('courses.views.single', [str(self.id)])
         
 class Lesson(models.Model):
@@ -63,6 +74,8 @@ class Lesson(models.Model):
 
     def get_next(self):
         """Return the next lesson in the course"""
+        assert self.course
+        assert self.id
         next = Lesson.objects.filter(course=self.course).filter(id__gt=self.id)
         if next:
             return next[0]
@@ -70,16 +83,27 @@ class Lesson(models.Model):
         
     def get_prev(self):
         """Return the previous lesson in the course"""
+        assert self.course
+        assert self.id
         prev = Lesson.objects.filter(course=self.course).filter(id__lt=self.id).order_by('-id')
         if prev:
             return prev[0]
         return False
-    
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super (Lesson, self).__init__(*args, **kwargs)
+        assert self.lesson_code
+        assert self.lesson_name
+        assert self.course
+        
     def __unicode__(self):
         return self.lesson_name
     
     @models.permalink
     def get_absolute_url(self):
+        assert self.course
+        assert self.id
         return ('courses.views.lesson', (), {
                 'course_id': self.course.id,
                 'lesson_id': self.id })
@@ -106,7 +130,14 @@ class Video(models.Model):
     #TODO override __init__ to ensure precisely one of these is not null
     lesson = models.ForeignKey(Lesson, blank=True, null=True)
     course = models.ForeignKey(Course, blank=True, null=True)
-    
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super (Video, self).__init__(*args, **kwargs)
+        assert self.video_code
+        assert self.url
+        assert self.video_name
+
     def __unicode__(self):
         return self.video_name
 
@@ -132,13 +163,8 @@ class Attachment(models.Model):
     """
     
     #TODO: better modules exist for this.
-    #TODO: remove plural from this class name, not consistent!
-    
     att_code = models.CharField(max_length=10, blank=True, null=True)
     att_name = models.CharField(max_length=200)
-    #TODO: override __init__ to ensure precisely one of the 
-    #following is not null, reflecting fact that attachment can be 
-    #linked to lesson or direct to parent course
     lesson = models.ForeignKey(Lesson, blank=True, null=True)
     course = models.ForeignKey(Course, blank=True, null=True)
     att_desc = models.TextField(blank=True, null=True)
@@ -147,6 +173,20 @@ class Attachment(models.Model):
     
     class Meta:
         unique_together = (("lesson", "att_seq"),)   
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super (Attachment, self).__init__(*args, **kwargs)
+        assert self.att_code
+        assert self.att_name
+        assert self.attachment
+        assert (self.lesson or self.course)
+        
+#       Should anything slip past debug to -O production:
+#       Ensure precisely one of the following is not null, reflecting fact
+#       that attachment can be linked to lesson or direct to parent course
+        if not (self.lesson or self.course):
+            raise Http404("Attachment needs to be linked to lesson or course")
         
     def __unicode__(self):
         return self.att_name
@@ -177,12 +217,18 @@ class UserProfile(models.Model):
     accepted_terms = models.BooleanField()
     signature_line = models.CharField(max_length=200)
     registered_courses = models.ManyToManyField(Course)
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super (UserProfile, self).__init__(*args, **kwargs)
+        assert self.user
     
     def __unicode__(self):
         return self.user.username
         
     @models.permalink
     def get_absolute_url(self):
+        assert self.id
         return ('courses.views.user_profile', [str(self.id)])
         
         
@@ -209,8 +255,16 @@ class UserProfile_Lesson(models.Model):
                                         help_text="true if the lesson is "
                                         "'complete'")
     date_complete = models.DateField(blank=True, null=True)
-    
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super (UserProfile_Lesson, self).__init__(*args, **kwargs)
+        assert self.userprofile
+        assert self.lesson
+        
     def __unicode__(self):
+        assert self.userprofile
+        assert self.lesson
         human_readable = str(self.userprofile) + "-" + str(self.lesson)
         return human_readable
         

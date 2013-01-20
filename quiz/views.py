@@ -1,12 +1,13 @@
 from django.template import RequestContext
-from django.shortcuts import redirect, get_object_or_404, render_to_response
+from django.shortcuts import (redirect, render_to_response, get_object_or_404,
+    get_list_or_404)
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
 from quiz.models import Quiz, Question, Answer, QuizAttempt, QuestionAttempt
 from quiz.forms import QuestionForm, AnswerForm, QuizForm
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 #TODO Use generic views?
 
 #http://www.peachybits.com/2011/09/django-1-3-form-api-modelform-example/
@@ -16,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 ######################################
 def questions(request):
     """View all questions"""
-    question_list = Question.objects.all()
+    question_list = get_list_or_404(Question)
     
     template = 'quiz/questions.html'
     context_data = { 'question_list': question_list,}
@@ -39,11 +40,13 @@ def question_add(request):
     template = 'quiz/question_add.html'
     context_data = { 'form_add': form, }
     context_instance = RequestContext(request)
+    assert form
     return render_to_response(template, context_data, context_instance)
     
 
 def question_edit(request, question_id):
-    """Edit question using model form"""
+    """Add question using model form"""
+    assert question_id
     question = get_object_or_404(Question, pk=question_id)
     if request.method == 'POST':
         form = QuestionForm(request.POST, instance=question)
@@ -58,6 +61,7 @@ def question_edit(request, question_id):
                     'question_id':      question_id,
                     }
     context_instance = RequestContext(request)
+    assert form
     return render_to_response(template, context_data, context_instance)
     
 #TODO implement confirmation prior to deletion
@@ -74,7 +78,7 @@ def question_delete(request, question_id):
 ###################################
 def answers(request):
     """View all answers"""
-    answer_list = Answer.objects.all()
+    answer_list = get_list_or_404(Answer)
     
     template = 'quiz/answers.html'
     context_data = { 'answer_list': answer_list,}
@@ -97,6 +101,7 @@ def answer_add(request):
     template = 'quiz/answer_add.html'
     context_data = { 'form_add': form, }
     context_instance = RequestContext(request)
+    assert form
     return render_to_response(template, context_data, context_instance)
     
 
@@ -116,6 +121,7 @@ def answer_edit(request, answer_id):
                     'answer_id':      answer_id,
                     }
     context_instance = RequestContext(request)
+    assert form
     return render_to_response(template, context_data, context_instance)
     
 #TODO implement confirmation prior to deletion
@@ -123,7 +129,6 @@ def answer_delete(request, answer_id):
     """Delete a answer"""
     answer = get_object_or_404(Answer, pk=answer_id)
     answer.delete()
-    
     return redirect(answers)
 
 ############################################
@@ -131,7 +136,7 @@ def answer_delete(request, answer_id):
 ############################################
 def quizzes(request):
     """View all quizzes"""
-    quiz_list = Quiz.objects.all()
+    quiz_list = get_list_or_404(Quiz)
     
     template = 'quiz/quizzes.html'
     context_data = { 'quiz_list': quiz_list,}
@@ -154,6 +159,7 @@ def quiz_add(request):
     template = 'quiz/quiz_add.html'
     context_data = { 'form_add': form, }
     context_instance = RequestContext(request)
+    assert form
     return render_to_response(template, context_data, context_instance)
     
 
@@ -173,6 +179,7 @@ def quiz_edit(request, quiz_id):
                     'quiz_id':      quiz_id,
                     }
     context_instance = RequestContext(request)
+    assert form
     return render_to_response(template, context_data, context_instance)
     
 #TODO implement confirmation prior to deletion
@@ -182,7 +189,6 @@ def quiz_delete(request, quiz_id):
     quiz.delete()
     
     return redirect(quizzes)
-
 
 @login_required
 def quiz_take(request, quiz_id):
@@ -230,9 +236,11 @@ def quiz_take(request, quiz_id):
 def quiz_results(request, quiz_id):
     """Show the results of the quiz attempt"""
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    quiz_attempts = QuizAttempt.objects.filter(quiz=quiz, 
+    try:
+        quiz_attempts = QuizAttempt.objects.filter(quiz=quiz, 
                                       user=request.user).order_by('-taken_dt')
-    
+    except:
+        raise Http404
     #Create a list of all the attempts at a quiz by a user
     #each element of the list is a list of question responses
 #    attempt_digest = list()
