@@ -43,7 +43,7 @@ def question_add(request):
     
 
 def question_edit(request, question_id):
-    """Add question using model form"""
+    """Edit question using model form"""
     question = get_object_or_404(Question, pk=question_id)
     if request.method == 'POST':
         form = QuestionForm(request.POST, instance=question)
