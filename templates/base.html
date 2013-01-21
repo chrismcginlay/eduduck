@@ -1,30 +1,34 @@
-<!doctype html>
-<html lang="en">
+{% load staticfiles %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" >
 <head>
     <meta name="keywords" content="education" />
     <meta name="description" content="Massive online education" />
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}replace.css" />
-    <link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
-    <link href="style.css" rel="{{ STATIC_URL }}stylesheet" type="text/css" media="screen" />
+    <meta charset="utf-8" />
+    <link href='http://fonts.googleapis.com/css?family=Merienda:400,700|Junge|Lemon|Pontano+Sans' rel='stylesheet' />
+{% comment %}
+Use fonts in stylesheets as follows:
+    font-family: 'Merienda', cursive;
+    font-family: 'Junge', serif;
+    font-family: 'Lemon', cursive;
+    font-family: 'Pontano Sans', sans-serif;
+{% endcomment %}
+    <link href="{% static common.css %}" rel="stylesheet" media="screen" />
+{%block extra_style %}{% endblock extra_style %}
     <title>{% block title %}EduDuck Your Brain Today{% endblock title %}</title>
 </head>
 
+
 <body>
     <div id="wrapper">
-        <div id="header-wrapper">
-            <div id="header">
-                <div id="logo">
-                    <img src="{{ STATIC_URL }}motif.jpg" width="140px" height="140px"/>
-                    <h1>Edu Duck</h1>
-                    <p id="strapline">EduDuck Your Brain Today</p>
-                </div>
-            </div>
-        </div>
-        <!-- end header -->
+        <header id="branding">
+            <img src="{% static images/sutrannu_Duck200.png %}" width="200px" height="95px"/>
+            <h1>Edu Duck</h1>
+            <p id="strapline">EduDuck Your Brain Today</p>
+        </header>
 
-        <div id="menu">
-            {% block menu %}
+        <nav id="primary">
+            {% block sitenav %}
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/admin/">Admin</a></li>
@@ -38,9 +42,8 @@
                 <li><a href="/accounts/login/">Login</a></li>
                 {% endif %}
             </ul>
-            {% endblock menu %}
-        </div>
-        <!-- end menu -->
+            {% endblock sitenav %}
+        </nav>
 
         <div id="devmenu">
             <span>Temp. Links for Dev Purposes:</span>
@@ -49,67 +52,23 @@
                 <li><a href="/answers/">Answers</a></li>
                 <li><a href="/questions/">Questions</a></li>
             </ul>
-        </div>
-        <!-- end devmenu -->
+        </div><!-- end devmenu -->
 
-        <div id="page">
-            <div id="page-bgtop">
-                <div id="page-bgbtm">
-                    <div id="content">
-                    {% block banner %}
-                    <h1>A Page With No Title. Override Me</h1>            
-                    {% endblock banner %}
-                    {% block content %}{% endblock %}
-                    </div>
-                    <!-- end content -->
-    
-                    <div id="sidebar">
-                        {% block sidebar %}
-                        <ul>
-                            <li>
-    					<h2>Aliquam tempus</h2>
-    					<p>Mauris vitae nisl nec metus placerat perdiet est. Phasellus dapibus semper consectetuer hendrerit.</p>
-                            </li>
-                            <li>
-                                <h2>Categories</h2>
-                                <ul>
-                                    <li><a href="#">Aliquam libero</a></li>
-                                    <li><a href="#">Consectetuer adipiscing elit</a></li>
-                                    <li><a href="#">Metus aliquam pellentesque</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <h2>Blogroll</h2>
-                                <ul>
-                                    <li><a href="#">Aliquam libero</a></li>
-                                    <li><a href="#">Consectetuer adipiscing elit</a></li>
-                                    <li><a href="#">Proin gravida orci porttitor</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <h2>Archives</h2>
-                                <ul>
-                                    <li><a href="#">Aliquam libero</a></li>
-                                    <li><a href="#">Urnanet non molestie semper</a></li>
-                                    <li><a href="#">Proin gravida orci porttitor</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        {% endblock sidebar %}
-                    </div>
-                    <!-- end #sidebar -->
-                    <div style="clear: both;">&nbsp;</div>
-                </div>
-            </div>
+        <div id="content">
+            {% block contentheading %}
+            <h2>A Page With No Title. Override Me</h1>            
+            {% endblock contentheading %}
+
+            {% block content %}{% endblock %}
         </div>
-        <!-- end page -->
-    </div>
-    <div id="footer">
-        {% block footer %}
-        <p>Copyright (c) 2012 EduDuck.com. Licence TBA.Design by <a href="http://www.freecsstemplates.org/">FCT</a>.</p>
-        {% endblock footer %}
-    </div>
-<!-- end footer-->
+
+        <footer id="pagefoot">
+            {% block footer %}
+            <p>Copyright (c) 2013 EduDuck.com. Licence TBA.</p>
+            {% endblock footer %}
+        </footer>
+
+    </div><!-- end div wrapper-->
 </body>
 </html>
 
