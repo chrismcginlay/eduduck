@@ -5,6 +5,7 @@ import django
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
 
 ADMINS = (
     ('Chris McGinlay', 'ctmcginlay@gmail.com'),
@@ -75,7 +76,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(SITE_ROOT, 'Media')
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -91,12 +92,12 @@ STATIC_ROOT = ''
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 
-STATIC_URL = '/Static/'
+STATIC_URL = '/static/'
 # Additional locations of static files
 
 STATICFILES_DIRS = (
-    os.path.join(SITE_ROOT, 'Static'),
-    os.path.join(SITE_ROOT, 'EduDuck/Static'),
+    os.path.join(SITE_ROOT, 'static'),
+    os.path.join(SITE_ROOT, 'EduDuck/static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -134,7 +135,7 @@ WSGI_APPLICATION = 'EduDuck.wsgi.application'
 
 #TODO: Ensure templates aren't under docroot for production version
 TEMPLATE_DIRS = (
-    os.path.join(SITE_ROOT, 'Templates'),
+    os.path.join(SITE_ROOT, 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
