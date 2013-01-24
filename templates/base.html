@@ -21,15 +21,7 @@ Use fonts in stylesheets as follows:
 
 <body>
     <div id="wrapper">
-        <header id="branding">
-            <img src="{% static 'images/sutrannu_Duck200.png' %}" width="200px" height="95px"/>
-            <h1>Edu Duck</h1>
-            <p id="strapline">EduDuck Your Brain Today</p>
-            {% block search %}
-                <p>TODO: ED Search</p>
-            {% endblock search %}
-        </header>
-
+        <div class="fix_container">
         <div id="userprof">
             {% block userprof %}
             {% if user.is_authenticated %}
@@ -41,6 +33,18 @@ Use fonts in stylesheets as follows:
             {% endif %}
             {% endblock userprof %}
         </div> <!-- #userprof-->
+        </div> <!-- .fix_container --> 
+
+        <header id="branding">
+            <img src="{% static 'images/sutrannu_Duck100.png' %}" width="100px" height="48px"/>
+            <h1>Edu Duck</h1>
+            <p id="strapline">EduDuck Your Brain Today</p>
+            <div id="search">
+            {% block search %}
+                <p>TODO: ED Search</p>
+            {% endblock search %}
+            </div>
+        </header>
 
         <nav id="primary">
             {% block sitenav %}

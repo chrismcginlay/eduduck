@@ -1,36 +1,117 @@
+/*iteration 2 Eduduck Stylesheet for MVP
+Thrown together by Chris McGinlay Jan 2013
+*/
+
+/* Fonts */
 body {
     background-color:   #b0ac8a;
+    font-size:          100%;
 }
 
 h1 {
     color:          red;
     text-align:     center;
-    font-size:      xx-large;
-    font-family:    'Merienda', cursive;
+    font-size:      1.3em;
+    font-family:    'Lemon', cursive;
+
 }
 
 h2 {
     color:          #0e24b0;
     text-align:     left;
-    font-family:    'Lemon', cursive;
-    font-size:      x-large;
+    font-family:    'Merienda', cursive;
+    font-size:      2.5em;
 }
 
 h3 {
     color:          blue;
     text-align:     left;
     font-family:    'Junge', serif;
-    font-size:      large;
+    font-size:      2em;
 }
 
 p {
     font-family:    'Pontano Sans', sans-serif;
-    font-size:      12px;
+    font-size:      1em;
 }
 
 p#strapline {
     color:          #b0216d;
-    font-size:      large;
+    font-size:      1.5em;
     font-family:    'Lemon', cursive;
 }
 
+/* Layout */
+.fix_container {
+    /*Fixed position container, use to center and fix*/
+    position:           fixed;
+    top:                0;
+    left:               0;
+    right:              0;
+    left:               0;
+    text-align:         center;
+}
+
+div#userprof {
+    display:            inline-block;
+    text-align:         left;
+    background-color:   #9d997d;
+    border:             1px solid black;
+}
+
+header#branding h1 {
+    top:    0px;
+    margin-top: -5px;
+    left:   5px;
+    text-align: left;
+}
+
+header#branding img {
+    top:    30px;
+    left:   4px;
+}
+
+div#search p {
+    width:      50%;
+    height:     2em;
+    top:    0;
+    margin-top:        0;
+    padding-top:.3em;
+    background: #cccccc;
+    border:     solid black 1px;
+}
+
+nav#primary {
+    display:    relative;
+    top:        400px;
+}
+
+/*Element details*/
+div#userprof ul {
+    margin-left:       4px;
+    margin-right:      4px;
+}
+
+div#userprof li {
+    display:            inline;
+    float:              left;
+    list-style:         none;
+    margin:             0;
+    padding:            0;
+}
+
+div#userprof li > a {
+    display:        block;
+    width:          4em;
+    text-align:     center;
+}
+
+div#userprof li a:link, a:visited {
+    text-decoration:    none;
+    color:              black;
+}
+
+div#userprof li a:hover, a:active {
+    text-decoration:    none;
+    color:              blue;
+}
