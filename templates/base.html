@@ -30,6 +30,18 @@ Use fonts in stylesheets as follows:
             {% endblock search %}
         </header>
 
+        <div id="userprof">
+            {% block userprof %}
+            {% if user.is_authenticated %}
+                <li><a href="/users/">{{ user.username }}</a></li>
+                <li><a href="/accounts/logout/">Logout</a></li>
+            {% else %}
+                <li><a href="/accounts/register/">Register</a> today!</li>
+                <li>or <a href="/accounts/login/">Login</a></li>
+            {% endif %}
+            {% endblock userprof %}
+        </div> <!-- #userprof-->
+
         <nav id="primary">
             {% block sitenav %}
             <ul>
@@ -38,11 +50,7 @@ Use fonts in stylesheets as follows:
                 {% if user.is_authenticated %}
                 <li><a href="/admin/">Admin</a></li>
                 <li><a href="/courses/">Courses</a></li>
-                <li><a href="/users/">{{ user.username }}</a></li>
-                <li><a href="/accounts/logout/">Logout</a></li>
                 {% else %}
-                <li><a href="/accounts/register/">Register</a> today!</li>
-                <li>or <a href="/accounts/login/">Login</a></li>
                 {% endif %}
             </ul>
             {% endblock sitenav %}
@@ -58,16 +66,18 @@ Use fonts in stylesheets as follows:
         </div><!-- end devmenu -->
 
         <div id="content">
+            <h2>
             {% block contentheading %}
-            <h2>A Page With No Title. Override Me</h1>            
+            A Page With No Title. Override Me
             {% endblock contentheading %}
+            </h2>
 
             {% block content %}{% endblock content %}
         </div>
 
         <footer id="pagefoot">
             {% block footer %}
-            <p>Copyright (c) 2013 EduDuck.com. Licence TBA.</p>
+            <p>Copyright (c) 2013 EduDuck.com. All rights reserved.</p>
             {% endblock footer %}
         </footer>
 

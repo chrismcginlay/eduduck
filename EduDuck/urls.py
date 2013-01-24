@@ -7,7 +7,7 @@ admin.autodiscover()
 #TODO decouple quiz app URLs from courses - see p38
 
 urlpatterns = patterns('django.views.generic.simple',
-    (r'^$',    'direct_to_template', {'template': 'home.html'}),
+    (r'^$',    'direct_to_template', {'template': 'courses/course_index.html'}),
     (r'^about/$', 'direct_to_template', {'template': 'about.html'}),
 )
 

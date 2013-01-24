@@ -1,24 +1,12 @@
-{% extends base.html %}
+{% extends "base.html" %}
 {% load staticfiles %}
 
 {% block contentheading %}
 {% if user.is_authenticated %}
-    <h2>Welcome {{ user.username }}</h2>
+    Welcome {{ user.username }}
 {% else %}
-    <h2>Join EduDuck</h2>
+    Join EduDuck
 {% endif %}
 {% endblock contentheading %}
 
-{% block content %}
-{% if user.is_authenticated %}
-    <section>
-        <h3>Your Courses</h3>
-        <p>data</p>
-    </section>
-{% endif %}
-    <section>
-        <h3>Featured Courses</h3>
-        <p>data</p>
-    </section>
-{% endblock content %}
 

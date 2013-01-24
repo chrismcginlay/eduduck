@@ -1,0 +1,21 @@
+{% extends "courses/base_course.html" %}
+{% load staticfiles %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <section>
+        <h3>Your Courses</h3>
+        <p>data</p>
+    </section>
+    <section>
+        <h3>Possible Courses</h3>
+        <p>List of 'basket' of courses the student finds interesting and may
+wish to register for in future</p>
+    </section>
+{% else %}
+    <section>
+        <h3>Featured Courses</h3>
+        <p>data</p>
+    </section>
+{% endif %}
+{% endblock %}
