@@ -1,0 +1,37 @@
+{% extends "courses/base_course.html" %}
+{% load staticfiles %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <section id="zone1">
+        <h3>Your Courses</h3>
+
+        {% for course in course_list %}
+        <article id={{ course.course_code }}>
+        <h4>{{ course.course_code }} 
+        <a href='{{ course.get_absolute_url }}'>{{ course.course_name }}</a>
+        </h4> 
+        <p>(With {{ course.lesson_set.count }} 
+        lesson{{ course.lesson_set.count|pluralize:",s"}}). 
+        Level {{ course.course_level }}, {{ course.course_credits }}
+        point{{course.course_credits|pluralize:",s"}}.
+        Contact {{ course.course_organiser }}</p>
+        <p class="abstract">{{ course.course_abstract }}</p>
+        {% empty %}
+        <h4>You aren't enrolled in any courses yet.</h4>
+        {% endfor %}
+
+        </p>
+    </section>
+    <section id="zone2">
+        <h3>Possible Courses</h3>
+        <p>List of 'basket' of courses the student finds interesting and may
+wish to register for in future</p>
+    </section>
+{% else %}
+    <section id="zone1">
+        <h3>Featured Courses</h3>
+        <p>data</p>
+    </section>
+{% endif %}
+{% endblock %}

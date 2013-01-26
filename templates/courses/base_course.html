@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block contentheading %}
+{% if user.is_authenticated %}
+    Welcome {{ user.username|capfirst }}: "{{ user.userprofile.signature_line }}"
+{% else %}
+    Join EduDuck
+{% endif %}
+{% endblock contentheading %}
+
+

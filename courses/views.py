@@ -5,6 +5,7 @@ from django.shortcuts import (render_to_response, get_object_or_404,
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+import pdb
 
 #TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
 #TODO: improve request context:
@@ -14,9 +15,11 @@ def index(request):
     """List of all courses"""
     course_list = Course.objects.all()
     course_count = Course.objects.count
-    template = 'courses/index.html'
-    context_data = {'course_list':   course_list,
-                    'course_count':  course_count,
+    profile = request.user.get_profile()
+    template = 'courses/course_index.html'
+    context_data = {'course_list':  course_list,
+                    'course_count': course_count,
+                    'profile':      profile,
                    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
@@ -26,7 +29,7 @@ def single(request, course_id):
     """Detail of a single course"""
     
     course = get_object_or_404(Course, pk=course_id)
-    template = 'courses/single.html'
+    template = 'courses/course_single.html'
     context_data = {'course': course}
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
@@ -42,7 +45,7 @@ def lesson(request, course_id, lesson_id):
     #data on user interaction with lesson
     user_lessons = lesson.userprofile_lesson_set.all()
     
-    template = 'courses/lesson.html'
+    template = 'courses/course_lesson.html'
     context_data =  {'course':  course,
                      'lesson':  lesson,
                      'user_lessons':     user_lessons,
@@ -50,6 +53,7 @@ def lesson(request, course_id, lesson_id):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
     
+
 @login_required
 def user_profile(request):
     template = 'registration/user_profile.html'
@@ -60,30 +64,32 @@ def user_profile(request):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 
+#TODO DELETION CANDIDATE: replace dwith django-registration
+#def created(request):
+#    """Confirmation that user was created"""
+#    
+#    return render_to_response('registration/registration_complete.html')
+#    
+#    
 
-def created(request):
-    """Confirmation that user was created"""
-    
-    return render_to_response('registration/registration_complete.html')
-    
-    
-#http://www.djangobook.com/en/beta/chapter12/
-def register(request):
-    """Register new user"""
-    
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            u = form.cleaned_data['username']
-            userprof = "/users/" + u + "/"
-            #TODO this should use reverse()
-            return HttpResponseRedirect(userprof)
-    else:
-        form = UserCreationForm()
-    
-    template = 'registration/registration_form.html'
-    context_data = { 'form': form}
-    context_instance = RequestContext(request)
-    assert form
-    return render_to_response(template, context_data, context_instance)
+#TODO DELETION CANDIDATE: replace dwith django-registration
+##http://www.djangobook.com/en/beta/chapter12/
+#def register(request):
+#    """Register new user"""
+#    
+#    if request.method == 'POST':
+#        form = UserCreationForm(request.POST)
+#        if form.is_valid():
+#            form.save()
+#            u = form.cleaned_data['username']
+#            userprof = "/users/" + u + "/"
+#            #TODO this should use reverse()
+#            return HttpResponseRedirect(userprof)
+#    else:
+#        form = UserCreationForm()
+#    
+#    template = 'registration/registration_form.html'
+#    context_data = { 'form': form}
+#    context_instance = RequestContext(request)
+#    assert form
+#    return render_to_response(template, context_data, context_instance)

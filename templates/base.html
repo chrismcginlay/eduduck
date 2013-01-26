@@ -1,0 +1,92 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" >
+<head>
+    <meta name="keywords" content="education" />
+    <meta name="description" content="Massive online education" />
+    <meta charset="utf-8" />
+    <link href='http://fonts.googleapis.com/css?family=Merienda:400,700|Junge|Lemon|Pontano+Sans' rel='stylesheet' />
+{% comment %}
+Use fonts in stylesheets as follows:
+    font-family: 'Merienda', cursive;
+    font-family: 'Junge', serif;
+    font-family: 'Lemon', cursive;
+    font-family: 'Pontano Sans', sans-serif;
+{% endcomment %}
+    <link href="{% static 'common.css' %}" rel="stylesheet" media="screen" />
+{%block extra_style %}{% endblock extra_style %}
+    <title>{% block title %}EduDuck Your Brain Today{% endblock title %}</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div class="fix_container">
+        <div id="userprof">
+            {% block userprof %}
+            {% if user.is_authenticated %}
+                <li><a href="/users/">{{ user.username }}</a></li>
+                <li><a href="/accounts/logout/">Logout</a></li>
+            {% else %}
+                <li><a href="/accounts/register/">Register</a> today!</li>
+                <li>or <a href="/accounts/login/">Login</a></li>
+            {% endif %}
+                <li><a href="/about/">About</a></li>
+            {% endblock userprof %}
+        </div> <!-- #userprof-->
+        </div> <!-- .fix_container --> 
+
+        <header id="branding" title="Home">
+            <a href="/">
+                <img src="{% static 'images/sutrannu_Duck100.png' %}" width="100px" height="48px"/>
+                <h1>Edu Duck</h1>
+                <p id="strapline">EduDuck Your Brain Today</p>
+            </a>
+            <div id="search">
+            {% block search %}
+                <p>TODO: ED Search</p>
+            {% endblock search %}
+            </div>
+        </header>
+
+        <nav id="primary">
+            {% block pagenav %}
+            <ul>
+                For page relevant navigation. See what happens here in a lesson for example
+            </ul>
+            {% endblock pagenav %}
+        </nav>
+
+        <div id="devmenu">
+            <span>Temp. Links for Dev Purposes:</span>
+            <ul id="dev">
+                {% if user.is_authenticated %}
+                <li><a href="/admin/">Admin</a></li>
+                <li><a href="/courses/">Courses</a></li>
+                {% else %}
+                {% endif %}
+                <li><a href="/quizzes/">Quizzes</a></li>
+                <li><a href="/answers/">Answers</a></li>
+                <li><a href="/questions/">Questions</a></li>
+            </ul>
+        </div><!-- end devmenu -->
+
+        <div id="content">
+            <h2>
+            {% block contentheading %}
+            A Page With No Title. Override Me
+            {% endblock contentheading %}
+            </h2>
+
+            {% block content %}{% endblock content %}
+        </div>
+
+        <footer id="pagefoot">
+            {% block footer %}
+            <p>Copyright (c) 2013 EduDuck.com. All rights reserved.</p>
+            {% endblock footer %}
+        </footer>
+
+    </div><!-- end div wrapper-->
+</body>
+</html>
+

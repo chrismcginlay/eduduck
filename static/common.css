@@ -1,0 +1,197 @@
+/*iteration 2 Eduduck Stylesheet for MVP
+Thrown together by Chris McGinlay Jan 2013
+*/
+
+/* Fonts */
+body, html {
+    background-color:   #b0ac8a;
+    margin:     0;
+    padding:    0;
+    color:      black;
+    font-size:          100%;
+}
+
+h1 {
+    color:          red;
+    text-align:     center;
+    font-size:      1.3em;
+    font-family:    'Lemon', cursive;
+
+}
+
+h2 {
+    color:          #0e24b0;
+    text-align:     left;
+    font-family:    'Merienda', cursive;
+    font-size:      1.5em;
+    margin:         0;
+    padding:        0;
+}
+
+h3 {
+    color:          blue;
+    text-align:     left;
+    font-family:    'Junge', serif;
+    font-size:      1.4em;
+}
+
+p {
+    font-family:    'Pontano Sans', sans-serif;
+    font-size:      1em;
+}
+
+p#strapline {
+    color:          #b0216d;
+    font-size:      1.5em;
+    font-family:    'Lemon', cursive;
+}
+
+/* Layout */
+.fix_container {
+    /*Fixed position container, use to center and fix*/
+    position:           fixed;
+    top:                0;
+    left:               0;
+    right:              0;
+    left:               0;
+    text-align:         center;
+    z-index:            10;
+}
+
+#wrapper {
+    width:  95%;
+    margin: 0 auto;
+    margin-top: 5px;
+    background: #8888ff;
+}
+
+#userprof {
+    display:            inline-block;
+    text-align:         left;
+    background-color:   #9d997d;
+    border:             1px solid black;
+}
+
+#branding {
+    position:           relative;
+    background-color:   #ee4444;
+    border:             black dashed 1px;
+}
+
+#branding img {
+    float:          left;
+    padding-top:    15px;
+    padding-left:   5px;
+}
+
+#branding h1 {
+    float:      left;
+    width:      100px;
+    text-align: left;
+}
+
+#search  {
+    position:   absolute;
+    bottom:     0;
+    left:       50%;
+    width:      50%;
+    height:     1.5em;
+    margin: 0;
+    padding:    0;
+    background: #cccccc;
+    border:     dashed black 1px;
+}
+
+#search p {
+    margin:     0;
+}
+
+#primary {
+    clear:  both;
+    background-color:   #44ee44;
+    width:  100%;
+}
+
+#primary ul {
+    list-style:     none;
+}
+
+#primary ul li {
+    display:        inline;
+}
+
+#devmenu {
+    position:   fixed;
+    border:     black dashed 1px;
+    top:        100px;
+    left:       80%;
+}
+
+#content {
+    background-color:   #4444ee;
+    border:             black dashed 1px;
+    }
+
+#content section#zone1 {
+    float:              left;
+    width:              46%;
+    padding-left:       2%;
+    padding-right:      2%;
+    background-color:   #6666ff;
+    border:             black dashed 1px;
+}
+
+#content section#zone2 {
+    float:          right;
+    width:          45%;
+    padding-left:   2%;
+    padding-right:  2%;
+    background:     #9977ff;
+    border:             black dashed 1px;
+}
+
+#pagefoot {
+    clear:              both;
+    background-color:   #4e4e4e;
+    border:             black dashed 1px;
+}
+/*Element details*/
+div#userprof ul {
+    margin-left:       4px;
+    margin-right:      4px;
+}
+
+div#userprof li {
+    float:              left;
+    list-style:         none;
+    margin:             0;
+    padding:            0;
+}
+
+div#userprof li > a {
+    display:        block;
+    width:          4em;
+    text-align:     center;
+}
+
+div#userprof li a:link, a:visited {
+    text-decoration:    none;
+    color:              black;
+}
+
+div#userprof li a:hover, a:active {
+    text-decoration:    none;
+    color:              blue;
+}
+
+.abstract {
+    background-color:   #f2edce;
+    color:              #9e5909;
+    font-size:          0.8em;
+    padding:            5px;
+    text-align:         justify;
+}
+
+#branding a {
+    text-decoration:none;
+}
