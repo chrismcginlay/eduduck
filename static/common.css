@@ -79,7 +79,9 @@ p#strapline {
 }
 
 #branding img {
-    float:  left;
+    float:          left;
+    padding-top:    15px;
+    padding-left:   5px;
 }
 
 #branding h1 {
@@ -180,4 +182,16 @@ div#userprof li a:link, a:visited {
 div#userprof li a:hover, a:active {
     text-decoration:    none;
     color:              blue;
+}
+
+.abstract {
+    background-color:   #f2edce;
+    color:              #9e5909;
+    font-size:          0.8em;
+    padding:            5px;
+    text-align:         justify;
+}
+
+#branding a {
+    text-decoration:none;
 }

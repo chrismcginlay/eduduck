@@ -5,6 +5,7 @@ from django.shortcuts import (render_to_response, get_object_or_404,
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+import pdb
 
 #TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
 #TODO: improve request context:
@@ -14,9 +15,11 @@ def index(request):
     """List of all courses"""
     course_list = Course.objects.all()
     course_count = Course.objects.count
+    profile = request.user.get_profile()
     template = 'courses/course_index.html'
-    context_data = {'course_list':   course_list,
-                    'course_count':  course_count,
+    context_data = {'course_list':  course_list,
+                    'course_count': course_count,
+                    'profile':      profile,
                    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)

@@ -1,15 +1,80 @@
 {% extends "courses/base_course.html" %}
 {% load staticfiles %}
 
+{% block pagenav %}
+<span class='prevnext'>
+    {% if lesson.get_prev %}
+        &lt; 
+        <a href='{{ lesson.get_prev.get_absolute_url }}'>
+        {{lesson.get_prev}}</a> 
+    {% else %}
+        ---
+    {% endif %}
+    | {{ lesson.lesson_code }} | 
+    {% if lesson.get_next %}
+        <a href='{{ lesson.get_next.get_absolute_url }}'>
+        {{ lesson.get_next }}</a> &gt;
+    {% else %}
+        ---
+    {% endif %} 
+</span>
+{% endblock %}
+
 {% block contentheading %}
-{{ course.course_name }} {{lesson.lesson_code}} {{lesson.lesson_name}}
+    {{lesson.lesson_code}}: {{lesson.lesson_name}}
 {% endblock contentheading %}
 
 {% block content %}
-    <section>
+    <article class="abstract">
         <h3>Abstract</h3>
         <p>{{ lesson.abstract }}</p>
-{% if user.is_authenticated %}
-        <p>user specific data</p>
-{% endif %}
+    </article>
+
+    <section id="zone1">
+        <article>
+            <h4>Attachments</h4>
+            <ol>
+            {% for a in lesson.attachment_set.all %}
+                <li>{{ a.att_code}} 
+                    <a href='{{a.attachment.url}}'>{{a.att_name}}</a>
+                    : {{a.attachment.size}} bytes, {{a.att_desc}}
+                </li>
+            {% empty %}
+                <li>No attachments in this lesson</li>
+            {% endfor %}
+            </ol>  
+        </article>
+
+        <article>
+            <h4>Videos</h4>
+            <ol>
+            {% for v in lesson.video_set.all %}
+                <li>{{ v.video_code}} <a href="{{ v.url }}">{{v.video_name}}</li>
+                <iframe width="280" height="158" src='{{ v.url }}' 
+                frameborder="0" allowfullscreen></iframe>
+            {% empty %}
+                <li>No videos for this lesson</li>
+            {% endfor %}
+            </ol>
+        </article>  
+    </section>
+
+    <section id="zone2">
+    {% if user.is_authenticated %}
+        <h3>Your Progress</h3>
+        <p>Lesson / Complete Date/ Completed?</p>
+        <ol>                
+        {% for l in user_lessons %}
+        <li>{{ l.lesson.lesson_name }} /
+            {{ l.date_complete }} /
+            {{ l.mark_complete}}
+        </li>
+        {% endfor %}
+        </ol>
+    {% else %}
+        <h3>Progress Record</h3>
+        <p>Log in and register for this course, then you get to build up
+        a detailed log of your awesomeness here.</p>
+    {% endif %}
+
 {% endblock content %}

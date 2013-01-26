@@ -6,8 +6,47 @@
 {% endblock contentheading %}
 
 {% block content %}
-        <p>data</p>
-{% if user.is_authenticated %}
-        <p>user specific data</p>
-{% endif %}
+
+    <section id="zone1">
+        <h3>{{ course.course_name }}, {{ course.course_organiser }}</h3>
+        <p>Hi, and welcome to {{ course.course_name }}</p>
+        <p class="abstract">
+            {% for v in course.video_set.all %}
+            <iframe width="280" height="158" src='{{ v.url }}' 
+                frameborder="0" allowfullscreen></iframe>
+            <br />
+            {% endfor %}
+            {{ course.course_abstract }}
+        </p>
+        <p>There 
+        {{course.lesson_set.count|pluralize:"is,are"}} {{course.lesson_set.count}} 
+        lesson{{course.lesson_set.count|pluralize:",s"}} in this course.</p>
+    
+        {% regroup course.lesson_set.all by lesson.lesson_code as lesson_list %}
+        {% for lesson in course.lesson_set.all %}
+        <article>
+            <h4>{{ lesson.lesson_code}}; {{ lesson.lesson_name }}</h4>
+            <a href='{{ lesson.get_absolute_url }}'>
+                {{ lesson.lesson_name }}
+            </a>
+            <p class="abstract">{{ lesson.abstract}} 
+                <a href='{{ lesson.get_absolute_url }}'>
+                Go to lesson</a>
+            </p>
+        </article>
+        {% empty %}
+        <article>
+        <h4>No Lessons</h4>
+            <p class="abstract">{{ course.course_oraganiser }} 
+            hasn't added any lessons yet!</p>
+        </article>
+        {% endfor %}
+    </section>
+
+    <section id="zone2">
+        <h3>Course News</h3>
+        <p>Combined news feed, possibly user configurable forum RSS, 
+        twitter, G+, Facebook etc. (Students often set up own groups</p>
+    </section>
+
 {% endblock content %}
