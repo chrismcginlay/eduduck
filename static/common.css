@@ -3,8 +3,11 @@ Thrown together by Chris McGinlay Jan 2013
 */
 
 /* Fonts */
-body {
+body, html {
     background-color:   #b0ac8a;
+    margin:     0;
+    padding:    0;
+    color:      black;
     font-size:          100%;
 }
 
@@ -20,14 +23,16 @@ h2 {
     color:          #0e24b0;
     text-align:     left;
     font-family:    'Merienda', cursive;
-    font-size:      2.5em;
+    font-size:      1.5em;
+    margin:         0;
+    padding:        0;
 }
 
 h3 {
     color:          blue;
     text-align:     left;
     font-family:    'Junge', serif;
-    font-size:      2em;
+    font-size:      1.4em;
 }
 
 p {
@@ -50,42 +55,104 @@ p#strapline {
     right:              0;
     left:               0;
     text-align:         center;
+    z-index:            10;
 }
 
-div#userprof {
+#wrapper {
+    width:  95%;
+    margin: 0 auto;
+    margin-top: 5px;
+    background: #8888ff;
+}
+
+#userprof {
     display:            inline-block;
     text-align:         left;
     background-color:   #9d997d;
     border:             1px solid black;
 }
 
-header#branding h1 {
-    top:    0px;
-    margin-top: -5px;
-    left:   5px;
+#branding {
+    position:           relative;
+    background-color:   #ee4444;
+    border:             black dashed 1px;
+}
+
+#branding img {
+    float:  left;
+}
+
+#branding h1 {
+    float:      left;
+    width:      100px;
     text-align: left;
 }
 
-header#branding img {
-    top:    30px;
-    left:   4px;
-}
-
-div#search p {
+#search  {
+    position:   absolute;
+    bottom:     0;
+    left:       50%;
     width:      50%;
-    height:     2em;
-    top:    0;
-    margin-top:        0;
-    padding-top:.3em;
+    height:     1.5em;
+    margin: 0;
+    padding:    0;
     background: #cccccc;
-    border:     solid black 1px;
+    border:     dashed black 1px;
 }
 
-nav#primary {
-    display:    relative;
-    top:        400px;
+#search p {
+    margin:     0;
 }
 
+#primary {
+    clear:  both;
+    background-color:   #44ee44;
+    width:  100%;
+}
+
+#primary ul {
+    list-style:     none;
+}
+
+#primary ul li {
+    display:        inline;
+}
+
+#devmenu {
+    position:   fixed;
+    border:     black dashed 1px;
+    top:        100px;
+    left:       80%;
+}
+
+#content {
+    background-color:   #4444ee;
+    border:             black dashed 1px;
+    }
+
+#content section#zone1 {
+    float:              left;
+    width:              46%;
+    padding-left:       2%;
+    padding-right:      2%;
+    background-color:   #6666ff;
+    border:             black dashed 1px;
+}
+
+#content section#zone2 {
+    float:          right;
+    width:          45%;
+    padding-left:   2%;
+    padding-right:  2%;
+    background:     #9977ff;
+    border:             black dashed 1px;
+}
+
+#pagefoot {
+    clear:              both;
+    background-color:   #4e4e4e;
+    border:             black dashed 1px;
+}
 /*Element details*/
 div#userprof ul {
     margin-left:       4px;
@@ -93,7 +160,6 @@ div#userprof ul {
 }
 
 div#userprof li {
-    display:            inline;
     float:              left;
     list-style:         none;
     margin:             0;
