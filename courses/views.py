@@ -15,7 +15,10 @@ def index(request):
     """List of all courses"""
     course_list = Course.objects.all()
     course_count = Course.objects.count
-    profile = request.user.get_profile()
+    if request.user.is_authenticated():
+        profile = request.user.get_profile()
+    else:
+        profile = None
     template = 'courses/course_index.html'
     context_data = {'course_list':  course_list,
                     'course_count': course_count,
