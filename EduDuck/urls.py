@@ -4,12 +4,17 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
-#TODO decouple quiz app URLs from courses - see p38
+#TODO decouple quiz app URLs from eduduck platform #9
+#TODO decouple courses app URLs from eduduck platform #9
 
 urlpatterns = patterns('django.views.generic.simple',
     (r'^about/$', 'direct_to_template', {'template': 'about.html'}),
 )
 
+urlpatterns += patterns('',
+    url(r'^lesson/(?P<lesson_id>\d+)/lint/(?P<learning_intention_id>\d+)/$',
+        'courses.views.learning_intention'),)
+        
 urlpatterns += patterns('courses.views',
     url(r'^$', 'index'),
     url(r'^courses/$', 'index'),
@@ -18,7 +23,7 @@ urlpatterns += patterns('courses.views',
         'lesson'),
     url(r'^users/$', 'user_profile'),
 )
-    
+ 
     #temporary question handler
 urlpatterns += patterns('quiz.views',
     url(r'^questions/$', 'questions'),

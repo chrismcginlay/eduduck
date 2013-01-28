@@ -11,7 +11,7 @@ from courses.models import Course, Lesson, LearningIntention
 #http://lincolnloop.com/blog/2008/may/10/getting-requestcontext-your-templates/
 
 def index(request):
-    """List of all courses"""
+    """Prepare variables for list of all courses"""
     course_list = Course.objects.all()
     course_count = Course.objects.count
     if request.user.is_authenticated():
@@ -26,9 +26,9 @@ def index(request):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
     
-
+    
 def single(request, course_id):
-    """Detail of a single course"""
+    """Prepare variables for detail of a single course"""
     
     course = get_object_or_404(Course, pk=course_id)
     template = 'courses/course_single.html'
@@ -39,7 +39,7 @@ def single(request, course_id):
     
 @login_required
 def lesson(request, course_id, lesson_id):
-    """Detail of individual lesson"""
+    """Prepare variables for detail of individual lesson"""
 
     course = get_object_or_404(Course, id=course_id)
     lesson = get_object_or_404(Lesson, id=lesson_id)
@@ -58,6 +58,22 @@ def lesson(request, course_id, lesson_id):
     return render_to_response(template, context_data, context_instance)
     
 
+def learning_intention(request, lesson_id, learning_intention_id):
+    """Prepare variables for learning intention template"""
+    
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    learning_intention = get_object_or_404(LearningIntention, 
+                                           id=learning_intention_id) 
+    
+    template = 'courses/course_lint.html'
+    context_data =  {
+                    'lesson':  lesson,
+                    'learning_intention': learning_intention,
+                    }
+    context_instance = RequestContext(request)
+    return render_to_response(template, context_data, context_instance)
+    
+    
 @login_required
 def user_profile(request):
     template = 'registration/user_profile.html'

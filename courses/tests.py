@@ -269,7 +269,7 @@ class CourseViewTests(TestCase):
                                                         
     def test_learning_intention(self):
         """Test view of a single learning intention"""
-        response = self.client.get('/courses/1/lesson/1/lint/1')
+        response = self.client.get('/lesson/1/lint/1')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
             for x in ['lesson_id', 'lesson_intention_id'])

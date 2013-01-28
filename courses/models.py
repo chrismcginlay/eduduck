@@ -238,7 +238,25 @@ class LearningIntention(models.Model):
         if self.pk != None:
             assert self.lesson
             assert self.li_text
+
+    def get_next(self):
+        """Return the next learning intention in the lesson"""
+        assert self.lesson
+        assert self.id
+        next = LearningIntention.objects.filter(lesson=self.lesson).filter(id__gt=self.id).order_by('id')
+        if next:
+            return next[0]
+        return False
         
+    def get_prev(self):
+        """Return the previous learning intention in the lesson"""
+        assert self.lesson
+        assert self.id
+        prev = LearningIntention.objects.filter(lesson=self.lesson).filter(id__lt=self.id).order_by('-id')
+        if prev:
+            return prev[0]
+        return False
+
     def __unicode__(self):
         return self.li_text
         
@@ -252,7 +270,7 @@ class LearningIntention(models.Model):
         assert self.id
         return ('courses.views.learning_intention', (), {
                 'lesson_id': self.lesson.id,
-                'lesson_intention_id': self.id })
+                'learning_intention_id': self.id })
               
               
 class SuccessCriterion(models.Model):

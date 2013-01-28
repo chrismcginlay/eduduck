@@ -192,6 +192,20 @@ div#userprof li a:hover, a:active {
     text-align:         justify;
 }
 
+.FYI {
+    background-color:   #9e5909;
+    color:              #f2edce;
+    font-size:          0.8em;
+    padding:            2px 10px 4px 10px;
+    text-align:         justify;
+}
+
+.FYI:before {
+    content:            "FYI ";
+    font-weight:        bold;
+    font-size:          2em;
+}
+
 #branding a {
     text-decoration:none;
 }

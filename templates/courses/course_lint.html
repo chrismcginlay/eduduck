@@ -1,0 +1,63 @@
+{% extends "courses/base_course.html" %}
+{% load staticfiles %}
+
+{% block pagenav %}
+<span class='prevnext'>
+    {% if learning_intention.get_prev %}
+        &lt; 
+        <a href='{{ learning_intention.get_prev.get_absolute_url }}'>
+        {{learning_intention.get_prev}}</a> 
+    {% else %}
+        ---
+    {% endif %}
+    | LI {{ learning_intention.pk }} | 
+    {% if learning_intention.get_next %}
+        <a href='{{ learning_intention.get_next.get_absolute_url }}'>
+        {{ learning_intention.get_next }}</a> &gt;
+    {% else %}
+        ---
+    {% endif %} 
+</span>
+{% endblock %}
+
+{% block contentheading %}
+    {{lesson.lesson_code}}: {{lesson.lesson_name}}
+{% endblock contentheading %}
+
+{% block content %}
+    <article class="abstract">
+        <h3>Learning Intention {{ learning_intention.id }}</h3>
+        <p>{{ learning_intention.li_text }}</p>
+    </article>
+
+    <section id="zone1">
+        <article>
+            <h4>Success Criteri{{ learning_intention.successcriterion_set.count|pluralize:"on,a"}}
+            </h4>
+            <p class="FYI">The success criteria are the activities you 
+            would do if carrying out a learning outcome</p>
+            <ol>
+            {% for sc in learning_intention.successcriterion_set.all %}
+                <li>{{ sc.criterion_text }}</li>
+            {% empty %}
+                <li>No success criteria for this learning intention</li>
+            {% endfor %}
+            </ol>  
+        </article>
+    </section>
+
+    <section id="zone2">
+        <h4>Learning Outcome{{ learning_intention.learningoutcome_set.count|pluralize:",s"}}
+        </h4>
+        <p class="FYI">The learning outcome is the particular capacity 
+        or skill acquired or enhanced. Think of 'I can...' statements.</p>
+        
+        <ul>
+        {% for lo in learning_intention.learningoutcome_set.all %}
+            <li>{{ lo }}</li>
+        {% empty %}
+            <li>Not a single learning outcome specified!</li>
+        {% endfor %}
+        </ul>
+    </section>
+{% endblock content %}

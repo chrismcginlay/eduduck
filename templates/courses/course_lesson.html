@@ -78,7 +78,7 @@
     {% endif %}
         <h3>Learning Intentions</h3>
         {% for li in learning_intentions %}
-            <p class="abstract">{{ li.li_text }}</p>
+            <p class="abstract">[<a href="{{ li.get_absolute_url}} " title="detail">-> {{ forloop.counter}}</a>] {{ li.li_text }}</p>
             <h4>Success Criteri{{ li.successcriterion_set.count|pluralize:"on,a"}}</h4>
             <ul>
             {% for sc in li.successcriterion_set.all %}
@@ -99,6 +99,6 @@
         {% empty %}
             <p>Bizarrely, no learning intentions given for this lesson</p>
         {% endfor %}
-        
+    </section>    
 
 {% endblock content %}
