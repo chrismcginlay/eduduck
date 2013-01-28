@@ -38,12 +38,15 @@ class Course(models.Model):
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (Course, self).__init__(*args, **kwargs)
-        assert self.course_code
-        assert self.course_name
-        assert self.course_organiser
-        #NB course_level is a string (eg. 'Foundation', '2')
-        assert self.course_level
-        assert self.course_credits >= 0
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            assert self.course_code
+            assert self.course_name
+            assert self.course_organiser
+            #NB course_level is a string (eg. 'Foundation', '2')
+            assert self.course_level
+            assert self.course_credits >= 0
         
     def __unicode__(self):
         return self.course_name
@@ -96,9 +99,12 @@ class Lesson(models.Model):
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (Lesson, self).__init__(*args, **kwargs)
-        assert self.lesson_code
-        assert self.lesson_name
-        assert self.course
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            assert self.lesson_code
+            assert self.lesson_name
+            assert self.course
         
     def __unicode__(self):
         return self.lesson_name
@@ -138,9 +144,12 @@ class Video(models.Model):
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (Video, self).__init__(*args, **kwargs)
-        assert self.video_code
-        assert self.url
-        assert self.video_name
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            assert self.video_code
+            assert self.url
+            assert self.video_name
 
     def __unicode__(self):
         return self.video_name
@@ -181,10 +190,13 @@ class Attachment(models.Model):
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (Attachment, self).__init__(*args, **kwargs)
-        assert self.att_code
-        assert self.att_name
-        assert self.attachment
-        assert (self.lesson or self.course)
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            assert self.att_code
+            assert self.att_name
+            assert self.attachment
+            assert (self.lesson or self.course)
         
 #       Should anything slip past debug to -O production:
 #       Ensure precisely one of the following is not null, reflecting fact
@@ -221,8 +233,9 @@ class LearningIntention(models.Model):
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (LearningIntention, self).__init__(*args, **kwargs)
-        pdb.set_trace()
-        if self.__unicode__ != "":
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
             assert self.lesson
             assert self.li_text
         
@@ -259,12 +272,18 @@ class SuccessCriterion(models.Model):
                                            help_text="parent learning intent"
                                            "ion for this criterion")
     criterion_text = models.CharField(max_length=200)
+
+    class Meta:
+        verbose_name_plural = "criteria"
     
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (SuccessCriterion, self).__init__(*args, **kwargs)
-        #assert self.learning_intention
-        #assert self.criterion_text        
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            assert self.learning_intention
+            assert self.criterion_text        
 
     def __unicode__(self):
         return self.criterion_text
@@ -296,8 +315,11 @@ class LearningOutcome(models.Model):
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (LearningOutcome, self).__init__(*args, **kwargs)
-        #assert self.learning_intention
-        #assert self.lo_text          
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            assert self.learning_intention
+            assert self.lo_text          
         
     def __unicode__(self):
         return self.lo_text
@@ -332,7 +354,10 @@ class UserProfile(models.Model):
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (UserProfile, self).__init__(*args, **kwargs)
-        assert self.user
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            assert self.user
     
     def __unicode__(self):
         return self.user.username
@@ -370,8 +395,11 @@ class UserProfile_Lesson(models.Model):
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (UserProfile_Lesson, self).__init__(*args, **kwargs)
-        assert self.userprofile
-        assert self.lesson
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            assert self.userprofile
+            assert self.lesson
         
     def __unicode__(self):
         assert self.userprofile
