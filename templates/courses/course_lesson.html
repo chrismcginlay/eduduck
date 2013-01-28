@@ -49,7 +49,7 @@
             <h4>Videos</h4>
             <ol>
             {% for v in lesson.video_set.all %}
-                <li>{{ v.video_code}} <a href="{{ v.url }}">{{v.video_name}}</li>
+                <li>{{ v.video_code}} <a href="{{ v.url }}">{{v.video_name}}</a></li>
                 <iframe width="280" height="158" src='{{ v.url }}' 
                 frameborder="0" allowfullscreen></iframe>
             {% empty %}
@@ -76,5 +76,29 @@
         <p>Log in and register for this course, then you get to build up
         a detailed log of your awesomeness here.</p>
     {% endif %}
+        <h3>Learning Intentions</h3>
+        {% for li in learning_intentions %}
+            <p class="abstract">{{ li.li_text }}</p>
+            <h4>Success Criteri{{ li.successcriterion_set.count|pluralize:"on,a"}}</h4>
+            <ul>
+            {% for sc in li.successcriterion_set.all %}
+                <li>{{ sc }}</li>
+            {% empty %}
+                <li>Not a single success criterion specified!</li>
+            {% endfor %}
+            </ul>
+
+            <h4>Learning Outcome{{ li.learningoutcome_set.count|pluralize:",s"}}</h4>
+            <ul>
+            {% for lo in li.learningoutcome_set.all %}
+                <li>{{ lo }}</li>
+            {% empty %}
+                <li>Not a single learning outcome specified!</li>
+            {% endfor %}
+            </ul>
+        {% empty %}
+            <p>Bizarrely, no learning intentions given for this lesson</p>
+        {% endfor %}
+        
 
 {% endblock content %}

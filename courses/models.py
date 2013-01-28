@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.http import Http404
 
-#TODO implement get_absolute_url() methods
+from django.contrib.auth.models import User
+
+import pdb
 
 class Course(models.Model):
     """A self contained course of study.
@@ -40,7 +41,8 @@ class Course(models.Model):
         assert self.course_code
         assert self.course_name
         assert self.course_organiser
-        assert self.course_level >= 0
+        #NB course_level is a string (eg. 'Foundation', '2')
+        assert self.course_level
         assert self.course_credits >= 0
         
     def __unicode__(self):
@@ -50,6 +52,7 @@ class Course(models.Model):
     def get_absolute_url(self):
         assert self.id >=1
         return ('courses.views.single', [str(self.id)])
+        
         
 class Lesson(models.Model):
     """A digestible chunk of learning material within a course.
@@ -108,6 +111,7 @@ class Lesson(models.Model):
                 'course_id': self.course.id,
                 'lesson_id': self.id })
         
+        
 class Video(models.Model):
     """Details of video resources used in lessons.
     
@@ -141,7 +145,7 @@ class Video(models.Model):
     def __unicode__(self):
         return self.video_name
 
-# No video view defined yet 
+# TODO No video view defined yet 
 #    @models.permalink
 #    def get_absolute_url(self):
 #        return ('TODO')
@@ -191,13 +195,120 @@ class Attachment(models.Model):
     def __unicode__(self):
         return self.att_name
 
-# No attachment view defined yet 
+# TODO No attachment view defined yet 
 #    @models.permalink
 #    def get_absolute_url(self):
 #        return ('TODO')   
 
 
+class LearningIntention(models.Model):
+    """Link Learning Intentions with individual lessons.
+    
+    Learning Intention: Specific learning to take place - 
+    what you intend to do, e.g. practise using Newton's 2nd Law to predict
+    motion of a vehicle.
+    
+    Attributes:
+        lesson      ForiegnKey to parent lesson.
+        li_text     Actual text content of the learning intention.
+        
+    """
+    
+    lesson = models.ForeignKey(Lesson,
+                               help_text="parent lesson for this intention")
+    li_text = models.CharField(max_length=200)
+
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super (LearningIntention, self).__init__(*args, **kwargs)
+        pdb.set_trace()
+        if self.__unicode__ != "":
+            assert self.lesson
+            assert self.li_text
+        
+    def __unicode__(self):
+        return self.li_text
+        
+    def __str__(self):
+        """Human readable for debug mostly"""
+        return "LI " + str(self.pk) + ": " + self.li_text
+        
+    @models.permalink
+    def get_absolute_url(self):
+        assert self.lesson
+        assert self.id
+        return ('courses.views.learning_intention', (), {
+                'lesson_id': self.lesson.id,
+                'lesson_intention_id': self.id })
+              
+              
+class SuccessCriterion(models.Model):
+    """Success criteria link back to individual Learning Intentions
+    
+    All criteria together for a Learning Intention help to direct the student
+    towards achieving a particular (learning) outcome. (A learning outcome 
+    can be associated with an intention)
+    
+    Attributes:
+        learning_intention:     ForeignKey to parent
+        criterion_text:         Actual text of the criterion
+
+    """
+    
+    learning_intention = models.ForeignKey(LearningIntention,
+                                           help_text="parent learning intent"
+                                           "ion for this criterion")
+    criterion_text = models.CharField(max_length=200)
+    
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super (SuccessCriterion, self).__init__(*args, **kwargs)
+        #assert self.learning_intention
+        #assert self.criterion_text        
+
+    def __unicode__(self):
+        return self.criterion_text
+        
+    def __str__(self):
+        """Human readable for debug mostly"""
+        return "SC " + str(self.pk) + ": " + self.criterion_text
+          
+
+class LearningOutcome(models.Model):
+    """The capacity or skill which is to be enhanced or acquired
+    
+    As distinct from the LI, LOs define a capacity which the student should
+    acquire after completing the lesson (once or more times).
+    The success criteria should help students determine when they have gained
+    the skill specified. Essentially this is an "I can... statement"
+    
+    Attributes:
+        learning_intention:     ForeignKey to parent
+        lo_text:           Actual text of the learning outcome
+    
+    """
+    
+    learning_intention = models.ForeignKey(LearningIntention,
+                                           help_text="parent learning intent"
+                                           "ion for this outcome")
+    lo_text = models.CharField(max_length=200)    
+    
+    def __init__(self, *args, **kwargs):
+        """checkrep on instantiation"""
+        super (LearningOutcome, self).__init__(*args, **kwargs)
+        #assert self.learning_intention
+        #assert self.lo_text          
+        
+    def __unicode__(self):
+        return self.lo_text
+        
+    def __str__(self):
+        """Human readable for debug mostly"""
+        return "LO " + str(self.pk) + ": " + self.lo_text        
+        
+        
 class UserProfile(models.Model):
+    
     """Extend User module with additional data.
     
     Custom user profile data based on section 3.10 of PDF manual

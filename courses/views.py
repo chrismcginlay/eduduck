@@ -1,11 +1,10 @@
-from courses.models import Course, Lesson, UserProfile_Lesson
-from django.http import HttpResponseRedirect
 from django.shortcuts import (render_to_response, get_object_or_404, 
     get_list_or_404)
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-import pdb
+
+from courses.models import Course, Lesson, LearningIntention
+
 
 #TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
 #TODO: improve request context:
@@ -41,17 +40,19 @@ def single(request, course_id):
 @login_required
 def lesson(request, course_id, lesson_id):
     """Detail of individual lesson"""
-    
+
     course = get_object_or_404(Course, id=course_id)
     lesson = get_object_or_404(Lesson, id=lesson_id)
     
     #data on user interaction with lesson
     user_lessons = lesson.userprofile_lesson_set.all()
+    learning_intentions = lesson.learningintention_set.all()
     
     template = 'courses/course_lesson.html'
     context_data =  {'course':  course,
                      'lesson':  lesson,
-                     'user_lessons':     user_lessons,
+                     'user_lessons':        user_lessons,
+                     'learning_intentions': learning_intentions,
                     }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
@@ -66,33 +67,3 @@ def user_profile(request):
                         'user_lessons': user_lessons,}
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
-
-#TODO DELETION CANDIDATE: replace dwith django-registration
-#def created(request):
-#    """Confirmation that user was created"""
-#    
-#    return render_to_response('registration/registration_complete.html')
-#    
-#    
-
-#TODO DELETION CANDIDATE: replace dwith django-registration
-##http://www.djangobook.com/en/beta/chapter12/
-#def register(request):
-#    """Register new user"""
-#    
-#    if request.method == 'POST':
-#        form = UserCreationForm(request.POST)
-#        if form.is_valid():
-#            form.save()
-#            u = form.cleaned_data['username']
-#            userprof = "/users/" + u + "/"
-#            #TODO this should use reverse()
-#            return HttpResponseRedirect(userprof)
-#    else:
-#        form = UserCreationForm()
-#    
-#    template = 'registration/registration_form.html'
-#    context_data = { 'form': form}
-#    context_instance = RequestContext(request)
-#    assert form
-#    return render_to_response(template, context_data, context_instance)

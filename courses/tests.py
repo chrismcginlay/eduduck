@@ -6,7 +6,9 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from .models import (Course, Lesson, Video, Attachment, 
-                     UserProfile, UserProfile_Lesson)
+                     UserProfile, UserProfile_Lesson,
+                     LearningIntention, SuccessCriterion, LearningOutcome,)
+
 
 class CourseModelTests(TestCase):
     """Test the models used to represent courses and constituent lessons etc"""
@@ -19,15 +21,15 @@ class CourseModelTests(TestCase):
                    'course_name': 'A Course of Leeches',
                    'course_abstract': 'Learn practical benefits of leeches',
                    'course_organiser': 'Van Gogh',
-                   'course_level': 4,
+                   'course_level': 'Basic',
                    'course_credits': 30,
                    }
     course2_data = {'course_code': 'FBR9',
                    'course_name': 'Basic Knitting',
                    'course_abstract': 'Casting on',
                    'course_organiser': 'Lee Marvin',
-                   'course_level': 5,
-                   'course_credits': -20,
+                   'course_level': '5',
+                   'course_credits': 20,
                    }
     lesson1_data = {'lesson_code': 'B1',
                     'lesson_name': 'Introduction to Music',
@@ -45,8 +47,7 @@ class CourseModelTests(TestCase):
                         }
     userprofile_lesson1_data = {'mark_complete': False,
                                'date_complete': '2013-01-19',}
-    
-    
+        
     def setUp(self):
         self.course1 = Course(**self.course1_data)
         self.course1.save()
@@ -77,6 +78,20 @@ class CourseModelTests(TestCase):
             mark_complete = False,
         )
         self.userprofile_lesson1.save()
+        
+        self.learningintention1 = LearningIntention(lesson = self.lesson1, 
+                                                    li_text = "Practise")
+        self.learningintention1.save()                                            
+        self.successcriterion1 = SuccessCriterion(
+            learning_intention = self.learningintention1, 
+            criterion_text = "Choose"
+        )
+        self.successcriterion1.save()                                          
+        self.learningoutcome1 = LearningOutcome(
+            learning_intention = self.learningintention1, 
+            lo_text = "Calculate"
+        )
+        self.learningoutcome1.save()                                        
         
     def test_course_create(self):
         """Course instance attributes are created OK"""
@@ -120,6 +135,20 @@ class CourseModelTests(TestCase):
         self.assertEqual(self.userprofile_lesson1.userprofile, self.userprofile1)
         self.assertEqual(self.userprofile_lesson1.lesson, self.lesson1)
     
+    def test_learningIntention_create(self):
+        """LearningIntention instance attributes are created OK"""
+        self.assertEqual(self.learningintention1.lesson, self.lesson1)
+        self.assertEqual(self.learningintention1.li_text, "Practise")
+    
+    def test_successCriterion_create(self):
+        """SuccessCriterion instance attributes are created OK"""
+        self.assertEqual(self.successcriterion1.learning_intention, self.learningintention1)
+        self.assertEqual(self.successcriterion1.criterion_text, "Choose")
+        
+    def test_learningOutcome_create(self):
+        """LearningOutcome instance attributes are created OK"""
+        self.assertEqual(self.learningoutcome1.learning_intention, self.learningintention1)
+        self.assertEqual(self.learningoutcome1.lo_text, "Calculate")
     
 class CourseViewTests(TestCase):
     """Test the course views"""
@@ -128,15 +157,15 @@ class CourseViewTests(TestCase):
                    'course_name': 'A Course of Leeches',
                    'course_abstract': 'Learn practical benefits of leeches',
                    'course_organiser': 'Van Gogh',
-                   'course_level': 4,
+                   'course_level': 'basic',
                    'course_credits': 30,
                    }
     course2_data = {'course_code': 'FBR9',
                    'course_name': 'Basic Knitting',
                    'course_abstract': 'Casting on',
                    'course_organiser': 'Lee Marvin',
-                   'course_level': 5,
-                   'course_credits': -20,
+                   'course_level': '5',
+                   'course_credits': 20,
                    }  
     lesson1_data = {'lesson_code': 'B1',
                     'lesson_name': 'Introduction to Music',
@@ -183,6 +212,21 @@ class CourseViewTests(TestCase):
             mark_complete = False,
         )
         self.userprofile_lesson1.save()
+        
+        self.learningintention1 = LearningIntention(lesson = self.lesson1, 
+                                                    li_text = "Practise")
+        self.learningintention1.save()
+        self.successcriterion1 = SuccessCriterion(
+            learning_intention = self.learningintention1, 
+            criterion_text = "Choose"
+        )
+        self.successcriterion1.save()
+        self.learningoutcome1 = LearningOutcome(
+            learning_intention = self.learningintention1, 
+            lo_text = "Calculate"
+        )
+        self.learningoutcome1.save()
+        
     def test_course_index(self):
         """Check course index page loads OK and has correct variables"""
         response = self.client.get('/courses/')
@@ -212,15 +256,20 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/lesson/1/')
         #not logged in, redirect to login
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(x in response.context for x in ['course', 
-                                                        'lesson', 
-                                                        'user_lessons'])
+        self.assertTrue(x in response.context
+            for x in ['course', 'lesson', 'user_lessons'])
         #log in and test
 
         login = self.client.login(username='bertie', password='bertword')
         self.assertTrue(login)
         response = self.client.get('/courses/1/lesson/1')
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(x in response.context for x in ['course', 
-                                                        'lesson', 
-                                                        'user_lessons'])
+        self.assertTrue(x in response.context
+            for x in ['course', 'lesson', 'user_lessons'])
+                                                        
+    def test_learning_intention(self):
+        """Test view of a single learning intention"""
+        response = self.client.get('/courses/1/lesson/1/lint/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(x in response.context
+            for x in ['lesson_id', 'lesson_intention_id'])
