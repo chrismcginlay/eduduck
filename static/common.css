@@ -4,12 +4,12 @@ Thrown together by Chris McGinlay Jan 2013
 
 /* Fonts */
 body, html {
-    background-color:   #b0ac8a;
+    background-color:   #588f27;
     font-size:          100%;
 }
 
 h1 {
-    color:          red;
+    color:          #1c3803;    /*dark emerald*/
     text-align:     center;
     font-size:      1.3em;
     font-family:    'Lemon', cursive;
@@ -17,19 +17,24 @@ h1 {
 }
 
 h2 {
-    color:          #0e24b0;
+    color:          #cafcd8;
     text-align:     left;
     font-family:    'Merienda', cursive;
     font-size:      1.5em;
     margin:         0;
-    padding:        0;
+    padding:        5px 0 15px 10px;
 }
 
 h3 {
-    color:          blue;
+    color:          #04bfbf;
     text-align:     left;
     font-family:    'Junge', serif;
     font-size:      1.4em;
+    margin:     10px;
+}
+
+h4, h4 a {
+    color:          #588f27;
 }
 
 p {
@@ -38,9 +43,11 @@ p {
 }
 
 p#strapline {
-    color:          #b0216d;
-    font-size:      1.5em;
+    color:          #1c3803;
+    font-size:      1.2em;
     font-family:    'Lemon', cursive;
+    height:         40px;
+    line-height:    40px;
 }
 
 /* Layout */
@@ -59,58 +66,57 @@ p#strapline {
     width:  95%;
     margin: auto;
     margin-top: 5px;
-    background: #8888ff;
+    background: #e0ffe9;
 }
 
 #userprof {
     display:            inline-block;
     text-align:         left;
-    background-color:   #9d997d;
-    border:             1px solid black;
+    background-color:   #04bfbf;
+    border:             1px solid #1c3803;
 }
 
 #branding {
     position:           relative;
-    background-color:   #ee4444;
-    border:             black solid 2px;
+    background-color:   #f7e967;
+    border:             #1c3803 solid 2px;
+    min-height:         85px;
 }
 
 #branding img {
     float:          left;
     padding-top:    15px;
-    padding-left:   5px;
+    padding-left:   10px;
 }
 
 #branding h1 {
     float:      left;
     width:      100px;
     text-align: left;
+    margin-left:10px;
 }
 
 #search  {
     position:   absolute;
-    bottom:     0;
-    left:       50%;
-    width:      50%;
+    bottom:     5px;
+    left:       65%;
+    width:      34%;
     height:     1.5em;
-    margin: 0;
-    padding:    0;
-    background: #cccccc;
-    border:     dashed black 1px;
-}
-
-#search p {
     margin:     0;
+    padding:    0;
+    background: #f7e967;
 }
 
 #primary {
-    clear:  both;
-    background-color:   #44ee44;
-    width:  100%;
+    clear:              both;
+    background-color:   #cafcd8;
+    padding:            15px 0 15px 0;
+    width:              100%;
 }
 
 #primary ul {
     list-style:     none;
+    margin:     0;  /* Yes, you do need this, even with normalize.css! */
 }
 
 #primary ul li {
@@ -120,22 +126,30 @@ p#strapline {
 #devmenu {
     position:   fixed;
     border:     black dashed 1px;
-    top:        100px;
-    left:       80%;
+    top:        300px;
+    left:       88%;
+    width:      10%;
+    font-size:  75%;
+}
+
+#devmenu ul {
+    list-style:     none;
+    margin:         0;
+    padding:        0;
 }
 
 #content {
-    background-color:   #4444ee;
-    border:             black dashed 1px;
+    background-color:   #04bfbf;
+
     }
 
 #content section#zone1 {
     float:              left;
-    width:              46%;
+    width:              45%;
     padding-left:       2%;
     padding-right:      2%;
-    background-color:   #6666ff;
-    border:             black dashed 1px;
+    background-color:   #e0ffe9;
+    border:             outset;
 }
 
 #content section#zone2 {
@@ -143,22 +157,28 @@ p#strapline {
     width:          45%;
     padding-left:   2%;
     padding-right:  2%;
-    background:     #9977ff;
-    border:             black dashed 1px;
+    background:     #e0ffe9;
+    border:         outset;
 }
 
 #pagefoot {
     clear:              both;
-    background-color:   #4e4e4e;
-    border:             black dashed 1px;
+    background-color:   #cafcd8;
+    color:              04bfbf;
+    padding:            0 20px 0 20px;
 }
+
+#pagefoot p {
+    color:     inherit;
+}
+
 /*Element details*/
-div#userprof ul {
+#userprof ul {
     margin-left:       4px;
     margin-right:      4px;
 }
 
-div#userprof li {
+#userprof li {
     float:              left;
     list-style:         none;
     margin:             0;
@@ -171,27 +191,39 @@ div#userprof li > a {
     text-align:     center;
 }
 
-div#userprof li a:link, a:visited {
+div#userprof li a:link, div#userprof li a:visited {
     text-decoration:    none;
-    color:              black;
+    color:              #cafcd8;
 }
 
-div#userprof li a:hover, a:active {
+div#userprof li a:hover, div#userprof li a:active {
     text-decoration:    none;
-    color:              blue;
+    color:              #f7e967;
 }
 
 .abstract {
-    background-color:   #f2edce;
-    color:              #9e5909;
+    background-color:   #7b9c31;    /*Grass is green*/
+    color:              white;
     font-size:          0.8em;
-    padding:            8px 5px 5px 5px;
+    padding:            5px;
     text-align:         justify;
 }
 
+#content > .abstract {
+    width:      50%;
+    margin:     0 20px 0 20px;
+    padding:    5px 5px 2px 5px;
+}
+
+#content > .abstract h3 {
+    margin: 5px 5px 0 0;
+    color:  #1c3803;    /*dark emerald*/
+}
+
 .FYI {
-    background-color:   #9e5909;
-    color:              #f2edce;
+/*    background-color:   #9e5909;*/
+/*    color:              #f2edce;*/
+    border:             solid 4px #f7e967;
     font-size:          0.8em;
     padding:            2px 10px 4px 10px;
     text-align:         justify;
