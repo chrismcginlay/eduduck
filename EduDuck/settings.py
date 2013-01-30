@@ -45,7 +45,7 @@ FIXTURE_DIRS = (
 
 # User Profile model 
 AUTH_PROFILE_MODULE = 'courses.UserProfile'
-LOGIN_REDIRECT_URL = '/users/'
+LOGIN_REDIRECT_URL = '/courses/'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

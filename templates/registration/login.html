@@ -3,13 +3,11 @@
 {% extends "base.html" %}
 {% load url from future %}
 
-{% block banner %}
-<h1>Please Login or Register to Continue</h1>
-{% endblock %}
+{% block contentheading %}
+Login
+{% endblock contentheading %}
 
 {% block content %}
-<p>You need to be logged in to view and take part in lessons</p>
-
 {% if form.errors %}
 <p>Username and password mismatch. Please try again.</p>
 {% endif %}

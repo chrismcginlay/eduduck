@@ -6,5 +6,9 @@ If it was you, great, go ahead and activate by following this link or pasting
 http://{{ site.domain }}/accounts/activate/{{ activation_key }}
 You have {{ expiration_days }} days left.
 
+*Please remember that whilst the site is under heavy development the test DB on
+EduDuck.com gets stamped on frequently. Basically this means your username will
+go away.*
+
 If you received this email and didn't register on the site, someone else has
 registered and given your email address.
