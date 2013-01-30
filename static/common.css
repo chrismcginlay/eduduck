@@ -188,7 +188,7 @@ div#userprof li a:hover, a:active {
     background-color:   #f2edce;
     color:              #9e5909;
     font-size:          0.8em;
-    padding:            5px;
+    padding:            8px 5px 5px 5px;
     text-align:         justify;
 }
 

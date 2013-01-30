@@ -78,24 +78,7 @@
     {% endif %}
         <h3>Learning Intentions</h3>
         {% for li in learning_intentions %}
-            <p class="abstract">[<a href="{{ li.get_absolute_url}} " title="detail">-> {{ forloop.counter}}</a>] {{ li.li_text }}</p>
-            <h4>Success Criteri{{ li.successcriterion_set.count|pluralize:"on,a"}}</h4>
-            <ul>
-            {% for sc in li.successcriterion_set.all %}
-                <li>{{ sc }}</li>
-            {% empty %}
-                <li>Not a single success criterion specified!</li>
-            {% endfor %}
-            </ul>
-
-            <h4>Learning Outcome{{ li.learningoutcome_set.count|pluralize:",s"}}</h4>
-            <ul>
-            {% for lo in li.learningoutcome_set.all %}
-                <li>{{ lo }}</li>
-            {% empty %}
-                <li>Not a single learning outcome specified!</li>
-            {% endfor %}
-            </ul>
+            <p class="abstract">[<a href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.li_text }}</p>
         {% empty %}
             <p>Bizarrely, no learning intentions given for this lesson</p>
         {% endfor %}
