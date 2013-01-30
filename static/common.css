@@ -5,9 +5,6 @@ Thrown together by Chris McGinlay Jan 2013
 /* Fonts */
 body, html {
     background-color:   #b0ac8a;
-    margin:     0;
-    padding:    0;
-    color:      black;
     font-size:          100%;
 }
 
@@ -60,7 +57,7 @@ p#strapline {
 
 #wrapper {
     width:  95%;
-    margin: 0 auto;
+    margin: auto;
     margin-top: 5px;
     background: #8888ff;
 }
@@ -75,7 +72,7 @@ p#strapline {
 #branding {
     position:           relative;
     background-color:   #ee4444;
-    border:             black dashed 1px;
+    border:             black solid 2px;
 }
 
 #branding img {
