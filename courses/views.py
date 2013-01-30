@@ -37,7 +37,6 @@ def single(request, course_id):
     return render_to_response(template, context_data, context_instance)
     
     
-@login_required
 def lesson(request, course_id, lesson_id):
     """Prepare variables for detail of individual lesson"""
 

@@ -20,7 +20,6 @@
         {% empty %}
         <h4>You aren't enrolled in any courses yet.</h4>
         {% endfor %}
-
         </p>
     </section>
     <section id="zone2">
@@ -31,7 +30,19 @@ wish to register for in future</p>
 {% else %}
     <section id="zone1">
         <h3>Featured Courses</h3>
-        <p>data</p>
+        {% for course in course_list %}
+        <article id={{ course.course_code }}>
+        <h4>{{ course.course_code }} 
+        <a href='{{ course.get_absolute_url }}'>{{ course.course_name }}</a>
+        </h4> 
+        <p>(With {{ course.lesson_set.count }} 
+        lesson{{ course.lesson_set.count|pluralize:",s"}}). 
+        Level {{ course.course_level }}, {{ course.course_credits }}
+        point{{course.course_credits|pluralize:",s"}}.
+        Contact {{ course.course_organiser }}</p>
+        <p class="abstract">{{ course.course_abstract }}</p>
+        {% endfor %}
+        </p>
     </section>
 {% endif %}
 {% endblock %}
