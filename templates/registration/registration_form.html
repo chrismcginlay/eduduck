@@ -1,13 +1,15 @@
-{% extends "base.html" %}
+{% extends "registration/base_registration.html" %}
+{% load url from future %}
 
-{% block banner %}
-    <h1>New User Registration</h1>
-{% endblock %}
+{% block contentheading %}
+New User Registration
+{% endblock contentheading %}
 
-{% block content %}
-<p>This is the user registration template</p>
+{% block zone1 %}
+<h3>Sign Up for a Free Account</h3>
+<p>Join us - complete this form to receive a confirmation email:</p>
 <form action="/accounts/register/" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>
-{% endblock content %}
+{% endblock zone1 %}

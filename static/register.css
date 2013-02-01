@@ -1,0 +1,10 @@
+#content section#zone1 {
+    float:              left;
+    width:              60%;
+    margin-left:        20%;
+    margin-top:         10px;
+    padding:            2%;
+    background-color:   #e0ffe9;
+    border:             outset;
+}
+

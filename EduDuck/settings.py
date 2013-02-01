@@ -149,10 +149,10 @@ ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_OPEN = True
 
 #django-registration needs an MTA. For development just use console
-#smtp is the default, so for production, just get rid of this
+#smtp is the default, so for production, just comment this next line
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-#Fill in for production
+#Fill in for given MTA
 #EMAIL_HOST = 'localhost'
 #EMAIL_PORT = 25
 #EMAIL_HOST_USER = 'bob'

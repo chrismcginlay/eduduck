@@ -1,12 +1,13 @@
-{% extends "base.html" %}
+{% extends "registration/base_registration.html" %}
 {% load url from future %}
 
-{% block banner %}
-<h1>You have logged out</h1>
-{% endblock %}
+{% block contentheading %}
+Logged Out
+{% endblock contentheading %}
 
-{% block content %}
+{% block zone1 %}
+<h3>You Just Logged Out</h3>
 <p>Perhaps you would like to 
-    <a href=" {% url 'django.contrib.auth.views.login' %}">login</a> again
+    <a href=" {% url 'django.contrib.auth.views.login' %}">login</a> again?
 </p>
 {% endblock %}

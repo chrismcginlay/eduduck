@@ -1,11 +1,12 @@
-{% extends "base.html" %}
+{% extends "registration/base_registration.html" %}
 
-{% block banner %}
-<h1>Account Activation Failed</h1>
-{% endblock %}
+{% block contentheading %}
+Account Activation Failed
+{% endblock contentheading %}
 
-{% block content %}
-<em>Activation failed, sorry.</em>
-<p>Activation key {{ activation_key }}</p>
-<p>Try again, or contact support.</p>
-{% endblock %}
+{% block zone1 %}
+    <h3>Activation failed, sorry.</h3>
+    <p>The activate key you supplied was {{ activation_key }}.</p>
+    <p>Keys are only valid for a certain number of days and then expire.
+    <p>Please try again, then contact support.</p>
+{% endblock zone1 %}

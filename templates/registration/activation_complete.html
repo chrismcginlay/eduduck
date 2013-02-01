@@ -1,12 +1,17 @@
-{% extends "base.html" %}
+{% extends "registration/base_registration.html" %}
 {% load url from future %}
 
-{% block banner %}
-<h1>Account Activation Complete</h1>
-{% endblock %}
+{% block contentheading %}
+Account Activation Complete
+{% endblock contentheading %}
 
-{% block content %}
-<em>Activation Succeeded</em>
+{% block zone1 %}
+<h3>Activation Key Succeeded</h3>
+{% if not user.is_authenticated %}
 <p>You can now <a href="{% url 'django.contrib.auth.views.login' %}">login</a></p>
+{% else %}
+<p>You are logged in. Visit our <a href="{% url 'courses.views.index' %}">
+    courses</a></p>
+{% endif %}
 
-{% endblock %}
+{% endblock zone1 %}

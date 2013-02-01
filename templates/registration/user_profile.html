@@ -1,27 +1,40 @@
-{% extends "base.html" %}
+{% extends "registration/base_registration.html" %}
 
-{% block banner %}
-    <h1>Profile: {{ user.username }}</h1>
-{% endblock %}
+{% block contentheading %}
+    Profile: {{ user.get_full_name }}
+{% endblock contentheading %}
 
-{% block content %}
-<h2>Basic Data</h2>
-    {{ user.username }} {{user.get_full_name}} {{user.email}}
-<h2>Profile Data</h2>
-    <p>Signature: {{ profile.signature_line }}</p>
-    <p>Accepted T&C: {{ profile.accepted_terms }}</p>
-    <div>Registered Courses: 
-        {% for c in profile.registered_courses.all %}
-            <strong>{{c.course_name}}</strong>
-            <p>Lesson/DateAccessed/Completed</p>
-            <ol>                
-            {% for l in user_lessons %}
-                <li>{{ l.lesson.lesson_name }} /
-                    {{ l.date_complete }} /
-                    {{ l.mark_complete}}
-                </li>
+{% block zone1 %}
+    <h3>Your Details</h3>
+    <table border="1">
+        <tr><td>Name</td><td>{{ user.get_full_name }}</td></tr>
+        <tr><td>Email</td><td>{{ user.email }}</td></tr>
+        <tr><td>Motto</td><td>
+            {{ profile.signature_line|capfirst }}
+        </td></tr>
+        <tr><td>Accepted Terms & Conditions</td><td>
+            {{ profile.accepted_terms }}
+        </td></tr>
+        <tr><td>Registered Courses</td><td>
+            {% for c in profile.registered_courses.all %}
+            <h4><a href="{{ c.get_absoulute_url }}">
+                {{ c.course_name }}</a></h4>
+
+                <ul>{% for l in user_lessons %}
+                    <li><a href="{{ l.lesson.get_absolute_url }}">
+                        {{ l.lesson.lesson_name }}</a>
+                        {{ l.date_complete|default_if_none:"" }}, 
+                        Mark Complete: {{ l.mark_complete}}
+                    </li>
+                    {% empty %}
+                    {% endfor %}
+                </ul>
+
+            </a></h4>
+            {% empty %}
+            <p>You are not currently enrolled in any <a href=
+                '{% url 'courses.views.index' %}'>courses</a>.</p>
             {% endfor %}
-            </ol>
-        {% endfor %}
-    </div>
-{% endblock content %}
+        </td></tr>
+    </table>
+{% endblock zone1 %}

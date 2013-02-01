@@ -1,11 +1,13 @@
-{% extends "base.html" %}
+{% extends "registration/base_registration.html" %}
+{% load url from future %}
 
-{% block banner %}
-<h1>Site Registration Closed</h1>
-{% endblock %}
+{% block contentheading %}
+Registration Closed
+{% endblock contentheading %}
 
-{% block content %}
-<em>Sorry</em>
-<p>For some reason, registration is currently closed. 
-Please check back again soon.</p>
-{% endblock %}
+{% block zone1 %}
+<h3>Site Registration is Closed</h3>
+<p><em>Sorry</em>, For some reason, registration is currently closed. Perhaps
+this is due to maintenance</p>
+Please check back again soon or contact support if the situation persists.</p>
+{% endblock zone1%}

@@ -50,7 +50,7 @@ p#strapline {
     line-height:    40px;
 }
 
-/* Layout */
+/* Layout and everything else */
 .fix_container {
     /*Fixed position container, use to center and fix*/
     position:           fixed;
@@ -140,7 +140,6 @@ p#strapline {
 
 #content {
     background-color:   #04bfbf;
-
     }
 
 #content section#zone1 {
@@ -172,7 +171,6 @@ p#strapline {
     color:     inherit;
 }
 
-/*Element details*/
 #userprof ul {
     margin-left:       4px;
     margin-right:      4px;

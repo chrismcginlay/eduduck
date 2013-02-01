@@ -1,10 +1,12 @@
-{% extends "base.html" %}
+{% extends "registration/base_registration.html" %}
+{% load url from future %}
 
-{% block banner %}
-    <h1>Site Registration Confirmation</h1>
-{% endblock %}
+{% block contentheading %}
+Site Registration
+{% endblock contentheading %}
 
-{% block content %}
+{% block zone1 %}
+<h3>Thank You for Registering</h3>
 <p>Thank you for registering. Before your account is activated you will first
  receive an email containing an activation link.</p>
 <p>This is to prevent someone bogusly using your email address to open an
@@ -13,4 +15,4 @@
 eduduck.com get wiped and reset regulary. So your username will disappear.</em>
 Sorry, but this is just an unstable product preview right now.</p>
 
-{% endblock %}
+{% endblock zone1%}

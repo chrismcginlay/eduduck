@@ -1,4 +1,6 @@
 {% load staticfiles %}
+{% load url from future %}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" >
 <head>
@@ -19,7 +21,7 @@ Use fonts in stylesheets as follows:
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
     <script src="{% static 'common.js' %}"></script>
-    <title>{% block title %}EduDuck Your Brain Today{% endblock title %}</title>
+    <title>{% block title %}EduDuck{% endblock title %}</title>
 </head>
 
 <body>
@@ -29,10 +31,12 @@ Use fonts in stylesheets as follows:
             {% block userprof %}
             {% if user.is_authenticated %}
                 <li><a href="/users/">{{ user.username }}</a></li>
-                <li><a href="/accounts/logout/">Logout</a></li>
+                <li><a href="{% url 'django.contrib.auth.views.logout' %}">
+                    Logout</a></li>
             {% else %}
                 <li><a href="/accounts/register/">Register!</a></li>
-                <li><a href="/accounts/login/">Login</a></li>
+                <li><a href="{% url 'django.contrib.auth.views.login' %}">
+                    Login</a></li>
             {% endif %}
                 <li><a href="/about/">About</a></li>
             {% endblock userprof %}
@@ -43,7 +47,7 @@ Use fonts in stylesheets as follows:
             <a href="/">
                 <img src="{% static 'images/sutrannu_Duck100.png' %}" width="100px" height="48px"/>
                 <h1>Edu Duck</h1>
-                <p id="strapline">EduDuck Your Brain Today</p>
+                <p id="strapline">Quackers About Learning</p>
             </a>
             <div id="search">
             {% block search %}
