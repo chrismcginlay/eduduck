@@ -21,6 +21,7 @@ Use fonts in stylesheets as follows:
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
     <script src="{% static 'common.js' %}"></script>
+    <script src="{% static 'search.js' %}"></script>
     <title>{% block title %}EduDuck{% endblock title %}</title>
 </head>
 
@@ -54,7 +55,7 @@ Use fonts in stylesheets as follows:
 <!--TODO Consider google site search etc-->
                 <form action="">
                   <input type="search" name="dummysearch" value="does nothing yet" />
-                  <input value="search" type="submit" />
+                  <input value="search" type="submit" id="search"/>
                 </form>
             {% endblock search %}
             </div>
