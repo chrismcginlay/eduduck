@@ -12,6 +12,7 @@ urlpatterns = patterns('django.views.generic.simple',
 )
 
 urlpatterns += patterns('',
+    url(r'^support/', include('support.urls')),
     url(r'^lesson/(?P<lesson_id>\d+)/lint/(?P<learning_intention_id>\d+)/$',
         'courses.views.learning_intention'),)
         

@@ -1,0 +1,21 @@
+{% extends "support/base_support.html" %}
+
+{% block contentheading %}
+EduDuck Support Page
+{% endblock contentheading %}
+
+{% block zone1 %}
+<h3>Contact Us</h3>
+    <p>For any reason, please feel free to contact the EduDuck team.</p>
+    
+    {% if support_form.errors %}
+    <p>You made some mistakes on this form, please try again.</p>
+    {% endif %}
+
+    <form action="" method="post">{% csrf_token %}
+        <table>
+        {{ support_form.as_table }}
+        </table>
+        <input type="submit" value="Submit" />
+    </form>
+{% endblock zone1 %}

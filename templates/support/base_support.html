@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{%block extra_style %}
+    <link href="{% static 'support.css' %}" rel="stylesheet" media="screen" />
+{% endblock extra_style %}
+
+{% block content %}
+    <section id="zone1">
+    {% block zone1 %}{% endblock zone1 %}
+    </section>
+{% endblock content %}

@@ -172,6 +172,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'courses',
     'quiz',
+    'support',
     #following provided account activation via email via django-registration
     'registration',
 )
