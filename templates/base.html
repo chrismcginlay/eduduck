@@ -30,11 +30,11 @@ Use fonts in stylesheets as follows:
         <div id="userprof">
             {% block userprof %}
             {% if user.is_authenticated %}
-                <li><a href="/users/">{{ user.username }}</a></li>
+                <li><a href="{% url 'courses.views.user_profile' %}">{{ user.username }}</a></li>
                 <li><a href="{% url 'django.contrib.auth.views.logout' %}">
                     Logout</a></li>
             {% else %}
-                <li><a href="/accounts/register/">Register!</a></li>
+                <li><a href="{% url 'registration.views.register' %}">Register!</a></li>
                 <li><a href="{% url 'django.contrib.auth.views.login' %}">
                     Login</a></li>
             {% endif %}
@@ -73,7 +73,7 @@ Use fonts in stylesheets as follows:
             <ul id="dev">
                 {% if user.is_authenticated %}
                 <li><a href="/admin/">Admin</a></li>
-                <li><a href="/courses/">Courses</a></li>
+                <li><a href="{% url 'courses.views.index' %}">Courses</a></li>
                 {% else %}
                 {% endif %}
                 <li><a href="/quizzes/">Quizzes</a></li>
@@ -94,7 +94,8 @@ Use fonts in stylesheets as follows:
 
         <footer id="pagefoot">
             {% block footer %}
-            <p>Copyright (c) 2013 EduDuck.com. All rights reserved.</p>
+            <p>Copyright (c) 2013 EduDuck.com. All rights reserved.
+            <a href="{% url 'support.views.support' %}">Contact Us</a></p>
             {% endblock footer %}
         </footer>
 

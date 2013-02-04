@@ -13,8 +13,7 @@ class SupportForm(forms.Form):
         wc = len(message.split())
         if wc < 4:
             raise forms.ValidationError(
-                "Please muster four or more \
-                words of wisdom or woe!"
+                "Please muster four or more words of wisdom or woe!"
             )
         return message
     
