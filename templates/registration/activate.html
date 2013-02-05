@@ -1,4 +1,5 @@
 {% extends "registration/base_registration.html" %}
+{% load url from future %}
 
 {% block contentheading %}
 Account Activation Failed
@@ -8,5 +9,7 @@ Account Activation Failed
     <h3>Activation failed, sorry.</h3>
     <p>The activate key you supplied was {{ activation_key }}.</p>
     <p>Keys are only valid for a certain number of days and then expire.
-    <p>Please try again, then contact support.</p>
+    <p>Please try again, then contact
+        <a href="{% url 'support.views.support' %}">support</a>.
+    </p>
 {% endblock zone1 %}
