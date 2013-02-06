@@ -1,6 +1,10 @@
 {% extends "courses/base_course.html" %}
 {% load staticfiles %}
 
+{%block extra_style %}
+    <link href="{% static 'learning_intention.css' %}" rel="stylesheet" media="screen" />
+{% endblock extra_style %}
+
 {% block pagenav %}
 <span class='prevnext'>
     {% if learning_intention.get_prev %}
@@ -38,7 +42,7 @@
             would do if carrying out a learning outcome</p>
             <ol>
             {% for sc in learning_intention.successcriterion_set.all %}
-                <li>{{ sc.criterion_text }}</li>
+                <li class="criterion" id="SC{{ sc.pk }}">{{ sc.criterion_text }}</li>
             {% empty %}
                 <li>No success criteria for this learning intention</li>
             {% endfor %}
@@ -54,7 +58,7 @@
         
         <ul>
         {% for lo in learning_intention.learningoutcome_set.all %}
-            <li>{{ lo }}</li>
+            <li class="learning_outcome" id="LO{{ lo.pk }}">{{ lo }}</li>
         {% empty %}
             <li>Not a single learning outcome specified!</li>
         {% endfor %}

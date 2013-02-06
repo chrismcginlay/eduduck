@@ -1,0 +1,7 @@
+/* static/learning_intention.css
+
+Position inline list-item background images for JQuery manipulation */
+
+LI.criterion, LI.learning_outcome {
+    background:     url('images/traffic_seq50.png') left center no-repeat;
+}
