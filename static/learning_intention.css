@@ -2,6 +2,9 @@
 
 Position inline list-item background images for JQuery manipulation */
 
-LI.criterion, LI.learning_outcome {
-    background:     url('images/traffic_seq50.png') left center no-repeat;
+LI.criterion>img, LI.learning_outcome>img{
+    position:       relative;
+    background:     url('images/traffic_seq50.png') -0px 0px no-repeat;
+    width:          16px;
+    height:         36px;
 }
