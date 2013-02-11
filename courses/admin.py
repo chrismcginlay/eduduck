@@ -3,14 +3,15 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from courses.models import (
-    Course, Lesson, Video, Attachment, UserProfile, UserProfile_Lesson,
+    Course, Lesson, Video, Attachment, UserProfile_Lesson,
     LearningIntention, SuccessCriterion, LearningOutcome
     )
+from bio.models import Bio
 from quiz.models import Quiz, Question, Answer, QuizAttempt, QuestionAttempt
 
 
 class UserProfileInline(admin.StackedInline):
-    model = UserProfile
+    model = Bio
     can_delete = False
     verbose_name_plural = 'profile'
     

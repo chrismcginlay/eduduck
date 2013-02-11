@@ -5,6 +5,8 @@ from django.http import Http404
 
 from django.contrib.auth.models import User
 
+from bio.models import Bio
+
 import pdb
 
 class Course(models.Model):
@@ -347,45 +349,6 @@ class LearningOutcome(models.Model):
         return "LO " + str(self.pk) + ": " + self.lo_text        
         
         
-class UserProfile(models.Model):
-    
-    """Extend User module with additional data.
-    
-    Custom user profile data based on section 3.10 of PDF manual
-    
-    Attributes:
-        user                1-1Field - Required field - User
-        lessons             Intermediary - user interaction with lessons
-        accepted_terms      Either you do or you don't
-        signature_line      Personal motto for user
-        registered_courses  m-mField - Courses user is registered on
-    
-    """
-    
-    user = models.OneToOneField(User)
-    lessons = models.ManyToManyField(Lesson, through='UserProfile_Lesson',
-                                     help_text="lessons viewed")
-    accepted_terms = models.BooleanField()
-    signature_line = models.CharField(max_length=200)
-    registered_courses = models.ManyToManyField(Course)
-
-    def __init__(self, *args, **kwargs):
-        """checkrep on instantiation"""
-        super (UserProfile, self).__init__(*args, **kwargs)
-        #When adding a new instance (e.g. in admin), their will be no 
-        #datamembers, so only check existing instances eg. from db load.
-        if self.pk != None:
-            assert self.user
-    
-    def __unicode__(self):
-        return self.user.username
-        
-    @models.permalink
-    def get_absolute_url(self):
-        assert self.id
-        return ('courses.views.user_profile', [str(self.id)])
-        
-        
 #########################################
 #Table join classes, i.e. intermediary models
 #########################################
@@ -403,7 +366,7 @@ class UserProfile_Lesson(models.Model):
     
 #TODO create a method to set date_complete automatically when mark_complete 
 #is set True.
-    userprofile = models.ForeignKey(UserProfile)
+    userprofile = models.ForeignKey(Bio)
     lesson = models.ForeignKey(Lesson)
     mark_complete = models.BooleanField(default=False,
                                         help_text="true if the lesson is "
@@ -433,4 +396,4 @@ class UserProfile_Lesson(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     """Ensure user profile is created for each new user"""
     if created:
-        UserProfile.objects.create(user=instance)
+        Bio.objects.create(user=instance)

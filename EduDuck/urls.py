@@ -22,7 +22,6 @@ urlpatterns += patterns('courses.views',
     url(r'^courses/(?P<course_id>\d+)/$', 'single'),
     url(r'^courses/(?P<course_id>\d+)/lesson/(?P<lesson_id>\d+)/$',
         'lesson'),
-    url(r'^users/$', 'user_profile'),
 )
  
     #temporary question handler
@@ -47,7 +46,8 @@ urlpatterns += patterns('quiz.views',
     url(r'^quiz_results/(?P<quiz_id>\d+)/$', 'quiz_results'),
 )
 
-urlpatterns += patterns('',    
+urlpatterns += patterns('',   
+    url(r'^accounts/bio/', include('bio.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )

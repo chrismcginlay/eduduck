@@ -33,7 +33,7 @@ Use fonts in stylesheets as follows:
         <div id="userprof">
             {% block userprof %}
             {% if user.is_authenticated %}
-                <li><a href="{% url 'courses.views.user_profile' %}">{{ user.username }}</a></li>
+                <li><a href="{% url 'bio.bio' %}">{{ user.username }}</a></li>
                 <li><a href="{% url 'django.contrib.auth.views.logout' %}">
                     Logout</a></li>
             {% else %}

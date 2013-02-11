@@ -44,7 +44,7 @@ FIXTURE_DIRS = (
 )
 
 # User Profile model 
-AUTH_PROFILE_MODULE = 'courses.UserProfile'
+AUTH_PROFILE_MODULE = 'bio.Bio'
 LOGIN_REDIRECT_URL = '/courses/'
 
 # Local time zone for this installation. Choices can be found here:
@@ -173,6 +173,7 @@ INSTALLED_APPS = (
     'courses',
     'quiz',
     'support',
+    'bio',
     #following provided account activation via email via django-registration
     'registration',
 )

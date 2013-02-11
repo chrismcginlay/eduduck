@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{%block extra_style %}
+    <link href="{% static 'register.css' %}" rel="stylesheet" media="screen" />
+{% endblock extra_style %}
+
+{% block contentheading %}
+{% if user.is_authenticated %}
+    Welcome {{ user.username|capfirst }}: "{{ user.userprofile.signature_line }}"
+{% else %}
+    {{ user.username|capfirst }}
+{% endif %}
+{% endblock contentheading %}
+
+{% block content %}
+    <section id="zone1">
+    {% block zone1 %}{% endblock zone1 %}
+    </section>
+{% endblock content %}
