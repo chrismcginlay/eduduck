@@ -4,9 +4,12 @@ from django.shortcuts import (render_to_response, get_object_or_404,
     
 from django.contrib.auth.decorators import login_required
 
+import pdb
+
 @login_required
 def bio(request):
     template = 'registration/user_profile.html'
+    pdb.set_trace()
     profile = request.user.get_profile()
     user_lessons = profile.userprofile_lesson_set.all()
     context_data = {    'profile': profile,

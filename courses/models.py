@@ -366,7 +366,7 @@ class UserProfile_Lesson(models.Model):
     
 #TODO create a method to set date_complete automatically when mark_complete 
 #is set True.
-    userprofile = models.ForeignKey(Bio)
+    userprofile = models.ForeignKey(User)
     lesson = models.ForeignKey(Lesson)
     mark_complete = models.BooleanField(default=False,
                                         help_text="true if the lesson is "
@@ -392,8 +392,9 @@ class UserProfile_Lesson(models.Model):
 #   Signals Area
 #########################################
 
+#TODO see if this can move to the bio module
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    """Ensure user profile is created for each new user"""
+def create_bio(sender, instance, created, **kwargs):
+    """Ensure user bio is created for each new user"""
     if created:
         Bio.objects.create(user=instance)

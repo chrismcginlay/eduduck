@@ -10,13 +10,13 @@ from bio.models import Bio
 from quiz.models import Quiz, Question, Answer, QuizAttempt, QuestionAttempt
 
 
-class UserProfileInline(admin.StackedInline):
+class UserBioInline(admin.StackedInline):
     model = Bio
     can_delete = False
-    verbose_name_plural = 'profile'
+    verbose_name_plural = 'bios'
     
 class UserAdmin(UserAdmin):
-    inlines = (UserProfileInline, )
+    inlines = (UserBioInline, )
     
 class QuizAttemptAdmin(admin.ModelAdmin):
     readonly_fields = ("taken_dt",)
@@ -32,7 +32,6 @@ class LearningIntentionAdmin(admin.ModelAdmin):
     
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
-admin.site.register(UserProfile_Lesson)
 
 admin.site.register(Course)
 admin.site.register(Lesson)

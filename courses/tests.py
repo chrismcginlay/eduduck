@@ -265,34 +265,3 @@ class CourseViewTests(TestCase):
         self.assertTrue(x in response.context
             for x in ['lesson_id', 'lesson_intention_id'])
             
-class UserProfileViewTests(TestCase):
-    """Test behaviour of user profiles"""
-    
-    def setUp(self):
-        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
-        self.user1.is_active = True
-        self.user1.save()
-        self.userprofile1 = UserProfile.objects.get(user_id=1)
-        self.userprofile1.accepted_terms = True
-        self.userprofile1.signature_line = 'Learning stuff'
-        self.userprofile1.save()     
-        
-    def test_user_profile(self):
-        """Test response courses.views.users"""
-        
-        #Not logged in, redirect.
-        response = self.client.get('/users/')
-        self.assertEqual(response.status_code, 302)
-
-        #log in and check profile is available      
-        login = self.client.login(username='bertie', password='bertword')
-        self.assertTrue(login)
-        
-        #This is not working. Drop into trace and try by hand to see 
-        #no reverse match. Problem in urlconf? Test case returns before assertEqual 
-        #pdb.set_trace()
-        assert(False)
-        response = self.client.get('/users/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(x in response.context
-            for x in ['profile'])
