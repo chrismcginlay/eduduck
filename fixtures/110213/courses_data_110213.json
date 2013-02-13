@@ -365,7 +365,57 @@
             "lesson": 3,
             "date_complete": null,
             "mark_complete": false,
-            "userprofile": 7
+            "userprofile": 2
+        }
+    },
+    {
+        "pk": 4,
+        "model": "courses.userprofile_lesson",
+        "fields": {
+            "lesson": 1,
+            "date_complete": "2012-08-10",
+            "mark_complete": true,
+            "userprofile": 1
+        }
+    },
+     {
+        "pk": 5,
+        "model": "courses.userprofile_lesson",
+        "fields": {
+            "lesson": 1,
+            "date_complete": "2012-08-10",
+            "mark_complete": true,
+            "userprofile": 3
+        }
+    },
+    {
+        "pk": 6,
+        "model": "courses.userprofile_lesson",
+        "fields": {
+            "lesson": 1,
+            "date_complete": "2012-08-10",
+            "mark_complete": true,
+            "userprofile": 4
+        }
+    },
+    {
+        "pk": 7,
+        "model": "courses.userprofile_lesson",
+        "fields": {
+            "lesson": 1,
+            "date_complete": "2012-08-10",
+            "mark_complete": true,
+            "userprofile": 5
+        }
+    },
+    {
+        "pk": 8,
+        "model": "courses.userprofile_lesson",
+        "fields": {
+            "lesson": 1,
+            "date_complete": "2012-08-10",
+            "mark_complete": true,
+            "userprofile": 6
         }
     }
 ]

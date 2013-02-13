@@ -8,11 +8,10 @@ import pdb
 
 @login_required
 def bio(request):
-    template = 'registration/user_profile.html'
-    pdb.set_trace()
-    profile = request.user.get_profile()
-    user_lessons = profile.userprofile_lesson_set.all()
-    context_data = {    'profile': profile,
-                        'user_lessons': user_lessons,}
+    template = 'bio/bio.html'
+    bio = request.user.get_profile()
+#    user_lessons = profile.userprofile_lesson_set.all()
+    context_data = {    'bio': bio, }
+#                        'user_lessons': user_lessons,}
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)

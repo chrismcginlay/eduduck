@@ -15,7 +15,7 @@
         <tr><td>Accepted Terms & Conditions</td><td>
             {{ bio.accepted_terms }}
         </td></tr>
-        <tr><td>Registered Courses</td><td>
+        <tr><td>TODO Registered Courses</td><td>
             {% for c in bio.registered_courses.all %}
             <h4><a href="{{ c.get_absoulute_url }}">
                 {{ c.course_name }}</a></h4>
@@ -32,9 +32,14 @@
 
             </a></h4>
             {% empty %}
-            <p>You are not currently enrolled in any <a href=
-                '{% url 'courses.views.index' %}'>courses</a>.</p>
+            <p>TODO Not implemented</p>
             {% endfor %}
         </td></tr>
+        <tr><td>Webpage</td>
+            <td><a href='
+            {% filter force_escape %}{{ bio.webpage }}{% endfilter %}
+            '>{{ bio.webpage }}</a></td>
+        </tr>
+        <tr><td>Description</td><td>{{ bio.description }}</td></tr>
     </table>
 {% endblock zone1 %}

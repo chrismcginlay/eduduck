@@ -3,7 +3,7 @@
 
 {% block contentheading %}
 {% if user.is_authenticated %}
-    Welcome {{ user.username|capfirst }}: "{{ user.userprofile.signature_line }}"
+    Welcome {{ user.username|capfirst }}: "{{ user.bio.signature_line }}"
 {% else %}
     Join EduDuck
 {% endif %}
