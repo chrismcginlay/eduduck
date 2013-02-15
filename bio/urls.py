@@ -3,5 +3,5 @@ from django.conf import settings
 
 urlpatterns = patterns ('bio.views',
     url(r'^$', 'bio'),
-    url(r'^edit/$', 'bio_edit'),
+    url(r'^edit/$', 'edit'),
 )

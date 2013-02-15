@@ -87,5 +87,8 @@ class BioViewTests(TestCase):
         self.assertTrue(x in response.context for x in ['profile'])
         
 
-        
+class BioFormTests(TestCase):
+    """Test the operation of forms"""
+    
+    
 

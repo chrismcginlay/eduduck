@@ -22,17 +22,18 @@ def bio(request):
     return render_to_response(template, context_data, context_instance)
 
 @login_required
-def bio_edit(request):
+def edit(request):
     template = 'bio/bio_edit.html'
     bio = request.user.get_profile()
     assert(bio)
-    pdb.set_trace()
     if request.method == 'POST':
-        form = BioEditForm(request.POST)
+        form = BioEditForm(request.POST, instance=bio)
         if form.is_valid():
-            bio2 = form.save(commit=False)
-            bio2.user = User.objects.get(pk=request.user.id)
-            bio2.save()
+            bio.accepted_terms = form.cleaned_data['accepted_terms']
+            bio.signature_line = form.cleaned_data['signature_line']
+            bio.description = form.cleaned_data['description']
+            bio.webpage = form.cleaned_data['webpage']
+            bio.save()
             return HttpResponseRedirect('/accounts/bio/')
     else:
         form = BioEditForm(instance=bio)

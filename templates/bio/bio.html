@@ -1,4 +1,5 @@
 {% extends "bio/base_bio.html" %}
+{% load url from future %}
 
 {% block contentheading %}
     Bio: {{ user.get_full_name }}
@@ -6,6 +7,7 @@
 
 {% block zone1 %}
     <h3>Your Details</h3>
+    <a href="{%url 'bio.views.edit' %}">Edit Details</a>
     <table border="1">
         <tr><td>Name</td><td>{{ user.get_full_name }}</td></tr>
         <tr><td>Email</td><td>{{ user.email }}</td></tr>
