@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from .models import Bio
-from .views import bio
+
 
 class BioModelTests(TestCase):
     """Test the model used to present a user bio"""
@@ -71,21 +71,32 @@ class BioViewTests(TestCase):
         """Test response bio.views.bio"""
         
         #Not logged in, redirect.
-        response = self.client.get('/bio/')
-        self.assertEqual(response.status_code, 302)
+        response = self.client.get('/accounts/bio/')
+        #self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/accounts/login/?next=/accounts/bio/')
 
         #log in and check bio is available      
         login = self.client.login(username='bertie', password='bertword')
         self.assertTrue(login)
-        
-        #This is not working. Drop into trace and try by hand to see 
-        #no reverse match. Problem in urlconf? Test case returns before assertEqual 
-        #pdb.set_trace()
-        assert(False)
-        response = self.client.get('/bio/')
+        response = self.client.get('/accounts/bio/')
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(x in response.context for x in ['profile'])
+        self.assertTrue(x in response.context for x in ['bio'])
         
+    def test_bio_edit(self):
+        """Test response bio.views.edit"""
+        
+        #Not logged in, redirect.
+        response = self.client.get('/accounts/bio/edit/')
+        self.assertRedirects(response, '/accounts/login/?next=/accounts/bio/edit/')  
+        
+        #log in and check bio is available      
+        login = self.client.login(username='bertie', password='bertword')
+        self.assertTrue(login)
+        response = self.client.get('/accounts/bio/edit/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(x in response.context for x in ['bio', 'form'])   
+        
+        #TODO test view redirects valid form.
 
 class BioFormTests(TestCase):
     """Test the operation of forms"""

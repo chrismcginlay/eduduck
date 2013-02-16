@@ -4,11 +4,9 @@ from django.shortcuts import (render_to_response, get_object_or_404,
     get_list_or_404)
     
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 
 from .forms import BioEditForm
 
-import pdb
 
 @login_required
 def bio(request):
