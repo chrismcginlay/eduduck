@@ -388,13 +388,3 @@ class UserProfile_Lesson(models.Model):
         human_readable = str(self.userprofile) + "-" + str(self.lesson)
         return human_readable
         
-#########################################
-#   Signals Area
-#########################################
-
-#TODO see if this can move to the bio module
-@receiver(post_save, sender=User)
-def create_bio(sender, instance, created, **kwargs):
-    """Ensure user bio is created for each new user"""
-    if created:
-        Bio.objects.create(user=instance)

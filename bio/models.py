@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from django.contrib.auth.models import User
 
@@ -45,3 +47,13 @@ class Bio(models.Model):
     def get_absolute_url(self):
         assert self.id
         return ('bio.views.bio', [str(self.id)])
+        
+#########################################
+#   Signals Area
+#########################################
+
+@receiver(post_save, sender=User)
+def create_bio(sender, instance, created, **kwargs):
+    """Ensure user bio is created for each new user"""
+    if created:
+        Bio.objects.create(user=instance)

@@ -5,8 +5,9 @@ Unit tests for Courses app
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from .models import (Course, Lesson, Video, Attachment, 
-                     UserProfile, UserProfile_Lesson,
+from bio.models import Bio
+
+from .models import (Course, Lesson, Video, Attachment, UserProfile_Lesson,
                      LearningIntention, SuccessCriterion, LearningOutcome,)
 
 import pdb
@@ -66,14 +67,14 @@ class CourseModelTests(TestCase):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
-        self.userprofile1 = UserProfile.objects.get(user_id=1)
-        self.userprofile1.accepted_terms = True
-        self.userprofile1.signature_line = 'Learning stuff'
-        self.userprofile1.save()     
-        self.userprofile1.registered_courses.add(self.course1)
-        self.userprofile1.save()
-        self.userprofile_lesson1 = UserProfile_Lesson(
-            userprofile = self.userprofile1,
+        self.bio1 = Bio.objects.get(user_id=1)
+        self.bio1.accepted_terms = True
+        self.bio1.signature_line = 'Learning stuff'
+        self.bio1.save()     
+        self.bio1.registered_courses.add(self.course1)
+        self.bio1.save()
+        self.bio_lesson1 = UserProfile_Lesson(
+            bio = self.bio1,
             lesson = self.lesson1,
             date_complete = '2013-01-19',
             mark_complete = False,
@@ -123,17 +124,17 @@ class CourseModelTests(TestCase):
             self.assertEqual(self.attachment1.__dict__[key], val)   
         self.assertEqual(self.attachment1.course, self.course1)
 
-    def test_userProfile_create(self):
-        """UserProfile instance attributes are created OK"""
-        self.assertEqual(self.userprofile1.user, self.user1)
-        self.assertEqual(self.userprofile1.lessons.all()[0], self.lesson1)
-        #self.assertEqual(self.userprofile1.registered_courses, self.registered_courses)
+    def test_bio_create(self):
+        """Bio instance attributes are created OK"""
+        self.assertEqual(self.bio1.user, self.user1)
+        self.assertEqual(self.bio1.lessons.all()[0], self.lesson1)
+        #self.assertEqual(self.bio1.registered_courses, self.registered_courses)
         
     def test_userProfile_Lesson_create(self):
         """UserProfile_Lesson attributes are created OK"""
         for key,val in self.userprofile_lesson1_data.items():
             self.assertEqual(self.userprofile_lesson1.__dict__[key], val)        
-        self.assertEqual(self.userprofile_lesson1.userprofile, self.userprofile1)
+        self.assertEqual(self.userprofile_lesson1.bio, self.bio1)
         self.assertEqual(self.userprofile_lesson1.lesson, self.lesson1)
     
     def test_learningIntention_create(self):
@@ -199,14 +200,14 @@ class CourseViewTests(TestCase):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
-        self.userprofile1 = UserProfile.objects.get(user_id=1)
-        self.userprofile1.accepted_terms = True
-        self.userprofile1.signature_line = 'Learning stuff'
-        self.userprofile1.save()     
-        self.userprofile1.registered_courses.add(self.course1)
-        self.userprofile1.save()
+        self.bio1 = Bio.objects.get(user_id=1)
+        self.bio1.accepted_terms = True
+        self.bio1.signature_line = 'Learning stuff'
+        self.bio1.save()     
+        self.bio1.registered_courses.add(self.course1)
+        self.bio1.save()
         self.userprofile_lesson1 = UserProfile_Lesson(
-            userprofile = self.userprofile1,
+            bio = self.bio1,
             lesson = self.lesson1,
             date_complete = '2013-01-19',
             mark_complete = False,
