@@ -198,7 +198,11 @@ LOGGING = {
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
-        }
+        },
+#TODO uncomment when on Django 1.5
+#        'require_debug_true': {
+#            '()': 'django.utils.log.RequireDebugTrue'
+#        }
     },
     'handlers': {
         'null': {
@@ -210,10 +214,20 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
-        'syslog': {
+        'log_file': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.SysLogHandler',
-            'facility': 'LOG_USER',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/tmp/eduduck.log',
+            'maxBytes': 10*2**20, #10 MB
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'log_filedb': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/tmp/eduduck_db.log',
+            'maxBytes': 10*2**20, #10 MB
+            'backupCount': 5,
             'formatter': 'standard',
         },
         'console': {
@@ -228,12 +242,13 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        'eduduck.info': {
-            'handlers': ['syslog', 'console'],
-            'level': 'INFO',
+        '': {
+            'handlers': ['log_file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
         'django.db.backends': {
-            'handlers': ['console'],
+            'handlers': ['log_filedb', 'console'],
             'propagate': False,
             'level': 'DEBUG',
         },
