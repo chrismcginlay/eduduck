@@ -4,6 +4,9 @@ from django.template import RequestContext
 
 from courses.models import Course, Lesson, LearningIntention
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 #TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
 #TODO: improve request context:
@@ -11,6 +14,8 @@ from courses.models import Course, Lesson, LearningIntention
 
 def index(request):
     """Prepare variables for list of all courses"""
+    
+    logger.info('Course index view')
     course_list = Course.objects.all()
     course_count = Course.objects.count
     if request.user.is_authenticated():
