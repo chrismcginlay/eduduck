@@ -5,7 +5,6 @@ from django.template import RequestContext
 from courses.models import Course, Lesson, LearningIntention
 
 import logging
-
 logger = logging.getLogger(__name__)
 
 #TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
@@ -34,6 +33,7 @@ def index(request):
 def single(request, course_id):
     """Prepare variables for detail of a single course"""
     
+    logger.info('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
     template = 'courses/course_single.html'
     context_data = {'course': course}
@@ -43,7 +43,9 @@ def single(request, course_id):
     
 def lesson(request, course_id, lesson_id):
     """Prepare variables for detail of individual lesson"""
-
+    
+    logger.info('Course id=' + str(course_id) + \
+        ', Lesson id=' + str(lesson_id) + ' view')
     course = get_object_or_404(Course, id=course_id)
     lesson = get_object_or_404(Lesson, id=lesson_id)
     
@@ -64,6 +66,8 @@ def lesson(request, course_id, lesson_id):
 def learning_intention(request, lesson_id, learning_intention_id):
     """Prepare variables for learning intention template"""
     
+    logger.info('Lesson id=' + str(lesson_id) + \
+        ', Learn_Int id=' + str(learning_intention_id) + ' view')
     lesson = get_object_or_404(Lesson, id=lesson_id)
     learning_intention = get_object_or_404(LearningIntention, 
                                            id=learning_intention_id) 

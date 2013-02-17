@@ -7,9 +7,14 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import BioEditForm
 
+import logging
+logger = logging.getLogger(__name__)
 
 @login_required
 def bio(request):
+    """Display the user's bio details"""
+    
+    logger.info('Bio id=' + str(request.user.id) + ' view')
     template = 'bio/bio.html'
     bio = request.user.get_profile()
     assert(bio)
@@ -21,6 +26,9 @@ def bio(request):
 
 @login_required
 def edit(request):
+    """Allow edit of user's bio details"""
+    
+    logger.info('Bio id=' + str(request.user.id) + ' edit')    
     template = 'bio/bio_edit.html'
     bio = request.user.get_profile()
     assert(bio)

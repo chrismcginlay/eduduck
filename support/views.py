@@ -6,9 +6,13 @@ from django.template import RequestContext
 
 from .forms import SupportForm
 
+import logging
+logger = logging.getLogger(__name__)
+
 def support(request):
     """Provide a support/contact email form"""
     
+    logger.info('Support view')
     if request.method=="POST":
         form = SupportForm(request.POST)
         if form.is_valid():
