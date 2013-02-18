@@ -10,27 +10,26 @@ class UserCourse(models.Model):
     Attributes:
         course
         user
-        registered
-        completed
-        withdrawn
-        action      What the user just did (reg/complete/withdraw/reopen)
-        dt          Data and time of interaction
-        
+        registered  User is registered on this course. T/F
+        active      User is actively engaged on this course. T/F
+        withdrawn   User withdrew after registration, prior to completion. T/F
+        complete    User marked course complete. 
+        action      List of tuples of (datetime, action) taken 
+                    eg register/complete/withdraw/reopen). Order by date.
+
     """
     
-    course = models.ManyToManyField(Course, 
+    course = models.ForeignKey(Course, 
         help_text="Course user is referring to")
     user = models.ForeignKey(User, 
         help_text="User interacting with course")
     
-    #note
-    
-    """Course module should have methods as follows firing updates in this
-    module
-    
-    register(): registered true
-    withdraw(): registered false
-    complete(): registered true, completed true
-    reopen(): registered true, completed false
+    class Meta:
+        unique_together = (course, user)
+        
+    register(): registered true, active true
+    withdraw(): registered true, active false
+    complete(): registered true, active false, complete true
+    reopen(): registered true, active true, complete false
     
     these would 
