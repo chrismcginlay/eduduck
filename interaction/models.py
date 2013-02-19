@@ -27,9 +27,8 @@ class UserCourse(models.Model):
     class Meta:
         unique_together = (course, user)
         
-    register(): registered true, active true
+    """register(): registered true, active true
     withdraw(): registered true, active false
     complete(): registered true, active false, complete true
     reopen(): registered true, active true, complete false
-    
-    these would 
+    """
