@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -6,6 +7,21 @@ from django.contrib.auth.models import User
 
 from courses.models import Course
 
+class UCActions:
+    """Enumeration of actions
+    
+    REG.    User is registering
+    ACT.    User becomes active on course
+    WIT.    User withdraws from course
+    COM.    User completes the course
+    DEA.    User becomes inactive (e.g withdraw, complete)
+    REO.    User reopens course
+    """
+    
+    [REGISTRATION, ACTIVATION, WITHDRAWAL, COMPLETION, 
+    DEACTIVATION, REOPENING] = range(1,6)
+
+    
 class UserCourse(models.Model):
     """Track users interactions with courses.
 
@@ -19,7 +35,7 @@ class UserCourse(models.Model):
         active      User is actively engaged on this course. T/F
         withdrawn   User withdrew after registration, prior to completion. T/F
         complete    User marked course complete. 
-        action      History list of tuples of (datetime, action) taken 
+        history     History list of tuples of (datetime, action) taken 
                     eg register/complete/withdraw/reopen). Order by date.
 
     Methods:
@@ -36,6 +52,7 @@ class UserCourse(models.Model):
     active = models.BooleanField()
     withdrawn = models.BooleanField()
     complete = models.BooleanField()
+    history = models.TextField(null=True, blank=True)    
     
     class Meta:
         unique_together = ('course', 'user')
@@ -57,17 +74,20 @@ class UserCourse(models.Model):
             
             
     def register(self):
-        """Add new row. (user,course) should be unique"""
+        """Add new row (user,course) should be unique. This corresponds to
+        a new registration on a course"""
         
         registration = UserCourse.objects.get(user=self.user, course=self.course)
         assert not(registration)   #It should not exist.
         assert self.user
-        assert self.course
-        
+        assert self.cours
+                
         registration = UserCourse.create(self.user, self.course)
-        registration.action = (datetime.now(), 'registration')
+        hist = json.JSONDecoder(registration.history)
+        hist.append((datetime.now(), UCActions.REGISTRATION))
         registration.active = True
-        registration.action += (datetime.now(), 'activation')
+        hist.append((datetime.now(), UCActions.ACTIVATION))
+        registration.history = json.JSONEncoder(hist)       
         registration.save()
         
         assert registration._checkrep()
@@ -84,8 +104,8 @@ class UserCourse(models.Model):
             raise ValidationError(u'Already withdrawn from this course')
         self.active = False
         self.withdrawn = True
-        self.action += (datetime.now(), 'deactivation')
-        self.action += (datetime.now(), 'withdrawal')
+        self.action += (datetime.now(), UCActions.DEACTIVATION)
+        self.action += (datetime.now(), UCActions.WITHDRAWAL)
 
         assert self._checkrep()
 
@@ -101,8 +121,8 @@ class UserCourse(models.Model):
                 'because you have withdrawn from it')
         self.active = False
         self.complete = True
-        self.action += (datetime.now(), 'deactivation')
-        self.action += (datetime.now(), 'completion')
+        self.action += (datetime.now(), UCActions.DEACTIVATION)
+        self.action += (datetime.now(), UCActions.COMPLETION)
 
         assert self._checkrep()
 
@@ -117,18 +137,19 @@ class UserCourse(models.Model):
         self.active = True
         self.complete = False
         self.withdrawn = False
-        self.action += (datetime.now(), 'reopening')
-        self.action += (datetime.now(), 'activation')
+        self.action += (datetime.now(), UCActions.REOPENING)
+        self.action += (datetime.now(), UCActions.ACTIVATION)
 
         assert self._checkrep()
 
     def __init__(self, *args, **kwargs):
-        """checkrep on instantiation"""
+        """Run _checkrep on instantiation, deserialise JSON"""
         super (UserCourse, self).__init__(*args, **kwargs)
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
             self._checkrep()
+        self.history = json.JSONDecoder()
  
     def __unicode__(self):
         return u"User " + self.user.username + \
