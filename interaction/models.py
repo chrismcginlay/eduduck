@@ -33,6 +33,9 @@ class UserCourse(models.Model):
         help_text="Course user is referring to")
     user = models.ForeignKey(User, 
         help_text="User interacting with course")
+    active = models.BooleanField()
+    withdrawn = models.BooleanField()
+    complete = models.BooleanField()
     
     class Meta:
         unique_together = ('course', 'user')
@@ -126,9 +129,10 @@ class UserCourse(models.Model):
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
             self._checkrep()
-            
+ 
     def __unicode__(self):
-        return self.user + 'registration data for ' + self.course
+        return u"User " + self.user.username + \
+            u"'s registration data for course:" + self.course.course_name
     
     @models.permalink
     def get_absolute_url(self):
