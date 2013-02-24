@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .models import UserCourse
 
 @login_required
-def usercourse(request, course_id, user_id):
+def usercourse_single(request, user_id, course_id):
     """Decode and display user's history for a single course"""
     
     logger.info("Showing single course interaction for user")

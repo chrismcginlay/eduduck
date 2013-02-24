@@ -47,6 +47,7 @@ urlpatterns += patterns('quiz.views',
 )
 
 urlpatterns += patterns('',   
+    url(r'^interaction/', include('interaction.urls')),
     url(r'^accounts/bio/', include('bio.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^admin/', include(admin.site.urls)),
