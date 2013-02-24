@@ -174,6 +174,7 @@ INSTALLED_APPS = (
     'quiz',
     'support',
     'bio',
+    'interaction',
     #following provided account activation via email via django-registration
     'registration',
 )

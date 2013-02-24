@@ -19,7 +19,7 @@ class UCActions:
     """
     
     [REGISTRATION, ACTIVATION, WITHDRAWAL, COMPLETION, 
-    DEACTIVATION, REOPENING] = range(1,6)
+     DEACTIVATION, REOPENING] = range(1,7)
 
     
 class UserCourse(models.Model):
@@ -34,7 +34,7 @@ class UserCourse(models.Model):
         user
         active      User is actively engaged on this course. T/F
         withdrawn   User withdrew after registration, prior to completion. T/F
-        complete    User marked course complete. 
+        completed   User marked course complete. 
         history     History list of tuples of (datetime, action) taken 
                     eg register/complete/withdraw/reopen). Order by date.
 
@@ -49,9 +49,9 @@ class UserCourse(models.Model):
         help_text="Course user is referring to")
     user = models.ForeignKey(User, 
         help_text="User interacting with course")
-    active = models.BooleanField()
-    withdrawn = models.BooleanField()
-    complete = models.BooleanField()
+    active = models.BooleanField(default=True)
+    withdrawn = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
     history = models.TextField(null=True, blank=True)    
     
     class Meta:
@@ -64,7 +64,7 @@ class UserCourse(models.Model):
         count = 0                
         if self.active:
             count += 1
-        if self.complete:
+        if self.completed:
             count += 1
         if self.withdrawn:
             count += 1
@@ -80,7 +80,7 @@ class UserCourse(models.Model):
         registration = UserCourse.objects.get(user=self.user, course=self.course)
         assert not(registration)   #It should not exist.
         assert self.user
-        assert self.cours
+        assert self.course
                 
         registration = UserCourse.create(self.user, self.course)
         
@@ -125,7 +125,7 @@ class UserCourse(models.Model):
             raise ValidationError(u'Cannot mark this course as complete, '\
                 'because you have withdrawn from it')
         self.active = False
-        self.complete = True
+        self.completed = True
         #Below, hist is a (initially empty) list of (datetime, action) tuples
         hist = json.JSONDecoder(self.history).skipkeys
         hist.append((datetime.now(), UCActions.DEACTIVATION))
@@ -139,11 +139,11 @@ class UserCourse(models.Model):
    
         assert self._checkrep()
         
-        if not(self.complete or self.withdrawn):
+        if not(self.completed or self.withdrawn):
             raise ValidationError(u'You can only re-open if withdrawn '\
                 'or complete')
         self.active = True
-        self.complete = False
+        self.completed = False
         self.withdrawn = False
         #Below, hist is a (initially empty) list of (datetime, action) tuples
         hist = json.JSONDecoder(self.history).skipkeys
