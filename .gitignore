@@ -2,3 +2,4 @@
 .spyderproject
 .spyderworkspace
 .coverage
+.rope*

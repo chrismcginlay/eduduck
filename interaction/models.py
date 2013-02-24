@@ -83,7 +83,9 @@ class UserCourse(models.Model):
         assert self.cours
                 
         registration = UserCourse.create(self.user, self.course)
-        hist = json.JSONDecoder(registration.history)
+        
+        #Below, hist is a (initially empty) list of (datetime, action) tuples
+        hist = json.JSONDecoder(registration.history).skipkeys
         hist.append((datetime.now(), UCActions.REGISTRATION))
         registration.active = True
         hist.append((datetime.now(), UCActions.ACTIVATION))
@@ -104,9 +106,12 @@ class UserCourse(models.Model):
             raise ValidationError(u'Already withdrawn from this course')
         self.active = False
         self.withdrawn = True
-        self.action += (datetime.now(), UCActions.DEACTIVATION)
-        self.action += (datetime.now(), UCActions.WITHDRAWAL)
-
+        #Below, hist is a (initially empty) list of (datetime, action) tuples
+        hist = json.JSONDecoder(self.history).skipkeys
+        hist.append((datetime.now(), UCActions.DEACTIVATION))
+        hist.append((datetime.now(), UCActions.WITHDRAWAL))
+        self.history = json.JSONEncoder(hist)
+        self.save()
         assert self._checkrep()
 
     def complete(self):
@@ -121,9 +126,12 @@ class UserCourse(models.Model):
                 'because you have withdrawn from it')
         self.active = False
         self.complete = True
-        self.action += (datetime.now(), UCActions.DEACTIVATION)
-        self.action += (datetime.now(), UCActions.COMPLETION)
-
+        #Below, hist is a (initially empty) list of (datetime, action) tuples
+        hist = json.JSONDecoder(self.history).skipkeys
+        hist.append((datetime.now(), UCActions.DEACTIVATION))
+        hist.append((datetime.now(), UCActions.COMPLETION))
+        self.history = json.JSONEncoder(hist)
+        self.save()
         assert self._checkrep()
 
     def reopen(self):
@@ -137,19 +145,21 @@ class UserCourse(models.Model):
         self.active = True
         self.complete = False
         self.withdrawn = False
-        self.action += (datetime.now(), UCActions.REOPENING)
-        self.action += (datetime.now(), UCActions.ACTIVATION)
-
+        #Below, hist is a (initially empty) list of (datetime, action) tuples
+        hist = json.JSONDecoder(self.history).skipkeys
+        hist.append((datetime.now(), UCActions.REOPENING))
+        hist.append((datetime.now(), UCActions.ACTIVATION))
+        self.history = json.JSONEncoder(hist)
+        self.save()
         assert self._checkrep()
 
     def __init__(self, *args, **kwargs):
-        """Run _checkrep on instantiation, deserialise JSON"""
+        """Run _checkrep on instantiation"""
         super (UserCourse, self).__init__(*args, **kwargs)
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
             self._checkrep()
-        self.history = json.JSONDecoder()
  
     def __unicode__(self):
         return u"User " + self.user.username + \
