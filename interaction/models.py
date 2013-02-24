@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 
 from courses.models import Course
 
+import pdb 
+
 class UCActions:
     """Enumeration of actions
     
@@ -85,12 +87,12 @@ class UserCourse(models.Model):
         registration = UserCourse.create(self.user, self.course)
         
         #Below, hist is a (initially empty) list of (datetime, action) tuples
-        hist = json.JSONDecoder(registration.history).skipkeys
-        hist.append((datetime.now(), UCActions.REGISTRATION))
-        registration.active = True
-        hist.append((datetime.now(), UCActions.ACTIVATION))
-        registration.history = json.JSONEncoder(hist)       
-        registration.save()
+#        hist = json.JSONDecoder(registration.history).skipkeys
+#        hist.append((datetime.now(), UCActions.REGISTRATION))
+#        registration.active = True
+#        hist.append((datetime.now(), UCActions.ACTIVATION))
+#        registration.history = json.JSONEncoder(hist)       
+#        registration.save()
         
         assert registration._checkrep()
         return True
@@ -156,9 +158,18 @@ class UserCourse(models.Model):
     def __init__(self, *args, **kwargs):
         """Run _checkrep on instantiation"""
         super (UserCourse, self).__init__(*args, **kwargs)
+
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
+            
+            #TODO erm. This lot should be in a create method
+            hist = []
+            hist.append((datetime.now(), UCActions.REGISTRATION))
+            hist.append((datetime.now(), UCActions.ACTIVATION))
+            self.history = json.JSONEncoder(hist)
+            
+            #this should stay
             self._checkrep()
  
     def __unicode__(self):
