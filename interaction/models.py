@@ -162,16 +162,19 @@ class UserCourse(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            
-            #TODO erm. This lot should be in a create method
+            self._checkrep()
+ 
+    def save(self, *args, **kwargs):
+        """Perform history save steps"""
+        existing_row = self.pk
+        super(UserCourse, self).save(*args, **kwargs)
+        if not existing_row:
             hist = []
             hist.append((datetime.now(), UCActions.REGISTRATION))
             hist.append((datetime.now(), UCActions.ACTIVATION))
             self.history = json.JSONEncoder(hist)
-            
-            #this should stay
-            self._checkrep()
- 
+        
+
     def __unicode__(self):
         return u"User " + self.user.username + \
             u"'s registration data for course:" + self.course.course_name
