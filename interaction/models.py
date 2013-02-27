@@ -24,6 +24,8 @@ class UCActions:
     [REGISTRATION, ACTIVATION, WITHDRAWAL, COMPLETION, 
      DEACTIVATION, REOPENING] = range(1,7)
 
+    namelist = ['registration', 'activation', 'withdrawal', 'completion', 
+                'deactivation', 'reopening']
     
 class UserCourse(models.Model):
     """Track users interactions with courses.
@@ -171,9 +173,13 @@ class UserCourse(models.Model):
         existing_row = self.pk
         super(UserCourse, self).save(*args, **kwargs)
         if not existing_row:
+            pdb.set_trace()
             hist = []
-            hist.append((mktime(datetime.now()), UCActions.REGISTRATION))
-            hist.append((mktime(datetime.now()), UCActions.ACTIVATION))
+            current_time = datetime.now().utctimetuple()
+            
+            #use datetime.fromtimestamp(maketimetime to decode)
+            hist.append((mktime(current_time), UCActions.REGISTRATION))
+            hist.append((mktime(current_time), UCActions.ACTIVATION))
             self.history = json.dumps(hist)
             self.save()
 
