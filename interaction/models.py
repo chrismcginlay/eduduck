@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from time import mktime
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -166,14 +167,15 @@ class UserCourse(models.Model):
  
     def save(self, *args, **kwargs):
         """Perform history save steps"""
+        
         existing_row = self.pk
         super(UserCourse, self).save(*args, **kwargs)
         if not existing_row:
             hist = []
-            hist.append((datetime.now(), UCActions.REGISTRATION))
-            hist.append((datetime.now(), UCActions.ACTIVATION))
-            self.history = json.JSONEncoder(hist)
-        
+            hist.append((mktime(datetime.now()), UCActions.REGISTRATION))
+            hist.append((mktime(datetime.now()), UCActions.ACTIVATION))
+            self.history = json.dumps(hist)
+            self.save()
 
     def __unicode__(self):
         return u"User " + self.user.username + \
