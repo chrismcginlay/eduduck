@@ -10,22 +10,17 @@ from courses.models import Course
 
 import pdb 
 
-class UCActions:
-    """Enumeration of actions
-    
-    REG.    User is registering
-    ACT.    User becomes active on course
-    WIT.    User withdraws from course
-    COM.    User completes the course
-    DEA.    User becomes inactive (e.g withdraw, complete)
-    REO.    User reopens course
-    """
-    
-    [REGISTRATION, ACTIVATION, WITHDRAWAL, COMPLETION, 
-     DEACTIVATION, REOPENING] = range(1,7)
+class Enum(tuple): __getattr__ = tuple.index
 
-    namelist = ['registration', 'activation', 'withdrawal', 'completion', 
-                'deactivation', 'reopening']
+UCActions = Enum([
+    'REGISTRATION',
+    'ACTIVATION', 
+    'WITHDRAWAL', 
+    'COMPLETION',
+    'DEACTIVATION',
+    'REOPENING',
+    ])
+
     
 class UserCourse(models.Model):
     """Track users interactions with courses.
@@ -86,17 +81,7 @@ class UserCourse(models.Model):
         assert not(registration)   #It should not exist.
         assert self.user
         assert self.course
-                
         registration = UserCourse.create(self.user, self.course)
-        
-        #Below, hist is a (initially empty) list of (datetime, action) tuples
-#        hist = json.JSONDecoder(registration.history).skipkeys
-#        hist.append((datetime.now(), UCActions.REGISTRATION))
-#        registration.active = True
-#        hist.append((datetime.now(), UCActions.ACTIVATION))
-#        registration.history = json.JSONEncoder(hist)       
-#        registration.save()
-        
         assert registration._checkrep()
         return True
 
@@ -107,15 +92,17 @@ class UserCourse(models.Model):
         
         if self.completed:
             raise ValidationError(u'Cannot withdraw from completed course')
-        if self.withdraw:
+        if self.withdrawn:
             raise ValidationError(u'Already withdrawn from this course')
         self.active = False
         self.withdrawn = True
         #Below, hist is a (initially empty) list of (datetime, action) tuples
-        hist = json.JSONDecoder(self.history).skipkeys
-        hist.append((datetime.now(), UCActions.DEACTIVATION))
-        hist.append((datetime.now(), UCActions.WITHDRAWAL))
-        self.history = json.JSONEncoder(hist)
+        hist = []
+        current_time = mktime(datetime.now().utctimetuple())
+        hist = json.loads(self.history)
+        hist.append((current_time, UCActions.DEACTIVATION))
+        hist.append((current_time, UCActions.WITHDRAWAL))
+        self.history = json.dumps(hist)
         self.save()
         assert self._checkrep()
 
@@ -126,7 +113,7 @@ class UserCourse(models.Model):
         
         if self.completed:
             raise ValidationError(u'Already marked this course as complete')
-        if self.withdraw:
+        if self.withdrawn:
             raise ValidationError(u'Cannot mark this course as complete, '\
                 'because you have withdrawn from it')
         self.active = False
@@ -173,13 +160,11 @@ class UserCourse(models.Model):
         existing_row = self.pk
         super(UserCourse, self).save(*args, **kwargs)
         if not existing_row:
-            pdb.set_trace()
             hist = []
-            current_time = datetime.now().utctimetuple()
+            current_time = mktime(datetime.now().utctimetuple())
             
-            #use datetime.fromtimestamp(maketimetime to decode)
-            hist.append((mktime(current_time), UCActions.REGISTRATION))
-            hist.append((mktime(current_time), UCActions.ACTIVATION))
+            hist.append((current_time, UCActions.REGISTRATION))
+            hist.append((current_time, UCActions.ACTIVATION))
             self.history = json.dumps(hist)
             self.save()
 

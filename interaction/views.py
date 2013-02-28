@@ -26,7 +26,7 @@ def usercourse_single(request, user_id, course_id):
     pdb.set_trace()
     for row in history:
         date = datetime.datetime.fromtimestamp(row[0])
-        action = UCActions.namelist[row[1]]
+        action = UCActions[row[1]]
         reconstructed_history.append((date, action))
         
     template = 'interaction/usercourse_single.html'
