@@ -35,14 +35,18 @@ class UserCourse(models.Model):
         active      User is actively engaged on this course. T/F
         withdrawn   User withdrew after registration, prior to completion. T/F
         completed   User marked course complete. 
-        history     History list of tuples of (datetime, action) taken 
+        history     History list (datetime, action) taken. JSON coded. 
                     eg register/complete/withdraw/reopen). Order by date.
 
     Methods:
-        register    Create initial entry (check !exists)
+        save        Overrides base class save. For new row, 
+                    creates JSON coded history entries.
         withdraw
         complete
         reopen
+        
+    Helper Methods:
+        hist2list  Convert the JSON history to a list of (date, action) tuples
     """
     
     course = models.ForeignKey(Course, 
@@ -58,9 +62,9 @@ class UserCourse(models.Model):
         unique_together = ('course', 'user')
        
     def _checkrep(self):
-        """Verify consistency of attributes"""
-#TODO   This is basic. Need to do more, eg. look at action history list to see attributes are consistent with last action.
+        """Verify consistency of attributes and history"""
 
+        #First, basic attributes.
         count = 0                
         if self.active:
             count += 1
@@ -70,21 +74,40 @@ class UserCourse(models.Model):
             count += 1
         if count > 1:
             return False
-        return True
-            
-            
-    def register(self):
-        """Add new row (user,course) should be unique. This corresponds to
-        a new registration on a course"""
         
-        registration = UserCourse.objects.get(user=self.user, course=self.course)
-        assert not(registration)   #It should not exist.
-        assert self.user
-        assert self.course
-        registration = UserCourse.create(self.user, self.course)
-        assert registration._checkrep()
+        #Second, compare action history with attributes
+        decoded_history = self.hist2list()
+        last = decoded_history.pop()
+        last2 = decoded_history.pop()
+        
+        if self.active:
+            if last[1] != 'ACTIVATION':
+                return False
+            if last2[1] != 'REGISTRATION' or last2[1] != 'REOPENING':
+                return False
+                
+        if self.withdrawn:
+            if last[1] != 'DEACTIVATION' or last2[1] != 'WITHDRAWAL':
+                return False
+                
+        if self.completed:
+            if last[1] != 'DEACTIVATION' or last2[1] != 'COMPLETION':
+                return False       
+        
         return True
-
+             
+    def hist2list(self):
+        """Convert the JSON coded text in self.history to a list of tuples
+        of the form (datetime, action)"""
+        
+        assert(self.history)
+        history = json.loads(self.history)
+        list_tuple_hist = []
+        for row in history:
+            list_tuple_hist.append((
+                datetime.fromtimestamp(row[0]), UCActions[row[1]]))
+        return list_tuple_hist
+        
     def withdraw(self):
         """If not completed or already withdraw, set withdrawn."""
    
@@ -100,8 +123,8 @@ class UserCourse(models.Model):
         hist = []
         current_time = mktime(datetime.now().utctimetuple())
         hist = json.loads(self.history)
-        hist.append((current_time, UCActions.DEACTIVATION))
         hist.append((current_time, UCActions.WITHDRAWAL))
+        hist.append((current_time, UCActions.DEACTIVATION))
         self.history = json.dumps(hist)
         self.save()
         assert self._checkrep()
@@ -118,11 +141,11 @@ class UserCourse(models.Model):
                 'because you have withdrawn from it')
         self.active = False
         self.completed = True
-        #Below, hist is a (initially empty) list of (datetime, action) tuples
-        hist = json.JSONDecoder(self.history).skipkeys
-        hist.append((datetime.now(), UCActions.DEACTIVATION))
-        hist.append((datetime.now(), UCActions.COMPLETION))
-        self.history = json.JSONEncoder(hist)
+        hist = []
+        current_time = mktime(datetime.now().utctimetuple())
+        hist.append((current_time, UCActions.COMPLETION))
+        hist.append((current_time, UCActions.DEACTIVATION))
+        self.history = json.dumps(hist)
         self.save()
         assert self._checkrep()
 
@@ -137,11 +160,11 @@ class UserCourse(models.Model):
         self.active = True
         self.completed = False
         self.withdrawn = False
-        #Below, hist is a (initially empty) list of (datetime, action) tuples
-        hist = json.JSONDecoder(self.history).skipkeys
-        hist.append((datetime.now(), UCActions.REOPENING))
-        hist.append((datetime.now(), UCActions.ACTIVATION))
-        self.history = json.JSONEncoder(hist)
+        hist = []
+        current_time = mktime(datetime.now().utctimetuple())
+        hist.append((current_time, UCActions.REOPENING))
+        hist.append((current_time, UCActions.ACTIVATION))
+        self.history = json.dumps(hist)
         self.save()
         assert self._checkrep()
 
@@ -162,7 +185,6 @@ class UserCourse(models.Model):
         if not existing_row:
             hist = []
             current_time = mktime(datetime.now().utctimetuple())
-            
             hist.append((current_time, UCActions.REGISTRATION))
             hist.append((current_time, UCActions.ACTIVATION))
             self.history = json.dumps(hist)
