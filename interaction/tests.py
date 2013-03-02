@@ -24,10 +24,20 @@ class UserCourseModelTests(TestCase):
                    'course_level': 'Basic',
                    'course_credits': 30,
                    }
+
+    course2_data = {'course_code': 'EDU03',
+                   'course_name': 'The Coarse and The Hoarse',
+                   'course_abstract': 'High volume swearing leading to loss of voice',
+                   'course_organiser': 'Genghis Khan',
+                   'course_level': 'Advanced',
+                   'course_credits': 30,
+                   }
                    
     def setUp(self):
         self.course1 = Course(**self.course1_data)
         self.course1.save()
+        self.course2 = Course(**self.course2_data)
+        self.course2.save()
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
@@ -36,38 +46,34 @@ class UserCourseModelTests(TestCase):
         
     def test_checkrep(self):
         """Test the internal representation checker"""
-        
         self.assert_(self.uc._checkrep(), "New registration checkrep failed")
-        self.uc.withdrawn=True
-        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up error state")        
-        self.uc.withdrawn=False
-        self.uc.completed=True
-        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up error state")
-        self.uc.completed=False
         self.uc.active=False
-        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up error state")
+        self.uc.completed=False
+        self.uc.withdrawn=False
+        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up --- error state")
         self.uc.active=True
         self.uc.completed=True
         self.uc.withdrawn=False
-        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up mutually exclusive states")
+        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up AC- error state")
         self.uc.active=True
         self.uc.completed=False
         self.uc.withdrawn=True
-        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up mutually exclusive states")
+        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up A-W error state")
         self.uc.active=False
         self.uc.completed=True
         self.uc.withdrawn=True
-        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up mutually exclusive states")
+        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up -CW error state")
         self.uc.active=True
         self.uc.completed=True
         self.uc.withdrawn=True
-        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up mutually exclusive states")
+        self.assertFalse(self.uc._checkrep(), "Checkrep didn't pick up ACW error state")
 
+    def test_usercourse_create(self):
+        """Test creating new row"""
         
-    def test_register(self):
-        """Test that creating new row works"""
-        
-        self.uc = UserCourse(course=self.course1, user=self.user1).save()
+        pdb.set_trace()
+        self.uc = UserCourse(course=self.course2, user=self.user1)
+        self.uc.save()
         self.assert_(self.uc.pk, "Failed to create new db entry")
         self.assert_(self.uc._checkrep(), "_checkrep failed")
 

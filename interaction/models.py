@@ -72,7 +72,7 @@ class UserCourse(models.Model):
             count += 1
         if self.withdrawn:
             count += 1
-        if count > 1:
+        if count != 1:
             return False
         
         #Second, compare action history with attributes
@@ -83,7 +83,7 @@ class UserCourse(models.Model):
         if self.active:
             if last[1] != 'ACTIVATION':
                 return False
-            if last2[1] != 'REGISTRATION' or last2[1] != 'REOPENING':
+            if last2[1] != 'REGISTRATION' and last2[1] != 'REOPENING':
                 return False
                 
         if self.withdrawn:
