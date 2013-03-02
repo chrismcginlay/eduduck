@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from courses.models import Course
 
 import pdb 
+import logging
+logger = logging.getLogger(__name__)
 
 class Enum(tuple): __getattr__ = tuple.index
 
@@ -82,16 +84,20 @@ class UserCourse(models.Model):
         
         if self.active:
             if last[1] != 'ACTIVATION':
+                logger.error("Checkrep failed")
                 return False
             if last2[1] != 'REGISTRATION' and last2[1] != 'REOPENING':
+                logger.error("Checkrep failed")
                 return False
                 
         if self.withdrawn:
             if last[1] != 'DEACTIVATION' or last2[1] != 'WITHDRAWAL':
+                logger.error("Checkrep failed")
                 return False
                 
         if self.completed:
             if last[1] != 'DEACTIVATION' or last2[1] != 'COMPLETION':
+                logger.error("Checkrep failed")
                 return False       
         
         return True
@@ -101,6 +107,7 @@ class UserCourse(models.Model):
         of the form (datetime, action)"""
         
         assert(self.history)
+        logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" load history")
         history = json.loads(self.history)
         list_tuple_hist = []
         for row in history:
@@ -112,7 +119,7 @@ class UserCourse(models.Model):
         """If not completed or already withdraw, set withdrawn."""
    
         assert self._checkrep()
-        
+        logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" withdrawal")
         if self.completed:
             raise ValidationError(u'Cannot withdraw from completed course')
         if self.withdrawn:
@@ -132,7 +139,8 @@ class UserCourse(models.Model):
         """If not already completed set complete, deactivate"""
    
         assert self._checkrep()
-        
+        logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" completion")
+       
         if self.completed:
             raise ValidationError(u'Already marked this course as complete')
         if self.withdrawn:
@@ -152,7 +160,8 @@ class UserCourse(models.Model):
         """Re-open a course if already withdrawn or completed"""
    
         assert self._checkrep()
-        
+        logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" reopening")
+
         if not(self.completed or self.withdrawn):
             raise ValidationError(u'You can only re-open if withdrawn '\
                 'or complete')
@@ -182,6 +191,7 @@ class UserCourse(models.Model):
         existing_row = self.pk
         super(UserCourse, self).save(*args, **kwargs)
         if not existing_row:
+            logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" registration")
             hist = []
             current_time = mktime(datetime.now().utctimetuple())
             hist.append((current_time, UCActions.REGISTRATION))
