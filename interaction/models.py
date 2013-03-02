@@ -119,8 +119,7 @@ class UserCourse(models.Model):
             raise ValidationError(u'Already withdrawn from this course')
         self.active = False
         self.withdrawn = True
-        #Below, hist is a (initially empty) list of (datetime, action) tuples
-        hist = []
+        hist = json.loads(self.history)
         current_time = mktime(datetime.now().utctimetuple())
         hist = json.loads(self.history)
         hist.append((current_time, UCActions.WITHDRAWAL))
@@ -141,7 +140,7 @@ class UserCourse(models.Model):
                 'because you have withdrawn from it')
         self.active = False
         self.completed = True
-        hist = []
+        hist = json.loads(self.history)
         current_time = mktime(datetime.now().utctimetuple())
         hist.append((current_time, UCActions.COMPLETION))
         hist.append((current_time, UCActions.DEACTIVATION))
@@ -160,7 +159,7 @@ class UserCourse(models.Model):
         self.active = True
         self.completed = False
         self.withdrawn = False
-        hist = []
+        hist = json.loads(self.history)
         current_time = mktime(datetime.now().utctimetuple())
         hist.append((current_time, UCActions.REOPENING))
         hist.append((current_time, UCActions.ACTIVATION))
@@ -190,12 +189,25 @@ class UserCourse(models.Model):
             self.history = json.dumps(hist)
             self.save()
 
-    def __unicode__(self):
+    def __str__(self):
+        """Human readable summary"""
+        
         return u"User " + self.user.username + \
-            u"'s registration data for course:" + self.course.course_name
+            u"'s data for course:" + self.course.course_name
+            
+    def __unicode__(self):
+        """Summary for internal use"""
+        
+        return u"UC:%s, User:%s, Course:%s" % \
+            (self.pk, self.user.pk, self.course.pk)
     
     @models.permalink
     def get_absolute_url(self):
-        assert self.id >=1
-        return ('interaction.views.usercourse', [str(self.id)])
+        assert self.id
+        assert self.course
+        assert self.user
+        
+        return ('interaction.views.usercourse_single', (), {
+            'user_id': self.user.pk,
+            'course_id': self.course.pk })
                 
