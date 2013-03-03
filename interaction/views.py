@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 def usercourse_single(request, user_id, course_id):
     """Decode and display user's history for a single course"""
     
-    logger.info("Showing single course interaction for user")
+    logger.info("User:"+str(user_id)+",Course:"+str(course_id)+" view interactions")
     uc = get_object_or_404(UserCourse, course=course_id, user=user_id)
     history = uc.hist2list()
         

@@ -17,24 +17,21 @@
         <tr><td>Accepted Terms & Conditions</td><td>
             {{ bio.accepted_terms }}
         </td></tr>
-        <tr><td>TODO Registered Courses</td><td>
-            {% for c in bio.registered_courses.all %}
-            <h4><a href="{{ c.get_absoulute_url }}">
-                {{ c.course_name }}</a></h4>
-
-                <ul>{% for l in user_lessons %}
-                    <li><a href="{{ l.lesson.get_absolute_url }}">
-                        {{ l.lesson.lesson_name }}</a>
-                        {{ l.date_complete|default_if_none:"" }}, 
-                        Mark Complete: {{ l.mark_complete}}
-                    </li>
-                    {% empty %}
-                    {% endfor %}
-                </ul>
-
-            </a></h4>
+        <tr><td>Your Courses</td><td>
+            {% for uc in usercourses %}
+            <p><a href="{%url 'interaction.views.usercourse_single'
+                uc.user.pk uc.course.pk %}">
+                {{ uc.course.course_name }}</a> 
+                {% if uc.active %}
+                    active
+                {% elif uc.withdrawn %}
+                    withdrawn
+                {% elif uc.completed %}
+                    completed
+                {% endif %}
+            </p>
             {% empty %}
-            <p>TODO Not implemented</p>
+            <p>You have no registered courses</p>
             {% endfor %}
         </td></tr>
         <tr><td>Webpage</td>
