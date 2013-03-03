@@ -165,6 +165,17 @@ class UserCourseModelTests(TestCase):
         self.assertEqual(self.uc.withdrawn, False, "Should not be withdrawn")
         self.assertEqual(self.uc.completed, True, "Should be completed")
     
+    def test_get_status(self):
+        """Test that the correct status is returned"""
+        
+        self.assertEqual(self.uc.get_status(), 'active', "Status should be 'active'")
+        self.uc.complete()
+        self.assertEqual(self.uc.get_status(), 'completed', "Status should be 'completed'")
+        self.uc.reopen()
+        self.assertEqual(self.uc.get_status(), 'active', "Status should be 'active'")
+        self.uc.withdraw()
+        self.assertEqual(self.uc.get_status(), 'withdrawn', "Status should be 'withdrawn'")
+        
     def test___str__(self):
         """Test that the desired info is in the unicode method"""
         s = self.uc3.__str__()

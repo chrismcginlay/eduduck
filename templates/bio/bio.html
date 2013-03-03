@@ -18,10 +18,13 @@
             {{ bio.accepted_terms }}
         </td></tr>
         <tr><td>Your Courses</td><td>
+            <table border='1'><tr><th>Course Name</th>
+            <th>Course Home</th><th>Status/History</th></tr>
+
             {% for uc in usercourses %}
-            <p><a href="{%url 'interaction.views.usercourse_single'
-                uc.user.pk uc.course.pk %}">
-                {{ uc.course.course_name }}</a> 
+            <tr><td>{{ uc.course.course_name }}</td>
+            <td><a href='{{ uc.course.get_absolute_url }}'>visit</a></td>
+            <td><a href='{{ uc.get_absolute_url }}'> 
                 {% if uc.active %}
                     active
                 {% elif uc.withdrawn %}
@@ -29,10 +32,13 @@
                 {% elif uc.completed %}
                     completed
                 {% endif %}
-            </p>
+            </a></td></tr>
             {% empty %}
             <p>You have no registered courses</p>
+            </tr>
             {% endfor %}
+            
+            </table>
         </td></tr>
         <tr><td>Webpage</td>
             <td><a href='

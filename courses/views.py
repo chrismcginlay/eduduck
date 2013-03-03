@@ -2,7 +2,9 @@ from django.shortcuts import (render_to_response, get_object_or_404,
     get_list_or_404)
 from django.template import RequestContext
 
-from courses.models import Course, Lesson, LearningIntention
+from interaction.models import UserCourse
+from .models import Course, Lesson, LearningIntention
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -35,8 +37,12 @@ def single(request, course_id):
     
     logger.info('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
+    uc = get_object_or_404(UserCourse, course=course_id, user=request.user.pk)
+    history = uc.hist2list()
     template = 'courses/course_single.html'
-    context_data = {'course': course}
+    context_data = {'course': course,
+                    'uc': uc,
+                    'history': history}
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
     

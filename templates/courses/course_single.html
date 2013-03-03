@@ -44,6 +44,12 @@
     </section>
 
     <section id="zone2">
+        <h3>Your Progress</h3>
+        <p>Current status: {{ uc.get_status }}</p>
+        <p>TODO: provide 'complete', 'withdraw', 'reopen' buttons approp.</p>
+        <ol>{% for event in history %}
+            <li>{{ event.1 }} on {{ event.0 }}</li>
+        {% endfor %}</ol>
         <h3>Course News</h3>
         <p>Combined news feed, possibly user configurable forum RSS, 
         twitter, G+, Facebook etc. (Students often set up own groups</p>

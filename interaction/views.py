@@ -1,7 +1,4 @@
-import logging
-
-import pdb
-
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import (render_to_response, get_object_or_404, 
@@ -11,6 +8,9 @@ from django.contrib.auth.decorators import login_required
 
 from .models import UserCourse
 
+if settings.DEBUG: import pdb
+
+import logging
 logger = logging.getLogger(__name__)
 
 @login_required

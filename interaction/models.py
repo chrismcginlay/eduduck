@@ -175,6 +175,14 @@ class UserCourse(models.Model):
         self.history = json.dumps(hist)
         self.save()
         assert self._checkrep()
+        
+    def get_status(self):
+        """Return status string for human consumption"""
+        
+        if self.active: return 'active'
+        if self.withdrawn: return 'withdrawn'
+        if self.completed: return 'completed'
+        assert(False, "Invalid status")
 
     def __init__(self, *args, **kwargs):
         """Run _checkrep on instantiation"""
