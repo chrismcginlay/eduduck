@@ -114,7 +114,7 @@ class UserCourse(models.Model):
             list_tuple_hist.append((
                 datetime.fromtimestamp(row[0]), UCActions[row[1]]))
         return list_tuple_hist
-        
+               
     def withdraw(self):
         """If not completed or already withdraw, set withdrawn."""
    

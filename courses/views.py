@@ -1,13 +1,14 @@
+from django.conf import settings
 from django.shortcuts import (render_to_response, get_object_or_404, 
     get_list_or_404)
 from django.template import RequestContext
 
-from interaction.models import UserCourse
 from .models import Course, Lesson, LearningIntention
-
 
 import logging
 logger = logging.getLogger(__name__)
+
+if settings.DEBUG: import pdb
 
 #TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
 #TODO: improve request context:
@@ -33,16 +34,34 @@ def index(request):
     
     
 def single(request, course_id):
-    """Prepare variables for detail of a single course"""
+    """Prepare variables for detail of a single course
     
+    There are 3 distinct pathways through this view as regards 'Progress' area:
+    1. User is not authenticated. (Not logged in). Simplest case, present 
+        'login to register' type message in course area.
+    2. Authenticated, but not registered on this course. Provide 'register'.
+    3. Authenticated and registered. Provide full context variables.
+    """
+  
     logger.info('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
-    uc = get_object_or_404(UserCourse, course=course_id, user=request.user.pk)
-    history = uc.hist2list()
-    template = 'courses/course_single.html'
-    context_data = {'course': course,
-                    'uc': uc,
-                    'history': history}
+
+    if request.user.is_authenticated():
+        uc = request.user.usercourse_set.filter(course=course)
+        if uc.exists():
+            history = uc[0].hist2list()
+            context_data = {'course': course,
+                            'uc': uc[0],
+                            'history': history,
+                            'status': 'auth_reg'}
+        else:
+            context_data = {'course': course,
+                            'status': 'auth_noreg'}
+    else:
+        context_data = {'course': course,
+                        'status': 'anon'}
+    logger.debug('courses.single request context: status='+context_data['status']) 
+    template = 'courses/course_single.html'        
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
     

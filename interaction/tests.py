@@ -41,7 +41,13 @@ class UserCourseModelTests(TestCase):
                    'course_level': 'Horizontal',
                    'course_credits': 30,
                    }
-                   
+    course4_data = {'course_code': 'EDU05',
+                   'course_name': 'Golk',
+                   'course_abstract': 'The Contact Sport',
+                   'course_organiser': 'Ahfu Dent',
+                   'course_level': 'Medium',
+                   'course_credits': 30,
+                   }                   
     def setUp(self):
         self.course1 = Course(**self.course1_data)
         self.course1.save()
@@ -49,6 +55,9 @@ class UserCourseModelTests(TestCase):
         self.course2.save()
         self.course3 = Course(**self.course3_data)
         self.course3.save()
+        self.course4 = Course(**self.course4_data)
+        self.course4.save()
+        
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
@@ -124,7 +133,7 @@ class UserCourseModelTests(TestCase):
         self.assertEqual(last[1], 'ACTIVATION', "Action should be ACTIVATION")
         last = h2l_output.pop()
         self.assertEqual(last[1], 'REGISTRATION', "Action should be REGISTRATION")
-        
+              
     def test_withdraw(self):
         """Test the course withdraw method"""
         
@@ -189,7 +198,6 @@ class UserCourseModelTests(TestCase):
             (self.uc3.pk, self.uc3.user.pk, self.uc3.course.pk)
         self.assertEqual(unicod, s, "Unicode output failure")
 
-        
     def test_get_absolute_url(self):
         """Test the correct url is returned"""
         

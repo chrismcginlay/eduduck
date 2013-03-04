@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 
 from bio.models import Bio
 
+from interaction.models import UserCourse
 from .models import (Course, Lesson, Video, Attachment, UserProfile_Lesson,
                      LearningIntention, SuccessCriterion, LearningOutcome,)
 
@@ -47,8 +48,6 @@ class CourseModelTests(TestCase):
                         'att_seq': 3,
                         'attachment': 'empty_attachment_test.txt',
                         }
-    userprofile_lesson1_data = {'mark_complete': False,
-                               'date_complete': '2013-01-19',}
         
     def setUp(self):
         self.course1 = Course(**self.course1_data)
@@ -70,17 +69,8 @@ class CourseModelTests(TestCase):
         self.bio1 = Bio.objects.get(user_id=1)
         self.bio1.accepted_terms = True
         self.bio1.signature_line = 'Learning stuff'
-        self.bio1.save()     
-        self.bio1.registered_courses.add(self.course1)
         self.bio1.save()
-        self.bio_lesson1 = UserProfile_Lesson(
-            bio = self.bio1,
-            lesson = self.lesson1,
-            date_complete = '2013-01-19',
-            mark_complete = False,
-        )
-        self.userprofile_lesson1.save()
-        
+       
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
                                                     li_text = "Practise")
         self.learningintention1.save()                                            
@@ -127,16 +117,9 @@ class CourseModelTests(TestCase):
     def test_bio_create(self):
         """Bio instance attributes are created OK"""
         self.assertEqual(self.bio1.user, self.user1)
-        self.assertEqual(self.bio1.lessons.all()[0], self.lesson1)
+        #self.assertEqual(self.bio1.lessons.all()[0], self.lesson1)
         #self.assertEqual(self.bio1.registered_courses, self.registered_courses)
-        
-    def test_userProfile_Lesson_create(self):
-        """UserProfile_Lesson attributes are created OK"""
-        for key,val in self.userprofile_lesson1_data.items():
-            self.assertEqual(self.userprofile_lesson1.__dict__[key], val)        
-        self.assertEqual(self.userprofile_lesson1.bio, self.bio1)
-        self.assertEqual(self.userprofile_lesson1.lesson, self.lesson1)
-    
+          
     def test_learningIntention_create(self):
         """LearningIntention instance attributes are created OK"""
         self.assertEqual(self.learningintention1.lesson, self.lesson1)
@@ -204,15 +187,7 @@ class CourseViewTests(TestCase):
         self.bio1.accepted_terms = True
         self.bio1.signature_line = 'Learning stuff'
         self.bio1.save()     
-        self.bio1.registered_courses.add(self.course1)
-        self.bio1.save()
-        self.userprofile_lesson1 = UserProfile_Lesson(
-            bio = self.bio1,
-            lesson = self.lesson1,
-            date_complete = '2013-01-19',
-            mark_complete = False,
-        )
-        self.userprofile_lesson1.save()
+#        self.bio1.registered_courses.add(self.course1)
         
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
                                                     li_text = "Practise")
@@ -236,12 +211,37 @@ class CourseViewTests(TestCase):
         self.assertTrue(x in response.context for x in ['course_list', 
                                                         'course_count'])
             
-    def test_course_single(self):
-        """Check individual course page loads"""
+    def test_course_single_auth(self):
+        """Check course page loads for authorised user"""
+
+        #First, when the user is not registered on course
+        self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/')
         self.assertEqual(response.status_code, 200)
         #check template variables present and correct
-        self.assertTrue('course' in response.context)
+        self.assertIn('course', response.context, \
+            "Missing template var: course")
+        self.assertNotIn('uc', response.context, \
+            "Missing template var: uc")
+        self.assertNotIn('history', response.context, \
+            "Missing template var: history")       
+        self.assertEqual('auth_noreg', response.context['status'], \
+            "Registration status should be auth_noreg")
+            
+        #Register the user and repeat
+        uc = UserCourse(user=self.user1, course=self.course1)
+        uc.save()
+        response = self.client.get('/courses/1/')
+        self.assertEqual(response.status_code, 200)
+        #check template variables present and correct
+        self.assertIn('course', response.context, \
+            "Missing template var: course")
+        self.assertIn('uc', response.context, \
+            "Missing template var: uc")
+        self.assertIn('history', response.context, \
+            "Missing template var: history")
+        self.assertEqual('auth_reg', response.context['status'], \
+            "Registration status should be auth_reg")
         self.assertEqual(response.context['course'].pk, 1)
         
         #check 404 for non-existent course
@@ -251,6 +251,22 @@ class CourseViewTests(TestCase):
         #check redirect for trailing slash
         response = self.client.get('/courses/5')
         self.assertEqual(response.status_code, 301)
+
+    def test_course_single_unauth(self):        
+        """Check individual course page loads for unauth user"""
+
+        response = self.client.get('/courses/1/')
+        self.assertEqual(response.status_code, 200)
+        #check template variables present and correct
+        self.assertIn('course', response.context, \
+            "Missing template var: course")
+        self.assertNotIn('uc', response.context, \
+            "Missing template var: uc")
+        self.assertNotIn('history', response.context, \
+            "Missing template var: history")
+        self.assertEqual('anon', response.context['status'], \
+            "Registration status should be anon")
+        self.assertEqual(response.context['course'].pk, 1)   
         
     def test_course_lesson(self):
         """Test view of single lesson"""
