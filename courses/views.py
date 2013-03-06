@@ -3,6 +3,7 @@ from django.shortcuts import (render_to_response, get_object_or_404,
     get_list_or_404)
 from django.template import RequestContext
 
+from interaction.models import UserCourse
 from .models import Course, Lesson, LearningIntention
 
 import logging
@@ -16,7 +17,7 @@ if settings.DEBUG: import pdb
 
 def index(request):
     """Prepare variables for list of all courses"""
-    
+
     logger.info('Course index view')
     course_list = Course.objects.all()
     course_count = Course.objects.count
@@ -47,25 +48,56 @@ def single(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
     if request.user.is_authenticated():
-        uc = request.user.usercourse_set.filter(course=course)
-        if uc.exists():
-            history = uc[0].hist2list()
+        uc_set = request.user.usercourse_set.filter(course=course)
+        if uc_set.exists():
+            uc = uc_set[0]
+            if request.method == 'POST':
+                if 'course_withdraw' in request.POST:
+                    if uc.active:
+                        uc.withdraw()
+                        logger.info(str(uc) + 'withdraws')
+                    else:
+                        logger.error("Can't withdraw course, reason: not active")                        
+                if 'course_complete' in request.POST:
+                    if uc.active:
+                        uc.complete()
+                        logger.info(str(uc) + 'completes')
+                    else: 
+                        logger.error("Can't complete course, reason: not active")
+                if 'course_reopen' in request.POST:
+                    if uc.withdrawn or uc.completed:
+                        uc.reopen()
+                        logger.info(str(uc) + 'reopens')
+                    else:
+                        logger.error("Can't reopen course, reason: already active")
+            history = uc.hist2list()
             context_data = {'course': course,
-                            'uc': uc[0],
+                            'uc': uc,
                             'history': history,
-                            'status': 'auth_reg'}
+                            'status': 'auth_reg'}    
         else:
             context_data = {'course': course,
                             'status': 'auth_noreg'}
+            if request.method == 'POST':
+                if 'course_register' in request.POST:
+                    uc = UserCourse(user=request.user, course=course)
+                    uc.save()
+                    history = uc.hist2list()
+                    context_data = {'course': course,
+                                    'uc': uc,
+                                    'history': history,
+                                    'status': 'auth_reg'}
+                    logger.info(str(uc) + 'registers')
+                    
     else:
         context_data = {'course': course,
                         'status': 'anon'}
     logger.debug('courses.single request context: status='+context_data['status']) 
     template = 'courses/course_single.html'        
     context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
-    
-    
+    return render_to_response(template, context_data, context_instance) 
+
+   
 def lesson(request, course_id, lesson_id):
     """Prepare variables for detail of individual lesson"""
     
