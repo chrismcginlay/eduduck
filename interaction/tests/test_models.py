@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from courses.models import (Course)
-from .models import UserCourse
+from ..models import UserCourse
 
 import pdb
 
