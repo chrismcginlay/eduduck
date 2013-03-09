@@ -252,6 +252,10 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/5')
         self.assertEqual(response.status_code, 301)
 
+        #see that registration button works (user not registered)
+        response = self.client.post('/courses/2/', {'course_register':'Register'})
+        pdb.set_trace()
+        
     def test_course_single_unauth(self):        
         """Check individual course page loads for unauth user"""
 
@@ -268,6 +272,7 @@ class CourseViewTests(TestCase):
             "Registration status should be anon")
         self.assertEqual(response.context['course'].pk, 1)   
         
+
     def test_course_lesson(self):
         """Test view of single lesson"""
         response = self.client.get('/courses/1/lesson/1/')
