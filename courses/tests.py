@@ -252,9 +252,41 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/5')
         self.assertEqual(response.status_code, 301)
 
-        #see that registration button works (user not registered)
+        #see that unregistered user get the register button
+        response = self.client.get('/courses/2/')
+        self.assertIn('course_register', response.content)
+        self.assertEqual(response.context['status'], 'auth_noreg')
+        
+        #see that registration button works (user registers)
         response = self.client.post('/courses/2/', {'course_register':'Register'})
-        pdb.set_trace()
+        self.assertEqual(response.context['status'], 'auth_reg')
+        self.assertEqual(response.context['course'], self.course2)
+        self.assertIn('course_complete', response.content)
+        self.assertIn('course_withdraw', response.content)
+        self.assertEqual(response.context['uc'].active, True)        
+        
+        #see that a registered user can withdraw
+        response = self.client.post('/courses/2/', {'course_withdraw':'Withdraw'})
+        self.assertEqual(response.context['status'], 'auth_reg')
+        self.assertIn('course_reopen', response.content)
+        self.assertEqual(response.context['uc'].active, False)        
+        self.assertEqual(response.context['uc'].withdrawn, True)        
+        
+        #see that a withdrawn user can reopen
+        response = self.client.post('/courses/2/', {'course_reopen':'Re-open'})
+        self.assertEqual(response.context['status'], 'auth_reg')
+        self.assertIn('course_complete', response.content)
+        self.assertIn('course_withdraw', response.content)
+        self.assertEqual(response.context['uc'].active, True)
+        self.assertEqual(response.context['uc'].withdrawn, False)                
+        
+        #see that a registered user can complete
+        response = self.client.post('/courses/2/', {'course_complete':'Complete'})
+        self.assertEqual(response.context['status'], 'auth_reg')
+        self.assertIn('course_reopen', response.content)
+        self.assertEqual(response.context['uc'].active, False)                
+        self.assertEqual(response.context['uc'].completed, True)        
+        
         
     def test_course_single_unauth(self):        
         """Check individual course page loads for unauth user"""
