@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from courses.models import (Course)
-from ..models import UserCourse
+from ..models import UserCourse, UserLesson
 
 import pdb
 
@@ -206,4 +206,24 @@ class UserCourseModelTests(TestCase):
         c = self.uc3.course.pk
         s = "/interaction/user/%s/course/%s/"% (u,c)
         self.assertEqual(s, url, "URL error")
-        
+
+class UserLessonModelTests(TestCase):
+    """Test models user interaction with lessons"""
+
+    course1_data = {'course_code': 'EDU02',
+                   'course_name': 'A Course of Leeches',
+                   'course_abstract': 'Learn practical benefits of leeches',
+                   'course_organiser': 'Van Gogh',
+                   'course_level': 'Basic',
+                   'course_credits': 30,
+                   }
+
+    def setUp(self):
+        #set up one course, one user, register the user on the course.
+        self.course1 = Course(**self.course1_data)
+        self.course1.save()
+        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
+        self.user1.is_active = True
+        self.user1.save()
+        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc.save()       
