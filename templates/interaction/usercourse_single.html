@@ -1,14 +1,20 @@
 {% extends "interaction/base_interaction.html" %}
 
 {% block contentheading %}
-EduDuck UserCourse Single
+{{ uc.course.course_name }}
 {% endblock contentheading %}
 
 {% block zone1 %}
-<h3>Details of 1 User's Interactions with 1 Course</h3>
-<ol>
-{% for entry in history %}
-    <li>{{ entry }}</li>
-{% endfor %}
-</ol>
+    <h3>Your History on this Course</h3>
+    <ol>
+    {% for event in history %}
+        <li>{{ event.1 }} on {{ event.0 }}</li>
+    {% endfor %}
+    </ol>
 {% endblock zone1 %}
+
+{% block zone2 %}
+    <h3>Actions</h3>
+    <p>You can register/de-register or mark the course complete. 
+    <a href='{{ uc.course.get_absolute_url }}'>Follow this link</a></p>
+{% endblock zone2 %}
