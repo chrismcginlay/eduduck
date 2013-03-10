@@ -251,6 +251,7 @@ class UserLesson(models.Model):
         completed   Lesson marked complete. 
         history     History list (datetime, action) taken. JSON coded. 
                     eg visit/complete/reopen). Order by date.
+        note        Text comment area
 
     Methods:
         save        Overrides base class save. For new row, 
@@ -270,9 +271,10 @@ class UserLesson(models.Model):
     visited = models.BooleanField(default=False)
     completed = models.BooleanField(default=False)
     history = models.TextField(null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
     
     class Meta:
-        unique_together = ('course', 'user')
+        unique_together = ('lesson', 'user')
        
     def _checkrep(self):
         """Verify consistency of attributes and history"""

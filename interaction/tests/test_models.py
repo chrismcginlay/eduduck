@@ -7,7 +7,7 @@ import datetime
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from courses.models import (Course)
+from courses.models import (Course, Lesson)
 from ..models import UserCourse, UserLesson
 
 import pdb
@@ -226,4 +226,125 @@ class UserLessonModelTests(TestCase):
         self.user1.is_active = True
         self.user1.save()
         self.uc = UserCourse(course=self.course1, user=self.user1)
-        self.uc.save()       
+        self.uc.save()
+        self.lesson1 = Lesson(lesson_code="L1", 
+                              lesson_name="Test Lesson 1",
+                              course = self.course1)
+        self.lesson1.save()
+        self.ul = UserLesson(user=self.user1, lesson=self.lesson1)
+        self.lesson2 = Lesson(lesson_code="L2", 
+                              lesson_name="Test Lesson 2",
+                              course = self.course1)
+        self.lesson2.save()
+        self.ul2 = UserLesson(user=self.user1, lesson=self.lesson2)
+        self.lesson3 = Lesson(lesson_code="L3", 
+                              lesson_name="Test Lesson 3",
+                              course = self.course1)
+        self.lesson3.save()
+        self.ul3 = UserLesson(user=self.user1, lesson=self.lesson3)
+        
+    def test_checkrep(self):
+        """Test the internal representation checker with lesson 1"""
+        self.assert_(self.ul._checkrep(), "First visit to lesson - checkrep failed")
+        self.ul.visited = False
+        self.ul.completed = False
+        self.assertFalse(self.ul._checkrep(),"Checkrep didn't pick up failing state")
+        self.ul.visited = False
+        self.ul.completed = True
+        self.assertFalse(self.ul._checkrep(),"Checkrep didn't pick up failing state")
+        self.ul.visited = True
+        self.ul.completed = False
+        self.assertTrue(self.ul._checkrep(), "Checkrep failed")
+        self.ul.visited = True
+        self.ul.completed = True
+        self.assertFalse(self.ul._checkrep(), "Checkrep didn't pick up failing state")
+        
+        self.ul.complete()
+        self.assertTrue(self.ul._checkrep(), "Checkrep failed")
+        self.ul.completed = False
+        self.assertFalse(self.ul._checkrep(), "Checkrep didn't pick up failing state")
+        
+    def test_userlesson_create(self):
+        """Test creating new row with lesson 2"""
+        
+        self.assert_(self.ul2.pk, "Failed to create new db entry")
+        self.assert_(self.ul2._checkrep(), "_checkrep failed")
+
+    def test_hist2list(self):
+        """Test conversion of JSON encoded history to tuple list with course 3"""
+       
+        self.ul3.complete()
+        self.ul3.reopen()
+        self.ul3.complete()
+        
+        h2l_output = self.ul3.hist2list()
+        self.assertIsInstance(h2l_output, list, "Output should be a list")
+        for row in h2l_output:
+            self.assertIsInstance(row, tuple, "Entry should be a tuple")
+            self.assertIsInstance(row[0], datetime.datetime, "Should be a datetime")
+            self.assertIsInstance(row[1], str, "Action should be a string")
+            
+        #Now check the history messages in reverse order.
+        last = h2l_output.pop()
+        self.assertEqual(last[1], 'COMPLETING', "Action should be COMPLETING")
+        last = h2l_output.pop()
+        self.assertEqual(last[1], 'REOPENING', "Action should be REOPENING")
+        last = h2l_output.pop()
+        self.assertEqual(last[1], 'COMPLETING', "Action should be COMPLETING")
+        last = h2l_output.pop()
+        self.assertEqual(last[1], 'VISITING', "Action should be VISITING")
+
+        
+    def test_reopen(self):
+        """Test the lesson reopen method"""
+
+        self.ul.complete() 
+        self.ul.reopen()
+        h2l_output = self.ul.hist2list()
+        last = h2l_output.pop()
+        self.assertEqual(last[1], 'REOPENING', "Wrong action in history")
+        self.assertEqual(self.ul.visited, True, "Visited should be set")
+        self.assertEqual(self.ul.completed, False, "Completed should not be set")
+        
+    def test_complete(self):
+        """Test the lesson complete method"""
+        
+        self.ul.complete()
+        h2l_output = self.ul.hist2list()
+        last = h2l_output.pop()
+        self.assertEqual(last[1], 'COMPLETION', "Wrong action in history")
+        self.assertEqual(self.ul.visited, True, "Visited should be set")
+        self.assertEqual(self.ul.completed, True, "Completed should be set")
+    
+    def test_get_status(self):
+        """Test that the correct status is returned"""
+        
+        self.assertEqual(self.ul.get_status(), 'active', "Status should be 'active'")
+        self.ul.complete()
+        self.assertEqual(self.ul.get_status(), 'completed', "Status should be 'completed'")
+        self.ul.reopen()
+        self.assertEqual(self.ul.get_status(), 'active', "Status should be 'active'")
+        self.ul.withdraw()
+        self.assertEqual(self.ul.get_status(), 'withdrawn', "Status should be 'withdrawn'")
+        
+    def test___str__(self):
+        """Test that the desired info is in the unicode method"""
+        s = self.ul3.__str__()
+        self.assertIn(self.ul3.user.username, s, "The username should be in the unicode")
+        self.assertIn(self.ul3.lesson.lesson_name, s, "The lesson_name should be in the unicode")
+
+    def test___unicode__(self):
+        """Test that the desired info is in the unicode method"""
+        unicod = self.ul3.__unicode__()
+        s = u"UC:%s, User:%s, Lesson:%s" % \
+            (self.ul3.pk, self.ul3.user.pk, self.ul3.lesson.pk)
+        self.assertEqual(unicod, s, "Unicode output failure")
+
+    def test_get_absolute_url(self):
+        """Test the correct url is returned"""
+        
+        url = self.ul3.get_absolute_url()
+        u = self.ul3.user.pk
+        l = self.ul3.lesson.pk
+        s = "/interaction/user/%s/lesson/%s/"% (u,l)
+        self.assertEqual(s, url, "URL error")
