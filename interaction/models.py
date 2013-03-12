@@ -76,7 +76,7 @@ class UserCourse(models.Model):
         if self.withdrawn:
             count += 1
         if count != 1:
-            logger.error("Checkrep failed")
+            logger.error("UC Checkrep failed")
             return False
         
         #Second, compare action history with attributes
@@ -86,20 +86,20 @@ class UserCourse(models.Model):
         
         if self.active:
             if last[1] != 'ACTIVATION':
-                logger.error("Checkrep failed")
+                logger.error("UC Checkrep failed")
                 return False
             if last2[1] != 'REGISTRATION' and last2[1] != 'REOPENING':
-                logger.error("Checkrep failed")
+                logger.error("UC Checkrep failed")
                 return False
                 
         if self.withdrawn:
             if last[1] != 'DEACTIVATION' or last2[1] != 'WITHDRAWAL':
-                logger.error("Checkrep failed")
+                logger.error("UC Checkrep failed")
                 return False
                 
         if self.completed:
             if last[1] != 'DEACTIVATION' or last2[1] != 'COMPLETION':
-                logger.error("Checkrep failed")
+                logger.error("UC Checkrep failed")
                 return False       
         
         return True
@@ -281,24 +281,35 @@ class UserLesson(models.Model):
 
         #First, basic attributes.
         if self.completed and not self.visited:
-            logger.error("Checkrep failed")
+            logger.error("UL Checkrep failed")
             return False
         
         #Second, compare action history with attributes
         decoded_history = self.hist2list()
         first = decoded_history[0]
         
+        #If VISITING is the first history event then visited should be true
+        #and vice-versa.
         if self.visited:
             if first[1] != 'VISITING':
-                logger.error("Checkrep failed")
+                logger.error("UL Checkrep failed")
                 return False
-                
-        #Other than VISITING being the first history event, can't say anything
-        #about subsequent history events other than in 
+        if first[1] == 'VISITING':
+            if self.visited == False:
+                logger.error("UL Checkrep failed")
+                return False
+        #if the last history event is 'COMPLETING' then completed should be true
+        last = decoded_history.pop()
+        if last[1] == 'COMPLETING':
+            if self.completed == False:
+                logger.error("UL Checkrep failed")
+                return False
+        
+        #history events should be a member of the set 
         #[VISITING, COMPLETING, REOPENING]
         for event in decoded_history:
             if event[1] not in ULActions:
-                logger.error("Checkrep failed")
+                logger.error("UL Checkrep failed")
                 return False
         
         return True
@@ -308,7 +319,7 @@ class UserLesson(models.Model):
         of the form (datetime, action)"""
         
         assert(self.history)
-        logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" load history")
+        logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.lesson.pk)+" load history")
         history = json.loads(self.history)
         list_tuple_hist = []
         for row in history:
@@ -340,7 +351,7 @@ class UserLesson(models.Model):
         self.completed = True
         hist = json.loads(self.history)
         current_time = mktime(datetime.now().utctimetuple())
-        hist.append((current_time, ULActions.COMPLETION))
+        hist.append((current_time, ULActions.COMPLETING))
         self.history = json.dumps(hist)
         self.save()
         assert self._checkrep()
@@ -364,8 +375,9 @@ class UserLesson(models.Model):
     def get_status(self):
         """Return status string for human consumption"""
         
-        if self.visited: return 'visited'
-        elif self.completed: return 'completed'
+        #test completed first, as that will eclipse visited status.
+        if self.completed: return 'completed'
+        elif self.visited: return 'visited'
         else: return 'not visited'
 
     def __init__(self, *args, **kwargs):
@@ -383,11 +395,12 @@ class UserLesson(models.Model):
         existing_row = self.pk
         super(UserLesson, self).save(*args, **kwargs)
         if not existing_row:
-            logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.course.pk)+" first visit")
+            logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.lesson.pk)+" first visit")
             hist = []
             current_time = mktime(datetime.now().utctimetuple())
             hist.append((current_time, ULActions.VISITING))
             self.history = json.dumps(hist)
+            self.visited = True
             self.save()
 
     def __str__(self):

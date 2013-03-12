@@ -232,19 +232,23 @@ class UserLessonModelTests(TestCase):
                               course = self.course1)
         self.lesson1.save()
         self.ul = UserLesson(user=self.user1, lesson=self.lesson1)
+        self.ul.save()
         self.lesson2 = Lesson(lesson_code="L2", 
                               lesson_name="Test Lesson 2",
                               course = self.course1)
         self.lesson2.save()
         self.ul2 = UserLesson(user=self.user1, lesson=self.lesson2)
+        self.ul2.save()
         self.lesson3 = Lesson(lesson_code="L3", 
                               lesson_name="Test Lesson 3",
                               course = self.course1)
         self.lesson3.save()
         self.ul3 = UserLesson(user=self.user1, lesson=self.lesson3)
+        self.ul3.save()
         
     def test_checkrep(self):
         """Test the internal representation checker with lesson 1"""
+
         self.assert_(self.ul._checkrep(), "First visit to lesson - checkrep failed")
         self.ul.visited = False
         self.ul.completed = False
@@ -257,10 +261,11 @@ class UserLessonModelTests(TestCase):
         self.assertTrue(self.ul._checkrep(), "Checkrep failed")
         self.ul.visited = True
         self.ul.completed = True
-        self.assertFalse(self.ul._checkrep(), "Checkrep didn't pick up failing state")
-        
-        self.ul.complete()
         self.assertTrue(self.ul._checkrep(), "Checkrep failed")
+        
+        self.ul.completed = False
+        self.ul.complete()
+        self.assertTrue(self.ul2._checkrep(), "Checkrep failed")
         self.ul.completed = False
         self.assertFalse(self.ul._checkrep(), "Checkrep didn't pick up failing state")
         
@@ -312,29 +317,29 @@ class UserLessonModelTests(TestCase):
         self.ul.complete()
         h2l_output = self.ul.hist2list()
         last = h2l_output.pop()
-        self.assertEqual(last[1], 'COMPLETION', "Wrong action in history")
+        self.assertEqual(last[1], 'COMPLETING', "Wrong action in history")
         self.assertEqual(self.ul.visited, True, "Visited should be set")
         self.assertEqual(self.ul.completed, True, "Completed should be set")
     
     def test_get_status(self):
         """Test that the correct status is returned"""
         
-        self.assertEqual(self.ul.get_status(), 'active', "Status should be 'active'")
+        self.assertEqual(self.ul.get_status(), 'visited', "Status should be 'active'")
         self.ul.complete()
         self.assertEqual(self.ul.get_status(), 'completed', "Status should be 'completed'")
         self.ul.reopen()
-        self.assertEqual(self.ul.get_status(), 'active', "Status should be 'active'")
-        self.ul.withdraw()
-        self.assertEqual(self.ul.get_status(), 'withdrawn', "Status should be 'withdrawn'")
-        
+        self.assertEqual(self.ul.get_status(), 'visited', "Status should be 'active'")
+       
     def test___str__(self):
         """Test that the desired info is in the unicode method"""
+        
         s = self.ul3.__str__()
         self.assertIn(self.ul3.user.username, s, "The username should be in the unicode")
         self.assertIn(self.ul3.lesson.lesson_name, s, "The lesson_name should be in the unicode")
 
     def test___unicode__(self):
         """Test that the desired info is in the unicode method"""
+        
         unicod = self.ul3.__unicode__()
         s = u"UC:%s, User:%s, Lesson:%s" % \
             (self.ul3.pk, self.ul3.user.pk, self.ul3.lesson.pk)

@@ -6,7 +6,7 @@ from django.shortcuts import (render_to_response, get_object_or_404,
     
 from django.contrib.auth.decorators import login_required
 
-from .models import UserCourse
+from .models import UserCourse, UserLesson
 
 if settings.DEBUG: import pdb
 
@@ -26,3 +26,15 @@ def usercourse_single(request, user_id, course_id):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 
+def userlesson_single(request, user_id, lesson_id):
+    """Display user interactions with single lesson"""
+    
+    logger.info("User:"+str(user_id)+",Lesson:"+str(lesson_id)+" view interactions")
+    ul = get_object_or_404(UserLesson, lesson=lesson_id, user=user_id)
+    history = ul.hist2list()
+    
+    template = 'interaction/userlesson_single.html'
+    context_data = {'ul': ul, 'history': history}
+    context_instance = RequestContext(request)
+    return render_to_response(template, context_data, context_instance)
+    
