@@ -62,15 +62,20 @@
     <section id="zone2">
     {% if user.is_authenticated %}
         <h3>Your Progress</h3>
-        <p>Lesson / Complete Date/ Completed?</p>
-        <ol>                
-        {% for l in user_lessons %}
-        <li>{{ l.lesson.lesson_name }} /
-            {{ l.date_complete }} /
-            {{ l.mark_complete}}
-        </li>
-        {% endfor %}
-        </ol>
+        <ol>{% for event in history %}
+            <li>{{ event.1 }} lesson on {{ event.0 }}</li>
+        {% endfor %}</ol>
+        {% if not ul.completed %}
+        <form action='' method='post'>{% csrf_token %}
+            <input type="submit" name="lesson_complete" 
+            value="Mark Complete" title="You can manually mark this lesson as being complete">
+        </form>
+        {% else %}
+        <form action='' method='post'>{% csrf_token %}
+            <input type="submit" name="lesson_reopen" 
+            value="Un-mark/Re-open" title="This lesson is marked as complete, this will un-mark it (your data will not be lost)">
+        </form>
+        {% endif %}
     {% else %}
         <h3>Progress Record</h3>
         <p>Log in and register for this course, then you get to build up

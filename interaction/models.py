@@ -412,7 +412,7 @@ class UserLesson(models.Model):
     def __unicode__(self):
         """Summary for internal use"""
         
-        return u"UC:%s, User:%s, Lesson:%s" % \
+        return u"UL:%s, User:%s, Lesson:%s" % \
             (self.pk, self.user.pk, self.lesson.pk)
     
     @models.permalink

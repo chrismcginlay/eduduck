@@ -1,9 +1,10 @@
+from datetime import datetime, timedelta
 from django.conf import settings
 from django.shortcuts import (render_to_response, get_object_or_404, 
     get_list_or_404)
 from django.template import RequestContext
 
-from interaction.models import UserCourse
+from interaction.models import UserCourse, UserLesson
 from .models import Course, Lesson, LearningIntention
 
 import logging
@@ -71,11 +72,14 @@ def single(request, course_id):
                     else:
                         logger.error("Can't reopen course, reason: already active")
             history = uc.hist2list()
+            userlessons = uc.user.userlesson_set.all()
             context_data = {'course': course,
                             'uc': uc,
                             'history': history,
+                            'userlessons': userlessons,
                             'status': 'auth_reg'}    
         else:
+            #Here we provide for case 2, user registers
             context_data = {'course': course,
                             'status': 'auth_noreg'}
             if request.method == 'POST':
@@ -107,13 +111,48 @@ def lesson(request, course_id, lesson_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
     
     #data on user interaction with lesson
-    user_lessons = lesson.userprofile_lesson_set.all()
+    ul = None
+    if request.user.is_authenticated():
+        ul_set = request.user.userlesson_set.filter(lesson=lesson)
+        if ul_set.exists():
+            ul = ul_set[0]
+            if request.method == 'POST':
+                if 'lesson_complete' in request.POST:
+                    if not ul.completed:
+                        ul.complete()
+                        logger.info(str(ul) + 'user completes')
+                    else:
+                        logger.error("Can't complete lesson, reason: already complete")
+                if 'lesson_reopen' in request.POST:
+                    if ul.completed:
+                        ul.reopen()
+                        logger.info(str(ul) + 'user reopens')
+                    else:
+                        logger.error("Can't re-open lesson, reason: not complete")
+            else:
+                #Not a form submission,
+                #add distinct visit if more than 1 hour since last event
+                history = ul.hist2list()
+                last_event = history.pop()
+                event_date = last_event[0]
+                if (datetime.now() - event_date) > timedelta(hours=1):
+                    ul.visit()    
+        else:
+            ul = UserLesson(user=request.user, lesson=lesson)
+            ul.save()
+        #update history before passing to context
+        history = ul.hist2list()
+    else:
+        #User is not even authenticated, don't record anything
+        ul = None
+
     learning_intentions = lesson.learningintention_set.all()
     
     template = 'courses/course_lesson.html'
     context_data =  {'course':  course,
                      'lesson':  lesson,
-                     'user_lessons':        user_lessons,
+                     'ul':      ul,
+                     'history': history,
                      'learning_intentions': learning_intentions,
                     }
     context_instance = RequestContext(request)
