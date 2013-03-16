@@ -4,6 +4,7 @@ Unit tests for Interaction app
 
 import datetime
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from django.contrib.auth.models import User
 
@@ -217,11 +218,21 @@ class UserLessonModelTests(TestCase):
                    'course_level': 'Basic',
                    'course_credits': 30,
                    }
+                   
+    course2_data = {'course_code': 'EDU03',
+               'course_name': 'The Coarse and The Hoarse',
+               'course_abstract': 'High volume swearing leading to loss of voice',
+               'course_organiser': 'Genghis Khan',
+               'course_level': 'Advanced',
+               'course_credits': 30,
+               }
 
     def setUp(self):
         #set up one course, one user, register the user on the course.
         self.course1 = Course(**self.course1_data)
         self.course1.save()
+        self.course2 = Course(**self.course2_data)
+        self.course2.save()
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
@@ -270,11 +281,24 @@ class UserLessonModelTests(TestCase):
         self.assertFalse(self.ul._checkrep(), "Checkrep didn't pick up failing state")
         
     def test_userlesson_create(self):
-        """Test creating new row with lesson 2"""
+        """Test creating new row with lesson 2 and 4"""
         
         self.assert_(self.ul2.pk, "Failed to create new db entry")
         self.assert_(self.ul2._checkrep(), "_checkrep failed")
 
+        #lesson 4 should fail, as not registered on course2
+        self.lesson4 = Lesson(lesson_code="L4", 
+                      lesson_name="Test Lesson 4, in course 2",
+                      course = self.course2)
+        self.lesson4.save()
+        
+        ul4 = UserLesson(user=self.user1, lesson=self.lesson4)
+        try:
+            ul4.save()
+            self.fail("Should not save lesson record when not registered on course!")
+        except ObjectDoesNotExist:
+            pass
+        
     def test_hist2list(self):
         """Test conversion of JSON encoded history to tuple list with course 3"""
        
@@ -299,7 +323,6 @@ class UserLessonModelTests(TestCase):
         last = h2l_output.pop()
         self.assertEqual(last[1], 'VISITING', "Action should be VISITING")
 
-        
     def test_reopen(self):
         """Test the lesson reopen method"""
 
@@ -341,7 +364,7 @@ class UserLessonModelTests(TestCase):
         """Test that the desired info is in the unicode method"""
         
         unicod = self.ul3.__unicode__()
-        s = u"UC:%s, User:%s, Lesson:%s" % \
+        s = u"UL:%s, User:%s, Lesson:%s" % \
             (self.ul3.pk, self.ul3.user.pk, self.ul3.lesson.pk)
         self.assertEqual(unicod, s, "Unicode output failure")
 

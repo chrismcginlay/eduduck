@@ -68,11 +68,11 @@
             <tr><th>Status</th><th>Lesson</th></tr>
             </thead>
             <tbody>
-                {% for ul in userlessons %}<tr><td>
+                {% for lesson, ul in lessons %}<tr><td>
                     {% if ul.completed %}Completed
                     {% elif ul.visited %}Visited
                     {% endif %}
-                    </td><td>{{ ul.lesson.lesson_name }}</td></tr>
+                    </td><td>{{ lesson.lesson_name }}</td></tr>
                 {% endfor %}
             </tbody>
             </table>

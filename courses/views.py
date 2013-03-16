@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.shortcuts import (render_to_response, get_object_or_404, 
     get_list_or_404)
@@ -72,11 +73,23 @@ def single(request, course_id):
                     else:
                         logger.error("Can't reopen course, reason: already active")
             history = uc.hist2list()
-            userlessons = uc.user.userlesson_set.all()
+            lessons_in_course = uc.course.lesson_set.all() #all lessons in course
+            lessons_visited = uc.user.userlesson_set.all() #visited lessons
+
+            #Prepare a list of tuples to pass to template. 
+            #(lesson in course, userlesson interaction or None)
+            lessons = []
+            for lic in lessons_in_course:
+                #see if the lesson has been visited
+                try:
+                    lv = lessons_visited.get(lesson=lic)
+                except ObjectDoesNotExist:
+                    lv = None   
+                lessons.append((lic, lv))
             context_data = {'course': course,
                             'uc': uc,
                             'history': history,
-                            'userlessons': userlessons,
+                            'lessons': lessons,
                             'status': 'auth_reg'}    
         else:
             #Here we provide for case 2, user registers
