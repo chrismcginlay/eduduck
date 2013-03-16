@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from bio.models import Bio
 
 from interaction.models import UserCourse
-from .models import (Course, Lesson, Video, Attachment, UserProfile_Lesson,
+from .models import (Course, Lesson, Video, Attachment, 
                      LearningIntention, SuccessCriterion, LearningOutcome,)
 
 import pdb
@@ -354,7 +354,6 @@ class CourseViewTests(TestCase):
                          
         self.assertNotEqual(response.context['ul'], None, 
                          "There should be a userlesson - authenticated")                 
-        pdb.set_trace()
         #see that lesson complete button works 
         response = self.client.post('/courses/1/lesson/1/', {'lesson_complete':'Complete'})
         self.assertIn('lesson_reopen', response.content)

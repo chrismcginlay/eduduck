@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 from courses.models import (
-    Course, Lesson, Video, Attachment, UserProfile_Lesson,
+    Course, Lesson, Video, Attachment,
     LearningIntention, SuccessCriterion, LearningOutcome
     )
 from bio.models import Bio
