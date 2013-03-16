@@ -13,9 +13,8 @@ logger = logging.getLogger(__name__)
 
 if settings.DEBUG: import pdb
 
-#TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/
-#TODO: improve request context:
-#http://lincolnloop.com/blog/2008/may/10/getting-requestcontext-your-templates/
+#TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/ 
+#^ esp. for AJAX, when time comes.
 
 def index(request):
     """Prepare variables for list of all courses"""

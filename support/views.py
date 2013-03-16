@@ -27,4 +27,6 @@ def support(request):
         form = SupportForm()
         
     context_instance = RequestContext(request)
-    return render_to_response('support/support.html', {'support_form': form}, context_instance)
+    return render_to_response('support/support.html', 
+                              {'support_form': form}, 
+                              context_instance)
