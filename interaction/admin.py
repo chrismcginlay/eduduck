@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UserCourse
+from .models import UserCourse, UserLesson
 
 class UserCourseAdmin(admin.ModelAdmin):
     list_display = ('pk', 'user', 'course', 'active')
@@ -9,4 +9,11 @@ class UserCourseAdmin(admin.ModelAdmin):
     fields = (('user', 'course'), 'active', 'completed', 'withdrawn', 'history')
     readonly_fields = ('user', 'course', 'active', 'completed', 'withdrawn', 'history')
 
+class UserLessonAdmin(admin.ModelAdmin):
+    list_filter = ('user', 'lesson', 'completed')
+    search_fields = ('user', 'lesson')
+    readonly_fields = ('user', 'lesson', 'visited', 
+                       'completed', 'history', 'note')
+    
 admin.site.register(UserCourse, UserCourseAdmin)
+admin.site.register(UserLesson, UserLessonAdmin)

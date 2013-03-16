@@ -327,22 +327,22 @@ class UserLesson(models.Model):
                 datetime.fromtimestamp(row[0]), ULActions[row[1]]))
         return list_tuple_hist
     
-#    def visit(self):
-#        """Mark lesson as visited"""
-#        
-#        assert self._checkrep()
-#        course_record = self.user.usercourse_set.get(user=self.user)
-#        #view should not try to record lesson unless registered on course
-#        assert(course_record)
-#
-#        logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.lesson.pk)+" visiting")
-#        self.visited = True
-#        hist = json.loads(self.history)
-#        current_time = mktime(datetime.now().utctimetuple())
-#        hist.append((current_time, ULActions.VISITING))
-#        self.history = json.dumps(hist)
-#        self.save()
-#        assert self._checkrep()
+    def visit(self):
+        """Mark lesson as visited"""
+        
+        assert self._checkrep()
+        course_record = self.user.usercourse_set.get(course=self.lesson.course)
+        #view should not try to record lesson unless registered on course
+        assert(course_record)
+
+        logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.lesson.pk)+" visiting")
+        self.visited = True
+        hist = json.loads(self.history)
+        current_time = mktime(datetime.now().utctimetuple())
+        hist.append((current_time, ULActions.VISITING))
+        self.history = json.dumps(hist)
+        self.save()
+        assert self._checkrep()
         
     def complete(self):
         """If not already completed set complete"""

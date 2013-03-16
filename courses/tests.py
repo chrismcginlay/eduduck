@@ -2,6 +2,8 @@
 Unit tests for Courses app
 """
 
+import json
+from datetime import datetime
 from django.test import TestCase
 from django.contrib.auth.models import User
 
@@ -152,9 +154,20 @@ class CourseViewTests(TestCase):
                    'course_level': '5',
                    'course_credits': 20,
                    }  
+    course3_data = {'course_code': 'G3',
+                   'course_name': 'Nut Bagging',
+                   'course_abstract': 'Put the nuts in the bag',
+                   'course_organiser': 'Arthur H. Boffin',
+                   'course_level': '4',
+                   'course_credits': 42,
+                   }
     lesson1_data = {'lesson_code': 'B1',
                     'lesson_name': 'Introduction to Music',
                     'abstract': 'A summary of what we cover',
+                   }
+    lesson2_data = {'lesson_code': 'B2',
+                    'lesson_name': 'Stuff',
+                    'abstract': 'Not a lot',
                    }
     video1_data = {'video_code': 'MV2',
                    'url': 'http://youtu.be/LIM--jfnKeU',
@@ -171,8 +184,12 @@ class CourseViewTests(TestCase):
         self.course1.save()
         self.course2 = Course(**self.course2_data)
         self.course2.save()
+        self.course3 = Course(**self.course3_data)
+        self.course3.save()
         self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
         self.lesson1.save()
+        self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
+        self.lesson2.save()
         self.video1 = Video(course=self.course1, **self.video1_data)
         self.video1.save()
         self.video2 = Video(lesson=self.lesson1, **self.video1_data)
@@ -218,7 +235,7 @@ class CourseViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/')
         self.assertEqual(response.status_code, 200)
-        #check template variables present and correct
+        #check template variables present as approp
         self.assertIn('course', response.context, \
             "Missing template var: course")
         self.assertNotIn('uc', response.context, \
@@ -305,12 +322,57 @@ class CourseViewTests(TestCase):
         self.assertEqual(response.context['course'].pk, 1)   
         
 
-    def test_course_lesson(self):
-        """Test view of single lesson"""
+    def test_course_lesson_unauth(self):
+        """Test view of single lesson for unauthenticated user"""
+
+        self.client.logout()        
         response = self.client.get('/courses/1/lesson/1/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
-            for x in ['course', 'lesson', 'user_lessons'])
+            for x in ['course', 'lesson', 'ul', 
+                      'history', 'learning_intentions'])
+        self.assertEqual(response.context['history'], None, 
+                         "There should be no history - unauthenticate")
+        self.assertEqual(response.context['ul'], None, 
+                         "There should be no userlesson - unauthenticated")                 
+
+    def test_course_lesson_auth(self):
+        """Test view of single lesson for authenticated user"""
+
+        self.client.login(username='bertie', password='bertword')        
+
+        #First for user who is registered on course
+        uc = UserCourse(course=self.course1, user=self.user1)
+        uc.save()        
+        response = self.client.get('/courses/1/lesson/1/')
+        self.assertEqual(response.status_code, 200)
+        hist = response.context['history'].pop()
+        self.assertIsInstance(hist[0], datetime, 
+                         "Problem with lesson history timestamp")
+        self.assertEqual(hist[1], 'VISITING', 
+                         "Problem with lesson history activity")
+                         
+        self.assertNotEqual(response.context['ul'], None, 
+                         "There should be a userlesson - authenticated")                 
+        pdb.set_trace()
+        #see that lesson complete button works 
+        response = self.client.post('/courses/1/lesson/1/', {'lesson_complete':'Complete'})
+        self.assertIn('lesson_reopen', response.content)
+        self.assertEqual(response.context['ul'].completed, True) 
+                
+        #see that lesson reopen button works 
+        response = self.client.post('/courses/1/lesson/1/', {'lesson_reopen':'Re-open'})
+        self.assertIn('lesson_complete', response.content)
+        self.assertEqual(response.context['ul'].completed, False)        
+                         
+        #then check context for user not registered on course
+        response = self.client.get('/courses/3/lesson/2/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['history'], None, 
+                         "There should be no history - unregistered")
+        self.assertEqual(response.context['ul'], None, 
+                         "There should be no userlesson - unregistered")                 
+
                                                         
     def test_learning_intention(self):
         """Test view of a single learning intention"""

@@ -26,6 +26,7 @@ def usercourse_single(request, user_id, course_id):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 
+@login_required
 def userlesson_single(request, user_id, lesson_id):
     """Display user interactions with single lesson"""
     

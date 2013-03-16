@@ -142,6 +142,7 @@ def lesson(request, course_id, lesson_id):
                         logger.info(str(ul) + 'user reopens')
                     else:
                         logger.error("Can't re-open lesson, reason: not complete")
+                history = ul.hist2list()
             else:
                 #Not a form submission,
                 #add distinct visit if more than 1 hour since last event
@@ -149,15 +150,22 @@ def lesson(request, course_id, lesson_id):
                 last_event = history.pop()
                 event_date = last_event[0]
                 if (datetime.now() - event_date) > timedelta(hours=1):
-                    ul.visit()    
+                    ul.visit() 
+                history = ul.hist2list()                    
         else:
-            ul = UserLesson(user=request.user, lesson=lesson)
-            ul.save()
-        #update history before passing to context
-        history = ul.hist2list()
+            #first visit. Must be registered on course
+            try:
+                request.user.usercourse_set.get(course=course)
+                ul = UserLesson(user=request.user, lesson=lesson)
+                ul.save()
+                history = ul.hist2list()
+            except:
+                #not registered on course, do nothing quietly, no need to log
+                history = None
     else:
         #User is not even authenticated, don't record anything
         ul = None
+        history = None
 
     learning_intentions = lesson.learningintention_set.all()
     

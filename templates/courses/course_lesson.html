@@ -2,6 +2,8 @@
 {% load staticfiles %}
 
 {% block pagenav %}
+<a href='{{ lesson.course.get_absolute_url }}'>
+    Course Home</a>
 <span class='prevnext'>
     {% if lesson.get_prev %}
         &lt; 
@@ -60,7 +62,7 @@
     </section>
 
     <section id="zone2">
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and history %}
         <h3>Your Progress</h3>
         <ol>{% for event in history %}
             <li>{{ event.1 }} lesson on {{ event.0 }}</li>
@@ -78,7 +80,7 @@
         {% endif %}
     {% else %}
         <h3>Progress Record</h3>
-        <p>Log in and register for this course, then you get to build up
+        <p>Log in and/or register for this course, then you get to build up
         a detailed log of your awesomeness here.</p>
     {% endif %}
         <h3>Learning Intentions</h3>

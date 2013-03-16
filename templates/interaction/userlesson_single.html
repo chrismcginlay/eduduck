@@ -1,7 +1,7 @@
 {% extends "interaction/base_interaction.html" %}
 
 {% block contentheading %}
-{{ uc.lesson.lesson_name }}
+{{ ul.lesson.lesson_name }}
 {% endblock contentheading %}
 
 {% block zone1 %}
@@ -16,5 +16,5 @@
 {% block zone2 %}
     <h3>Actions</h3>
     <p>You can mark the lesson as complete or add a note such as 'revise this'. 
-    <a href='{{ uc.lesson.get_absolute_url }}'>Follow this link</a></p>
+    <a href='{{ ul.lesson.get_absolute_url }}'>Follow this link</a></p>
 {% endblock zone2 %}
