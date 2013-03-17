@@ -6,8 +6,7 @@ from django.shortcuts import (render_to_response, get_object_or_404,
 from django.template import RequestContext
 
 from interaction.models import UserCourse, UserLesson
-from outcome.models import LearningIntention
-from .models import Course, Lesson, 
+from .models import Course, Lesson
 
 import logging
 logger = logging.getLogger(__name__)

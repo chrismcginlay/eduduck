@@ -10,6 +10,9 @@
 ##Unit tests at present, and how to run them:##
 `python manage.py test courses`
 `python manage.py test interaction`
+`python manage.py test bio`
+`python manage.py test outcome`
+`python manage.py test support`
 
 ##ERROR status in logs after running tests##
 Because the tests intentionally subject the models to failure cases, the tests 

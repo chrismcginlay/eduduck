@@ -1,13 +1,15 @@
 from django.test import TestCase
+
 from courses.models import Course, Lesson
 from ..models import (LearningIntention,
-                      SuccessCriterion,
-                      LearningOutcome)
-import pdb
+                     SuccessCriterion,
+                     LearningOutcome)
 
-class OutcomeViewTests(TestCase):
-    """Test the outcome specific views"""
-    
+import pdb 
+
+class OutcomeModelTests(TestCase):
+    """Test the models of the outcome app"""
+
     course1_data = {'course_code': 'EDU02',
                    'course_name': 'A Course of Leeches',
                    'course_abstract': 'Learn practical benefits of leeches',
@@ -30,25 +32,28 @@ class OutcomeViewTests(TestCase):
         self.learningintention1.save()                                            
         self.successcriterion1 = SuccessCriterion(
             learning_intention = self.learningintention1, 
-            criterion_text = "Choose Topaz"
+            criterion_text = "Choose"
         )
         self.successcriterion1.save()                                          
         self.learningoutcome1 = LearningOutcome(
             learning_intention = self.learningintention1, 
-            lo_text = "Calculate 6*9"
+            lo_text = "Calculate"
         )
         self.learningoutcome1.save()    
-    
-    def test_learning_intention(self):
-        """Test view of a single learning intention"""
+                     
+    def test_learningIntention_create(self):
+        """LearningIntention instance attributes are created OK"""
         
-        response = self.client.get('/lesson/1/lint/1/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(x in response.context
-            for x in ['lesson_id', 'lesson_intention_id'])
-        self.assertIn("Choose Topaz", response.content, "LO missing")
-        self.assertIn("Calculate 6*9", response.content, "SC missing")
-
-        #test non-existing LI        
-        response = self.client.get('/lesson/1/lint/5/')
-        self.assertEqual(response.status_code, 404)
+        pdb.set_trace()
+        self.assertEqual(self.learningintention1.lesson, self.lesson1)
+        self.assertEqual(self.learningintention1.li_text, "Practise")
+    
+    def test_successCriterion_create(self):
+        """SuccessCriterion instance attributes are created OK"""
+        self.assertEqual(self.successcriterion1.learning_intention, self.learningintention1)
+        self.assertEqual(self.successcriterion1.criterion_text, "Choose")
+        
+    def test_learningOutcome_create(self):
+        """LearningOutcome instance attributes are created OK"""
+        self.assertEqual(self.learningoutcome1.learning_intention, self.learningintention1)
+        self.assertEqual(self.learningoutcome1.lo_text, "Calculate")

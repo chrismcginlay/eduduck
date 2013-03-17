@@ -1,0 +1,17 @@
+from django.test import TestCase
+from ..views import learning_intention         
+import pdb
+
+class OutcomeViewTests(TestCase):
+    """Test the outcome specific views"""
+
+def setUp(self):
+    pass
+
+def test_learning_intention(self):
+    """Test view of a single learning intention"""
+    
+    response = self.client.get('/lesson/1/lint/10/')
+    self.assertEqual(response.status_code, 200)
+    self.assertTrue(x in response.context
+        for x in ['lesson_id', 'lesson_intention_id'])

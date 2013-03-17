@@ -10,8 +10,11 @@ from django.contrib.auth.models import User
 from bio.models import Bio
 
 from interaction.models import UserCourse
-from .models import (Course, Lesson, Video, Attachment, 
-                     LearningIntention, SuccessCriterion, LearningOutcome,)
+from outcome.models import (LearningIntention, 
+                            SuccessCriterion, 
+                            LearningOutcome)
+
+from .models import (Course, Lesson, Video, Attachment)
 
 import pdb
 
@@ -122,20 +125,6 @@ class CourseModelTests(TestCase):
         #self.assertEqual(self.bio1.lessons.all()[0], self.lesson1)
         #self.assertEqual(self.bio1.registered_courses, self.registered_courses)
           
-    def test_learningIntention_create(self):
-        """LearningIntention instance attributes are created OK"""
-        self.assertEqual(self.learningintention1.lesson, self.lesson1)
-        self.assertEqual(self.learningintention1.li_text, "Practise")
-    
-    def test_successCriterion_create(self):
-        """SuccessCriterion instance attributes are created OK"""
-        self.assertEqual(self.successcriterion1.learning_intention, self.learningintention1)
-        self.assertEqual(self.successcriterion1.criterion_text, "Choose")
-        
-    def test_learningOutcome_create(self):
-        """LearningOutcome instance attributes are created OK"""
-        self.assertEqual(self.learningoutcome1.learning_intention, self.learningintention1)
-        self.assertEqual(self.learningoutcome1.lo_text, "Calculate")
     
 class CourseViewTests(TestCase):
     """Test the course views"""
@@ -373,10 +362,4 @@ class CourseViewTests(TestCase):
                          "There should be no userlesson - unregistered")                 
 
                                                         
-    def test_learning_intention(self):
-        """Test view of a single learning intention"""
-        response = self.client.get('/lesson/1/lint/1/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(x in response.context
-            for x in ['lesson_id', 'lesson_intention_id'])
             

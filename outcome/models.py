@@ -1,6 +1,8 @@
 from django.db import models
 from courses.models import Lesson
 
+import pdb
+
 class LearningIntention(models.Model):
     """Link Learning Intentions with individual lessons.
     
@@ -56,7 +58,7 @@ class LearningIntention(models.Model):
     def get_absolute_url(self):
         assert self.lesson
         assert self.id
-        return ('views.learning_intention', (), {
+        return ('outcome.views.learning_intention', (), {
                 'lesson_id': self.lesson.id,
                 'learning_intention_id': self.id })
               
