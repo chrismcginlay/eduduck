@@ -175,7 +175,8 @@ INSTALLED_APPS = (
     'support',
     'bio',
     'interaction',
-    #following provided account activation via email via django-registration
+    'outcome',
+    #following provides account activation via email via django-registration
     'registration',
 )
 

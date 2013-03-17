@@ -14,7 +14,12 @@ urlpatterns = patterns('django.views.generic.simple',
 urlpatterns += patterns('',
     url(r'^support/', include('support.urls')),
     url(r'^lesson/(?P<lesson_id>\d+)/lint/(?P<learning_intention_id>\d+)/$',
-        'courses.views.learning_intention'),)
+        'courses.views.learning_intention'),
+    url(r'^interaction/', include('interaction.urls')),
+    url(r'^accounts/bio/', include('bio.urls')),
+    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+)
         
 urlpatterns += patterns('courses.views',
     url(r'^$', 'index'),
@@ -44,13 +49,6 @@ urlpatterns += patterns('quiz.views',
     url(r'^quiz_delete/(?P<quiz_id>\d+)/$', 'quiz_delete'),
     url(r'^quiz_take/(?P<quiz_id>\d+)/$', 'quiz_take'),
     url(r'^quiz_results/(?P<quiz_id>\d+)/$', 'quiz_results'),
-)
-
-urlpatterns += patterns('',   
-    url(r'^interaction/', include('interaction.urls')),
-    url(r'^accounts/bio/', include('bio.urls')),
-    url(r'^accounts/', include('registration.backends.default.urls')),
-    url(r'^admin/', include(admin.site.urls)),
 )
 
 if settings.DEBUG:

@@ -6,7 +6,8 @@ from django.shortcuts import (render_to_response, get_object_or_404,
 from django.template import RequestContext
 
 from interaction.models import UserCourse, UserLesson
-from .models import Course, Lesson, LearningIntention
+from outcome.models import LearningIntention
+from .models import Course, Lesson, 
 
 import logging
 logger = logging.getLogger(__name__)
@@ -177,23 +178,5 @@ def lesson(request, course_id, lesson_id):
                     }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
-    
-
-def learning_intention(request, lesson_id, learning_intention_id):
-    """Prepare variables for learning intention template"""
-    
-    logger.info('Lesson id=' + str(lesson_id) + \
-        ', Learn_Int id=' + str(learning_intention_id) + ' view')
-    lesson = get_object_or_404(Lesson, id=lesson_id)
-    learning_intention = get_object_or_404(LearningIntention, 
-                                           id=learning_intention_id) 
-    
-    template = 'courses/course_lint.html'
-    context_data =  {
-                    'lesson':  lesson,
-                    'learning_intention': learning_intention,
-                    }
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
-    
+     
     

@@ -2,10 +2,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from courses.models import (
-    Course, Lesson, Video, Attachment,
-    LearningIntention, SuccessCriterion, LearningOutcome
-    )
+from courses.models import Course, Lesson, Video, Attachment
+from outcome.models import (LearningIntention, 
+                            SuccessCriterion, 
+                            LearningOutcome)
 from bio.models import Bio
 from quiz.models import Quiz, Question, Answer, QuizAttempt, QuestionAttempt
 
