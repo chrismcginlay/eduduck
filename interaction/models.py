@@ -3,10 +3,10 @@ from datetime import datetime
 from time import mktime
 from django.core.exceptions import ValidationError
 from django.db import models
-
 from django.contrib.auth.models import User
 
 from courses.models import Course, Lesson
+from outcome.models import SuccessCriteria
 
 import pdb 
 import logging
@@ -431,3 +431,110 @@ class UserLesson(models.Model):
         return ('interaction.views.userlesson_single', (), {
             'user_id': self.user.pk,
             'lesson_id': self.lesson.pk })
+
+#Actions for Outcomes (learning outcomes and success criteria)
+UOActions = Enum([
+    'MARKING_RED',
+    'MARKING_AMBER',
+    'MARKING_GREEN'
+])
+
+UOConditions = Enum(['red', 'amber', 'green'])
+
+class UserSuccessCriteria(models.Model):
+    """Track user interactions with success criteria
+    
+    Marking the 'traffic light' widgets as red/amber/green will require to be 
+    recorded in the database.
+    
+    Attributes:
+        success_criterion   
+        user
+        condition           0=red, 1=amber, or 2=green
+        history
+        
+    Methods:
+        save        Overrides base class save. For new row
+                    creates JSON coded history entry.
+        cycle       Cycle attribute red->amber->green->red
+        
+    Helper Methods:
+        hist2list   Convert JSON history to a list of (date, action) tuples
+    """
+    
+    user = models.ForeignKey(User, help_text="User interacting with criteria")
+    success_criterion = models.ForeignKey(SuccessCriteria, 
+        help_text="Criterion user is interacting with")
+    condition = models.SmallIntegerField(default=UOConditions.red)
+    history = models.TextField(null=True, blank=True)
+    
+    class Meta:
+        unique_together = ('user', 'success_criterion')
+    
+    def _checkrep(self):
+        """Verify internal consistency of attributes and history"""
+        
+        if self.condition not in UOConditions:
+            logger.error("UO Checkrep detected errored state")
+            return False
+            
+        #compare history with state
+        decoded_history = self.hist2list()
+        last = decoded_history.pop()
+        
+        if self.condition == UOConditions.red:
+            if last[1] != UOActions.MARKING_RED:
+                logger.error("UO Checkrep detected errored state")
+                return False
+        elif self.condition == UOConditions.amber:
+            if last[1] != UOActions.MARKING_AMBER:
+                logger.error("UO Checkrep detected errored state")
+                return False
+        elif self.condition == UOConditions.green:
+            if last[1] != UOActions.MARKING_GREEN:
+                logger.error("UO Checkrep detected errored state")
+                return False
+                
+        #history events should be a member of the set 
+        #UOActions
+        for event in decoded_history:
+            if event[1] not in UOActions:
+                logger.error("UL Checkrep failed")
+                return False    
+        
+        return True
+        
+    def hist2list(self):
+        """Convert the JSON coded text in self.history to a list of tuples
+        of the form (datetime, action)"""
+        
+        assert self.history
+        logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criteria.pk)+" load history")
+        history = json.loads(self.history)
+        list_tuple_hist = []
+        for row in history:
+            list_tuple_hist.append((
+                datetime.fromtimestamp(row[0]), UOActions[row[1]]))
+        return list_tuple_hist
+        
+    def cycle(self):
+        """3-state cyclic permutation of rag state"""
+        
+        assert self._checkrep()
+        logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" cycling")
+        hist = self.hist2list()
+        last_event = hist.pop()
+        event_date = last_event[0]
+        #don't wish to flood history if user clicks endlessly. Store only the
+        #final state within the last 5 minute time period.
+        if (datetime.now() - event_date) > timedelta(mins = 5):
+            #over 5 mins elapsed: add to the history
+        else:
+            #under 5 mins elapsed: replace the last history event
+
+        if condition < 2:
+            contition += 1
+        else:
+            condition = 0
+            
+        assert self._checkrep()
