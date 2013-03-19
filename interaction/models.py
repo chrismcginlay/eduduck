@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import mktime
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -503,7 +503,27 @@ class UserSuccessCriteria(models.Model):
                 return False    
         
         return True
+      
+      
+    def save(self, *args, **kwargs):
+        """Perform history save steps"""
         
+        existing_row = self.pk
+        super(UserSuccessCriteria, self).save(*args, **kwargs)
+        if not existing_row:
+            course_record = self.user.usercourse_set.get(course=self.lesson.course)
+            #view should not try to record lesson unless registered on course
+            assert(course_record)
+            logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" first visit")
+            hist = []
+            current_time = mktime(datetime.now().utctimetuple())
+            pdb.set_trace() #TODO verify marking behaviour
+            hist.append((current_time, UOActions.MARKING_AMBER))
+            self.history = json.dumps(hist)
+            self.visited = True
+            self.save()
+            
+            
     def hist2list(self):
         """Convert the JSON coded text in self.history to a list of tuples
         of the form (datetime, action)"""
@@ -523,18 +543,32 @@ class UserSuccessCriteria(models.Model):
         assert self._checkrep()
         logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" cycling")
         hist = self.hist2list()
-        last_event = hist.pop()
+        last_event = hist[:1]
         event_date = last_event[0]
         #don't wish to flood history if user clicks endlessly. Store only the
         #final state within the last 5 minute time period.
-        if (datetime.now() - event_date) > timedelta(mins = 5):
+        pdb.set_trace()        
+        if self.condition == 0:
+            action = UOActions.SET_AMBER
+        elif self.condition == 1:
+            action = UOActions.SET_GREEN
+        elif self.condition == 2:
+            action = UOActions.SET_RED
+        else:
+            raise ValueError
+        current_time = mktime(datetime.now().utctimetuple())
+        if (current_time - event_date) > timedelta(mins = 5):
             #over 5 mins elapsed: add to the history
+            hist.append((current_time, action))
         else:
             #under 5 mins elapsed: replace the last history event
-
-        if condition < 2:
-            contition += 1
-        else:
-            condition = 0
+            hist.pop()
+            hist.append((current_time, action))
             
+        if self.condition < 2:
+            self.condition += 1
+        else:
+            self.condition = 0
+            
+        self.save()            
         assert self._checkrep()
