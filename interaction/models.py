@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from courses.models import Course, Lesson
-from outcome.models import SuccessCriteria
+from outcome.models import SuccessCriterion
 
 import pdb 
 import logging
@@ -441,7 +441,7 @@ UOActions = Enum([
 
 UOConditions = Enum(['red', 'amber', 'green'])
 
-class UserSuccessCriteria(models.Model):
+class UserSuccessCriterion(models.Model):
     """Track user interactions with success criteria
     
     Marking the 'traffic light' widgets as red/amber/green will require to be 
@@ -462,8 +462,8 @@ class UserSuccessCriteria(models.Model):
         hist2list   Convert JSON history to a list of (date, action) tuples
     """
     
-    user = models.ForeignKey(User, help_text="User interacting with criteria")
-    success_criterion = models.ForeignKey(SuccessCriteria, 
+    user = models.ForeignKey(User, help_text="User interacting with criterion")
+    success_criterion = models.ForeignKey(SuccessCriterion, 
         help_text="Criterion user is interacting with")
     condition = models.SmallIntegerField(default=UOConditions.red)
     history = models.TextField(null=True, blank=True)
@@ -509,7 +509,7 @@ class UserSuccessCriteria(models.Model):
         """Perform history save steps"""
         
         existing_row = self.pk
-        super(UserSuccessCriteria, self).save(*args, **kwargs)
+        super(UserSuccessCriterion, self).save(*args, **kwargs)
         if not existing_row:
             course_record = self.user.usercourse_set.get(course=self.lesson.course)
             #view should not try to record lesson unless registered on course
@@ -529,7 +529,7 @@ class UserSuccessCriteria(models.Model):
         of the form (datetime, action)"""
         
         assert self.history
-        logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criteria.pk)+" load history")
+        logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" load history")
         history = json.loads(self.history)
         list_tuple_hist = []
         for row in history:
