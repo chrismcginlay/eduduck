@@ -474,7 +474,10 @@ class UserSuccessCriterion(models.Model):
     def _checkrep(self):
         """Verify internal consistency of attributes and history"""
         
-        if self.condition not in UOConditions:
+        pdb.set_trace()
+        try:
+            UOConditions[self.condition]
+        except IndexError:
             logger.error("UO Checkrep detected errored state")
             return False
             
@@ -511,16 +514,17 @@ class UserSuccessCriterion(models.Model):
         existing_row = self.pk
         super(UserSuccessCriterion, self).save(*args, **kwargs)
         if not existing_row:
-            course_record = self.user.usercourse_set.get(course=self.lesson.course)
+            #a long and winding ORM hop.
+            course_record = self.user.usercourse_set.get(
+                course=self.success_criterion.learning_intention.lesson.course)
             #view should not try to record lesson unless registered on course
             assert(course_record)
             logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" first visit")
             hist = []
             current_time = mktime(datetime.now().utctimetuple())
-            pdb.set_trace() #TODO verify marking behaviour
             hist.append((current_time, UOActions.MARKING_AMBER))
             self.history = json.dumps(hist)
-            self.visited = True
+            self.condition = 1  #amber. First cycle will go red->amber
             self.save()
             
             
@@ -534,7 +538,7 @@ class UserSuccessCriterion(models.Model):
         list_tuple_hist = []
         for row in history:
             list_tuple_hist.append((
-                datetime.fromtimestamp(row[0]), UOActions[row[1]]))
+                datetime.fromtimestamp(row[0]), row[1]))
         return list_tuple_hist
         
     def cycle(self):

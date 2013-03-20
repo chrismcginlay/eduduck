@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UserCourse, UserLesson
+from .models import UserCourse, UserLesson, UserSuccessCriterion
 
 class UserCourseAdmin(admin.ModelAdmin):
     list_display = ('pk', 'user', 'course', 'active')
@@ -17,3 +17,4 @@ class UserLessonAdmin(admin.ModelAdmin):
     
 admin.site.register(UserCourse, UserCourseAdmin)
 admin.site.register(UserLesson, UserLessonAdmin)
+admin.site.register(UserSuccessCriterion)
