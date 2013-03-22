@@ -22,7 +22,7 @@ SITE_ROOT = os.path.join(os.path.dirname(
 #set the base URL, not sure if this is the django way of doing it
 #It's not. https://docs.djangoproject.com/en/dev/ref/contrib/sites/?from=olddocs
 #Nevertheless, SITE_URL is an efficient hack in this context.
-SITE_URL = 'http://caicectus:8000'
+SITE_URL = 'http://www.eduduck.com'
 
 DATABASES = {
     'default': {
