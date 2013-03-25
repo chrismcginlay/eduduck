@@ -76,7 +76,7 @@ class UserCourse(models.Model):
         if self.withdrawn:
             count += 1
         if count != 1:
-            logger.error("UC Checkrep failed")
+            logger.error("UC _checkrep() detected errored state (could be a test?)")
             return False
         
         #Second, compare action history with attributes
@@ -86,20 +86,20 @@ class UserCourse(models.Model):
         
         if self.active:
             if last[1] != 'ACTIVATION':
-                logger.error("UC Checkrep failed")
+                logger.error("UC _checkrep() detected errored state (could be a test?)")
                 return False
             if last2[1] != 'REGISTRATION' and last2[1] != 'REOPENING':
-                logger.error("UC Checkrep failed")
+                logger.error("UC _checkrep() detected errored state (could be a test?)")
                 return False
                 
         if self.withdrawn:
             if last[1] != 'DEACTIVATION' or last2[1] != 'WITHDRAWAL':
-                logger.error("UC Checkrep failed")
+                logger.error("UC _checkrep() detected errored state (could be a test?)")
                 return False
                 
         if self.completed:
             if last[1] != 'DEACTIVATION' or last2[1] != 'COMPLETION':
-                logger.error("UC Checkrep failed")
+                logger.error("UC _checkrep() detected errored state (could be a test?)")
                 return False       
         
         return True
@@ -281,7 +281,7 @@ class UserLesson(models.Model):
 
         #First, basic attributes.
         if self.completed and not self.visited:
-            logger.error("UL Checkrep failed")
+            logger.error("UL _checkrep() detected errored state (could be a test?)")
             return False
         
         #Second, compare action history with attributes
@@ -292,24 +292,24 @@ class UserLesson(models.Model):
         #and vice-versa.
         if self.visited:
             if first[1] != 'VISITING':
-                logger.error("UL Checkrep failed")
+                logger.error("UL _checkrep() detected errored state (could be a test?)")
                 return False
         if first[1] == 'VISITING':
             if self.visited == False:
-                logger.error("UL Checkrep failed")
+                logger.error("UL _checkrep() detected errored state (could be a test?)")
                 return False
         #if the last history event is 'COMPLETING' then completed should be true
         last = decoded_history.pop()
         if last[1] == 'COMPLETING':
             if self.completed == False:
-                logger.error("UL Checkrep failed")
+                logger.error("UL _checkrep() detected errored state (could be a test?)")
                 return False
         
         #history events should be a member of the set 
         #[VISITING, COMPLETING, REOPENING]
         for event in decoded_history:
             if event[1] not in ULActions:
-                logger.error("UL Checkrep failed")
+                logger.error("UL _checkrep() detected errored state (could be a test?)")
                 return False
         
         return True
@@ -450,7 +450,7 @@ class UserSuccessCriterion(models.Model):
     Attributes:
         success_criterion   
         user
-        condition           0=red, 1=amber, or 2=green
+        condition           0=red, 1=amber, or 2=green. Instance o UOCondition
         history
         
     Methods:
@@ -477,7 +477,7 @@ class UserSuccessCriterion(models.Model):
         try:
             UOConditions[self.condition]
         except IndexError:
-            logger.error("UO Checkrep detected errored state")
+            logger.error("UO _checkrep() detected errored state (could be a test?)")
             return False
             
         #compare history with state
@@ -485,23 +485,23 @@ class UserSuccessCriterion(models.Model):
         last = decoded_history.pop()
         
         if self.condition == UOConditions.red:
-            if last[1] != UOActions.SET_RED:
-                logger.error("UO Checkrep detected errored state")
+            if last[1] != "SET_RED":
+                logger.error("UO _checkrep() detected errored state (could be a test?)")
                 return False
         elif self.condition == UOConditions.amber:
-            if last[1] != UOActions.SET_AMBER:
-                logger.error("UO Checkrep detected errored state")
+            if last[1] != "SET_AMBER":
+                logger.error("UO _checkrep() detected errored state (could be a test?)")
                 return False
         elif self.condition == UOConditions.green:
-            if last[1] != UOActions.SET_GREEN:
-                logger.error("UO Checkrep detected errored state")
+            if last[1] != "SET_GREEN":
+                logger.error("UO _checkrep() detected errored state (could be a test?)")
                 return False
                 
         #history events should be a member of the set 
         #UOActions
         for event in decoded_history:
             if event[1] not in UOActions:
-                logger.error("UL Checkrep failed")
+                logger.error("UL _checkrep() detected errored state (could be a test?)")
                 return False    
         
         return True
@@ -537,7 +537,7 @@ class UserSuccessCriterion(models.Model):
         list_tuple_hist = []
         for row in history:
             list_tuple_hist.append((
-                datetime.fromtimestamp(row[0]), row[1]))
+                datetime.fromtimestamp(row[0]), UOActions[row[1]]))
         return list_tuple_hist
         
     def cycle(self):
@@ -578,3 +578,23 @@ class UserSuccessCriterion(models.Model):
         self.history = json.dumps(hist)
         self.save()            
         assert self._checkrep()
+        
+        
+    def __str__(self):
+        """Human readable summary"""
+        
+        return u"User " + self.user.username + \
+            u"'s data for SC:" + self.success_criterion.criterion_text[:10]
+            
+            
+    def __unicode__(self):
+        """Summary for internal use"""
+        
+        return u"USC:%s, User:%s, SC:%s" % \
+            (self.pk, self.user.pk, self.success_criterion.pk)
+            
+    
+    def get_status(self):
+        """Return status string for human consumption"""
+    
+        return UOConditions[self.condition]

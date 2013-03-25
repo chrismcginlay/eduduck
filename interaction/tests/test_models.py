@@ -436,3 +436,44 @@ class UserSuccessCriterionModelTests(TestCase):
         self.usc.cycle()
         self.assert_(self.usc._checkrep(), "Fail after third cycle")
         
+    def test_hist2list(self):
+        """See that history converts to list properly"""
+        
+        h2l_output = self.usc.hist2list()
+        self.assertIsInstance(h2l_output, list, "Output should be a list")
+        for row in h2l_output:
+            self.assertIsInstance(row, tuple, "Entry should be a tuple")
+            self.assertIsInstance(row[0], datetime.datetime, "Should be a datetime")
+            self.assertIsInstance(row[1], str, "Action should be a string")
+
+        last = h2l_output.pop()
+        self.assertEqual(last[1], 'SET_AMBER', "Action should be SET_AMBER")
+
+        
+    def test_get_status(self):
+        """Test that the correct status is returned"""
+        
+        self.assertEqual(self.usc.get_status(), 'amber', "Status should be 'amber'")
+        self.usc.cycle()
+        self.assertEqual(self.usc.get_status(), 'green', "Status should be 'green'")
+        self.usc.cycle()
+        self.assertEqual(self.usc.get_status(), 'red', "Status should be 'red'")
+        self.usc.cycle()
+        self.assertEqual(self.usc.get_status(), 'amber', "Status should be 'amber'")
+
+    
+    def test___str__(self):
+        """Test that the desired info is in the unicode method"""
+        s = self.usc.__str__()
+        self.assertIn(self.usc.user.username, s, "The username should be in the unicode")
+        self.assertIn(self.usc.success_criterion.criterion_text[:10], s, "The first 10 chars of the criterion_text should be in the unicode")
+
+    
+    def test___unicode__(self):
+        """Test that the desired info is in the unicode method"""
+        unicod = self.usc.__unicode__()
+        s = u"USC:%s, User:%s, SC:%s" % \
+            (self.usc.pk, self.usc.user.pk, self.usc.success_criterion.pk)
+        self.assertEqual(unicod, s, "Unicode output failure")
+
+    
