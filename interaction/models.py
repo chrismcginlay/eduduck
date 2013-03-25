@@ -434,9 +434,9 @@ class UserLesson(models.Model):
 
 #Actions for Outcomes (learning outcomes and success criteria)
 UOActions = Enum([
-    'MARKING_RED',
-    'MARKING_AMBER',
-    'MARKING_GREEN'
+    'SET_RED',
+    'SET_AMBER',
+    'SET_GREEN'
 ])
 
 UOConditions = Enum(['red', 'amber', 'green'])
@@ -474,7 +474,6 @@ class UserSuccessCriterion(models.Model):
     def _checkrep(self):
         """Verify internal consistency of attributes and history"""
         
-        pdb.set_trace()
         try:
             UOConditions[self.condition]
         except IndexError:
@@ -486,15 +485,15 @@ class UserSuccessCriterion(models.Model):
         last = decoded_history.pop()
         
         if self.condition == UOConditions.red:
-            if last[1] != UOActions.MARKING_RED:
+            if last[1] != UOActions.SET_RED:
                 logger.error("UO Checkrep detected errored state")
                 return False
         elif self.condition == UOConditions.amber:
-            if last[1] != UOActions.MARKING_AMBER:
+            if last[1] != UOActions.SET_AMBER:
                 logger.error("UO Checkrep detected errored state")
                 return False
         elif self.condition == UOConditions.green:
-            if last[1] != UOActions.MARKING_GREEN:
+            if last[1] != UOActions.SET_GREEN:
                 logger.error("UO Checkrep detected errored state")
                 return False
                 
@@ -522,7 +521,7 @@ class UserSuccessCriterion(models.Model):
             logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" first visit")
             hist = []
             current_time = mktime(datetime.now().utctimetuple())
-            hist.append((current_time, UOActions.MARKING_AMBER))
+            hist.append((current_time, UOActions.SET_AMBER))
             self.history = json.dumps(hist)
             self.condition = 1  #amber. First cycle will go red->amber
             self.save()
@@ -542,37 +541,40 @@ class UserSuccessCriterion(models.Model):
         return list_tuple_hist
         
     def cycle(self):
-        """3-state cyclic permutation of rag state"""
+        """3-state cyclic permutation of RAG state"""
         
         assert self._checkrep()
         logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" cycling")
         hist = self.hist2list()
-        last_event = hist[:1]
-        event_date = last_event[0]
+        last_event = hist[:1][0]    #slice, last only, then first tuple
+        event_date = last_event[0]  #datetime part of the tuple
         #don't wish to flood history if user clicks endlessly. Store only the
         #final state within the last 5 minute time period.
-        pdb.set_trace()        
-        if self.condition == 0:
+     
+        if self.condition == UOConditions.red:
             action = UOActions.SET_AMBER
-        elif self.condition == 1:
+        elif self.condition == UOConditions.amber:
             action = UOActions.SET_GREEN
-        elif self.condition == 2:
+        elif self.condition == UOConditions.green:
             action = UOActions.SET_RED
         else:
             raise ValueError
-        current_time = mktime(datetime.now().utctimetuple())
-        if (current_time - event_date) > timedelta(mins = 5):
+        current_time = datetime.now()
+        if (current_time - event_date) > timedelta(minutes = 5):
             #over 5 mins elapsed: add to the history
-            hist.append((current_time, action))
+            serial_time = mktime(current_time.utctimetuple())
+            hist.append((serial_time, action))
         else:
             #under 5 mins elapsed: replace the last history event
             hist.pop()
-            hist.append((current_time, action))
+            serial_time = mktime(current_time.utctimetuple())
+            hist.append((serial_time, action))
             
         if self.condition < 2:
             self.condition += 1
         else:
             self.condition = 0
-            
+        
+        self.history = json.dumps(hist)
         self.save()            
         assert self._checkrep()

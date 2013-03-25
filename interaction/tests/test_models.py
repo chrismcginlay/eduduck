@@ -8,8 +8,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from django.contrib.auth.models import User
 
+from outcome.models import (LearningIntention, SuccessCriterion)
 from courses.models import (Course, Lesson)
-from ..models import UserCourse, UserLesson
+from ..models import (UserCourse, 
+                      UserLesson, 
+                      UserSuccessCriterion, 
+                      UOConditions
+                      )
 
 import pdb
 
@@ -376,3 +381,58 @@ class UserLessonModelTests(TestCase):
         l = self.ul3.lesson.pk
         s = "/interaction/user/%s/lesson/%s/"% (u,l)
         self.assertEqual(s, url, "URL error")
+        
+        
+class UserSuccessCriterionModelTests(TestCase):
+    """Test model behaviour of user interaction with success criteria"""
+
+    course1_data = {'course_code': 'EDU02',
+               'course_name': 'A Course of Leeches',
+               'course_abstract': 'Learn practical benefits of leeches',
+               'course_organiser': 'Van Gogh',
+               'course_level': 'Basic',
+               'course_credits': 30,
+               }
+
+    def setUp(self):
+        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
+        self.user1.is_active = True
+        self.user1.save()    
+        self.course1 = Course(**self.course1_data)
+        self.course1.save() 
+        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc.save()
+        self.lesson = Lesson(lesson_code="L1", 
+                      lesson_name="Test Lesson 1",
+                      course = self.course1)
+        self.lesson.save() 
+        self.li = LearningIntention(lesson=self.lesson, li_text="Intend...")
+        self.li.save()
+        self.sc = SuccessCriterion(learning_intention=self.li, 
+                                   criterion_text ="Criterion...")
+        self.sc.save()
+        self.usc = UserSuccessCriterion(user=self.user1,
+                                        success_criterion=self.sc)
+        self.usc.save()
+        
+    def test_checkrep(self):
+        """Test the internal representation checker with success criterion interaction"""
+        
+        self.assert_(self.usc._checkrep(), "Failure: User begins interaction with sc")
+        self.usc.condition = UOConditions.red
+        self.assertFalse(self.usc._checkrep(), "Checkrep didn't pick up error state")
+        
+    def test_cycle(self):
+        """Check that state cycling works"""
+        
+        self.assert_(self.usc._checkrep(), "Failure prior to cycle")
+        self.assertEqual(self.usc.condition, UOConditions.amber)
+        self.usc.cycle()
+        self.assert_(self.usc._checkrep(), "Fail after first cycle")
+        self.assertEqual(self.usc.condition, UOConditions.green)
+        self.usc.cycle()
+        self.assert_(self.usc._checkrep(), "Fail after second cycle")
+        self.assertEqual(self.usc.condition, UOConditions.red)
+        self.usc.cycle()
+        self.assert_(self.usc._checkrep(), "Fail after third cycle")
+        
