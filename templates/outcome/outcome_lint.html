@@ -47,7 +47,9 @@
             <ol>
             {% for sc in learning_intention.successcriterion_set.all %}
                 <li class="criterion">
-                    <img id="SC{{ sc.pk }}" src="{% static 'images/img_trans.png' %}" />
+                    <img id="SC{{ sc.pk }}" 
+                        src="{% static 'images/img_trans.png' %}" 
+                        css="background-position: 0px" />
                     {{ sc.criterion_text }}
                 </li>
             {% empty %}

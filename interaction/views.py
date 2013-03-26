@@ -50,6 +50,7 @@ def usersuccesscriterion_single(request, user_id, sc_id):
     logger.info(usc.__unicode__()+" view interactions")
     history = usc.hist2list()
     
+    pdb.set_trace()
     template = 'interaction/usersuccesscriterion_single.html'
     context_data = {'usc': usc, 'history': history}
     context_instance = RequestContext(request)
