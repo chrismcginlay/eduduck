@@ -470,6 +470,7 @@ class UserSuccessCriterion(models.Model):
     
     class Meta:
         unique_together = ('user', 'success_criterion')
+        verbose_name_plural = "user success criteria"
     
     def _checkrep(self):
         """Verify internal consistency of attributes and history"""
