@@ -15,6 +15,11 @@ class UserLessonAdmin(admin.ModelAdmin):
     readonly_fields = ('user', 'lesson', 'visited', 
                        'completed', 'history', 'note')
     
+class UserSuccessCriteriaAdmin(admin.ModelAdmin):
+    list_filter = ('user', 'condition')
+    search_fields = ('user', 'success_criterion')
+    readonly_fields = ('user', 'success_criterion', 'condition', 'history')
+    
 admin.site.register(UserCourse, UserCourseAdmin)
 admin.site.register(UserLesson, UserLessonAdmin)
-admin.site.register(UserSuccessCriterion)
+admin.site.register(UserSuccessCriterion, UserSuccessCriteriaAdmin)

@@ -6,7 +6,7 @@
 {% endblock extra_style %}
 
 {% block extra_script %}
-    <script src="{% static 'traffic.js' %}"></script>
+    <script src="{% static 'traffic.js' %}"></script> 
 {% endblock extra_script %}
 
 {% block pagenav %}
@@ -44,18 +44,22 @@
             </h4>
             <p class="FYI">The success criteria are the activities you 
             would do if carrying out a learning outcome</p>
+<form action='' method='post'>{% csrf_token %}
             <ol>
-            {% for sc in learning_intention.successcriterion_set.all %}
+            {% for sc in usc %}
                 <li class="criterion">
-                    <img id="SC{{ sc.pk }}" 
+                    <img id="SC{{ sc.0.pk }}" 
                         src="{% static 'images/img_trans.png' %}" 
-                        css="background-position: 0px" />
-                    {{ sc.criterion_text }}
+                        style="background-position: {{ sc.1 }}px 0px" />
+<input type="submit" name="cycle{{ sc.0.pk }}" value="Cycle"
+title="Cycle status R->A->G->R">
+                    {{ sc.0.criterion_text }}
                 </li>
             {% empty %}
                 <li>No success criteria for this learning intention</li>
             {% endfor %}
             </ol>  
+</form> 
         </article>
     </section>
 
