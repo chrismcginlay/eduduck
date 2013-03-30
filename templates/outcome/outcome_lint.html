@@ -46,7 +46,7 @@
             would do if carrying out a learning outcome</p>
 <form action='' method='post'>{% csrf_token %}
             <ol>
-            {% for sc in usc %}
+            {% for sc in usc_list %}
                 <li class="criterion">
                     <img id="SC{{ sc.0.pk }}" 
                         src="{% static 'images/img_trans.png' %}" 

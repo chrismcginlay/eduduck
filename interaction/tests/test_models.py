@@ -3,6 +3,7 @@ Unit tests for Interaction app
 """
 
 import datetime
+import json
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
@@ -435,6 +436,37 @@ class UserSuccessCriterionModelTests(TestCase):
         self.assertEqual(self.usc.condition, UOConditions.red)
         self.usc.cycle()
         self.assert_(self.usc._checkrep(), "Fail after third cycle")
+
+    def test_cycle_history_timebar(self):
+        """Test 5 minute timebar on history updates
+        
+        History of cycling events should append a new event if over 5 mins
+        have elapsed since the last event, otherwise replace last history.
+        """
+        
+        self.assert_(self.usc._checkrep(), "Failure prior to cycle")
+        pdb.set_trace()
+        #First check that rapid successive cycles don't append to history, 
+        #intead, last entry should be replaced
+        #NB: usc.hist is JSON string. Count hist2list elements instead
+        self.usc.cycle()
+        count1 = len(self.usc.hist2list())  
+        self.usc.cycle()
+        count2 = len(self.usc.hist2list())
+        self.assertEqual(count2, count1, "History grew when it shouldn't have")
+        
+        #Doctor the date to 10 mins prior, 
+        #check that subsequent cycle does append to history        
+        hist = json.loads(self.usc.history)
+        last_event = hist.pop()
+        last_time = last_event[0]
+        last_time = last_time - 600 #600 seconds earlier
+        hist.append((last_time, last_event[1]))
+        self.usc.history = json.dumps(hist)
+        self.usc.cycle()
+        count3 = len(self.usc.hist2list())
+        self.assertGreater(count3, count2, "History did not grow when it should")
+        
         
     def test_hist2list(self):
         """See that history converts to list properly"""

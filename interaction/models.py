@@ -546,7 +546,7 @@ class UserSuccessCriterion(models.Model):
         
         assert self._checkrep()
         logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" cycling")
-        hist = self.hist2list()
+        hist = json.loads(self.history)
         last_event = hist[:1][0]    #slice, last only, then first tuple
         event_date = last_event[0]  #datetime part of the tuple
         #don't wish to flood history if user clicks endlessly. Store only the
@@ -560,16 +560,14 @@ class UserSuccessCriterion(models.Model):
             action = UOActions.SET_RED
         else:
             raise ValueError
+
         current_time = datetime.now()
-        if (current_time - event_date) > timedelta(minutes = 5):
-            #over 5 mins elapsed: add to the history
-            serial_time = mktime(current_time.utctimetuple())
-            hist.append((serial_time, action))
-        else:
+        if (current_time - datetime.fromtimestamp(event_date)) < timedelta(minutes = 5):
             #under 5 mins elapsed: replace the last history event
             hist.pop()
-            serial_time = mktime(current_time.utctimetuple())
-            hist.append((serial_time, action))
+
+        serial_time = mktime(current_time.utctimetuple())
+        hist.append((serial_time, action))
             
         if self.condition < 2:
             self.condition += 1
