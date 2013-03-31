@@ -5,6 +5,7 @@ from django.shortcuts import (render_to_response,
 from django.template import RequestContext
 from courses.models import Lesson
 from outcome.models import LearningIntention
+from interaction.models import UserSuccessCriterion
 
 import logging
 logger = logging.getLogger(__name__)
@@ -35,10 +36,18 @@ def learning_intention(request, lesson_id, learning_intention_id):
         if request.method == "POST":
             for usc in usc_list:
                 target = "cycle" + str(usc[0].pk)   #which sc to cycle
-                if target in request.POST:
-                    match = usc[2].cycle()
-                    newcond = usc[2].condition * -17
-                    usc = ((succcrit, newcond, match))
+                succcrit = usc[0]
+                if target in request.POST:  
+                    if usc[2]: #already in database
+                        usc[2].cycle()
+                        newcond = usc[2].condition * -17
+                        usc = ((succcrit, newcond, usc[2]))
+                    else:
+                        new_usc = UserSuccessCriterion(
+                            success_criterion=succcrit, 
+                            user=request.user)
+                        new_usc.save()
+                        usc = (( succcrit, -17, new_usc))
     else:
         usc_list = [(sc, 0, None) for sc in learning_intention.successcriterion_set.all()]
     context_data =  {

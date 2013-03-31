@@ -445,7 +445,6 @@ class UserSuccessCriterionModelTests(TestCase):
         """
         
         self.assert_(self.usc._checkrep(), "Failure prior to cycle")
-        pdb.set_trace()
         #First check that rapid successive cycles don't append to history, 
         #intead, last entry should be replaced
         #NB: usc.hist is JSON string. Count hist2list elements instead
