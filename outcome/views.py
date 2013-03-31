@@ -34,12 +34,13 @@ def learning_intention(request, lesson_id, learning_intention_id):
             usc_list.append((succcrit, offset, match))
 
         if request.method == "POST":
-            for usc in usc_list:
+            for (idx, usc) in enumerate(usc_list):
                 target = "cycle" + str(usc[0].pk)   #which sc to cycle
                 succcrit = usc[0]
                 if target in request.POST:  
                     if usc[2]: #already in database
                         usc[2].cycle()
+                        #magic 17 is pixel offset for traffic light CSS prop.
                         newcond = usc[2].condition * -17
                         usc = ((succcrit, newcond, usc[2]))
                     else:
@@ -48,7 +49,8 @@ def learning_intention(request, lesson_id, learning_intention_id):
                             user=request.user)
                         new_usc.save()
                         usc = (( succcrit, -17, new_usc))
-    else:
+                    usc_list[idx] = usc
+    else: #not authenticated
         usc_list = [(sc, 0, None) for sc in learning_intention.successcriterion_set.all()]
     context_data =  {
                     'lesson':   lesson,
