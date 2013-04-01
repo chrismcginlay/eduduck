@@ -515,8 +515,8 @@ class UserSuccessCriterion(models.Model):
         super(UserSuccessCriterion, self).save(*args, **kwargs)
         if not existing_row:
             #a long and winding ORM hop.
-            course_record = self.user.usercourse_set.get(
-                course=self.success_criterion.learning_intention.lesson.course)
+            usercourse = self.success_criterion.learning_intention.lesson.course
+            course_record = self.user.usercourse_set.get(course=usercourse)
             #view should not try to record lesson unless registered on course
             assert(course_record)
             logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" first visit")

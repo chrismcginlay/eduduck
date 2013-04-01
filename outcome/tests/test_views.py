@@ -1,5 +1,7 @@
 from django.test import TestCase
 from courses.models import Course, Lesson
+from bio.models import User, Bio
+from interaction.models import UserCourse
 from ..models import (LearningIntention,
                       SuccessCriterion,
                       LearningOutcome)
@@ -32,12 +34,25 @@ class OutcomeViewTests(TestCase):
             learning_intention = self.learningintention1, 
             criterion_text = "Choose Topaz"
         )
-        self.successcriterion1.save()                                          
+        self.successcriterion1.save()  
+        self.successcriterion2 = SuccessCriterion(
+            learning_intention = self.learningintention1,
+            criterion_text = "Eat fish"
+        )                                        
+        self.successcriterion2.save()
         self.learningoutcome1 = LearningOutcome(
             learning_intention = self.learningintention1, 
             lo_text = "Calculate 6*9"
         )
-        self.learningoutcome1.save()    
+        self.learningoutcome1.save()   
+        
+        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
+        self.user1.is_active = True
+        self.user1.save()
+        self.bio1 = Bio.objects.get(user_id=1)
+        self.bio1.accepted_terms = True
+        self.bio1.signature_line = 'Learning stuff'
+        self.bio1.save()
     
     def test_learning_intention(self):
         """Test view of a single learning intention"""
@@ -48,7 +63,33 @@ class OutcomeViewTests(TestCase):
             for x in ['lesson_id', 'lesson_intention_id'])
         self.assertIn("Choose Topaz", response.content, "LO missing")
         self.assertIn("Calculate 6*9", response.content, "SC missing")
+        self.assertIn("cycle1", response.content, "Cycle button missing")
+        self.assertIn("cycle2", response.content, "Cycle button missing")
 
         #test non-existing LI        
         response = self.client.get('/lesson/1/lint/5/')
         self.assertEqual(response.status_code, 404)
+        
+        #press some buttons and see what happens
+        self.client.login(username='bertie', password='bertword')
+        #Register user on course first:
+        uc = UserCourse(course=self.course1, user=self.user1)
+        uc.save() 
+
+        #cycle to amber        
+        response = self.client.post('/lesson/1/lint/1/', {'cycle1':'Cycle'})
+        self.assertEqual(response.status_code, 200)
+        trafficlight = response.context['usc_list'][0][2].condition
+        self.assertEqual(trafficlight, 1)
+        
+        #cycle to green
+        response = self.client.post('/lesson/1/lint/1/', {'cycle1':'Cycle'})
+        self.assertEqual(response.status_code, 200)
+        trafficlight = response.context['usc_list'][0][2].condition
+        self.assertEqual(trafficlight, 2)
+    
+        #cycle to red
+        response = self.client.post('/lesson/1/lint/1/', {'cycle1':'Cycle'})
+        self.assertEqual(response.status_code, 200)
+        trafficlight = response.context['usc_list'][0][2].condition
+        self.assertEqual(trafficlight, 0)
