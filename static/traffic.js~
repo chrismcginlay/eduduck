@@ -4,7 +4,7 @@ function assert(cond, message){
 
 $(document).ready(function(){
     $("img").click(function(){
-        $.getJSON("/interaction/successcriterion/1/cycle/");
+        $.getJSON("/successcriterion/1/cycle/");
         var loc = $(this).css("background-position");
         var x_loc = loc.split(" ")[0];
         assert(x_loc, "x position of background not properly parsed");

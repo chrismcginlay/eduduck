@@ -583,7 +583,8 @@ class UserSuccessCriterion(models.Model):
         """Human readable summary"""
         
         return u"User " + self.user.username + \
-            u"'s data for SC:" + self.success_criterion.criterion_text[:10]
+            u"'s data for SC:" + \
+            self.success_criterion.criterion_text[:10] + "..."
             
             
     def __unicode__(self):

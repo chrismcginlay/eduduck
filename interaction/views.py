@@ -1,8 +1,8 @@
-from django.conf import settings
-from django.http import HttpResponseRedirect
+import json
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
-from django.shortcuts import (render_to_response, get_object_or_404, 
-    get_list_or_404)
+from django.shortcuts import (render_to_response, 
+                              get_object_or_404)
     
 from django.contrib.auth.decorators import login_required
 
@@ -50,9 +50,22 @@ def usersuccesscriterion_single(request, user_id, sc_id):
     logger.info(usc.__unicode__()+" view interactions")
     history = usc.hist2list()
     
-    pdb.set_trace()
     template = 'interaction/usersuccesscriterion_single.html'
     context_data = {'usc': usc, 'history': history}
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
+
+@login_required
+def usersuccesscriterion_cycle(request, sc_id):
+    """For AJAX use in cycling success criteria"""
+    
+    usc_set = UserSuccessCriterion.objects.get_or_create( 
+                        user=request.user, 
+                        success_criterion=sc_id)
+    usc = usc_set[0]
+    logger.info("Cycling success criterion USC: "+str(usc))
+    usc.cycle()
+    result = {'condition':usc.condition}
+    jresult = json.dumps(result)
+    return HttpResponse(jresult, mimetype='application/json')
     
