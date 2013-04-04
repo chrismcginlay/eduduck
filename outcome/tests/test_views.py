@@ -70,6 +70,7 @@ class OutcomeViewTests(TestCase):
         response = self.client.get('/lesson/1/lint/5/')
         self.assertEqual(response.status_code, 404)
         
+        ### Success Criteria Cycle Tests
         #press some buttons and see what happens
         self.client.login(username='bertie', password='bertword')
         #Register user on course first:

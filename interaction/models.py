@@ -547,7 +547,7 @@ class UserSuccessCriterion(models.Model):
         assert self._checkrep()
         logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" cycling")
         hist = json.loads(self.history)
-        last_event = hist[:1][0]    #slice, last only, then first tuple
+        last_event = hist[-1]    #slice, last element only, (its a tuple)
         event_date = last_event[0]  #datetime part of the tuple
         #don't wish to flood history if user clicks endlessly. Store only the
         #final state within the last 5 minute time period.
@@ -583,7 +583,8 @@ class UserSuccessCriterion(models.Model):
         """Human readable summary"""
         
         return u"User " + self.user.username + \
-            u"'s data for SC:" + self.success_criterion.criterion_text[:10]
+            u"'s data for SC:" + \
+            self.success_criterion.criterion_text[:10] + "..."
             
             
     def __unicode__(self):
