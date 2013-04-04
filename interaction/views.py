@@ -6,6 +6,7 @@ from django.shortcuts import (render_to_response,
     
 from django.contrib.auth.decorators import login_required
 
+from outcome.models import SuccessCriterion
 from .models import UserCourse, UserLesson, UserSuccessCriterion
 
 import pdb
@@ -59,9 +60,10 @@ def usersuccesscriterion_single(request, user_id, sc_id):
 def usersuccesscriterion_cycle(request, sc_id):
     """For AJAX use in cycling success criteria"""
     
+    sc = SuccessCriterion.objects.get(pk=sc_id)
     usc_set = UserSuccessCriterion.objects.get_or_create( 
                         user=request.user, 
-                        success_criterion=sc_id)
+                        success_criterion=sc)
     usc = usc_set[0]
     logger.info("Cycling success criterion USC: "+str(usc))
     usc.cycle()
