@@ -2,9 +2,7 @@ from django.test import TestCase
 from courses.models import Course, Lesson
 from bio.models import User, Bio
 from interaction.models import UserCourse
-from ..models import (LearningIntention,
-                      SuccessCriterion,
-                      LearningOutcome)
+from ..models import LearningIntention, LearningIntentionDetail
 import pdb
 
 class OutcomeViewTests(TestCase):
@@ -30,21 +28,24 @@ class OutcomeViewTests(TestCase):
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
                                                     li_text = "Practise")
         self.learningintention1.save()                                            
-        self.successcriterion1 = SuccessCriterion(
+        self.lid1 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            criterion_text = "Choose Topaz"
+            lid_text = "Choose Topaz",
+            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
         )
-        self.successcriterion1.save()  
-        self.successcriterion2 = SuccessCriterion(
+        self.lid1.save()  
+        self.lid2 = LearningIntentionDetail(
             learning_intention = self.learningintention1,
-            criterion_text = "Eat fish"
+            lid_text = "Eat fish",
+            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
         )                                        
-        self.successcriterion2.save()
-        self.learningoutcome1 = LearningOutcome(
+        self.lid2.save()
+        self.lid3 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            lo_text = "Calculate 6*9"
+            lid_text = "Calculate 6*9",
+            lid_type = LearningIntentionDetail.LEARNING_OUTCOME
         )
-        self.learningoutcome1.save()   
+        self.lid3.save()   
         
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True

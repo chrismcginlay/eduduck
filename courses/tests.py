@@ -10,9 +10,7 @@ from django.contrib.auth.models import User
 from bio.models import Bio
 
 from interaction.models import UserCourse
-from outcome.models import (LearningIntention, 
-                            SuccessCriterion, 
-                            LearningOutcome)
+from outcome.models import LearningIntention, LearningIntentionDetail
 
 from .models import (Course, Lesson, Video, Attachment)
 
@@ -79,16 +77,18 @@ class CourseModelTests(TestCase):
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
                                                     li_text = "Practise")
         self.learningintention1.save()                                            
-        self.successcriterion1 = SuccessCriterion(
+        self.learningintentiondetail1 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            criterion_text = "Choose"
+            lid_text = "Choose",
+            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
         )
-        self.successcriterion1.save()                                          
-        self.learningoutcome1 = LearningOutcome(
+        self.learningintentiondetail1.save()                                          
+        self.learningintentiondetail2 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            lo_text = "Calculate"
+            lid_text = "Calculate",
+            lid_type = LearningIntentionDetail.LEARNING_OUTCOME
         )
-        self.learningoutcome1.save()                                        
+        self.learningintentiondetail2.save()                                        
         
     def test_course_create(self):
         """Course instance attributes are created OK"""
@@ -198,16 +198,18 @@ class CourseViewTests(TestCase):
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
                                                     li_text = "Practise")
         self.learningintention1.save()
-        self.successcriterion1 = SuccessCriterion(
+        self.learningintentiondetail1 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            criterion_text = "Choose"
+            lid_text = "Choose",
+            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
         )
-        self.successcriterion1.save()
-        self.learningoutcome1 = LearningOutcome(
+        self.learningintentiondetail1.save()
+        self.learningintentiondetail2 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            lo_text = "Calculate"
+            lid_text = "Calculate",
+            lid_type = LearningIntentionDetail.LEARNING_OUTCOME
         )
-        self.learningoutcome1.save()
+        self.learningintentiondetail2.save()
         
     def test_course_index(self):
         """Check course index page loads OK and has correct variables"""

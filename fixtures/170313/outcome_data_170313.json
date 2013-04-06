@@ -17,90 +17,101 @@
     },
     {
         "pk": 1,
-        "model": "outcome.successcriterion",
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "criterion_text": "Spot 3D modelling tasks",
-            "learning_intention": 1
+            "lid_text": "Spot 3D modelling tasks",
+            "learning_intention": 1,
+            "lid_type": "SC"
         }
     },
     {
         "pk": 2,
-        "model": "outcome.successcriterion",
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "criterion_text": "Spot video sequencing tasks",
-            "learning_intention": 1
+            "lid_text": "Spot video sequencing tasks",
+            "learning_intention": 1,
+            "lid_type": "SC"
         }
     },
     {
         "pk": 3,
-        "model": "outcome.successcriterion",
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "criterion_text": "Spot object animation tasks",
-            "learning_intention": 1
+            "lid_text": "Spot object animation tasks",
+            "learning_intention": 1,
+            "lid_type": "SC"
         }
     },
     {
         "pk": 4,
-        "model": "outcome.successcriterion",
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "criterion_text": "Spot object physics tasks",
-            "learning_intention": 1
+            "lid_text": "Spot object physics tasks",
+            "learning_intention": 1,
+            "lid_type": "SC"
         }
     },
     {
         "pk": 5,
-        "model": "outcome.successcriterion",
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "criterion_text": "Consider where a manual method might have advantages",
-            "learning_intention": 2
+            "lid_text": "Consider where a manual method might have advantages",
+            "learning_intention": 2,
+            "lid_type": "SC"
         }
     },
     {
         "pk": 6,
-        "model": "outcome.successcriterion",
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "criterion_text": "Try out alternative software and compare with Blender",
-            "learning_intention": 2
+            "lid_text": "Try out alternative software and compare with Blender",
+            "learning_intention": 2,
+            "lid_type": "SC"
         }
     },
     {
         "pk": 7,
-        "model": "outcome.successcriterion",
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "criterion_text": "Talk about the advantages/disadvantages of Blender compared to other approaches",
-            "learning_intention": 2
+            "lid_text": "Talk about the advantages/disadvantages of Blender compared to other approaches",
+            "learning_intention": 2,
+            "lid_type": "SC"
         }
     },
     {
-        "pk": 1,
-        "model": "outcome.learningoutcome",
+        "pk": 8,
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "lo_text": "I can correctly identify or reject various tasks as being well suited to Blender",
-            "learning_intention": 1
+            "lid_text": "I can correctly identify or reject various tasks as being well suited to Blender",
+            "learning_intention": 1,
+            "lid_type": "LO"
         }
     },
     {
-        "pk": 2,
-        "model": "outcome.learningoutcome",
+        "pk": 9,
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "lo_text": "I can state whether the main techique of a task involves modelling, sequencing, animating or physics simulation",
-            "learning_intention": 1
+            "lid_text": "I can state whether the main techique of a task involves modelling, sequencing, animating or physics simulation",
+            "learning_intention": 1,
+            "lid_type": "LO"
         }
     },
     {
-        "pk": 3,
-        "model": "outcome.learningoutcome",
+        "pk": 10,
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "lo_text": "I can make a selection of appropriate tool or technique for a given job",
-            "learning_intention": 2
+            "lid_text": "I can make a selection of appropriate tool or technique for a given job",
+            "learning_intention": 2,
+            "lid_type": "LO"
         }
     },
     {
-        "pk": 4,
-        "model": "outcome.learningoutcome",
+        "pk": 11,
+        "model": "outcome.learningintentiondetail",
         "fields": {
-            "lo_text": "I can give reasons supporting selection of a particular tool or technique.",
-            "learning_intention": 2
+            "lid_text": "I can give reasons supporting selection of a particular tool or technique.",
+            "learning_intention": 2,
+            "lid_type": "LO"
         }
     }
 ]

@@ -6,8 +6,8 @@ from django.shortcuts import (render_to_response,
     
 from django.contrib.auth.decorators import login_required
 
-from outcome.models import SuccessCriterion
-from .models import UserCourse, UserLesson, UserSuccessCriterion
+from outcome.models import LearningIntentionDetail
+from .models import UserCourse, UserLesson, UserLearningIntentionDetail
 
 import pdb
 
@@ -41,33 +41,33 @@ def userlesson_single(request, user_id, lesson_id):
     return render_to_response(template, context_data, context_instance)
     
 @login_required
-def usersuccesscriterion_single(request, user_id, sc_id):
-    """Probably pointlessly display user interaction with single SC"""
+def userlearningintentiondetail_single(request, user_id, lid_id):
+    """Probably pointlessly display user interaction with single LID"""
     
     #TODO: nothing actually links to this view?
-    usc = get_object_or_404(UserSuccessCriterion, 
-                            user=user_id, 
-                            success_criterion=sc_id)
-    logger.info(usc.__unicode__()+" view interactions")
-    history = usc.hist2list()
+    ulid = get_object_or_404(UserLearningIntentionDetail, 
+                             user=user_id, 
+                             learning_intention_detail=lid_id)
+    logger.info(ulid.__unicode__()+" view interactions")
+    history = ulid.hist2list()
     
-    template = 'interaction/usersuccesscriterion_single.html'
-    context_data = {'usc': usc, 'history': history}
+    template = 'interaction/userlearningintentiondetail_single.html'
+    context_data = {'ulid': ulid, 'history': history}
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 
 @login_required
-def usersuccesscriterion_cycle(request, sc_id):
-    """For AJAX use in cycling success criteria"""
+def userlearningintentiondetail_cycle(request, lid_id):
+    """For AJAX use in cycling learning intention details"""
     
-    sc = SuccessCriterion.objects.get(pk=sc_id)
-    usc_set = UserSuccessCriterion.objects.get_or_create( 
+    lid = LearningIntentionDetail.objects.get(pk=lid_id)
+    ulid_set = UserLearningIntentionDetail.objects.get_or_create( 
                         user=request.user, 
-                        success_criterion=sc)
-    usc = usc_set[0]
-    logger.info("Cycling success criterion USC: "+str(usc))
-    usc.cycle()
-    result = {'condition':usc.condition}
+                        learning_intention_detail=lid)
+    ulid = ulid_set[0]
+    logger.info("Cycling learning intention detail ULID: "+str(ulid))
+    ulid.cycle()
+    result = {'condition':ulid.condition}
     jresult = json.dumps(result)
     return HttpResponse(jresult, mimetype='application/json')
     

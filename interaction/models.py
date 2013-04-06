@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from courses.models import Course, Lesson
-from outcome.models import SuccessCriterion
+from outcome.models import LearningIntentionDetail
 
 import pdb 
 import logging
@@ -441,14 +441,14 @@ UOActions = Enum([
 
 UOConditions = Enum(['red', 'amber', 'green'])
 
-class UserSuccessCriterion(models.Model):
-    """Track user interactions with success criteria
+class UserLearningIntentionDetail(models.Model):
+    """Track user interactions with learning intention details
     
     Marking the 'traffic light' widgets as red/amber/green will require to be 
     recorded in the database.
     
     Attributes:
-        success_criterion   
+        learn_int_detail   
         user
         condition           0=red, 1=amber, or 2=green. Instance o UOCondition
         history
@@ -463,14 +463,15 @@ class UserSuccessCriterion(models.Model):
     """
     
     user = models.ForeignKey(User, help_text="User interacting with criterion")
-    success_criterion = models.ForeignKey(SuccessCriterion, 
-        help_text="Criterion user is interacting with")
+    learning_intention_detail = models.ForeignKey(LearningIntentionDetail, 
+        help_text=  "Success criterion or learning outcome user"\
+        " is interacting with")
     condition = models.SmallIntegerField(default=UOConditions.red)
     history = models.TextField(null=True, blank=True)
     
     class Meta:
-        unique_together = ('user', 'success_criterion')
-        verbose_name_plural = "user success criteria"
+        unique_together =   ('user', 'learning_intention_detail')
+        verbose_name =      "user's learning details"
     
     def _checkrep(self):
         """Verify internal consistency of attributes and history"""
@@ -512,14 +513,15 @@ class UserSuccessCriterion(models.Model):
         """Perform history save steps"""
         
         existing_row = self.pk
-        super(UserSuccessCriterion, self).save(*args, **kwargs)
+        super(UserLearningIntentionDetail, self).save(*args, **kwargs)
         if not existing_row:
             #a long and winding ORM hop.
-            usercourse = self.success_criterion.learning_intention.lesson.course
+            usercourse = self.learning_intention_detail.learning_intention.lesson.course
             course_record = self.user.usercourse_set.get(course=usercourse)
             #view should not try to record lesson unless registered on course
             assert(course_record)
-            logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" first visit")
+            logger.info("User:"+str(self.user.pk)+",SC:"+\
+                str(self.learning_intention_detail.pk)+" first visit")
             hist = []
             current_time = mktime(datetime.now().utctimetuple())
             hist.append((current_time, UOActions.SET_AMBER))
@@ -533,7 +535,8 @@ class UserSuccessCriterion(models.Model):
         of the form (datetime, action)"""
         
         assert self.history
-        logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" load history")
+        logger.info("User:"+str(self.user.pk)+",LID:"+\
+                str(self.learning_intention_detail.pk)+" load history")
         history = json.loads(self.history)
         list_tuple_hist = []
         for row in history:
@@ -545,7 +548,8 @@ class UserSuccessCriterion(models.Model):
         """3-state cyclic permutation of RAG state"""
         
         assert self._checkrep()
-        logger.info("User:"+str(self.user.pk)+",SC:"+str(self.success_criterion.pk)+" cycling")
+        logger.info("User:"+str(self.user.pk)+",SC:"+\
+                str(self.learning_intention_detail.pk)+" cycling")
         hist = json.loads(self.history)
         last_event = hist[-1]    #slice, last element only, (its a tuple)
         event_date = last_event[0]  #datetime part of the tuple
@@ -583,15 +587,15 @@ class UserSuccessCriterion(models.Model):
         """Human readable summary"""
         
         return u"User " + self.user.username + \
-            u"'s data for SC:" + \
-            self.success_criterion.criterion_text[:10] + "..."
+            u"'s data for LID:" + \
+            self.learning_intention_detail.lid_text[:10] + "..."
             
             
     def __unicode__(self):
         """Summary for internal use"""
         
-        return u"USC:%s, User:%s, SC:%s" % \
-            (self.pk, self.user.pk, self.success_criterion.pk)
+        return u"ULID:%s, User:%s, LID:%s" % \
+            (self.pk, self.user.pk, self.learning_intention_detail.pk)
             
     
     def get_status(self):

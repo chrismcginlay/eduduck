@@ -9,11 +9,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from outcome.models import (LearningIntention, SuccessCriterion)
-from courses.models import (Course, Lesson)
+from outcome.models import LearningIntention, LearningIntentionDetail
+from courses.models import Course, Lesson
 from ..models import (UserCourse, 
                       UserLesson, 
-                      UserSuccessCriterion, 
+                      UserLearningIntentionDetail, 
                       UOConditions
                       )
 
@@ -384,16 +384,17 @@ class UserLessonModelTests(TestCase):
         self.assertEqual(s, url, "URL error")
         
         
-class UserSuccessCriterionModelTests(TestCase):
-    """Test model behaviour of user interaction with success criteria"""
+class UserLearningIntentionDetailModelTests(TestCase):
+    """Test model behaviour of user interaction with 
+    learning intention details"""
 
     course1_data = {'course_code': 'EDU02',
-               'course_name': 'A Course of Leeches',
-               'course_abstract': 'Learn practical benefits of leeches',
-               'course_organiser': 'Van Gogh',
-               'course_level': 'Basic',
-               'course_credits': 30,
-               }
+                   'course_name': 'A Course of Leeches',
+                   'course_abstract': 'Learn practical benefits of leeches',
+                   'course_organiser': 'Van Gogh',
+                   'course_level': 'Basic',
+                   'course_credits': 30,
+                   }
 
     def setUp(self):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
@@ -409,33 +410,35 @@ class UserSuccessCriterionModelTests(TestCase):
         self.lesson.save() 
         self.li = LearningIntention(lesson=self.lesson, li_text="Intend...")
         self.li.save()
-        self.sc = SuccessCriterion(learning_intention=self.li, 
-                                   criterion_text ="Criterion...")
-        self.sc.save()
-        self.usc = UserSuccessCriterion(user=self.user1,
-                                        success_criterion=self.sc)
-        self.usc.save()
+        self.lid = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="Criterion...",
+            lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
+        self.lid.save()
+        self.ulid = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid)
+        self.ulid.save()
         
     def test_checkrep(self):
         """Test the internal representation checker with success criterion interaction"""
         
-        self.assert_(self.usc._checkrep(), "Failure: User begins interaction with sc")
-        self.usc.condition = UOConditions.red
-        self.assertFalse(self.usc._checkrep(), "Checkrep didn't pick up error state")
+        self.assert_(self.ulid._checkrep(), "Failure: User begins interaction with sc")
+        self.ulid.condition = UOConditions.red
+        self.assertFalse(self.ulid._checkrep(), "Checkrep didn't pick up error state")
         
     def test_cycle(self):
         """Check that state cycling works"""
         
-        self.assert_(self.usc._checkrep(), "Failure prior to cycle")
-        self.assertEqual(self.usc.condition, UOConditions.amber)
-        self.usc.cycle()
-        self.assert_(self.usc._checkrep(), "Fail after first cycle")
-        self.assertEqual(self.usc.condition, UOConditions.green)
-        self.usc.cycle()
-        self.assert_(self.usc._checkrep(), "Fail after second cycle")
-        self.assertEqual(self.usc.condition, UOConditions.red)
-        self.usc.cycle()
-        self.assert_(self.usc._checkrep(), "Fail after third cycle")
+        self.assert_(self.ulid._checkrep(), "Failure prior to cycle")
+        self.assertEqual(self.ulid.condition, UOConditions.amber)
+        self.ulid.cycle()
+        self.assert_(self.ulid._checkrep(), "Fail after first cycle")
+        self.assertEqual(self.ulid.condition, UOConditions.green)
+        self.ulid.cycle()
+        self.assert_(self.ulid._checkrep(), "Fail after second cycle")
+        self.assertEqual(self.ulid.condition, UOConditions.red)
+        self.ulid.cycle()
+        self.assert_(self.ulid._checkrep(), "Fail after third cycle")
 
     def test_cycle_history_timebar(self):
         """Test 5 minute timebar on history updates
@@ -444,33 +447,33 @@ class UserSuccessCriterionModelTests(TestCase):
         have elapsed since the last event, otherwise replace last history.
         """
         
-        self.assert_(self.usc._checkrep(), "Failure prior to cycle")
+        self.assert_(self.ulid._checkrep(), "Failure prior to cycle")
         #First check that rapid successive cycles don't append to history, 
         #intead, last entry should be replaced
-        #NB: usc.hist is JSON string. Count hist2list elements instead
-        self.usc.cycle()
-        count1 = len(self.usc.hist2list())  
-        self.usc.cycle()
-        count2 = len(self.usc.hist2list())
+        #NB: ulid.hist is JSON string. Count hist2list elements instead
+        self.ulid.cycle()
+        count1 = len(self.ulid.hist2list())  
+        self.ulid.cycle()
+        count2 = len(self.ulid.hist2list())
         self.assertEqual(count2, count1, "History grew when it shouldn't have")
         
         #Doctor the date to 10 mins prior, 
         #check that subsequent cycle does append to history        
-        hist = json.loads(self.usc.history)
+        hist = json.loads(self.ulid.history)
         last_event = hist.pop()
         last_time = last_event[0]
         last_time = last_time - 600 #600 seconds earlier
         hist.append((last_time, last_event[1]))
-        self.usc.history = json.dumps(hist)
-        self.usc.cycle()
-        count3 = len(self.usc.hist2list())
+        self.ulid.history = json.dumps(hist)
+        self.ulid.cycle()
+        count3 = len(self.ulid.hist2list())
         self.assertGreater(count3, count2, "History did not grow when it should")
         
         
     def test_hist2list(self):
         """See that history converts to list properly"""
         
-        h2l_output = self.usc.hist2list()
+        h2l_output = self.ulid.hist2list()
         self.assertIsInstance(h2l_output, list, "Output should be a list")
         for row in h2l_output:
             self.assertIsInstance(row, tuple, "Entry should be a tuple")
@@ -484,27 +487,27 @@ class UserSuccessCriterionModelTests(TestCase):
     def test_get_status(self):
         """Test that the correct status is returned"""
         
-        self.assertEqual(self.usc.get_status(), 'amber', "Status should be 'amber'")
-        self.usc.cycle()
-        self.assertEqual(self.usc.get_status(), 'green', "Status should be 'green'")
-        self.usc.cycle()
-        self.assertEqual(self.usc.get_status(), 'red', "Status should be 'red'")
-        self.usc.cycle()
-        self.assertEqual(self.usc.get_status(), 'amber', "Status should be 'amber'")
+        self.assertEqual(self.ulid.get_status(), 'amber', "Status should be 'amber'")
+        self.ulid.cycle()
+        self.assertEqual(self.ulid.get_status(), 'green', "Status should be 'green'")
+        self.ulid.cycle()
+        self.assertEqual(self.ulid.get_status(), 'red', "Status should be 'red'")
+        self.ulid.cycle()
+        self.assertEqual(self.ulid.get_status(), 'amber', "Status should be 'amber'")
 
     
     def test___str__(self):
         """Test that the desired info is in the unicode method"""
-        s = self.usc.__str__()
-        self.assertIn(self.usc.user.username, s, "The username should be in the unicode")
-        self.assertIn(self.usc.success_criterion.criterion_text[:10], s, "The first 10 chars of the criterion_text should be in the unicode")
+        s = self.ulid.__str__()
+        self.assertIn(self.ulid.user.username, s, "The username should be in the unicode")
+        self.assertIn(self.ulid.learning_intention_detail.lid_text[:10], s, "The first 10 chars of the criterion_text should be in the unicode")
 
     
     def test___unicode__(self):
         """Test that the desired info is in the unicode method"""
-        unicod = self.usc.__unicode__()
-        s = u"USC:%s, User:%s, SC:%s" % \
-            (self.usc.pk, self.usc.user.pk, self.usc.success_criterion.pk)
+        unicod = self.ulid.__unicode__()
+        s = u"ULID:%s, User:%s, LID:%s" % \
+            (self.ulid.pk, self.ulid.user.pk, self.ulid.learning_intention_detail.pk)
         self.assertEqual(unicod, s, "Unicode output failure")
 
     

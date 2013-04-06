@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UserCourse, UserLesson, UserSuccessCriterion
+from .models import UserCourse, UserLesson, UserLearningIntentionDetail
 
 class UserCourseAdmin(admin.ModelAdmin):
     list_display = ('pk', 'user', 'course', 'active')
@@ -15,11 +15,12 @@ class UserLessonAdmin(admin.ModelAdmin):
     readonly_fields = ('user', 'lesson', 'visited', 
                        'completed', 'history', 'note')
     
-class UserSuccessCriteriaAdmin(admin.ModelAdmin):
+class UserLearningIntentionDetailAdmin(admin.ModelAdmin):
     list_filter = ('user', 'condition')
-    search_fields = ('user', 'success_criterion')
-    readonly_fields = ('user', 'success_criterion', 'condition', 'history')
+    search_fields = ('user', 'learning_intention_detail')
+    readonly_fields = ('user', 'learning_intention_detail', 'condition', 'history')
     
 admin.site.register(UserCourse, UserCourseAdmin)
 admin.site.register(UserLesson, UserLessonAdmin)
-admin.site.register(UserSuccessCriterion, UserSuccessCriteriaAdmin)
+admin.site.register(UserLearningIntentionDetail, 
+                    UserLearningIntentionDetailAdmin)

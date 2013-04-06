@@ -4,8 +4,8 @@ from django.shortcuts import (render_to_response,
                               
 from django.template import RequestContext
 from courses.models import Lesson
-from outcome.models import LearningIntention
-from interaction.models import UserSuccessCriterion
+from outcome.models import LearningIntention, LearningIntentionDetail
+from interaction.models import UserLearningIntentionDetail
 
 import logging
 logger = logging.getLogger(__name__)
@@ -23,35 +23,38 @@ def learning_intention(request, lesson_id, learning_intention_id):
     if request.user.is_authenticated():
         #Construct list of tuples usc[(sc, condition)] where condition = red etc
         usc_list = list()
-        usercriteria = request.user.usersuccesscriterion_set.all()              
-        for succcrit in learning_intention.successcriterion_set.all():
+        userlids = request.user.userlearningintentiondetail_set.all()              
+        for lid in learning_intention.learningintentiondetail_set.filter(
+                        type=LearningIntentionDetail.SUCCESS_CRITERION):
             try:
-                match = usercriteria.get(success_criterion = succcrit)
+                match = userlids.get(learning_intention_detail = lid)
                 offset = match.condition * -17
             except ObjectDoesNotExist:
                 match = None
                 offset = 0
-            usc_list.append((succcrit, offset, match))
+            usc_list.append((lid, offset, match))
 
         if request.method == "POST":
             for (idx, usc) in enumerate(usc_list):
                 target = "cycle" + str(usc[0].pk)   #which sc to cycle
-                succcrit = usc[0]
+                lid = usc[0]
                 if target in request.POST:  
                     if usc[2]: #already in database
                         usc[2].cycle()
                         #magic 17 is pixel offset for traffic light CSS prop.
                         newcond = usc[2].condition * -17
-                        usc = ((succcrit, newcond, usc[2]))
+                        usc = ((lid, newcond, usc[2]))
                     else:
-                        new_usc = UserSuccessCriterion(
-                            success_criterion=succcrit, 
-                            user=request.user)
-                        new_usc.save()
-                        usc = (( succcrit, -17, new_usc))
+                        new_ulid = UserLearningIntentionDetail(
+                            learning_intention_detail=lid, 
+                            user=request.user,
+                            type = LearningIntentionDetail.SUCCESS_CRITERION)
+                        new_ulid.save()
+                        usc = (( lid, -17, new_ulid))
                     usc_list[idx] = usc
     else: #not authenticated
-        usc_list = [(sc, 0, None) for sc in learning_intention.successcriterion_set.all()]
+        usc_list = [(lid, 0, None) for lid in 
+            learning_intention.learningintentiondetail_set.all()]
     context_data =  {
                     'lesson':   lesson,
                     'learning_intention': learning_intention,

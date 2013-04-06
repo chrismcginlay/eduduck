@@ -43,7 +43,7 @@
             <h4>Success Criteri{{ learning_intention.successcriterion_set.count|pluralize:"on,a"}}
             </h4>
             <p class="FYI">The success criteria are the activities you 
-            would do if carrying out a learning outcome</p>
+            would do that would demonstrate mastery of learning outcomes.</p>
 <form action='' method='post'>{% csrf_token %}
             <ol>
             {% for sc in usc_list %}

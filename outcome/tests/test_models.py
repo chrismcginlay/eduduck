@@ -1,9 +1,7 @@
 from django.test import TestCase
 
 from courses.models import Course, Lesson
-from ..models import (LearningIntention,
-                     SuccessCriterion,
-                     LearningOutcome)
+from ..models import LearningIntention, LearningIntentionDetail
 
 import pdb 
 
@@ -30,16 +28,18 @@ class OutcomeModelTests(TestCase):
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
                                                     li_text = "Practise")
         self.learningintention1.save()                                            
-        self.successcriterion1 = SuccessCriterion(
+        self.lid1 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            criterion_text = "Choose"
+            lid_text = "Choose",
+            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
         )
-        self.successcriterion1.save()                                          
-        self.learningoutcome1 = LearningOutcome(
+        self.lid1.save()                                          
+        self.lid2 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            lo_text = "Calculate"
+            lid_text = "Calculate",
+            lid_type = LearningIntentionDetail.LEARNING_OUTCOME
         )
-        self.learningoutcome1.save()    
+        self.lid2.save()    
                      
     def test_learningIntention_create(self):
         """LearningIntention instance attributes are created OK"""
@@ -49,10 +49,12 @@ class OutcomeModelTests(TestCase):
     
     def test_successCriterion_create(self):
         """SuccessCriterion instance attributes are created OK"""
-        self.assertEqual(self.successcriterion1.learning_intention, self.learningintention1)
-        self.assertEqual(self.successcriterion1.criterion_text, "Choose")
+        self.assertEqual(self.lid1.learning_intention, self.learningintention1)
+        self.assertEqual(self.lid1.lid_text, "Choose")
+        self.assertEqual(self.lid1.lid_type, LearningIntentionDetail.SUCCESS_CRITERION)
         
     def test_learningOutcome_create(self):
         """LearningOutcome instance attributes are created OK"""
-        self.assertEqual(self.learningoutcome1.learning_intention, self.learningintention1)
-        self.assertEqual(self.learningoutcome1.lo_text, "Calculate")
+        self.assertEqual(self.lid2.learning_intention, self.learningintention1)
+        self.assertEqual(self.lid2.lid_text, "Calculate")
+        self.assertEqual(self.lid2.lid_type, LearningIntentionDetail.LEARNING_OUTCOME)
