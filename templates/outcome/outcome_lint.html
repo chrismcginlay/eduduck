@@ -40,7 +40,7 @@
 
     <section id="zone1">
         <article>
-            <h4>Success Criteri{{ learning_intention.successcriterion_set.count|pluralize:"on,a"}}
+            <h4>Success Criteri{{ usc_list.all.count|pluralize:"on,a"}}
             </h4>
             <p class="FYI">The success criteria are the activities you 
             would do that would demonstrate mastery of learning outcomes.</p>
@@ -53,7 +53,7 @@
                         style="background-position: {{ sc.1 }}px 0px" />
 <input type="submit" name="cycle{{ sc.0.pk }}" value="Cycle"
 title="Cycle status R->A->G->R">
-                    {{ sc.0.criterion_text }}
+                    {{ sc.0.lid_text }}
                 </li>
             {% empty %}
                 <li>No success criteria for this learning intention</li>
@@ -64,20 +64,25 @@ title="Cycle status R->A->G->R">
     </section>
 
     <section id="zone2">
-        <h4>Learning Outcome{{ learning_intention.learningoutcome_set.count|pluralize:",s"}}
+        <h4>Learning Outcome{{ ulo_list.count|pluralize:",s"}}
         </h4>
         <p class="FYI">The learning outcome is the particular capacity 
         or skill acquired or enhanced. Think of 'I can...' statements.</p>
-        
-        <ul>
-        {% for lo in learning_intention.learningoutcome_set.all %}
+<form action='' method='post'>{% csrf_token %}        
+        <ol>
+        {% for lo in ulo_list %}
             <li class="learning_outcome">
-                <img id="LO{{ lo.pk }}" src="{% static 'images/img_trans.png' %}" />
-                {{ lo }}
+                <img id="LO{{ lo.0.pk }}" 
+                    src="{% static 'images/img_trans.png' %}"
+                    style="background-position: {{ lo.1 }}px 0px" />
+<input type="submit" name="cycle{{ lo.0.pk }}" value="Cycle"
+title="Cycle status R->A->G->R">
+                {{ lo.0.lid_text }}
             </li>
         {% empty %}
             <li>Not a single learning outcome specified!</li>
         {% endfor %}
-        </ul>
+        </ol>
+</form>
     </section>
 {% endblock content %}

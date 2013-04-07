@@ -7,6 +7,6 @@ urlpatterns = patterns('interaction.views',
         'userlesson_single'),
     url(r'^user/(?P<user_id>\d+)/learningintentiondetail/(?P<lid_id>\d+)/$', 
         'userlearningintentiondetail_single'),   
-    url(r'^learningintentiondetail/(?P<sc_id>\d+)/cycle/$', 
+    url(r'^learningintentiondetail/(?P<lid_id>\d+)/cycle/$', 
         'userlearningintentiondetail_cycle')
 )

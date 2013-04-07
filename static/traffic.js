@@ -5,8 +5,8 @@ function assert(cond, message){
 $(document).ready(function(){
     $("input").remove();
     $("img").click(function(){
-        sc_pk = ($(this).attr('id')).slice(2);
-        path = "/interaction/successcriterion/"+sc_pk+"/cycle/"
+        lid_pk = ($(this).attr('id')).slice(2);
+        path = "/interaction/learningintentiondetail/"+lid_pk+"/cycle/"
         $.getJSON(path);
         var loc = $(this).css("background-position");
         var x_loc = loc.split(" ")[0];

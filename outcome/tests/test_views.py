@@ -62,8 +62,8 @@ class OutcomeViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
             for x in ['lesson_id', 'lesson_intention_id'])
-        self.assertIn("Choose Topaz", response.content, "LO missing")
-        self.assertIn("Calculate 6*9", response.content, "SC missing")
+        self.assertIn("Choose Topaz", response.content, "SC missing")
+        self.assertIn("Calculate 6*9", response.content, "LO missing")
         self.assertIn("cycle1", response.content, "Cycle button missing")
         self.assertIn("cycle2", response.content, "Cycle button missing")
 
