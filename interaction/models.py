@@ -432,14 +432,14 @@ class UserLesson(models.Model):
             'user_id': self.user.pk,
             'lesson_id': self.lesson.pk })
 
-#Actions for Outcomes (learning outcomes and success criteria)
-UOActions = Enum([
+#Actions for Learning Intention Details(learning outcomes and success criteria)
+ULIDActions = Enum([
     'SET_RED',
     'SET_AMBER',
     'SET_GREEN'
 ])
 
-UOConditions = Enum(['red', 'amber', 'green'])
+ULIDConditions = Enum(['red', 'amber', 'green'])
 
 class UserLearningIntentionDetail(models.Model):
     """Track user interactions with learning intention details
@@ -450,7 +450,7 @@ class UserLearningIntentionDetail(models.Model):
     Attributes:
         learn_int_detail   
         user
-        condition           0=red, 1=amber, or 2=green. Instance o UOCondition
+        condition           0=red, 1=amber, or 2=green. Instance o ULIDCondition
         history
         
     Methods:
@@ -466,7 +466,7 @@ class UserLearningIntentionDetail(models.Model):
     learning_intention_detail = models.ForeignKey(LearningIntentionDetail, 
         help_text=  "Success criterion or learning outcome user"\
         " is interacting with")
-    condition = models.SmallIntegerField(default=UOConditions.red)
+    condition = models.SmallIntegerField(default=ULIDConditions.red)
     history = models.TextField(null=True, blank=True)
     
     class Meta:
@@ -477,33 +477,33 @@ class UserLearningIntentionDetail(models.Model):
         """Verify internal consistency of attributes and history"""
         
         try:
-            UOConditions[self.condition]
+            ULIDConditions[self.condition]
         except IndexError:
-            logger.error("UO _checkrep() detected errored state (could be a test?)")
+            logger.error("ULID _checkrep() detected errored state (could be a test?)")
             return False
             
         #compare history with state
         decoded_history = self.hist2list()
         last = decoded_history.pop()
         
-        if self.condition == UOConditions.red:
+        if self.condition == ULIDConditions.red:
             if last[1] != "SET_RED":
-                logger.error("UO _checkrep() detected errored state (could be a test?)")
+                logger.error("ULID _checkrep() detected errored state (could be a test?)")
                 return False
-        elif self.condition == UOConditions.amber:
+        elif self.condition == ULIDConditions.amber:
             if last[1] != "SET_AMBER":
-                logger.error("UO _checkrep() detected errored state (could be a test?)")
+                logger.error("ULID _checkrep() detected errored state (could be a test?)")
                 return False
-        elif self.condition == UOConditions.green:
+        elif self.condition == ULIDConditions.green:
             if last[1] != "SET_GREEN":
-                logger.error("UO _checkrep() detected errored state (could be a test?)")
+                logger.error("ULID _checkrep() detected errored state (could be a test?)")
                 return False
                 
         #history events should be a member of the set 
-        #UOActions
+        #ULIDActions
         for event in decoded_history:
-            if event[1] not in UOActions:
-                logger.error("UL _checkrep() detected errored state (could be a test?)")
+            if event[1] not in ULIDActions:
+                logger.error("ULID _checkrep() detected errored state (could be a test?)")
                 return False    
         
         return True
@@ -520,13 +520,13 @@ class UserLearningIntentionDetail(models.Model):
             course_record = self.user.usercourse_set.get(course=usercourse)
             #view should not try to record lesson unless registered on course
             assert(course_record)
-            logger.info("User:"+str(self.user.pk)+",SC:"+\
+            logger.info("User:"+str(self.user.pk)+",LID:"+\
                 str(self.learning_intention_detail.pk)+" first visit")
             hist = []
             current_time = mktime(datetime.now().utctimetuple())
-            hist.append((current_time, UOActions.SET_AMBER))
+            hist.append((current_time, ULIDActions.SET_RED))
             self.history = json.dumps(hist)
-            self.condition = 1  #amber. First cycle will go red->amber
+            self.condition = ULIDConditions.red
             self.save()
             
             
@@ -541,7 +541,7 @@ class UserLearningIntentionDetail(models.Model):
         list_tuple_hist = []
         for row in history:
             list_tuple_hist.append((
-                datetime.fromtimestamp(row[0]), UOActions[row[1]]))
+                datetime.fromtimestamp(row[0]), ULIDActions[row[1]]))
         return list_tuple_hist
         
     def cycle(self):
@@ -556,12 +556,12 @@ class UserLearningIntentionDetail(models.Model):
         #don't wish to flood history if user clicks endlessly. Store only the
         #final state within the last 5 minute time period.
      
-        if self.condition == UOConditions.red:
-            action = UOActions.SET_AMBER
-        elif self.condition == UOConditions.amber:
-            action = UOActions.SET_GREEN
-        elif self.condition == UOConditions.green:
-            action = UOActions.SET_RED
+        if self.condition == ULIDConditions.red:
+            action = ULIDActions.SET_AMBER
+        elif self.condition == ULIDConditions.amber:
+            action = ULIDActions.SET_GREEN
+        elif self.condition == ULIDConditions.green:
+            action = ULIDActions.SET_RED
         else:
             raise ValueError
 
@@ -601,4 +601,4 @@ class UserLearningIntentionDetail(models.Model):
     def get_status(self):
         """Return status string for human consumption"""
     
-        return UOConditions[self.condition]
+        return ULIDConditions[self.condition]

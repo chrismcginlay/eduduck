@@ -11,7 +11,7 @@ class LearningIntention(models.Model):
     motion of a vehicle.
     
     Attributes:
-        lesson      ForiegnKey to parent lesson.
+        lesson      ForeignKey to parent lesson.
         li_text     Actual text content of the learning intention.
         
     """

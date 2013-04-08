@@ -56,6 +56,7 @@ def learning_intention(request, lesson_id, learning_intention_id):
                             learning_intention_detail=lid, 
                             user=request.user)
                         new_ulid.save()
+                        new_ulid.cycle()
                         ulid = (( lid, -17, new_ulid))
                     usc_list[idx] = ulid
             #Repeat, to see if a learning_outcome type LID is cycled
@@ -73,6 +74,7 @@ def learning_intention(request, lesson_id, learning_intention_id):
                             learning_intention_detail=lid, 
                             user=request.user)
                         new_ulid.save()
+                        new_ulid.cycle()
                         ulid = (( lid, -17, new_ulid))
                     ulo_list[idx] = ulid                
     else: #not authenticated
