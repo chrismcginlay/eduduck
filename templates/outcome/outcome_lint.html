@@ -40,10 +40,11 @@
 
     <section id="zone1">
         <article>
-            <h4>Success Criteri{{ usc_list.all.count|pluralize:"on,a"}}
+            <h4>Success Criteri{{ usc_list|length|pluralize:"on,a"}}
             </h4>
-            <p class="FYI">The success criteria are the activities you 
-            would do that would demonstrate mastery of learning outcomes.</p>
+            <p class="FYI">A success criterion is an activity you 
+            would do that would demonstrate mastery of 
+            (part of) a learning outcome.</p>
 <form action='' method='post'>{% csrf_token %}
             <ol>
             {% for sc in usc_list %}
@@ -64,10 +65,10 @@ title="Cycle status R->A->G->R">
     </section>
 
     <section id="zone2">
-        <h4>Learning Outcome{{ ulo_list.count|pluralize:",s"}}
+        <h4>Learning Outcome{{ ulo_list|length|pluralize:",s"}}
         </h4>
-        <p class="FYI">The learning outcome is the particular capacity 
-        or skill acquired or enhanced. Think of 'I can...' statements.</p>
+        <p class="FYI">A learning outcome is a particular capacity 
+        or skill acquired or enhanced. Think of an 'I can...' statement.</p>
 <form action='' method='post'>{% csrf_token %}        
         <ol>
         {% for lo in ulo_list %}

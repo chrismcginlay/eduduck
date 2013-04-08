@@ -471,7 +471,7 @@ class UserLearningIntentionDetail(models.Model):
     
     class Meta:
         unique_together =   ('user', 'learning_intention_detail')
-        verbose_name =      "user's learning details"
+        verbose_name =      "user's learning intention detail"
     
     def _checkrep(self):
         """Verify internal consistency of attributes and history"""
