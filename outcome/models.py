@@ -80,8 +80,8 @@ class LearningIntentionDetail(models.Model):
 
     """
     
-    SUCCESS_CRITERION = 'SC'
-    LEARNING_OUTCOME = 'LO'
+    SUCCESS_CRITERION = u'SC'
+    LEARNING_OUTCOME = u'LO'
     LID_DETAIL_CHOICES = (
         (SUCCESS_CRITERION, 'Success Criterion'),
         (LEARNING_OUTCOME, 'Learning Outcome')

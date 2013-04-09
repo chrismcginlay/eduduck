@@ -71,6 +71,10 @@ class OutcomeViewTests(TestCase):
         response = self.client.get('/lesson/1/lint/5/')
         self.assertEqual(response.status_code, 404)
         
+        #test not logged in
+        response = self.client.get('/lesson/1/lint/1/')
+        self.assertNotIn('progressSC', response.context)
+        
         ### Success Criteria Cycle Tests
         #press some buttons and see what happens
         self.client.login(username='bertie', password='bertword')
@@ -83,15 +87,22 @@ class OutcomeViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 1)
+        self.assertEqual(response.context['progressSC'], (0,2,2,100)) #progress bar
+        self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
+
         
         #cycle to green
         response = self.client.post('/lesson/1/lint/1/', {'cycle1':'Cycle'})
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 2)
+        self.assertEqual(response.context['progressSC'], (1,1,2,100)) #progress bar
+        self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
     
         #cycle to red
         response = self.client.post('/lesson/1/lint/1/', {'cycle1':'Cycle'})
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 0)
+        self.assertEqual(response.context['progressSC'], (0,2,2,100)) #progress bar
+        self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
