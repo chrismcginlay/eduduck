@@ -6,7 +6,7 @@ from django.shortcuts import (render_to_response,
     
 from django.contrib.auth.decorators import login_required
 
-from outcome.models import LearningIntentionDetail
+from outcome.models import LearningIntention, LearningIntentionDetail
 from .models import UserCourse, UserLesson, UserLearningIntentionDetail
 
 import pdb
@@ -58,7 +58,7 @@ def userlearningintentiondetail_single(request, user_id, lid_id):
 
 @login_required
 def userlearningintentiondetail_cycle(request, lid_id):
-    """For AJAX use in cycling learning intention details"""
+    """For AJAX use in cycling learning intention details (LID)"""
     
     lid = LearningIntentionDetail.objects.get(pk=lid_id)
     ulid_set = UserLearningIntentionDetail.objects.get_or_create( 
@@ -71,3 +71,15 @@ def userlearningintentiondetail_cycle(request, lid_id):
     jresult = json.dumps(result)
     return HttpResponse(jresult, mimetype='application/json')
     
+@login_required
+def userlearningintention_progressbar(request, learning_intention_id):
+    """For AJAX use, update progress bars after LID cycle"""
+    
+    li_id = get_object_or_404(LearningIntention, pk=lid_id)
+    try:
+        ulid_set = UserLearningIntentionDetail.objects.get( 
+                        user=request.user, 
+                        learning_intention_detail=lid)
+    except DoesNotExist:
+        pass
+                        
