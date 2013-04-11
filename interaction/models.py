@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from courses.models import Course, Lesson
-from outcome.models import LearningIntentionDetail
+from outcome.models import LearningIntention, LearningIntentionDetail
 
 import pdb 
 import logging
@@ -432,6 +432,61 @@ class UserLesson(models.Model):
             'user_id': self.user.pk,
             'lesson_id': self.lesson.pk })
 
+class UserLearningIntention(models.Model):
+    """User interaction with learning intentions
+    
+    Attributes:
+        learning_intention
+        user
+        
+    Methods:
+        progress            return dictionary of tuples indexed via 'SC' or 'LO'
+    """
+
+    user = models.ForeignKey(User, help_text="User interacting with LI")
+    learning_intention = models.ForeignKey(LearningIntention, 
+        help_text=  "Learning intention user is interacting with")
+
+    class Meta:
+        unique_together =   ('user', 'learning_intention')       
+
+    def progress(self):
+        """Compute and return representation of progress through this LI"""
+        
+        pdict = { u'SC':None, u'LO':None }
+        user_SCs = self.user.userlearningintentiondetail_set.filter(
+            condition = ULIDConditions.green,
+            learning_intention_detail__in = 
+                self.learning_intention.learningintentiondetail_set.filter(
+                    lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
+        ).count()
+        user_LOs = self.user.userlearningintentiondetail_set.filter(
+            condition = ULIDConditions.green,
+            learning_intention_detail__in = 
+                self.learning_intention.learningintentiondetail_set.filter(
+                    lid_type=LearningIntentionDetail.LEARNING_OUTCOME)
+        ).count()
+        LI_SCs = self.learning_intention.learningintentiondetail_set.filter(
+            lid_type = LearningIntentionDetail.SUCCESS_CRITERION).count()
+        LI_LOs = self.learning_intention.learningintentiondetail_set.filter(
+            lid_type = LearningIntentionDetail.LEARNING_OUTCOME).count()        
+        pdict[u'SC'] = (user_SCs, LI_SCs)
+        pdict[u'LO'] = (user_LOs, LI_LOs)
+        return pdict
+        
+    def __str__(self):
+        """Human readable summary"""
+        
+        return u"User " + self.user.username + \
+            u"'s data for LI:" + \
+            self.li_text[:10] + "..."
+            
+    def __unicode__(self):
+        """Summary for internal use"""
+        
+        return u"ULI:%s, User:%s, LI:%s" % \
+            (self.pk, self.user.pk, self.learning_intention.pk)
+            
 #Actions for Learning Intention Details(learning outcomes and success criteria)
 ULIDActions = Enum([
     'SET_RED',
@@ -448,7 +503,7 @@ class UserLearningIntentionDetail(models.Model):
     recorded in the database.
     
     Attributes:
-        learn_int_detail   
+        learning_intention_detail   
         user
         condition           0=red, 1=amber, or 2=green. Instance o ULIDCondition
         history
@@ -462,7 +517,7 @@ class UserLearningIntentionDetail(models.Model):
         hist2list   Convert JSON history to a list of (date, action) tuples
     """
     
-    user = models.ForeignKey(User, help_text="User interacting with criterion")
+    user = models.ForeignKey(User, help_text="User interacting with LI detail")
     learning_intention_detail = models.ForeignKey(LearningIntentionDetail, 
         help_text=  "Success criterion or learning outcome user"\
         " is interacting with")

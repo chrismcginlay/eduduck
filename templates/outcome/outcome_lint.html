@@ -3,6 +3,7 @@
 
 {%block extra_style %}
     <link href="{% static 'learning_intention.css' %}" rel="stylesheet" media="screen" />
+    <link href="{% static 'progress_bar.css' %}" rel="stylesheet" media="screen" />
 {% endblock extra_style %}
 
 {% block extra_script %}
@@ -54,6 +55,16 @@
             width="{% widthratio progressSC.1 progressSC.2 progressSC.3 %}" 
             height="20"/>
         </p>
+
+        <progress value="{{progressSC.0}}" max="{{progressSC.2}}" id="progSC">
+            <span class="prog_fb" id="progSC_fb">
+            <!-- No HTML5 progress bar support? Fall back here-->
+            </span>
+        </progress>
+        <div class="prog_status" id="progSC_status">
+            <!--progress status or complete information-->
+        <div>
+
         {% endif %}   
 <form action='' method='post'>{% csrf_token %}
         <ol>

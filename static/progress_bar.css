@@ -1,0 +1,15 @@
+/* static/progress_bar.css
+
+Nicely display progress bars */
+
+PROGRESS, .prog_fb, .prog_status {
+    float:          left;
+}
+
+PROGRESS, .prog_status {
+    margin-right:   10px;
+}    
+
+.prog_status, .prog_fb {
+    font:           10px sans-serif;
+}

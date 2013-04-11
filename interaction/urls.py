@@ -8,5 +8,7 @@ urlpatterns = patterns('interaction.views',
     url(r'^user/(?P<user_id>\d+)/learningintentiondetail/(?P<lid_id>\d+)/$', 
         'userlearningintentiondetail_single'),   
     url(r'^learningintentiondetail/(?P<lid_id>\d+)/cycle/$', 
-        'userlearningintentiondetail_cycle')
+        'userlearningintentiondetail_cycle'),
+    url(r'^learningintentiondetail/(?P<lid_id>\d+)/progress/$',
+        'userlearningintention_progress_bar')
 )

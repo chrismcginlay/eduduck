@@ -4,8 +4,12 @@ from django.shortcuts import (render_to_response,
                               
 from django.template import RequestContext
 from courses.models import Lesson
-from outcome.models import LearningIntention, LearningIntentionDetail
-from interaction.models import UserLearningIntentionDetail, ULIDConditions
+from interaction.models import (
+    UserLearningIntention,
+    UserLearningIntentionDetail, 
+    ULIDConditions
+)
+from .models import LearningIntention, LearningIntentionDetail
 
 import logging
 logger = logging.getLogger(__name__)
@@ -79,19 +83,20 @@ def learning_intention(request, lesson_id, learning_intention_id):
                         ulid = (( lid, -17, new_ulid))
                     ulo_list[idx] = ulid
         #Construct progress bar graph tuples (val, max-val, max, width)
-        #We are hitting the database again :-(
-        user_SCs = request.user.userlearningintentiondetail_set.filter(
-            condition = ULIDConditions.green,
-            learning_intention_detail__in=learning_intention.learningintentiondetail_set.filter(
-                lid_type=LearningIntentionDetail.SUCCESS_CRITERION)).count()
-        user_LOs = request.user.userlearningintentiondetail_set.filter(
-            condition = ULIDConditions.green,
-            learning_intention_detail__in=learning_intention.learningintentiondetail_set.filter(
-                lid_type=LearningIntentionDetail.LEARNING_OUTCOME)).count()
-        progressSC = ( user_SCs, len(usc_list)-user_SCs, len(usc_list), 100 )
-        progressLO = ( user_LOs, len(ulo_list)-user_LOs, len(ulo_list), 100 )
-        context_data.update({'progressSC':  progressSC,
-                        'progressLO':  progressLO})
+        uli = UserLearningIntention.objects.get_or_create(
+            user=request.user,
+            learning_intention = learning_intention
+        )
+        #get or create produces a tuple with status (we only want 1st element)
+        rawSC = uli[0].progress()[u'SC']
+        rawLO = uli[0].progress()[u'LO']
+        #tuples (n complete, n not complete, N, 100% width)
+        progressSC = ( rawSC[0], rawSC[1]-rawSC[0], rawSC[1], 100 )
+        progressLO = ( rawLO[0], rawLO[1]-rawLO[0], rawLO[1], 100 )
+        context_data.update({
+            'progressSC':  progressSC,
+            'progressLO':  progressLO
+        })
     else: #not authenticated
         usc_list = [(lid, 0, None) for lid in 
             learning_intention.learningintentiondetail_set.filter(

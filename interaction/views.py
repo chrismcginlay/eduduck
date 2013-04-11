@@ -6,8 +6,13 @@ from django.shortcuts import (render_to_response,
     
 from django.contrib.auth.decorators import login_required
 
-from outcome.models import LearningIntentionDetail
-from .models import UserCourse, UserLesson, UserLearningIntentionDetail
+from outcome.models import LearningIntentionDetail, LearningIntention
+from .models import (
+    UserCourse, 
+    UserLesson,
+    UserLearningIntention,
+    UserLearningIntentionDetail
+)
 
 import pdb
 
@@ -61,13 +66,40 @@ def userlearningintentiondetail_cycle(request, lid_id):
     """For AJAX use in cycling learning intention details"""
     
     lid = LearningIntentionDetail.objects.get(pk=lid_id)
+    #Need to ensure the interaction object exists for user, LID
     ulid_set = UserLearningIntentionDetail.objects.get_or_create( 
                         user=request.user, 
                         learning_intention_detail=lid)
     ulid = ulid_set[0]
+
+    #Need now to ensure that an interaction object exists for user, LI
+    uli_set = UserLearningIntention.objects.get_or_create(
+        user = request.user,
+        learning_intention = lid.learning_intention)
+    uli = uli_set[0]
     logger.info("Cycling learning intention detail ULID: "+str(ulid))
     ulid.cycle()
-    result = {'condition':ulid.condition}
+
+    #Update progress for the entire Learning Intention
+    #uli.progress() is combined SC and LO progress
+    result = {'condition':ulid.condition, 'progress':uli.progress()}
     jresult = json.dumps(result)
     return HttpResponse(jresult, mimetype='application/json')
     
+@login_required
+def userlearningintention_progress_bar(request, lid_id):
+    """Return tuple for jQuery to create a progress bar
+    
+    Could this be made more generic? Moved to a utilities area as it is more
+    generally applicable than merely to learning intentions.
+    """
+
+    li = (LearningIntentionDetail.objects.get(pk=lid_id)).learning_intention
+    uli = get_object_or_404(UserLearningIntention,
+                            user = request.user,
+                            learning_intention = li)    
+    logger.info('User:'+str(request.user.pk)+\
+        'progress update LI id:'+str(li.pk))
+    result = {'progress': uli.progress()}
+    jresult = json.dumps(result)
+    return HttpResponse(jresult, mimetype='application/json')
