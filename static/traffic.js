@@ -20,9 +20,7 @@ $(document).ready(function(){
 	//Now update the progress bar, looking up parent LI via ULID
 	var bar_id = "prog" + ($(this).attr('id')).slice(0,2);	//SC or LO?
 	path = "/interaction/learningintentiondetail/"+lid_pk+"/progress/";
-	updates = $.getJSON(path, bar_id, function(data){
-		//return [data.progress.SC[0], data.progress.SC[1]];
-		//});
+	$.getJSON(path, bar_id, function(data){
 		var pbar = document.getElementById(bar_id);
 		completedSC = data.progress.SC[0];
 		maxtodoSC = data.progress.SC[1];
