@@ -3,10 +3,6 @@
 import os
 import django
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
-
 ADMINS = (
     ('Chris McGinlay', 'ctmcginlay@gmail.com'),
     ('Alan McGinlay', 'mrintegrity@gmail.com'),
@@ -19,22 +15,11 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), os.path.pardir)
 
+#TODO do this properly
 #set the base URL, not sure if this is the django way of doing it
 #It's not. https://docs.djangoproject.com/en/dev/ref/contrib/sites/?from=olddocs
 #Nevertheless, SITE_URL is an efficient hack in this context.
 SITE_URL = 'http://www.eduduck.com:8000'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        #'NAME': '/home/chris/coding/EduDuck/EduDuck.db',  #Or path to database file if using sqlite3.
-        'NAME': os.path.join(SITE_ROOT, 'EduDuck.db'),
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
 
 # Fixture Directory - for development purposes, realoading test data
 # after changes to models.
@@ -144,20 +129,8 @@ TEMPLATE_DIRS = (
 #django-registration https://bitbucket.org/ubernostrum/django-registration
 #This allows new users 7 days to activate new accounts
 ACCOUNT_ACTIVATION_DAYS = 7
-
 #Set following to False to disable registration.
 REGISTRATION_OPEN = True
-
-#django-registration needs an MTA. For development just use console
-#smtp is the default, so for production, just comment this next line
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-#Fill in for given MTA
-#EMAIL_HOST = 'localhost'
-#EMAIL_PORT = 25
-#EMAIL_HOST_USER = 'bob'
-#EMAIL_HOST_PASSWORD = 'bobo'
-#EMAIL_USE_TLS = 'True'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -180,9 +153,6 @@ INSTALLED_APPS = (
     'registration',
 )
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
 LOGGING = {
