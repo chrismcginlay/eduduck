@@ -5,6 +5,7 @@ function assert(cond, message){
 $(document).ready(function(){
     $("input").remove();
     $("img").click(function(){
+TODO check slice(2), does that work by fluke length??
         lid_pk = ($(this).attr('id')).slice(2);
         path = "/interaction/learningintentiondetail/"+lid_pk+"/cycle/";
         $.getJSON(path);
@@ -17,23 +18,29 @@ $(document).ready(function(){
         else assert(false, "Problem with x_loc =" + x_loc);
         $(this).css("background-position",x_loc + " 0px");
 
-	//Now update the progress bar, looking up parent LI via ULID
+	//Now update the progress bars, looking up parent LI via ULID
 	var bar_id = "prog" + ($(this).attr('id')).slice(0,2);	//SC or LO?
+TODO check slice(0,2) what exactly is that doing and what is intended?
 	path = "/interaction/learningintentiondetail/"+lid_pk+"/progress/";
 	$.getJSON(path, bar_id, function(data){
 		var pbar = document.getElementById(bar_id);
-		completedSC = data.progress.SC[0];
-		maxtodoSC = data.progress.SC[1];
-		pbar.value = completedSC;
-		pbar.max = maxtodoSC;
+TODO		if (bar is SC bar) {			
+			completed = data.progress.SC[0];
+			maxtodo = data.progress.SC[1];
+TODO		} else if (bar is LO bar) {
+			completed = data.progress.LO[0];
+			maxtodo = data.progress.LO[1];
+		}
+		pbar.value = completed;
+		pbar.max = maxtodo;
 		var fallback = document.getElementById(bar_id+"_fb");
 		var status = document.getElementById(bar_id + "_status");
 
 		//Fallback if no <progress> support
 		$(fallback).empty().append("Browser lacks support for progress bar");
-		$(status).empty().append(completedSC + "/" + maxtodoSC + " completed. ");
+		$(status).empty().append(completed + "/" + maxtodo + " completed. ");
 
-		if (completedSC == maxtodoSC) {
+		if (completed == maxtodo) {
 			$(status).append("Well done!");
 		}
 	});
