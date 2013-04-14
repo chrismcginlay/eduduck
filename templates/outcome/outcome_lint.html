@@ -100,6 +100,15 @@ title="Cycle status R->A->G->R">
             width="{% widthratio progressLO.1 progressLO.2 progressLO.3 %}" 
             height="20"/>
         </p>
+
+        <progress value="{{progressLO.0}}" max="{{progressLO.2}}" id="progLO">
+            <span class="prog_fb" id="progLO_fb">
+            <!-- No HTML5 progress bar support? Fall back here-->
+            </span>
+        </progress>
+        <div class="prog_status" id="progLO_status">
+            <!--progress status or complete information-->
+        </div>
         {% endif %}
 <form action='' method='post'>{% csrf_token %}        
         <ol>

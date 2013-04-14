@@ -5,7 +5,15 @@ function assert(cond, message){
 $(document).ready(function(){
     $("input").remove();
     $("img").click(function(){
-TODO check slice(2), does that work by fluke length??
+
+/*
+array.slice(start, end)
+Parameter Values
+Parameter	Description
+start	Required. An integer that specifies where to start the selection (The first element has an index of 0). Use negative numbers to select from the end of an array
+end	Optional. An integer that specifies where to end the selection. If omitted, all elements from the start position and to the end of the array will be selected. Use negative numbers to select from the end of an array
+*/
+
         lid_pk = ($(this).attr('id')).slice(2);
         path = "/interaction/learningintentiondetail/"+lid_pk+"/cycle/";
         $.getJSON(path);
@@ -19,20 +27,20 @@ TODO check slice(2), does that work by fluke length??
         $(this).css("background-position",x_loc + " 0px");
 
 	//Now update the progress bars, looking up parent LI via ULID
-	var bar_id = "prog" + ($(this).attr('id')).slice(0,2);	//SC or LO?
-TODO check slice(0,2) what exactly is that doing and what is intended?
+	var bar_type = $(this).attr('id').slice(0,2);
+	var bar_id = "prog" + bar_type;	//SC or LO?
 	path = "/interaction/learningintentiondetail/"+lid_pk+"/progress/";
 	$.getJSON(path, bar_id, function(data){
-		var pbar = document.getElementById(bar_id);
-TODO		if (bar is SC bar) {			
+		var prog_bar = document.getElementById(bar_id);
+		if (bar_type == 'SC') {			
 			completed = data.progress.SC[0];
 			maxtodo = data.progress.SC[1];
-TODO		} else if (bar is LO bar) {
+		} else if (bar_type == 'LO') {			
 			completed = data.progress.LO[0];
 			maxtodo = data.progress.LO[1];
 		}
-		pbar.value = completed;
-		pbar.max = maxtodo;
+		prog_bar.value = completed;
+		prog_bar.max = maxtodo;
 		var fallback = document.getElementById(bar_id+"_fb");
 		var status = document.getElementById(bar_id + "_status");
 
