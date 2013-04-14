@@ -13,3 +13,7 @@ PROGRESS, .prog_status {
 .prog_status, .prog_fb {
     font:           10px sans-serif;
 }
+
+.prog_status + FORM {
+    clear:          both;
+}

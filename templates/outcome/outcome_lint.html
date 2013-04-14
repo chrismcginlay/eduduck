@@ -47,18 +47,18 @@
         would do that would demonstrate mastery of 
         (part of) a learning outcome.</p>
         {% if progressSC %}
-        <p class="progress" id="scprog">Progress
-        <img src="{% static 'images/bar2.png' %}" alt="Progress Bar"  
-            width="{% widthratio progressSC.0 progressSC.2 progressSC.3 %}" 
-            height="20"/>    
-        <img src="{% static 'images/bar_back.png' %}" alt="Progress Bar"  
-            width="{% widthratio progressSC.1 progressSC.2 progressSC.3 %}" 
-            height="20"/>
-        </p>
 
         <progress value="{{progressSC.0}}" max="{{progressSC.2}}" id="progSC">
             <span class="prog_fb" id="progSC_fb">
             <!-- No HTML5 progress bar support? Fall back here-->
+            <p class="progress" id="scprog">Progress
+            <img src="{% static 'images/bar2.png' %}" alt="Progress Bar"  
+                width="{% widthratio progressSC.0 progressSC.2 progressSC.3 %}" 
+                height="20"/>    
+            <img src="{% static 'images/bar_back.png' %}" alt="Progress Bar"  
+                width="{% widthratio progressSC.1 progressSC.2 progressSC.3 %}" 
+                height="20"/>
+            </p>
             </span>
         </progress>
         <div class="prog_status" id="progSC_status">
@@ -92,18 +92,18 @@ title="Cycle status R->A->G->R">
         <p class="FYI">A learning outcome is a particular capacity 
         or skill acquired or enhanced. Think of an 'I can...' statement.</p>
         {% if progressLO %}
-        <p class="progress" id="loprog">Progress
-        <img src="{% static 'images/bar2.png' %}" alt="Progress Bar"  
-            width="{% widthratio progressLO.0 progressLO.2 progressLO.3 %}" 
-            height="20"/>
-        <img src="{% static 'images/bar_back.png' %}" alt="Progress Bar"  
-            width="{% widthratio progressLO.1 progressLO.2 progressLO.3 %}" 
-            height="20"/>
-        </p>
 
         <progress value="{{progressLO.0}}" max="{{progressLO.2}}" id="progLO">
             <span class="prog_fb" id="progLO_fb">
             <!-- No HTML5 progress bar support? Fall back here-->
+            <p class="progress" id="loprog">Progress
+            <img src="{% static 'images/bar2.png' %}" alt="Progress Bar"  
+                width="{% widthratio progressLO.0 progressLO.2 progressLO.3 %}" 
+                height="20"/>
+            <img src="{% static 'images/bar_back.png' %}" alt="Progress Bar"  
+                width="{% widthratio progressLO.1 progressLO.2 progressLO.3 %}" 
+                height="20"/>
+            </p>
             </span>
         </progress>
         <div class="prog_status" id="progLO_status">

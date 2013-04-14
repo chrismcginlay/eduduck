@@ -45,7 +45,9 @@ end	Optional. An integer that specifies where to end the selection. If omitted, 
 		var status = document.getElementById(bar_id + "_status");
 
 		//Fallback if no <progress> support
-		$(fallback).empty().append("Browser lacks support for progress bar");
+		$(fallback).append("Browser lacks support for progress bar");
+		$(fallback).css("display", "block");
+
 		$(status).empty().append(completed + "/" + maxtodo + " completed. ");
 
 		if (completed == maxtodo) {
