@@ -12,7 +12,8 @@ from django.contrib.auth.models import User
 from outcome.models import LearningIntention, LearningIntentionDetail
 from courses.models import Course, Lesson
 from ..models import (UserCourse, 
-                      UserLesson, 
+                      UserLesson,
+                      UserLearningIntention,
                       UserLearningIntentionDetail, 
                       ULIDConditions
                       )
@@ -413,6 +414,113 @@ class UserLessonModelTests(TestCase):
         l = self.ul3.lesson.pk
         s = "/interaction/user/%s/lesson/%s/"% (u,l)
         self.assertEqual(s, url, "URL error")
+        
+        
+class UserLearningIntentionModelTests(TestCase):
+    """Test model behaviour of user interaction with learning intentions"""
+    
+    course1_data = {'course_code': 'EDU02',
+                   'course_name': 'A Course of Leeches',
+                   'course_abstract': 'Learn practical benefits of leeches',
+                   'course_organiser': 'Van Gogh',
+                   'course_level': 'Basic',
+                   'course_credits': 30,
+                   }
+
+    def setUp(self):
+        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
+                                              'bertword')
+        self.user1.is_active = True
+        self.user1.save()    
+        self.course1 = Course(**self.course1_data)
+        self.course1.save() 
+        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc.save()
+        self.lesson = Lesson(lesson_code="L1", 
+                      lesson_name="Test Lesson 1",
+                      course = self.course1)
+        self.lesson.save() 
+        self.li = LearningIntention(lesson=self.lesson, li_text="Intend...")
+        self.li.save()
+        self.uli = UserLearningIntention(user=self.user1, 
+                                         learning_intention = self.li)
+        self.lid1 = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="LID A",
+            lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
+        self.lid2 = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="LID B",
+            lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
+        self.lid3 = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="LID C",
+            lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
+        self.lid4 = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="LID D",
+            lid_type=LearningIntentionDetail.LEARNING_OUTCOME)
+        self.lid5 = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="LID E",
+            lid_type=LearningIntentionDetail.LEARNING_OUTCOME)
+        self.lid6 = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="LID F",
+            lid_type=LearningIntentionDetail.LEARNING_OUTCOME)
+        self.lid1.save()
+        self.lid2.save()
+        self.lid3.save()
+        self.lid4.save()
+        self.lid5.save()
+        self.lid6.save()
+        self.ulid1 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid1)
+        self.ulid1.save()    
+        self.ulid2 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid2)
+        self.ulid2.save()
+        self.ulid3 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid3)
+        self.ulid3.save()
+        self.ulid4 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid4)
+        self.ulid4.save()
+        self.ulid5 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid5)
+        self.ulid5.save()
+        self.ulid6 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid6)
+        self.ulid6.save()
+
+    def test___unicode__(self):
+        pass
+    def test___str__(self):
+        pass
+    
+    def test_progress(self):
+        self.assertEqual(self.uli.progress(), {u'SC':(0,3), u'LO':(0,3)})
+        self.ulid1.cycle()
+        self.assertEqual(self.uli.progress(), {u'SC':(0,3), u'LO':(0,3)})
+        self.ulid1.cycle()
+        self.assertEqual(self.uli.progress(), {u'SC':(1,3), u'LO':(0,3)})        
+        self.ulid4.cycle()
+        self.assertEqual(self.uli.progress(), {u'SC':(1,3), u'LO':(0,3)})
+        self.ulid4.cycle()
+        self.assertEqual(self.uli.progress(), {u'SC':(1,3), u'LO':(1,3)})
+        self.ulid2.cycle()
+        self.ulid2.cycle()
+        self.ulid3.cycle()
+        self.assertEqual(self.uli.progress(), {u'SC':(2,3), u'LO':(1,3)})
+        self.ulid3.cycle()
+        self.ulid4.cycle()
+        self.assertEqual(self.uli.progress(), {u'SC':(3,3), u'LO':(0,3)})
+        self.ulid5.cycle()
+        self.ulid5.cycle()
+        self.assertEqual(self.uli.progress(), {u'SC':(3,3), u'LO':(1,3)})
+        self.ulid6.cycle()
+        self.ulid6.cycle()
+        self.assertEqual(self.uli.progress(), {u'SC':(3,3), u'LO':(2,3)})
         
         
 class UserLearningIntentionDetailModelTests(TestCase):

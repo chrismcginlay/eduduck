@@ -443,6 +443,8 @@ class UserLearningIntention(models.Model):
         progress            return dictionary of tuples indexed via 'SC' or 'LO'
     """
 
+    #TODO: cache the progress status in the database as it will be cheaper
+    #when rendering course summaries.
     user = models.ForeignKey(User, help_text="User interacting with LI")
     learning_intention = models.ForeignKey(LearningIntention, 
         help_text=  "Learning intention user is interacting with")
