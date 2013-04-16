@@ -6,8 +6,12 @@ from django.test import TestCase
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
-from courses.models import (Course, Lesson)
-from ..models import UserCourse, UserLesson
+from courses.models import Course, Lesson
+from outcome.models import LearningIntention, LearningIntentionDetail
+from ..models import (UserCourse, 
+                      UserLesson, 
+                      UserLearningIntention,
+                      UserLearningIntentionDetail)
 
 import pdb
 
@@ -139,4 +143,73 @@ class UserLessonViewTests(TestCase):
         #non existent record
         response = self.client.get('/interaction/user/1/lesson/4/')
         self.assertEqual(response.status_code, 404)
+        
+class UserLearningIntentionViewTests(TestCase):
+    """Test views for learning intention interaction"""
+
+    course1_data = {'course_code': 'EDU02',
+                   'course_name': 'A Course of Leeches',
+                   'course_abstract': 'Learn practical benefits of leeches',
+                   'course_organiser': 'Van Gogh',
+                   'course_level': 'Basic',
+                   'course_credits': 30,
+                   }
+
+    def setUp(self):
+        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
+                                              'bertword')
+        self.user1.is_active = True
+        self.user1.save()    
+        self.course1 = Course(**self.course1_data)
+        self.course1.save() 
+        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc.save()
+        self.lesson = Lesson(lesson_code="L1", 
+                      lesson_name="Test Lesson 1",
+                      course = self.course1)
+        self.lesson.save() 
+        self.li = LearningIntention(lesson=self.lesson, li_text="Intend...")
+        self.li.save()
+        self.uli = UserLearningIntention(user=self.user1, 
+                                         learning_intention = self.li)
+        self.lid1 = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="LID A",
+            lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
+        self.lid2 = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="LID B",
+            lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
+        self.lid3 = LearningIntentionDetail(
+            learning_intention=self.li, 
+            lid_text ="LID C",
+            lid_type=LearningIntentionDetail.LEARNING_OUTCOME)
+        self.lid1.save()
+        self.lid2.save()
+        self.lid3.save()   
+        self.ulid1 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid1)
+        self.ulid1.save()    
+        self.ulid2 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid2)
+        self.ulid2.save()
+        self.ulid3 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid3)
+        self.ulid3.save()         
+            
+""" TODO Not working test of ajax view.
+    def test_userlearningintention_progress_bar(self):
+        View returns correct data for AJAX call
+
+        pdb.set_trace()
+        #Not logged in
+        response = self.client.get('/interaction/learningintentiondetail'\
+                                    '/1/progress/')
+        self.assertEqual(response.status_code, 302)
+        
+        #Now logged in
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/interaction/learningintentiondetail/1/progress/', CONTENT_TYPE='application/json')
+        self.assertEqual(response.status_code, 200)
+        """
         

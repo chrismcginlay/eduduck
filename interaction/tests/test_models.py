@@ -494,9 +494,12 @@ class UserLearningIntentionModelTests(TestCase):
         self.ulid6.save()
 
     def test___unicode__(self):
-        pass
+        self.assertEqual(u"ULI:%s, User:%s, LI:%s" % \
+            (self.uli.pk, self.user1.pk, self.li.pk), self.uli.__unicode__())        
+        
     def test___str__(self):
-        pass
+        self.assertEqual(u"User %s's data for LI:%s..." % \
+            (self.user1.username, self.li.li_text[:10]), self.uli.__str__())
     
     def test_progress(self):
         self.assertEqual(self.uli.progress(), {u'SC':(0,3), u'LO':(0,3)})

@@ -90,7 +90,6 @@ class OutcomeViewTests(TestCase):
         self.assertEqual(response.context['progressSC'], (0,2,2,100)) #progress bar
         self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
 
-        
         #cycle to green
         response = self.client.post('/lesson/1/lint/1/', {'cycle1':'Cycle'})
         self.assertEqual(response.status_code, 200)

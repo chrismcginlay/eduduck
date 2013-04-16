@@ -481,7 +481,7 @@ class UserLearningIntention(models.Model):
         
         return u"User " + self.user.username + \
             u"'s data for LI:" + \
-            self.li_text[:10] + "..."
+            self.learning_intention.li_text[:10] + "..."
             
     def __unicode__(self):
         """Summary for internal use"""

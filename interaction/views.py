@@ -6,7 +6,7 @@ from django.shortcuts import (render_to_response,
     
 from django.contrib.auth.decorators import login_required
 
-from outcome.models import LearningIntentionDetail, LearningIntention
+from outcome.models import LearningIntentionDetail
 from .models import (
     UserCourse, 
     UserLesson,
