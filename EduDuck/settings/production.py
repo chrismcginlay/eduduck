@@ -1,5 +1,5 @@
 #settings/prod.py
-from .base import *
+from base import *
 
 #django-registration needs an MTA. For development just use console
 #smtp is the default, so for production, use default EMAIL_BACKEND 

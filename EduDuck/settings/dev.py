@@ -1,5 +1,5 @@
 #settings/dev.py
-from .base import *
+from base import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

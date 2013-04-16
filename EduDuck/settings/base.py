@@ -3,6 +3,8 @@
 import os
 import django
 
+DEBUG = False
+
 ADMINS = (
     ('Chris McGinlay', 'ctmcginlay@gmail.com'),
     ('Alan McGinlay', 'mrintegrity@gmail.com'),
