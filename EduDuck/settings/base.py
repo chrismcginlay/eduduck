@@ -14,8 +14,10 @@ MANAGERS = ADMINS
 
 #get the path name to prepend to other settings
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
-SITE_ROOT = os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), os.path.pardir)
+
+SITE_ROOT = os.path.join(os.path.dirname(__file__), 
+                                         os.path.pardir, 
+                                         os.path.pardir)
 
 #TODO do this properly
 #set the base URL, not sure if this is the django way of doing it
