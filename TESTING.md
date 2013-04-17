@@ -8,11 +8,11 @@
 4. executed before merging to master
 
 ##Unit tests at present, and how to run them:##
-`python manage.py test courses`
-`python manage.py test interaction`
-`python manage.py test bio`
-`python manage.py test outcome`
-`python manage.py test support`
+`python manage.py test courses --settings=Eduduck.settings.test`
+`python manage.py test interaction --settings=Eduduck.settings.test`
+`python manage.py test bio --settings=Eduduck.settings.test`
+`python manage.py test outcome --settings=Eduduck.settings.test`
+`python manage.py test support --settings=Eduduck.settings.test`
 
 ##ERROR status in logs after running tests##
 Because the tests intentionally subject the models to failure cases, the tests 
