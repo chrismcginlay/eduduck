@@ -28,7 +28,7 @@ application = get_wsgi_application()
 #import django.core.handlers.wsgi
 #application = django.core.handlers.wsgi.WSGIHandler()
 
-# Apply WSGI middleware here.
-from EduDuck.wsgi import EduDuckApplication
-application = EduDuckApplication(application)
+# Apply WSGI middleware here. Issue #46
+#from EduDuck.wsgi import EduDuckApplication
+#application = EduDuckApplication(application)
 
