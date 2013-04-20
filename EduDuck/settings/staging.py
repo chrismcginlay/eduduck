@@ -13,7 +13,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Make SECRET_KEY unique, and don't share it with anybody.
 # see issue #43 for key generation method.
 assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
-SECRET_KEY = os.environ('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY']
 
 DATABASES = {
     'default': {

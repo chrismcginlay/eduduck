@@ -4,7 +4,7 @@ from base import *
 # Make SECRET_KEY unique, and don't share it with anybody.
 # see issue #43 for key generation method.
 assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
-SECRET_KEY = os.environ('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY']
 
 #django-registration needs an MTA. For development just use console
 #smtp is the default, so for production, use default EMAIL_BACKEND 
