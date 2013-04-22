@@ -1,7 +1,7 @@
 #settings/staging.py
 from base import *
 import os
-
+ 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 #TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
