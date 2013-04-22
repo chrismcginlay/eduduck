@@ -9,7 +9,17 @@ TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
 
 ALLOWED_HOSTS = ['www.eduduck.com']
 
-STATIC_URL = '/static/'
+# Absolute path to the directory static files should be collected to.
+# Don't put anything in this directory yourself; store your static files
+# in apps' "static/" subdirectories and in STATICFILES_DIRS.
+# Example: "/home/media/media.lawrence.com/static/"
+STATIC_ROOT = '/var/www/staticmedia/'
+
+# URL prefix for static files.
+# Example: "http://media.lawrence.com/static/"
+STATIC_URL = SITE_URL + '/static/'
+
+
 #django-registration needs an MTA. For development just use console
 #smtp is the default, so for production, use default EMAIL_BACKEND 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
