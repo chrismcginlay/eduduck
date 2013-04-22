@@ -13,11 +13,11 @@ ALLOWED_HOSTS = ['www.eduduck.com']
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/var/www/staticmedia/'
+STATIC_ROOT = '/var/www/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = SITE_URL + '/static/'
+STATIC_URL = 'http://static.eduduck.com/'
 
 
 #django-registration needs an MTA. For development just use console
