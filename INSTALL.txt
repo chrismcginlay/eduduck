@@ -33,10 +33,12 @@ programmatically.
 
 5. Django package dependencies.
 a. https://bitbucket.org/ubernostrum/django-registration
-
 This is used for two part email based activation of registration (issue #2).
 I installed via the manual method specified in the quickstart:
 https://bitbucket.org/ubernostrum/django-registration/src/27bccd108cde/docs/quickstart.rst?at=default
+
+b. pytz. This provides accurate definitions of timezones.
+sudo pip install pytz
 
 5. Run the development server. In terminal, navigate to the directory you just
  unpacked or cloned eduduck into:

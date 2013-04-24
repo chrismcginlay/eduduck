@@ -10,7 +10,8 @@ from .forms import BioEditForm
 class BioModelTests(TestCase):
     """Test the model used to present a user bio"""
      
-    bio1_data = {'accepted_terms':  True,
+    bio1_data = {'user_tz':         "Europe/Paris",
+                 'accepted_terms':  True,
                  'signature_line':  'Some catchy signature.',
                  'description':     'Detailed multiline description.',
                  'webpage':         'http://www.unpossible.info',
@@ -52,12 +53,18 @@ class BioModelTests(TestCase):
         with self.assertRaises(ValidationError):
             self.user1.bio.full_clean()
         self.user1.bio.signature_line = self.bio1_data['signature_line']
-        
+
+        self.user1.bio.user_tz = None
+        with self.assertRaises(ValidationError):
+            self.user1.bio.full_clean()
+        self.user1.bio.user_tz = self.bio1_data['user_tz']
+            
 
 class BioViewTests(TestCase):
     """Test behaviour of user 'bio' views"""
     
-    bio1_data = {'accepted_terms':  True,
+    bio1_data = {'user_tz':         "Europe/Paris",
+                 'accepted_terms':  True,
                  'signature_line':  'Some catchy signature.',
                  'description':     'Detailed multiline description.',
                  'webpage':         'http://www.unpossible.info',
@@ -102,7 +109,8 @@ class BioViewTests(TestCase):
 class BioFormTests(TestCase):
     """Test the operation of bio forms"""
     
-    bio1_data = {'accepted_terms':  True,
+    bio1_data = {'user_tz':         "Europe/Paris",
+                 'accepted_terms':  True,
                  'signature_line':  'Some catchy signature.',
                  'description':     'Detailed multiline description.',
                  'webpage':         'http://www.unpossible.info',
@@ -122,9 +130,3 @@ class BioFormTests(TestCase):
         f = BioEditForm(instance = self.user1.bio)
         self.assertTrue(isinstance(f.instance, Bio))
         self.assertEqual(f.instance.pk, self.user1.pk)
-
-
-        
-    
-    
-
