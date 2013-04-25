@@ -1,6 +1,6 @@
 [
     {
-        "pk": 16,
+        "pk": 12,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "answer",
@@ -18,7 +18,7 @@
         }
     },
     {
-        "pk": 21,
+        "pk": 17,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "bio",
@@ -54,21 +54,21 @@
         }
     },
     {
-        "pk": 12,
+        "pk": 21,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "learningintention",
             "name": "learning intention",
-            "app_label": "courses"
+            "app_label": "outcome"
         }
     },
     {
-        "pk": 14,
+        "pk": 22,
         "model": "contenttypes.contenttype",
         "fields": {
-            "model": "learningoutcome",
-            "name": "learning outcome",
-            "app_label": "courses"
+            "model": "learningintentiondetail",
+            "name": "learning intention detail",
+            "app_label": "outcome"
         }
     },
     {
@@ -99,7 +99,7 @@
         }
     },
     {
-        "pk": 17,
+        "pk": 13,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "question",
@@ -108,7 +108,7 @@
         }
     },
     {
-        "pk": 20,
+        "pk": 16,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "questionattempt",
@@ -117,7 +117,7 @@
         }
     },
     {
-        "pk": 18,
+        "pk": 14,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "quiz",
@@ -126,7 +126,7 @@
         }
     },
     {
-        "pk": 19,
+        "pk": 15,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "quizattempt",
@@ -135,7 +135,7 @@
         }
     },
     {
-        "pk": 22,
+        "pk": 23,
         "model": "contenttypes.contenttype",
         "fields": {
             "model": "registrationprofile",
@@ -162,15 +162,6 @@
         }
     },
     {
-        "pk": 13,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "successcriterion",
-            "name": "success criterion",
-            "app_label": "courses"
-        }
-    },
-    {
         "pk": 3,
         "model": "contenttypes.contenttype",
         "fields": {
@@ -180,12 +171,39 @@
         }
     },
     {
-        "pk": 15,
+        "pk": 18,
         "model": "contenttypes.contenttype",
         "fields": {
-            "model": "userprofile_lesson",
-            "name": "user profile_ lesson",
-            "app_label": "courses"
+            "model": "usercourse",
+            "name": "user course",
+            "app_label": "interaction"
+        }
+    },
+    {
+        "pk": 24,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "userlearningintention",
+            "name": "user learning intention",
+            "app_label": "interaction"
+        }
+    },
+    {
+        "pk": 19,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "userlesson",
+            "name": "user lesson",
+            "app_label": "interaction"
+        }
+    },
+    {
+        "pk": 20,
+        "model": "contenttypes.contenttype",
+        "fields": {
+            "model": "userlearningintentiondetail",
+            "name": "user's learning details",
+            "app_label": "interaction"
         }
     },
     {
@@ -198,10 +216,18 @@
         }
     },
     {
-        "pk": "97444172ffebb71422845ec5714aa246",
+        "pk": "3c1679f869a170c8ccb7847efbd21690",
         "model": "sessions.session",
         "fields": {
-            "expire_date": "2013-02-26T23:22:49.360Z",
+            "expire_date": "2013-04-21T00:39:55.727Z",
+            "session_data": "MmE5OGVmNjk1M2YwNGNmNzEzZjU3YjhmNGI1ODY5YjY4ODA2NzU0MDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
+        }
+    },
+    {
+        "pk": "5167c7c7446a87d58abf4f8922e70635",
+        "model": "sessions.session",
+        "fields": {
+            "expire_date": "2013-04-22T07:24:03.206Z",
             "session_data": "MmE5OGVmNjk1M2YwNGNmNzEzZjU3YjhmNGI1ODY5YjY4ODA2NzU0MDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
         }
     },
@@ -217,7 +243,7 @@
         "pk": 1,
         "model": "courses.course",
         "fields": {
-            "course_name": "Introduction to Blender",
+            "course_name": "TEST Introduction to Blender",
             "course_level": "1",
             "course_organiser": "Chris McGinlay",
             "course_credits": 15,
@@ -446,110 +472,6 @@
             "lesson": 3,
             "att_name": "Lesson 3 Notes",
             "att_desc": "Course notes for lesson 3"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "courses.learningintention",
-        "fields": {
-            "lesson": 1,
-            "li_text": "Recognise a range of tasks for which Blender could be used"
-        }
-    },
-    {
-        "pk": 2,
-        "model": "courses.learningintention",
-        "fields": {
-            "lesson": 1,
-            "li_text": "Identify alternative tools and techniques"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "courses.successcriterion",
-        "fields": {
-            "criterion_text": "Spot 3D modelling tasks",
-            "learning_intention": 1
-        }
-    },
-    {
-        "pk": 2,
-        "model": "courses.successcriterion",
-        "fields": {
-            "criterion_text": "Spot video sequencing tasks",
-            "learning_intention": 1
-        }
-    },
-    {
-        "pk": 3,
-        "model": "courses.successcriterion",
-        "fields": {
-            "criterion_text": "Spot object animation tasks",
-            "learning_intention": 1
-        }
-    },
-    {
-        "pk": 4,
-        "model": "courses.successcriterion",
-        "fields": {
-            "criterion_text": "Spot object physics tasks",
-            "learning_intention": 1
-        }
-    },
-    {
-        "pk": 5,
-        "model": "courses.successcriterion",
-        "fields": {
-            "criterion_text": "Consider where a manual method might have advantages",
-            "learning_intention": 2
-        }
-    },
-    {
-        "pk": 6,
-        "model": "courses.successcriterion",
-        "fields": {
-            "criterion_text": "Try out alternative software and compare with Blender",
-            "learning_intention": 2
-        }
-    },
-    {
-        "pk": 7,
-        "model": "courses.successcriterion",
-        "fields": {
-            "criterion_text": "Talk about the advantages/disadvantages of Blender compared to other approaches",
-            "learning_intention": 2
-        }
-    },
-    {
-        "pk": 1,
-        "model": "courses.learningoutcome",
-        "fields": {
-            "lo_text": "I can correctly identify or reject various tasks as being well suited to Blender",
-            "learning_intention": 1
-        }
-    },
-    {
-        "pk": 2,
-        "model": "courses.learningoutcome",
-        "fields": {
-            "lo_text": "I can state whether the main techique of a task involves modelling, sequencing, animating or physics simulation",
-            "learning_intention": 1
-        }
-    },
-    {
-        "pk": 3,
-        "model": "courses.learningoutcome",
-        "fields": {
-            "lo_text": "I can make a selection of appropriate tool or technique for a given job",
-            "learning_intention": 2
-        }
-    },
-    {
-        "pk": 4,
-        "model": "courses.learningoutcome",
-        "fields": {
-            "lo_text": "I can give reasons supporting selection of a particular tool or technique.",
-            "learning_intention": 2
         }
     },
     {
@@ -1048,6 +970,121 @@
         }
     },
     {
+        "pk": 1,
+        "model": "outcome.learningintention",
+        "fields": {
+            "lesson": 1,
+            "li_text": "Recognise a range of tasks for which Blender could be used"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "outcome.learningintention",
+        "fields": {
+            "lesson": 1,
+            "li_text": "Identify alternative tools and techniques"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "Spot 3D modelling tasks",
+            "learning_intention": 1,
+            "lid_type": "SC"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "Spot video sequencing tasks",
+            "learning_intention": 1,
+            "lid_type": "SC"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "Spot object animation tasks",
+            "learning_intention": 1,
+            "lid_type": "SC"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "Spot object physics tasks",
+            "learning_intention": 1,
+            "lid_type": "SC"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "Consider where a manual method might have advantages",
+            "learning_intention": 2,
+            "lid_type": "SC"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "Try out alternative software and compare with Blender",
+            "learning_intention": 2,
+            "lid_type": "SC"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "Talk about the advantages/disadvantages of Blender compared to other approaches",
+            "learning_intention": 2,
+            "lid_type": "SC"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "I can correctly identify or reject various tasks as being well suited to Blender",
+            "learning_intention": 1,
+            "lid_type": "LO"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "I can state whether the main techique of a task involves modelling, sequencing, animating or physics simulation",
+            "learning_intention": 1,
+            "lid_type": "LO"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "I can make a selection of appropriate tool or technique for a given job",
+            "learning_intention": 2,
+            "lid_type": "LO"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "outcome.learningintentiondetail",
+        "fields": {
+            "lid_text": "I can give reasons supporting selection of a particular tool or technique.",
+            "learning_intention": 2,
+            "lid_type": "LO"
+        }
+    },
+    {
         "pk": 19,
         "model": "auth.permission",
         "fields": {
@@ -1156,30 +1193,30 @@
         }
     },
     {
-        "pk": 61,
+        "pk": 49,
         "model": "auth.permission",
         "fields": {
             "codename": "add_bio",
             "name": "Can add bio",
-            "content_type": 21
+            "content_type": 17
         }
     },
     {
-        "pk": 62,
+        "pk": 50,
         "model": "auth.permission",
         "fields": {
             "codename": "change_bio",
             "name": "Can change bio",
-            "content_type": 21
+            "content_type": 17
         }
     },
     {
-        "pk": 63,
+        "pk": 51,
         "model": "auth.permission",
         "fields": {
             "codename": "delete_bio",
             "name": "Can delete bio",
-            "content_type": 21
+            "content_type": 17
         }
     },
     {
@@ -1219,7 +1256,7 @@
         }
     },
     {
-        "pk": 30,
+        "pk": 26,
         "model": "auth.permission",
         "fields": {
             "codename": "change_attachment",
@@ -1228,7 +1265,7 @@
         }
     },
     {
-        "pk": 38,
+        "pk": 30,
         "model": "auth.permission",
         "fields": {
             "codename": "delete_attachment",
@@ -1246,7 +1283,7 @@
         }
     },
     {
-        "pk": 31,
+        "pk": 27,
         "model": "auth.permission",
         "fields": {
             "codename": "change_course",
@@ -1255,7 +1292,7 @@
         }
     },
     {
-        "pk": 39,
+        "pk": 31,
         "model": "auth.permission",
         "fields": {
             "codename": "delete_course",
@@ -1267,67 +1304,13 @@
         "pk": 24,
         "model": "auth.permission",
         "fields": {
-            "codename": "add_learningintention",
-            "name": "Can add learning intention",
-            "content_type": 12
-        }
-    },
-    {
-        "pk": 32,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_learningintention",
-            "name": "Can change learning intention",
-            "content_type": 12
-        }
-    },
-    {
-        "pk": 40,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "delete_learningintention",
-            "name": "Can delete learning intention",
-            "content_type": 12
-        }
-    },
-    {
-        "pk": 25,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_learningoutcome",
-            "name": "Can add learning outcome",
-            "content_type": 14
-        }
-    },
-    {
-        "pk": 33,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_learningoutcome",
-            "name": "Can change learning outcome",
-            "content_type": 14
-        }
-    },
-    {
-        "pk": 41,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "delete_learningoutcome",
-            "name": "Can delete learning outcome",
-            "content_type": 14
-        }
-    },
-    {
-        "pk": 26,
-        "model": "auth.permission",
-        "fields": {
             "codename": "add_lesson",
             "name": "Can add lesson",
             "content_type": 9
         }
     },
     {
-        "pk": 34,
+        "pk": 28,
         "model": "auth.permission",
         "fields": {
             "codename": "change_lesson",
@@ -1336,7 +1319,7 @@
         }
     },
     {
-        "pk": 42,
+        "pk": 32,
         "model": "auth.permission",
         "fields": {
             "codename": "delete_lesson",
@@ -1345,61 +1328,7 @@
         }
     },
     {
-        "pk": 27,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_successcriterion",
-            "name": "Can add success criterion",
-            "content_type": 13
-        }
-    },
-    {
-        "pk": 35,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_successcriterion",
-            "name": "Can change success criterion",
-            "content_type": 13
-        }
-    },
-    {
-        "pk": 43,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "delete_successcriterion",
-            "name": "Can delete success criterion",
-            "content_type": 13
-        }
-    },
-    {
-        "pk": 28,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_userprofile_lesson",
-            "name": "Can add user profile_ lesson",
-            "content_type": 15
-        }
-    },
-    {
-        "pk": 36,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_userprofile_lesson",
-            "name": "Can change user profile_ lesson",
-            "content_type": 15
-        }
-    },
-    {
-        "pk": 44,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "delete_userprofile_lesson",
-            "name": "Can delete user profile_ lesson",
-            "content_type": 15
-        }
-    },
-    {
-        "pk": 29,
+        "pk": 25,
         "model": "auth.permission",
         "fields": {
             "codename": "add_video",
@@ -1408,7 +1337,7 @@
         }
     },
     {
-        "pk": 37,
+        "pk": 29,
         "model": "auth.permission",
         "fields": {
             "codename": "change_video",
@@ -1417,7 +1346,7 @@
         }
     },
     {
-        "pk": 45,
+        "pk": 33,
         "model": "auth.permission",
         "fields": {
             "codename": "delete_video",
@@ -1426,65 +1355,83 @@
         }
     },
     {
-        "pk": 46,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_answer",
-            "name": "Can add answer",
-            "content_type": 16
-        }
-    },
-    {
-        "pk": 51,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_answer",
-            "name": "Can change answer",
-            "content_type": 16
-        }
-    },
-    {
-        "pk": 56,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "delete_answer",
-            "name": "Can delete answer",
-            "content_type": 16
-        }
-    },
-    {
-        "pk": 47,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_question",
-            "name": "Can add question",
-            "content_type": 17
-        }
-    },
-    {
         "pk": 52,
         "model": "auth.permission",
         "fields": {
-            "codename": "change_question",
-            "name": "Can change question",
-            "content_type": 17
+            "codename": "add_usercourse",
+            "name": "Can add user course",
+            "content_type": 18
+        }
+    },
+    {
+        "pk": 55,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_usercourse",
+            "name": "Can change user course",
+            "content_type": 18
+        }
+    },
+    {
+        "pk": 58,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_usercourse",
+            "name": "Can delete user course",
+            "content_type": 18
+        }
+    },
+    {
+        "pk": 70,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_userlearningintention",
+            "name": "Can add user learning intention",
+            "content_type": 24
+        }
+    },
+    {
+        "pk": 71,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_userlearningintention",
+            "name": "Can change user learning intention",
+            "content_type": 24
+        }
+    },
+    {
+        "pk": 72,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_userlearningintention",
+            "name": "Can delete user learning intention",
+            "content_type": 24
+        }
+    },
+    {
+        "pk": 54,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_userlearningintentiondetail",
+            "name": "Can add user's learning details",
+            "content_type": 20
         }
     },
     {
         "pk": 57,
         "model": "auth.permission",
         "fields": {
-            "codename": "delete_question",
-            "name": "Can delete question",
-            "content_type": 17
+            "codename": "change_userlearningintentiondetail",
+            "name": "Can change user's learning details",
+            "content_type": 20
         }
     },
     {
-        "pk": 48,
+        "pk": 60,
         "model": "auth.permission",
         "fields": {
-            "codename": "add_questionattempt",
-            "name": "Can add question attempt",
+            "codename": "delete_userlearningintentiondetail",
+            "name": "Can delete user's learning details",
             "content_type": 20
         }
     },
@@ -1492,89 +1439,71 @@
         "pk": 53,
         "model": "auth.permission",
         "fields": {
-            "codename": "change_questionattempt",
-            "name": "Can change question attempt",
-            "content_type": 20
+            "codename": "add_userlesson",
+            "name": "Can add user lesson",
+            "content_type": 19
         }
     },
     {
-        "pk": 58,
+        "pk": 56,
         "model": "auth.permission",
         "fields": {
-            "codename": "delete_questionattempt",
-            "name": "Can delete question attempt",
-            "content_type": 20
-        }
-    },
-    {
-        "pk": 49,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_quiz",
-            "name": "Can add quiz",
-            "content_type": 18
-        }
-    },
-    {
-        "pk": 54,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "change_quiz",
-            "name": "Can change quiz",
-            "content_type": 18
+            "codename": "change_userlesson",
+            "name": "Can change user lesson",
+            "content_type": 19
         }
     },
     {
         "pk": 59,
         "model": "auth.permission",
         "fields": {
-            "codename": "delete_quiz",
-            "name": "Can delete quiz",
-            "content_type": 18
-        }
-    },
-    {
-        "pk": 50,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_quizattempt",
-            "name": "Can add quiz attempt",
+            "codename": "delete_userlesson",
+            "name": "Can delete user lesson",
             "content_type": 19
         }
     },
     {
-        "pk": 55,
+        "pk": 61,
         "model": "auth.permission",
         "fields": {
-            "codename": "change_quizattempt",
-            "name": "Can change quiz attempt",
-            "content_type": 19
+            "codename": "add_learningintention",
+            "name": "Can add learning intention",
+            "content_type": 21
         }
     },
     {
-        "pk": 60,
+        "pk": 63,
         "model": "auth.permission",
         "fields": {
-            "codename": "delete_quizattempt",
-            "name": "Can delete quiz attempt",
-            "content_type": 19
-        }
-    },
-    {
-        "pk": 64,
-        "model": "auth.permission",
-        "fields": {
-            "codename": "add_registrationprofile",
-            "name": "Can add registration profile",
-            "content_type": 22
+            "codename": "change_learningintention",
+            "name": "Can change learning intention",
+            "content_type": 21
         }
     },
     {
         "pk": 65,
         "model": "auth.permission",
         "fields": {
-            "codename": "change_registrationprofile",
-            "name": "Can change registration profile",
+            "codename": "delete_learningintention",
+            "name": "Can delete learning intention",
+            "content_type": 21
+        }
+    },
+    {
+        "pk": 62,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_learningintentiondetail",
+            "name": "Can add learning intention detail",
+            "content_type": 22
+        }
+    },
+    {
+        "pk": 64,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_learningintentiondetail",
+            "name": "Can change learning intention detail",
             "content_type": 22
         }
     },
@@ -1582,9 +1511,171 @@
         "pk": 66,
         "model": "auth.permission",
         "fields": {
+            "codename": "delete_learningintentiondetail",
+            "name": "Can delete learning intention detail",
+            "content_type": 22
+        }
+    },
+    {
+        "pk": 34,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_answer",
+            "name": "Can add answer",
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 39,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_answer",
+            "name": "Can change answer",
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 44,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_answer",
+            "name": "Can delete answer",
+            "content_type": 12
+        }
+    },
+    {
+        "pk": 35,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_question",
+            "name": "Can add question",
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 40,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_question",
+            "name": "Can change question",
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 45,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_question",
+            "name": "Can delete question",
+            "content_type": 13
+        }
+    },
+    {
+        "pk": 36,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_questionattempt",
+            "name": "Can add question attempt",
+            "content_type": 16
+        }
+    },
+    {
+        "pk": 41,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_questionattempt",
+            "name": "Can change question attempt",
+            "content_type": 16
+        }
+    },
+    {
+        "pk": 46,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_questionattempt",
+            "name": "Can delete question attempt",
+            "content_type": 16
+        }
+    },
+    {
+        "pk": 37,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_quiz",
+            "name": "Can add quiz",
+            "content_type": 14
+        }
+    },
+    {
+        "pk": 42,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_quiz",
+            "name": "Can change quiz",
+            "content_type": 14
+        }
+    },
+    {
+        "pk": 47,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_quiz",
+            "name": "Can delete quiz",
+            "content_type": 14
+        }
+    },
+    {
+        "pk": 38,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_quizattempt",
+            "name": "Can add quiz attempt",
+            "content_type": 15
+        }
+    },
+    {
+        "pk": 43,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_quizattempt",
+            "name": "Can change quiz attempt",
+            "content_type": 15
+        }
+    },
+    {
+        "pk": 48,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "delete_quizattempt",
+            "name": "Can delete quiz attempt",
+            "content_type": 15
+        }
+    },
+    {
+        "pk": 67,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "add_registrationprofile",
+            "name": "Can add registration profile",
+            "content_type": 23
+        }
+    },
+    {
+        "pk": 68,
+        "model": "auth.permission",
+        "fields": {
+            "codename": "change_registrationprofile",
+            "name": "Can change registration profile",
+            "content_type": 23
+        }
+    },
+    {
+        "pk": 69,
+        "model": "auth.permission",
+        "fields": {
             "codename": "delete_registrationprofile",
             "name": "Can delete registration profile",
-            "content_type": 22
+            "content_type": 23
         }
     },
     {
@@ -1651,7 +1742,7 @@
             "is_active": true,
             "is_superuser": true,
             "is_staff": true,
-            "last_login": "2013-02-12T23:22:49.167Z",
+            "last_login": "2013-04-08T07:24:02.888Z",
             "groups": [],
             "user_permissions": [],
             "password": "pbkdf2_sha256$10000$64IjYIHrovTK$pbjD4Ny9YTRA83zBRSr4l+W951EH+wdLK7xIaqak35w=",
@@ -1750,96 +1841,68 @@
         }
     },
     {
-        "pk": 1,
+        "pk": 5,
         "model": "admin.logentry",
         "fields": {
-            "action_flag": 2,
-            "action_time": "2013-02-12T23:34:31.659Z",
-            "object_repr": "Introduction to Blender",
+            "action_flag": 3,
+            "action_time": "2013-04-08T07:25:18.049Z",
+            "object_repr": "ULID:1, User:1, LID:1",
             "object_id": "1",
-            "change_message": "Changed course_name.",
+            "change_message": "",
             "user": 1,
-            "content_type": 8
-        }
-    },
-    {
-        "pk": 1,
-        "model": "courses.userprofile_lesson",
-        "fields": {
-            "lesson": 1,
-            "date_complete": "2012-08-10",
-            "mark_complete": true,
-            "userprofile": 2
-        }
-    },
-    {
-        "pk": 2,
-        "model": "courses.userprofile_lesson",
-        "fields": {
-            "lesson": 2,
-            "date_complete": null,
-            "mark_complete": true,
-            "userprofile": 2
-        }
-    },
-    {
-        "pk": 3,
-        "model": "courses.userprofile_lesson",
-        "fields": {
-            "lesson": 3,
-            "date_complete": null,
-            "mark_complete": false,
-            "userprofile": 2
+            "content_type": 20
         }
     },
     {
         "pk": 4,
-        "model": "courses.userprofile_lesson",
+        "model": "admin.logentry",
         "fields": {
-            "lesson": 1,
-            "date_complete": "2012-08-10",
-            "mark_complete": true,
-            "userprofile": 1
+            "action_flag": 3,
+            "action_time": "2013-04-08T07:25:17.718Z",
+            "object_repr": "ULID:2, User:1, LID:9",
+            "object_id": "2",
+            "change_message": "",
+            "user": 1,
+            "content_type": 20
         }
     },
     {
-        "pk": 5,
-        "model": "courses.userprofile_lesson",
+        "pk": 3,
+        "model": "admin.logentry",
         "fields": {
-            "lesson": 1,
-            "date_complete": "2012-08-10",
-            "mark_complete": true,
-            "userprofile": 3
+            "action_flag": 3,
+            "action_time": "2013-04-08T07:25:17.456Z",
+            "object_repr": "ULID:3, User:1, LID:8",
+            "object_id": "3",
+            "change_message": "",
+            "user": 1,
+            "content_type": 20
         }
     },
     {
-        "pk": 6,
-        "model": "courses.userprofile_lesson",
+        "pk": 2,
+        "model": "admin.logentry",
         "fields": {
-            "lesson": 1,
-            "date_complete": "2012-08-10",
-            "mark_complete": true,
-            "userprofile": 4
+            "action_flag": 3,
+            "action_time": "2013-04-08T07:25:17.224Z",
+            "object_repr": "ULID:4, User:1, LID:3",
+            "object_id": "4",
+            "change_message": "",
+            "user": 1,
+            "content_type": 20
         }
     },
     {
-        "pk": 7,
-        "model": "courses.userprofile_lesson",
+        "pk": 1,
+        "model": "admin.logentry",
         "fields": {
-            "lesson": 1,
-            "date_complete": "2012-08-10",
-            "mark_complete": true,
-            "userprofile": 5
-        }
-    },
-    {
-        "pk": 8,
-        "model": "courses.userprofile_lesson",
-        "fields": {
-            "lesson": 1,
-            "date_complete": "2012-08-10",
-            "mark_complete": true,
-            "userprofile": 6
+            "action_flag": 3,
+            "action_time": "2013-04-08T07:25:16.982Z",
+            "object_repr": "ULID:5, User:1, LID:4",
+            "object_id": "5",
+            "change_message": "",
+            "user": 1,
+            "content_type": 20
         }
     },
     {
@@ -1940,7 +2003,7 @@
         "model": "bio.bio",
         "fields": {
             "webpage": "http://www.lipsum.com/",
-            "signature_line": "Building the Platform",
+            "signature_line": "Quixotically Flimstoofic",
             "description": "Ut ac tellus magna, sed convallis purus. Phasellus sit amet risus vitae dolor egestas venenatis a sit amet leo. Donec adipiscing justo sit amet dolor congue id sagittis justo varius. Proin vitae urna egestas lectus consectetur volutpat at in enim. Suspendisse potenti. Aenean consequat vestibulum quam, nec vestibulum nunc iaculis ut. Curabitur vel ante placerat erat blandit dictum in vel magna. Sed sollicitudin, odio vel consequat blandit, leo risus mollis ante, vitae vehicula velit enim at erat. In hac habitasse platea dictumst. Proin eget facilisis mi. Curabitur sit amet massa in nunc faucibus dictum eget placerat dolor. Aliquam mattis, purus sed pretium ullamcorper, sapien felis elementum metus, sed varius enim nisi in massa.\r\n\r\nSuspendisse posuere lectus quis nisl viverra suscipit. Nullam nec ipsum vel justo gravida imperdiet a in sapien. Donec placerat, orci vitae scelerisque feugiat, arcu libero ornare est, quis aliquet risus eros ac urna. Donec magna elit, ultrices sit amet euismod a, auctor sit amet lectus. Etiam enim nunc, bibendum nec rutrum in, imperdiet sagittis neque. Quisque eleifend erat at risus facilisis dapibus. Sed porttitor ante quis massa vulputate pulvinar. Donec tincidunt, enim sed elementum suscipit, libero nisl interdum nulla, a molestie arcu nunc faucibus ligula. Aliquam erat volutpat. Nunc quam risus, cursus nec consectetur et, rhoncus vitae sapien. Ut porta, diam et hendrerit vulputate, enim turpis pulvinar nunc, ac mollis mauris urna hendrerit sem. Donec porta, augue in euismod aliquam, nisi diam condimentum erat, ut tincidunt mi lorem sed arcu. Fusce dolor lacus, gravida vitae sagittis id, auctor at mauris. Quisque viverra dictum arcu eget tristique. Maecenas semper velit sit amet dolor fermentum eget suscipit nisi dictum.\r\n\r\nMauris quis eros purus, non blandit massa. Morbi et felis nunc, nec auctor leo. Mauris convallis lectus convallis erat molestie feugiat non in turpis. Mauris arcu lectus, congue ut eleifend at, molestie id sapien. Nam tincidunt arcu ac sapien ullamcorper convallis. Nulla gravida molestie ligula eget pulvinar. Proin felis eros, tristique ut tempor sed, aliquet eget mauris. Donec vehicula feugiat egestas. Vivamus sollicitudin vehicula laoreet. Vestibulum pretium consequat iaculis. Mauris varius, velit vitae viverra tincidunt, metus sapien cursus urna, nec viverra quam metus at nunc. ",
             "user": 1,
             "accepted_terms": true
@@ -1999,6 +2062,50 @@
             "description": "Duis scelerisque felis vel est dapibus facilisis. Etiam tristique tincidunt erat, ullamcorper scelerisque lacus mattis vitae. Sed in purus nec leo placerat euismod. Aliquam ornare interdum dolor, non tincidunt magna suscipit nec. Nulla facilisi. Cras cursus vestibulum nulla, vel egestas eros cursus quis. Sed leo libero, iaculis at dictum ut, scelerisque ut risus. Pellentesque elit nunc, tincidunt tincidunt porttitor nec, elementum ac enim. Integer pretium mauris a arcu fringilla vehicula faucibus nibh porttitor. Etiam tempus consequat egestas. Ut fermentum nisi eu ligula posuere nec condimentum augue vulputate.\r\n\r\nProin ultricies volutpat aliquam. Morbi condimentum volutpat placerat. Nulla dictum elementum tempus. Vivamus non elit id ante porta adipiscing. Proin blandit rhoncus massa sit amet interdum. Aliquam a consectetur magna. Aenean tristique nisi cursus ligula venenatis aliquam. Aenean ut odio nulla, eget congue lectus. Sed porttitor eleifend urna, nec aliquam sapien hendrerit sed. Nulla eu ultrices lectus. In nec mauris tortor. Vivamus vehicula tellus ac sapien cursus hendrerit. Aliquam venenatis mattis dictum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam accumsan, arcu eget consectetur porttitor, est diam porta nisl, eget feugiat lectus felis a lacus. In hac habitasse platea dictumst.\r\n\r\nProin adipiscing molestie mauris, sed bibendum enim pretium ut. Vestibulum rhoncus varius neque in imperdiet. Mauris ligula libero, sagittis et dapibus sit amet, ultricies ut magna. Nam eleifend nibh metus. Morbi ut posuere tellus. In adipiscing tortor sed erat iaculis vitae pellentesque augue porttitor. Mauris vitae tortor in libero condimentum rhoncus. Nunc vehicula euismod dolor sit amet cursus. Integer metus lorem, semper id adipiscing nec, gravida a est. Nunc odio risus, gravida ut convallis a, iaculis ac orci. Aliquam suscipit varius nisl, eu volutpat nisl varius id. Vestibulum id enim eget magna vehicula iaculis nec ut sapien.\r\n\r\nMorbi fringilla pharetra vehicula. Morbi vehicula sodales felis, non semper ipsum accumsan id. Maecenas iaculis sem arcu, ac pharetra dolor. Nulla porttitor rutrum nibh, sed faucibus ligula porta nec. Phasellus quis sem mi, nec blandit libero. Suspendisse justo dolor, convallis ut vehicula vel, hendrerit eget odio. Integer at nisi sit amet risus semper hendrerit sit amet ac diam. Mauris ac massa ut erat bibendum condimentum eget vitae est. Fusce nunc mi, pulvinar eu pellentesque ut, euismod in lectus. Nullam vehicula ante ut leo lobortis et tempor arcu consectetur. Aliquam erat volutpat. Aliquam mattis sollicitudin dignissim. Phasellus in justo nisi, in eleifend nisi. In hac habitasse platea dictumst.\r\n\r\nPraesent vel nisi ut sem vehicula dictum a in risus. Sed ac ligula risus, non sodales lorem. Quisque ac velit nec diam accumsan ultrices vel sit amet dolor. Mauris scelerisque mauris a leo porta mattis. Nam leo dui, aliquam vitae vehicula et, pellentesque eu nibh. Nullam vel arcu in elit pellentesque egestas. Etiam sed venenatis quam. In gravida rutrum neque, sed dapibus ante luctus eget. Pellentesque quis turpis eu eros scelerisque cursus at eu metus. Quisque ac purus vitae odio tempus fringilla. Phasellus pellentesque pretium eleifend. Pellentesque dapibus lorem sed dolor consectetur vulputate. Phasellus egestas tempor elementum. Nulla ullamcorper fringilla purus, eget rhoncus erat ullamcorper id. Sed viverra nibh nec massa aliquam et varius mauris faucibus. Vivamus rutrum, mauris at tristique tincidunt, erat sapien egestas nisl, id bibendum erat odio ac diam.\r\n\r\nPellentesque auctor tortor a odio sagittis vel vulputate sapien condimentum. Fusce dictum imperdiet auctor. Quisque tristique ipsum ac velit ultricies vitae lacinia urna cursus. Aliquam vulputate urna risus, posuere tincidunt libero. Nulla risus justo, commodo sit amet egestas vel, volutpat eu purus. Proin fermentum faucibus velit ac luctus. Sed vel nisi ut risus imperdiet bibendum. Aliquam vel odio ac nisi suscipit ullamcorper vel nec est. Quisque sit amet augue id tortor imperdiet ullamcorper. Aliquam elementum scelerisque tortor vitae elementum. Nam ante sapien, aliquam sed congue quis, bibendum id leo. Sed quis est purus, sed lacinia massa. Suspendisse vel tortor est, imperdiet imperdiet justo. Donec accumsan condimentum eleifend. Donec aliquam dolor eu sapien mattis ut condimentum nibh venenatis.\r\n\r\nClass aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam mollis nisi id nibh tempus ultrices. Duis sed nunc a metus blandit blandit a et lorem. Fusce pulvinar dui sed orci iaculis ac mattis mi pulvinar. Cras fermentum porttitor turpis, id vehicula quam posuere non. Proin condimentum tempor arcu, euismod sodales metus condimentum eu. Vestibulum eget quam at massa aliquet vulputate. Vivamus tellus velit, placerat ac gravida vitae, iaculis ut dolor. Morbi at convallis enim. Nullam venenatis eleifend lectus, id facilisis sapien tincidunt quis. Maecenas viverra luctus magna eu accumsan. Nam sed est nulla.\r\n\r\nDuis aliquam auctor vestibulum. In hac habitasse platea dictumst. Suspendisse potenti. In leo felis, interdum id euismod ac, interdum tempus magna. Nulla placerat, odio vel vestibulum malesuada, lacus velit vulputate velit, non lobortis mi quam condimentum dolor. Aenean vestibulum porttitor facilisis. Aliquam ultricies lorem id enim porttitor ornare. Integer tincidunt commodo iaculis.\r\n\r\nAliquam condimentum pretium neque a tincidunt. Vivamus mollis fringilla est, quis iaculis erat tempus in. Nunc nec sapien dui, sit amet tristique mi. Aenean nunc dui, ornare sit amet venenatis quis, ultrices ullamcorper quam. Maecenas in eleifend quam. Donec et purus a sapien elementum imperdiet. Sed mattis suscipit urna quis vulputate. Praesent sit amet nisl ut mi interdum consequat. Fusce non sem magna, at volutpat dui. Vivamus lacinia tempor quam eget aliquam. Fusce facilisis facilisis aliquet. Integer nunc enim, bibendum vitae porttitor nec, hendrerit et urna. Nulla ac justo ligula. Phasellus ac vehicula orci.\r\n\r\nIn tincidunt, velit sit amet mollis placerat, nisl ipsum volutpat ligula, quis tincidunt magna leo vel sem. Proin in mauris quam. Etiam dui risus, luctus elementum interdum ac, pellentesque vitae massa. Suspendisse dignissim purus cursus lacus auctor accumsan. Vivamus rutrum, massa nec malesuada accumsan, magna lacus scelerisque leo, nec cursus mi ligula vel justo. Aliquam dignissim enim ut sapien laoreet suscipit. Suspendisse ac nisi at sem lacinia congue. Nulla augue massa, suscipit rutrum congue at, egestas vel ipsum. Nulla sit amet ligula nec felis molestie ultrices non quis diam. ",
             "user": 6,
             "accepted_terms": false
+        }
+    },
+    {
+        "pk": 1,
+        "model": "interaction.usercourse",
+        "fields": {
+            "completed": false,
+            "course": 1,
+            "user": 1,
+            "active": true,
+            "withdrawn": false,
+            "history": "[[1365295244.0, 0], [1365295244.0, 1]]"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "interaction.userlesson",
+        "fields": {
+            "completed": false,
+            "note": null,
+            "user": 1,
+            "visited": true,
+            "lesson": 1,
+            "history": "[[1365295247.0, 0], [1365405853.0, 0], [1365457762.0, 0]]"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "interaction.userlearningintentiondetail",
+        "fields": {
+            "learning_intention_detail": 1,
+            "user": 1,
+            "condition": 2,
+            "history": "[[1365405933.0, 1], [1365527165.0, 2]]"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "interaction.userlearningintentiondetail",
+        "fields": {
+            "learning_intention_detail": 8,
+            "user": 1,
+            "condition": 2,
+            "history": "[[1365527179.0, 2]]"
         }
     }
 ]

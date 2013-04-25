@@ -1,0 +1,46 @@
+[
+    {
+        "pk": 1,
+        "model": "interaction.usercourse",
+        "fields": {
+            "completed": false,
+            "course": 1,
+            "user": 1,
+            "active": true,
+            "withdrawn": false,
+            "history": "[[1365295244.0, 0], [1365295244.0, 1]]"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "interaction.userlesson",
+        "fields": {
+            "completed": false,
+            "note": null,
+            "user": 1,
+            "visited": true,
+            "lesson": 1,
+            "history": "[[1365295247.0, 0], [1365405853.0, 0], [1365457762.0, 0]]"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "interaction.userlearningintentiondetail",
+        "fields": {
+            "learning_intention_detail": 1,
+            "user": 1,
+            "condition": 2,
+            "history": "[[1365405933.0, 1], [1365527165.0, 2]]"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "interaction.userlearningintentiondetail",
+        "fields": {
+            "learning_intention_detail": 8,
+            "user": 1,
+            "condition": 2,
+            "history": "[[1365527179.0, 2]]"
+        }
+    }
+]
