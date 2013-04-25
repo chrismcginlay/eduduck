@@ -78,7 +78,7 @@ class UserCourse(models.Model):
         if self.withdrawn:
             count += 1
         if count != 1:
-            logger.error("UC _checkrep() detected errored state (could be a test?)")
+            logger.warning("UC _checkrep() detected errored state (could be a test?)")
             return False
         
         #Second, compare action history with attributes
@@ -87,28 +87,28 @@ class UserCourse(models.Model):
         last2 = decoded_history.pop()
         
         if is_naive(last[0]):
-            logger.error("UC _checkrep() detected naive timezone (could be a test)")
+            logger.warning("UC _checkrep() detected naive timezone (could be a test)")
             return False
         if is_naive(last2[0]):
-            logger.error("UC _checkrep() detected naive timezone (could be a test)")
+            logger.warning("UC _checkrep() detected naive timezone (could be a test)")
             return False
             
         if self.active:
             if last[1] != 'ACTIVATION':
-                logger.error("UC _checkrep() detected errored state (could be a test?)")
+                logger.warning("UC _checkrep() detected errored state (could be a test?)")
                 return False
             if last2[1] != 'REGISTRATION' and last2[1] != 'REOPENING':
-                logger.error("UC _checkrep() detected errored state (could be a test?)")
+                logger.warning("UC _checkrep() detected errored state (could be a test?)")
                 return False
                 
         if self.withdrawn:
             if last[1] != 'DEACTIVATION' or last2[1] != 'WITHDRAWAL':
-                logger.error("UC _checkrep() detected errored state (could be a test?)")
+                logger.warning("UC _checkrep() detected errored state (could be a test?)")
                 return False
                 
         if self.completed:
             if last[1] != 'DEACTIVATION' or last2[1] != 'COMPLETION':
-                logger.error("UC _checkrep() detected errored state (could be a test?)")
+                logger.warning("UC _checkrep() detected errored state (could be a test?)")
                 return False       
         
         return True
@@ -297,7 +297,7 @@ class UserLesson(models.Model):
 
         #First, basic attributes.
         if self.completed and not self.visited:
-            logger.error("UL _checkrep() detected errored state (could be a test?)")
+            logger.warning("UL _checkrep() detected errored state (could be a test?)")
             return False
         
         #Second, compare action history with attributes
@@ -308,17 +308,17 @@ class UserLesson(models.Model):
         #and vice-versa.
         if self.visited:
             if first[1] != 'VISITING':
-                logger.error("UL _checkrep() detected errored state (could be a test?)")
+                logger.warning("UL _checkrep() detected errored state (could be a test?)")
                 return False
         if first[1] == 'VISITING':
             if self.visited == False:
-                logger.error("UL _checkrep() detected errored state (could be a test?)")
+                logger.warning("UL _checkrep() detected errored state (could be a test?)")
                 return False
         #if the last history event is 'COMPLETING' then completed should be true
         last = decoded_history.pop()
         if last[1] == 'COMPLETING':
             if self.completed == False:
-                logger.error("UL _checkrep() detected errored state (could be a test?)")
+                logger.warning("UL _checkrep() detected errored state (could be a test?)")
                 return False
         
         #history events should be a member of the set 
@@ -326,10 +326,10 @@ class UserLesson(models.Model):
         #Datetimes should be timezone aware.
         for event in decoded_history:
             if event[1] not in ULActions:
-                logger.error("UL _checkrep() detected errored state (could be a test?)")
+                logger.warning("UL _checkrep() detected errored state (could be a test?)")
                 return False
             if is_naive(event[0]):
-                logger.error("UL _checkrep() detected naive timezone (could be a test)")
+                logger.warning("UL _checkrep() detected naive timezone (could be a test)")
                 return False   
         return True
              
@@ -564,7 +564,7 @@ class UserLearningIntentionDetail(models.Model):
         try:
             ULIDConditions[self.condition]
         except IndexError:
-            logger.error("ULID _checkrep() detected errored state (could be a test?)")
+            logger.warning("ULID _checkrep() detected errored state (could be a test?)")
             return False
             
         #compare history with state
@@ -573,25 +573,25 @@ class UserLearningIntentionDetail(models.Model):
         
         if self.condition == ULIDConditions.red:
             if last[1] != "SET_RED":
-                logger.error("ULID _checkrep() detected errored state (could be a test?)")
+                logger.warning("ULID _checkrep() detected errored state (could be a test?)")
                 return False
         elif self.condition == ULIDConditions.amber:
             if last[1] != "SET_AMBER":
-                logger.error("ULID _checkrep() detected errored state (could be a test?)")
+                logger.warning("ULID _checkrep() detected errored state (could be a test?)")
                 return False
         elif self.condition == ULIDConditions.green:
             if last[1] != "SET_GREEN":
-                logger.error("ULID _checkrep() detected errored state (could be a test?)")
+                logger.warning("ULID _checkrep() detected errored state (could be a test?)")
                 return False
                 
         #history events should be a member of the set ULIDActions
         #and datestamps should be timezone aware
         for event in decoded_history:
             if event[1] not in ULIDActions:
-                logger.error("ULID _checkrep() detected errored state (could be a test?)")
+                logger.warning("ULID _checkrep() detected errored state (could be a test?)")
                 return False    
             if is_naive(event[0]):
-                logger.error("ULID _checkrep() detected naive timezone (could be a test)")
+                logger.warning("ULID _checkrep() detected naive timezone (could be a test)")
                 return False        
         return True
       
@@ -636,7 +636,7 @@ class UserLearningIntentionDetail(models.Model):
         
     def cycle(self):
         """3-state cyclic permutation of RAG state"""
-        
+
         assert self._checkrep()
         logger.info("User:"+str(self.user.pk)+",SC:"+\
                 str(self.learning_intention_detail.pk)+" cycling")
@@ -655,8 +655,10 @@ class UserLearningIntentionDetail(models.Model):
         else:
             raise ValueError
 
+        #check elapsed time using utc
         current_time = datetime.utcnow().replace(tzinfo=utc)
-        if (current_time - datetime.utcfromtimestamp(event_date)) < timedelta(minutes = 5):
+        event_time = datetime.utcfromtimestamp(event_date).replace(tzinfo=utc)
+        if (current_time - event_time) < timedelta(minutes = 5):
             #under 5 mins elapsed: replace the last history event
             hist.pop()
 

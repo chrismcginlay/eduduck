@@ -203,7 +203,7 @@ LOGGING = {
             'formatter': 'standard',
         },
         'console': {
-            'level': 'WARNING',
+            'level': 'ERROR',
             'class': 'logging.StreamHandler',
             'formatter': 'standard',
         },
