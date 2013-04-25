@@ -88,7 +88,8 @@ class BioViewTests(TestCase):
         self.assertTrue(login)
         response = self.client.get('/accounts/bio/')
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(x in response.context for x in ['bio'])
+        self.assertTrue(x in response.context for x in ['bio', 'usercourses'])
+        self.assertIn('Timezone', response.content, "Timezone not rendered")
         
     def test_bio_edit(self):
         """Test response bio.views.edit"""

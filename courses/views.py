@@ -4,6 +4,7 @@ from django.conf import settings
 from django.shortcuts import (render_to_response, get_object_or_404, 
     get_list_or_404)
 from django.template import RequestContext
+from django.utils.timezone import utc
 
 from interaction.models import UserCourse, UserLesson
 from .models import Course, Lesson
@@ -147,8 +148,10 @@ def lesson(request, course_id, lesson_id):
                 #add distinct visit if more than 1 hour since last event
                 history = ul.hist2list()
                 last_event = history.pop()
-                event_date = last_event[0]
-                if (datetime.now() - event_date) > timedelta(hours=1):
+                event_time = last_event[0]
+                current_time = datetime.utcnow().replace(tzinfo=utc)
+                
+                if (current_time - event_time) > timedelta(hours=1):
                     ul.visit() 
                 history = ul.hist2list()                    
         else:

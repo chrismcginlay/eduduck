@@ -18,4 +18,3 @@ DATABASES = {
 
 #Not very secret SECRET_KEY. Just for dev. Staging and prod. use env var.
 SECRET_KEY = '$9(8c0@dl9^0m@jautyrv&amp;y92!-ae6ymo+sl=&amp;^3ptfiw*ot7j'
-
