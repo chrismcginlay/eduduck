@@ -25,13 +25,6 @@ SITE_ROOT = os.path.join(os.path.dirname(__file__),
 #Nevertheless, SITE_URL is an efficient hack in this context.
 SITE_URL = 'http://www.eduduck.com:8000'
 
-# Fixture Directory - for development purposes, realoading test data
-# after changes to models.
-
-FIXTURE_DIRS = (
-    os.path.join(SITE_ROOT, 'fixtures')
-)
-
 # User Profile model 
 AUTH_PROFILE_MODULE = 'bio.Bio'
 LOGIN_REDIRECT_URL = '/courses/'
