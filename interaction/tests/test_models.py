@@ -7,6 +7,7 @@ import json
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
+from django.utils.timezone import is_aware
 from django.contrib.auth.models import User
 
 from outcome.models import LearningIntention, LearningIntentionDetail
@@ -130,6 +131,7 @@ class UserCourseModelTests(TestCase):
             self.assertIsInstance(row, tuple, "Entry should be a tuple")
             self.assertIsInstance(row[0], datetime.datetime, 
                                   "Should be a datetime")
+            self.assertTrue(is_aware(row[0]), "Datetime not TZ aware")
             self.assertIsInstance(row[1], str, "Action should be a string")
             
         #Now check the history messages in reverse order.
@@ -155,7 +157,7 @@ class UserCourseModelTests(TestCase):
               
     def test_withdraw(self):
         """Test the course withdraw method"""
-        
+
         self.uc.withdraw()
         h2l_output = self.uc.hist2list()
         last = h2l_output.pop()
@@ -343,6 +345,7 @@ class UserLessonModelTests(TestCase):
             self.assertIsInstance(row, tuple, "Entry should be a tuple")
             self.assertIsInstance(row[0], datetime.datetime, 
                                   "Should be a datetime")
+            self.assertTrue(is_aware(row[0]), "Datetime not TZ aware")
             self.assertIsInstance(row[1], str, "Action should be a string")
             
         #Now check the history messages in reverse order.
@@ -626,6 +629,7 @@ class UserLearningIntentionDetailModelTests(TestCase):
             self.assertIsInstance(row, tuple, "Entry should be a tuple")
             self.assertIsInstance(row[0], datetime.datetime, 
                                   "Should be a datetime")
+            self.assertTrue(is_aware(row[0]), "Datetime not TZ aware")
             self.assertIsInstance(row[1], str, "Action should be a string")
 
         last = h2l_output.pop()

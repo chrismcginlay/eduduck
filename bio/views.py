@@ -39,6 +39,7 @@ def edit(request):
     if request.method == 'POST':
         form = BioEditForm(request.POST, instance=bio)
         if form.is_valid():
+            bio.user_tz = form.cleaned_data['user_tz']
             bio.accepted_terms = form.cleaned_data['accepted_terms']
             bio.signature_line = form.cleaned_data['signature_line']
             bio.description = form.cleaned_data['description']

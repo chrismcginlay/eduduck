@@ -4,6 +4,7 @@ from django.dispatch import receiver
 
 from django.contrib.auth.models import User
 
+import pytz
 
 class Bio(models.Model):
     """Extend user module with additional data"""
@@ -12,6 +13,7 @@ class Bio(models.Model):
 
     Attributes:
         user                1-1Field - Required field - User
+        timezone            User's timezone - required.
         accepted_terms      Either you do or you don't
         signature_line      Personal motto for user
         description         More detailed description
@@ -22,7 +24,10 @@ class Bio(models.Model):
     model/table.
     """
     
+    TIMEZONE_CHOICES = zip(pytz.common_timezones, pytz.common_timezones)
     user = models.OneToOneField(User)
+    user_tz = models.CharField(max_length=255, choices=TIMEZONE_CHOICES, 
+                                blank=False, null=False)
     accepted_terms = models.BooleanField(null=False, blank=False)
     signature_line = models.CharField(max_length=200)
     description = models.TextField(max_length=10000,blank = True)

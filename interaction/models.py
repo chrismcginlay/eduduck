@@ -1,7 +1,9 @@
 import json
 from datetime import datetime, timedelta
 from time import mktime
+
 from django.core.exceptions import ValidationError
+from django.utils.timezone import utc, is_naive
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -84,6 +86,13 @@ class UserCourse(models.Model):
         last = decoded_history.pop()
         last2 = decoded_history.pop()
         
+        if is_naive(last[0]):
+            logger.error("UC _checkrep() detected naive timezone (could be a test)")
+            return False
+        if is_naive(last2[0]):
+            logger.error("UC _checkrep() detected naive timezone (could be a test)")
+            return False
+            
         if self.active:
             if last[1] != 'ACTIVATION':
                 logger.error("UC _checkrep() detected errored state (could be a test?)")
@@ -114,7 +123,8 @@ class UserCourse(models.Model):
         list_tuple_hist = []
         for row in history:
             list_tuple_hist.append((
-                datetime.fromtimestamp(row[0]), UCActions[row[1]]))
+                datetime.utcfromtimestamp(row[0]).replace(tzinfo=utc), 
+                UCActions[row[1]]))
         return list_tuple_hist
                
     def withdraw(self):
@@ -129,7 +139,9 @@ class UserCourse(models.Model):
         self.active = False
         self.withdrawn = True
         hist = json.loads(self.history)
-        current_time = mktime(datetime.now().utctimetuple())
+        current_time = mktime(datetime.utcnow()
+            .replace(tzinfo=utc)
+            .utctimetuple())
         hist = json.loads(self.history)
         hist.append((current_time, UCActions.WITHDRAWAL))
         hist.append((current_time, UCActions.DEACTIVATION))
@@ -151,7 +163,7 @@ class UserCourse(models.Model):
         self.active = False
         self.completed = True
         hist = json.loads(self.history)
-        current_time = mktime(datetime.now().utctimetuple())
+        current_time = mktime(datetime.utcnow().replace(tzinfo=utc).utctimetuple())
         hist.append((current_time, UCActions.COMPLETION))
         hist.append((current_time, UCActions.DEACTIVATION))
         self.history = json.dumps(hist)
@@ -171,7 +183,9 @@ class UserCourse(models.Model):
         self.completed = False
         self.withdrawn = False
         hist = json.loads(self.history)
-        current_time = mktime(datetime.now().utctimetuple())
+        current_time = mktime(datetime.utcnow()
+            .replace(tzinfo=utc)
+            .utctimetuple())
         hist.append((current_time, UCActions.REOPENING))
         hist.append((current_time, UCActions.ACTIVATION))
         self.history = json.dumps(hist)
@@ -203,7 +217,9 @@ class UserCourse(models.Model):
         if not existing_row:
             logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" registration")
             hist = []
-            current_time = mktime(datetime.now().utctimetuple())
+            current_time = mktime(datetime.utcnow()
+                .replace(tzinfo=utc)
+                .utctimetuple())
             hist.append((current_time, UCActions.REGISTRATION))
             hist.append((current_time, UCActions.ACTIVATION))
             self.history = json.dumps(hist)
@@ -307,11 +323,14 @@ class UserLesson(models.Model):
         
         #history events should be a member of the set 
         #[VISITING, COMPLETING, REOPENING]
+        #Datetimes should be timezone aware.
         for event in decoded_history:
             if event[1] not in ULActions:
                 logger.error("UL _checkrep() detected errored state (could be a test?)")
                 return False
-        
+            if is_naive(event[0]):
+                logger.error("UL _checkrep() detected naive timezone (could be a test)")
+                return False   
         return True
              
     def hist2list(self):
@@ -324,7 +343,8 @@ class UserLesson(models.Model):
         list_tuple_hist = []
         for row in history:
             list_tuple_hist.append((
-                datetime.fromtimestamp(row[0]), ULActions[row[1]]))
+                datetime.utcfromtimestamp(row[0]).replace(tzinfo=utc), 
+                ULActions[row[1]]))
         return list_tuple_hist
     
     def visit(self):
@@ -338,7 +358,9 @@ class UserLesson(models.Model):
         logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.lesson.pk)+" visiting")
         self.visited = True
         hist = json.loads(self.history)
-        current_time = mktime(datetime.now().utctimetuple())
+        current_time = mktime(datetime.utcnow()
+            .replace(tzinfo=utc)
+            .utctimetuple())
         hist.append((current_time, ULActions.VISITING))
         self.history = json.dumps(hist)
         self.save()
@@ -354,7 +376,9 @@ class UserLesson(models.Model):
             raise ValidationError(u'Already marked this lesson as complete')
         self.completed = True
         hist = json.loads(self.history)
-        current_time = mktime(datetime.now().utctimetuple())
+        current_time = mktime(datetime.utcnow()
+            .replace(tzinfo=utc)
+            .utctimetuple())
         hist.append((current_time, ULActions.COMPLETING))
         self.history = json.dumps(hist)
         self.save()
@@ -370,7 +394,9 @@ class UserLesson(models.Model):
             raise ValidationError(u'You can only re-open or complete')
         self.completed = False
         hist = json.loads(self.history)
-        current_time = mktime(datetime.now().utctimetuple())
+        current_time = mktime(datetime.utcnow()
+            .replace(tzinfo=utc)
+            .utctimetuple())
         hist.append((current_time, ULActions.REOPENING))
         self.history = json.dumps(hist)
         self.save()
@@ -404,7 +430,9 @@ class UserLesson(models.Model):
             assert(course_record)
             logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.lesson.pk)+" first visit")
             hist = []
-            current_time = mktime(datetime.now().utctimetuple())
+            current_time = mktime(datetime.utcnow()
+                .replace(tzinfo=utc)
+                .utctimetuple())
             hist.append((current_time, ULActions.VISITING))
             self.history = json.dumps(hist)
             self.visited = True
@@ -556,13 +584,15 @@ class UserLearningIntentionDetail(models.Model):
                 logger.error("ULID _checkrep() detected errored state (could be a test?)")
                 return False
                 
-        #history events should be a member of the set 
-        #ULIDActions
+        #history events should be a member of the set ULIDActions
+        #and datestamps should be timezone aware
         for event in decoded_history:
             if event[1] not in ULIDActions:
                 logger.error("ULID _checkrep() detected errored state (could be a test?)")
                 return False    
-        
+            if is_naive(event[0]):
+                logger.error("ULID _checkrep() detected naive timezone (could be a test)")
+                return False        
         return True
       
       
@@ -580,7 +610,9 @@ class UserLearningIntentionDetail(models.Model):
             logger.info("User:"+str(self.user.pk)+",LID:"+\
                 str(self.learning_intention_detail.pk)+" first visit")
             hist = []
-            current_time = mktime(datetime.now().utctimetuple())
+            current_time = mktime(datetime.utcnow()
+                .replace(tzinfo=utc)
+                .utctimetuple())
             hist.append((current_time, ULIDActions.SET_RED))
             self.history = json.dumps(hist)
             self.condition = ULIDConditions.red
@@ -598,7 +630,8 @@ class UserLearningIntentionDetail(models.Model):
         list_tuple_hist = []
         for row in history:
             list_tuple_hist.append((
-                datetime.fromtimestamp(row[0]), ULIDActions[row[1]]))
+                datetime.utcfromtimestamp(row[0]).replace(tzinfo=utc), 
+                ULIDActions[row[1]]))
         return list_tuple_hist
         
     def cycle(self):
@@ -622,8 +655,8 @@ class UserLearningIntentionDetail(models.Model):
         else:
             raise ValueError
 
-        current_time = datetime.now()
-        if (current_time - datetime.fromtimestamp(event_date)) < timedelta(minutes = 5):
+        current_time = datetime.utcnow().replace(tzinfo=utc)
+        if (current_time - datetime.utcfromtimestamp(event_date)) < timedelta(minutes = 5):
             #under 5 mins elapsed: replace the last history event
             hist.pop()
 
