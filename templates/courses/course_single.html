@@ -1,5 +1,6 @@
 {% extends "courses/base_course.html" %}
 {% load staticfiles %}
+{% load tz %}
 
 {% block contentheading %}
 {{ course.course_name }}
@@ -60,7 +61,7 @@
             </form>  
             {% endif %}
             <ol>{% for event in history %}
-                <li>{{ event.1 }} on {{ event.0 }}</li>
+                <li>{{ event.1 }} on {{ event.0|localtime }}</li>
             {% endfor %}</ol>
             <h4>Lessons Visited</h4>
             <table border='1'>

@@ -1,4 +1,5 @@
 {% extends "interaction/base_interaction.html" %}
+{% load tz %}
 
 {% block contentheading %}
 LI: {{ ulid.learning_intention_detail.learning_intention.li_text }}
@@ -9,7 +10,7 @@ LI: {{ ulid.learning_intention_detail.learning_intention.li_text }}
     <p>{{ ulid.learning_intention_detail.lid_text }}</p>
     <ol>
     {% for event in history %}
-        <li>{{ event.1 }} on {{ event.0 }}</li>
+        <li>{{ event.1 }} on {{ event.0|localtime }}</li>
     {% endfor %}
     </ol>
 {% endblock zone1 %}

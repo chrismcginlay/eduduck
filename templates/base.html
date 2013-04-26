@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load url from future %}
+{% load tz %}
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" >
@@ -52,6 +53,9 @@ Use fonts in stylesheets as follows:
                 <h1>Edu Duck</h1>
                 <p id="strapline">Quackers About Learning</p>
             </a>
+            {% if user.is_authenticated %}
+                <p>{{ TIME_ZONE }}</p>
+            {% endif %}
             <div id="search">
             {% block search %}
                 <form action="">

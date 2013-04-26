@@ -4,15 +4,16 @@ from django.conf import settings
 from django.shortcuts import (render_to_response, get_object_or_404, 
     get_list_or_404)
 from django.template import RequestContext
-from django.utils.timezone import utc
+from django.utils import timezone
+
 
 from interaction.models import UserCourse, UserLesson
 from .models import Course, Lesson
 
+import pdb
+
 import logging
 logger = logging.getLogger(__name__)
-
-if settings.DEBUG: import pdb
 
 #TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/ 
 #^ esp. for AJAX, when time comes.
@@ -48,6 +49,12 @@ def single(request, course_id):
   
     logger.info('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
+    tz = request.user.bio.user_tz
+    try:
+        timezone.activate(tz)
+    except:
+        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+        timezone.activate(timezone.utc)
 
     if request.user.is_authenticated():
         uc_set = request.user.usercourse_set.filter(course=course)
@@ -122,6 +129,12 @@ def lesson(request, course_id, lesson_id):
         ', Lesson id=' + str(lesson_id) + ' view')
     course = get_object_or_404(Course, id=course_id)
     lesson = get_object_or_404(Lesson, id=lesson_id)
+    tz = request.user.bio.user_tz
+    try:
+        timezone.activate(tz)
+    except:
+        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+        timezone.activate(timezone.utc)
     
     #data on user interaction with lesson
     ul = None
@@ -149,7 +162,7 @@ def lesson(request, course_id, lesson_id):
                 history = ul.hist2list()
                 last_event = history.pop()
                 event_time = last_event[0]
-                current_time = datetime.utcnow().replace(tzinfo=utc)
+                current_time = datetime.utcnow().replace(tzinfo=timezone.utc)
                 
                 if (current_time - event_time) > timedelta(hours=1):
                     ul.visit() 
