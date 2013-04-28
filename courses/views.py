@@ -49,11 +49,11 @@ def single(request, course_id):
   
     logger.info('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
-    tz = request.user.bio.user_tz
     try:
+        tz = request.user.bio.user_tz
         timezone.activate(tz)
     except:
-        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+        logger.warning("Reverting to default timezone (UTC)")
         timezone.activate(timezone.utc)
 
     if request.user.is_authenticated():
@@ -129,11 +129,12 @@ def lesson(request, course_id, lesson_id):
         ', Lesson id=' + str(lesson_id) + ' view')
     course = get_object_or_404(Course, id=course_id)
     lesson = get_object_or_404(Lesson, id=lesson_id)
-    tz = request.user.bio.user_tz
+
     try:
+        tz = request.user.bio.user_tz
         timezone.activate(tz)
-    except:
-        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+    except :
+        logger.warning("Reverting to default timezone (UTC)")
         timezone.activate(timezone.utc)
     
     #data on user interaction with lesson

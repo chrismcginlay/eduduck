@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from courses.models import Course, Lesson, Video, Attachment
+from courses.models import Course, Lesson, Video
 
 from bio.models import Bio
 from quiz.models import Quiz, Question, Answer, QuizAttempt, QuestionAttempt
@@ -25,7 +25,6 @@ admin.site.register(User, UserAdmin)
 admin.site.register(Course)
 admin.site.register(Lesson)
 admin.site.register(Video)
-admin.site.register(Attachment)
 
 admin.site.register(Quiz)
 admin.site.register(Question)

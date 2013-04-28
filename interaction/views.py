@@ -26,11 +26,11 @@ def usercourse_single(request, user_id, course_id):
     logger.info("User:"+str(user_id)+",Course:"+str(course_id)+" view interactions")
     uc = get_object_or_404(UserCourse, course=course_id, user=user_id)
     history = uc.hist2list()
-    tz = request.user.bio.user_tz
     try:
+        tz = request.user.bio.user_tz    
         timezone.activate(tz)
     except:
-        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+        logger.warning("Reverting to default timezone (UTC)")
         timezone.activate(timezone.utc)
         
     template = 'interaction/usercourse_single.html'
@@ -45,11 +45,11 @@ def userlesson_single(request, user_id, lesson_id):
     logger.info("User:"+str(user_id)+",Lesson:"+str(lesson_id)+" view interactions")
     ul = get_object_or_404(UserLesson, lesson=lesson_id, user=user_id)
     history = ul.hist2list()
-    tz = request.user.bio.user_tz
     try:
+        tz = request.user.bio.user_tz    
         timezone.activate(tz)
     except:
-        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+        logger.warning("Reverting to default timezone (UTC)")
         timezone.activate(timezone.utc)
     
     template = 'interaction/userlesson_single.html'
@@ -67,11 +67,11 @@ def userlearningintentiondetail_single(request, user_id, lid_id):
                              learning_intention_detail=lid_id)
     logger.info(ulid.__unicode__()+" view interactions")
     history = ulid.hist2list()
-    tz = request.user.bio.user_tz
     try:
+        tz = request.user.bio.user_tz    
         timezone.activate(tz)
     except:
-        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+        logger.warning("Reverting to default timezone (UTC)")
         timezone.activate(timezone.utc)
     
     template = 'interaction/userlearningintentiondetail_single.html'

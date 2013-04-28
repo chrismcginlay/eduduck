@@ -11,8 +11,9 @@ from bio.models import Bio
 
 from interaction.models import UserCourse
 from outcome.models import LearningIntention, LearningIntentionDetail
+from attachment.models import Attachment
 
-from .models import (Course, Lesson, Video, Attachment)
+from .models import (Course, Lesson, Video)
 
 import pdb
 
@@ -72,6 +73,7 @@ class CourseModelTests(TestCase):
         self.bio1 = Bio.objects.get(user_id=1)
         self.bio1.accepted_terms = True
         self.bio1.signature_line = 'Learning stuff'
+        self.bio1.user_tz = "Europe/Rome"
         self.bio1.save()
        
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
@@ -192,6 +194,7 @@ class CourseViewTests(TestCase):
         self.bio1 = Bio.objects.get(user_id=1)
         self.bio1.accepted_terms = True
         self.bio1.signature_line = 'Learning stuff'
+        self.bio1.user_tz = "Europe/Rome"
         self.bio1.save()     
 #        self.bio1.registered_courses.add(self.course1)
         
@@ -362,6 +365,3 @@ class CourseViewTests(TestCase):
                          "There should be no history - unregistered")
         self.assertEqual(response.context['ul'], None, 
                          "There should be no userlesson - unregistered")                 
-
-                                                        
-            
