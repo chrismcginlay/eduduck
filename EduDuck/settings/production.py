@@ -1,6 +1,11 @@
 #settings/prod.py
 from base import *
 
+DEBUG = False
+TEMPLATE_DEBUG = DEBUG
+#TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
+TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
+
 # Make SECRET_KEY unique, and don't share it with anybody.
 # see issue #43 for key generation method.
 assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'

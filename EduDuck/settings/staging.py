@@ -9,6 +9,11 @@ TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
 
 ALLOWED_HOSTS = ['www.eduduck.com']
 
+# Make SECRET_KEY unique, and don't share it with anybody.
+# see issue #43 for key generation method.
+assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
+SECRET_KEY = os.environ['SECRET_KEY']
+
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
@@ -30,11 +35,6 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = 'bob'
 EMAIL_HOST_PASSWORD = 'bobo'
 EMAIL_USE_TLS = 'True'
-
-# Make SECRET_KEY unique, and don't share it with anybody.
-# see issue #43 for key generation method.
-assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
-SECRET_KEY = os.environ['SECRET_KEY']
 
 DATABASES = {
     'default': {
