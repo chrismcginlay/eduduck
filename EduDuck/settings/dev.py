@@ -32,3 +32,5 @@ SECRET_KEY = '$9(8c0@dl9^0m@jautyrv&amp;y92!-ae6ymo+sl=&amp;^3ptfiw*ot7j'
 FIXTURE_DIRS = (
     os.path.join(SITE_ROOT, 'fixtures/')
 )
+
+MEDIA_URL = 'http://127.0.0.1:8000/media/'
