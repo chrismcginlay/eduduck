@@ -39,8 +39,8 @@
             <ol>
             {% for a in lesson.attachment_set.all %}
                 <li>{{ a.att_code}} 
-                    <a href='{{a.attachment.url}}'>{{a.att_name}}</a>
-                    : {{a.attachment.size}} bytes, {{a.att_desc}}
+                    <a href='{{ a.get_absolute_url }}'>{{ a.att_name }}</a>
+                    : {{ a.attachment.size }} bytes, {{ a.att_desc }}
                 </li>
             {% empty %}
                 <li>No attachments in this lesson</li>

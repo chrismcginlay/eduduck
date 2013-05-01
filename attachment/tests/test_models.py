@@ -68,8 +68,8 @@ class AttachmentModelTests(TestCase):
     def test_get_absolute_url(self):
         """Test the correct url is returned"""
         
-        url = self.uc3.get_absolute_url()
-        u = self.uc3.user.pk
-        c = self.uc3.course.pk
-        s = "/interaction/user/%s/course/%s/"% (u,c)
-        self.assertEqual(s, url, "URL error")
+        url = self.att1.get_absolute_url()
+        a_code = self.att1.att_code
+        a_pk = self.att1.pk
+        s = "/attachment/%s_%s/"% (a_pk,a_code)
+        self.assertEqual(s, url, "attachment URL error")

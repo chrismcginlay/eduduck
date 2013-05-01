@@ -51,4 +51,11 @@ class Attachment(models.Model):
     def __unicode__(self):
         """Summary for internal use"""
         return u"Att. ID:%s, code:%s, '%s...'" %\
-            (self.pk, self.att_code, self.att_name[:10])     
+            (self.pk, self.att_code, self.att_name[:10])   
+            
+    @models.permalink
+    def get_absolute_url(self):
+        assert self.id        
+
+        return ('attachment.views.download', (), 
+                {'att_id': self.id, 'att_code': self.att_code })
