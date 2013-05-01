@@ -1,4 +1,5 @@
 import datetime
+from timezone import is_aware
 
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -69,7 +70,12 @@ class AttachmentModelTests(TestCase):
         """Test the correct url is returned"""
         
         url = self.att1.get_absolute_url()
-        a_code = self.att1.att_code
-        a_pk = self.att1.pk
-        s = "/attachment/%s_%s/"% (a_pk,a_code)
+        the_user = self.user1.pk
+        the_att = self.att1.pk
+        s = "/interaction/user/%s/attachment/%s/download"% (the_att, the_user)
         self.assertEqual(s, url, "attachment URL error")
+        
+    def test_get_metadata_url(self):
+        """Test that the correct metadata url is returned"""
+        
+        self.fail

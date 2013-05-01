@@ -1,5 +1,6 @@
 #attachment/models.py
 from django.db import models
+from django.core.urlresolvers import reverse
 from courses.models import Course, Lesson
 
 import logging
@@ -53,9 +54,16 @@ class Attachment(models.Model):
         return u"Att. ID:%s, code:%s, '%s...'" %\
             (self.pk, self.att_code, self.att_name[:10])   
             
-    @models.permalink
     def get_absolute_url(self):
+        """Canonical URL. Will download the attachment via intermediary view"""
+        
         assert self.id        
-
-        return ('attachment.views.download', (), 
-                {'att_id': self.id, 'att_code': self.att_code })
+        return reverse('interaction.attachment.views.download', (), 
+                {'att_id': self.id})
+                
+    def get_metadata_url(self):
+        """Provide URL for viewing attachment metadata"""
+        
+        assert self.id
+        return reverse('attachment.views.metadata', (), {'att_id': self.id}) 
+        

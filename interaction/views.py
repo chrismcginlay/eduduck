@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
 from outcome.models import LearningIntentionDetail
+from attachment.models import Attachment
 from .models import (
     UserCourse, 
     UserLesson,
@@ -121,3 +122,15 @@ def userlearningintention_progress_bar(request, lid_id):
     result = {'progress': uli.progress()}
     jresult = json.dumps(result)
     return HttpResponse(jresult, mimetype='application/json')
+
+@login_required
+def attachment_download(request, att_id):
+    """Record interaction with download prior to handing off to webserver
+    
+    Basic idea is to hook in to downloads here to update record of downloads
+    then trigger webserver download with File field of underlying model.
+    """
+    
+    #TODO - this just hands off download straight away.
+    attachment = get_object_or_404(Attachment, id=att_id)
+    return HttpResponseRedirect(attachment.attachment.url)

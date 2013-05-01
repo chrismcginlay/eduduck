@@ -1,20 +1,13 @@
 #attachments/views.py
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render_to_response
+from django.template import RequestContext
+
 from .models import Attachment
 
-def view_metadata(request):
+def metadata(request, att_id):
     """A view to render such things as description, size etc"""
-
-    return 
-    
-def download(request, att_id, att_code):
-    """Demonstrate detection of download prior to handing off to webserver
-    
-    Basic idea is hook in here to update counters or record of downloads
-    then trigger webserver download with File field of underlying model.
-    TODO move this functionality into the interaction module
-    """
-    
-    attachment = get_object_or_404(Attachment, id=att_id)
-    return HttpResponseRedirect(attachment.attachment.url)
+    att = get_object_or_404(Attachment, pk=att_id)
+    template = 'attachment/metadata.html'
+    context_data = {'attachment':  att}
+    context_instance = RequestContext(request)
+    return render_to_response(template, context_data, context_instance)

@@ -668,3 +668,40 @@ class UserLearningIntentionDetailModelTests(TestCase):
             (self.ulid.pk, self.ulid.user.pk, 
              self.ulid.learning_intention_detail.pk)
         self.assertEqual(unicod, s, "Unicode output failure")
+        
+class UserAttachmentModelTests(TestCase):
+    """Test model behaviour of user interaction with attachments"""
+    
+    course1_data = {'course_code': 'EDU02',
+                   'course_name': 'A Course of Leeches',
+                   'course_abstract': 'Learn practical benefits of leeches',
+                   'course_organiser': 'Van Gogh',
+                   'course_level': 'Basic',
+                   'course_credits': 30,
+                   }
+
+    def setUp(self):
+        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
+                                              'bertword')
+        self.user1.is_active = True
+        self.user1.save()    
+        self.course1 = Course(**self.course1_data)
+        self.course1.save() 
+        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc.save()
+        self.lesson = Lesson(lesson_code="L1", 
+                      lesson_name="Test Lesson 1",
+                      course = self.course1)
+        self.lesson.save() 
+
+    def test___unicode__(self):
+        self.assertEqual(u"UA:%s, User:%s, A:%s" % \
+            (self.u_att.pk, self.user1.pk, self.att.pk), 
+            self.u_att.__unicode__())        
+        
+    def test___str__(self):
+        self.assertEqual(u"User %s's data for attachment:%s..." % \
+            (self.user1.username, str(self.att.attachment)[-10:]), self.u_att.__str__())
+    
+    def test_download(self):
+        self.fail

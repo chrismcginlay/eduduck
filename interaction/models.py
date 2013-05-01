@@ -2,13 +2,14 @@ import json
 from datetime import datetime, timedelta
 from time import mktime
 
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, DoesNotExist
 from django.utils.timezone import utc, is_naive
 from django.db import models
 from django.contrib.auth.models import User
 
 from courses.models import Course, Lesson
 from outcome.models import LearningIntention, LearningIntentionDetail
+from attachment.models import Attachment
 
 import pdb 
 import logging
@@ -694,3 +695,132 @@ class UserLearningIntentionDetail(models.Model):
         """Return status string for human consumption"""
     
         return ULIDConditions[self.condition]
+        
+#Actions for UserAttachment
+UAActions = Enum([
+    'DOWNLOADING',
+    ])
+
+class UserAttachment(models.Model):
+    """Track users interactions with attachments.
+    
+    Downloaded attachments will be recorded here.
+    
+    Attributes:
+        attachment
+        user
+        history     History list (datetime, action). JSON coded, date ordered
+
+    Methods:
+        save        Overrides base class save. For new row, 
+                    creates JSON coded history entries.
+        download    User downloads attachment
+        
+    Helper Methods:
+        hist2list  Convert the JSON history to a list of (date, action) tuples
+    """
+    
+    attachment = models.ForeignKey(Attachment, 
+        help_text="attachment user is downloading")
+    user = models.ForeignKey(User, 
+        help_text="User interacting with attachment")
+    history = models.TextField(null=True, blank=True)
+    
+    class Meta:
+        unique_together = ('attachment', 'user')
+       
+    def _checkrep(self):
+        """Verify consistency of attributes and history"""
+        
+        #Verify action history
+        decoded_history = self.hist2list()
+        for event in decoded_history:
+            if event[1] not in UAActions:
+                logger.warning("""UA _checkrep() detected errored state\
+                    (could be a test?)""")
+                return False
+            if is_naive(event[0]):
+                logger.warning("""UA _checkrep() detected naive timezone\
+                    (could be a test?)""")
+                return False   
+        return True
+             
+    def hist2list(self):
+        """Convert the JSON coded text in self.history to a list of tuples
+        of the form (datetime, action)"""
+        
+        assert(self.history)
+        logger.info("User:"+str(self.user.pk)+",Attachment:"
+            +str(self.attachment.pk)+" load history")
+        history = json.loads(self.history)
+        list_tuple_hist = []
+        for row in history:
+            list_tuple_hist.append((
+                datetime.utcfromtimestamp(row[0]).replace(tzinfo=utc), 
+                UAActions[row[1]]))
+        return list_tuple_hist
+            
+    def __init__(self, *args, **kwargs):
+        """Run _checkrep on instantiation"""
+        super (UserLesson, self).__init__(*args, **kwargs)
+
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            self._checkrep()
+ 
+    def save(self, *args, **kwargs):
+        """Perform history save steps"""
+        
+        existing_row = self.pk
+        super(UserLesson, self).save(*args, **kwargs)
+        if not existing_row:
+            #Model should not try to record download unless user is 
+            #registered on relevant course. Attachment can be linked to course
+            #or to individual lesson, either way, we need to get to the course
+            try:
+                course_record = self.user.usercourse_set.get(course=self.attachment.course)
+            except DoesNotExist:
+                try:
+                    course_record = self.user.usercourse_set.get(course=self.attachment.lesson.course)
+                except DoesNotExist:
+                    course_record = None
+            logger.info("User:"+str(self.user.pk)+",Attachment:"+str(self.attachment.pk)+" download")
+            if course_record:
+                hist = []
+                current_time = mktime(datetime.utcnow()
+                    .replace(tzinfo=utc)
+                    .utctimetuple())
+                hist.append((current_time, UAActions.DOWNLOADING))
+                self.history = json.dumps(hist)
+                self.visited = True
+                self.save()
+            else:
+                #If user not on course, serve file, don't create record
+                return
+
+    def download(self):
+        """User downloads attachment"""
+        pass
+                
+    def __str__(self):
+        """Human readable summary"""
+        
+        return u"User " + self.user.username + \
+            u"'s data for attachment:" + str(self.attachment.attachment)
+            
+    def __unicode__(self):
+        """Summary for internal use"""
+        
+        return u"UA:%s, User:%s, Attachment:%s" % \
+            (self.pk, self.user.pk, self.attachment.pk)
+    
+    @models.permalink
+    def get_absolute_url(self):
+        assert self.id
+        assert self.attachment
+        assert self.user
+        
+        return ('interaction.attachment.views.download', (), {
+            'user_id': self.user.pk,
+            'att_id': self.attachment.pk })
