@@ -3,9 +3,6 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from courses.models import Course, Lesson
 
-import logging
-logger = logging.getLogger(__name__)
-
 #TODO important to validate uploaded files
 #see PDF p796.
 class Attachment(models.Model):
@@ -47,7 +44,8 @@ class Attachment(models.Model):
     
     def __str__(self):
         """Human readable summary"""
-        return u"Attachment %s, '%s...'" % (self.att_code, self.att_name[:10])           
+        return u"Attachment %s %s, '%s...'" %\
+            (self.pk, self.att_code, self.att_name[:10])           
         
     def __unicode__(self):
         """Summary for internal use"""
@@ -55,15 +53,14 @@ class Attachment(models.Model):
             (self.pk, self.att_code, self.att_name[:10])   
             
     def get_absolute_url(self):
-        """Canonical URL. Will download the attachment via intermediary view"""
+        """Canonical URL. Returns url for download via webserver"""
         
-        assert self.id        
-        return reverse('interaction.attachment.views.download', (), 
-                {'att_id': self.id})
+        assert self.id
+        return self.attachment.url
                 
     def get_metadata_url(self):
         """Provide URL for viewing attachment metadata"""
         
         assert self.id
-        return reverse('attachment.views.metadata', (), {'att_id': self.id}) 
+        return reverse('attachment.views.metadata', kwargs={'att_id': self.id}) 
         

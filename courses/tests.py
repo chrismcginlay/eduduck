@@ -13,7 +13,7 @@ from interaction.models import UserCourse
 from outcome.models import LearningIntention, LearningIntentionDetail
 from attachment.models import Attachment
 
-from .models import (Course, Lesson, Video)
+from .models import Course, Lesson, Video
 
 import pdb
 

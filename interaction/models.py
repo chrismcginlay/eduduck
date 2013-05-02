@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timedelta
 from time import mktime
 
-from django.core.exceptions import ValidationError, DoesNotExist
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.utils.timezone import utc, is_naive
 from django.db import models
 from django.contrib.auth.models import User

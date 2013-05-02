@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
 
-urlpatterns = patterns ('attachment.views',
-    url(r'^$', 'view_metadata'),
+urlpatterns = patterns ('',
+    url(r'^(?P<att_id>\d+)/metadata/$', 'attachment.views.metadata'),
 )

@@ -16,7 +16,9 @@ from ..models import (UserCourse,
                       UserLesson,
                       UserLearningIntention,
                       UserLearningIntentionDetail, 
-                      ULIDConditions
+                      ULIDConditions,
+                      UserAttachment,
+                      UAActions
                       )
 
 import pdb
@@ -693,7 +695,26 @@ class UserAttachmentModelTests(TestCase):
                       lesson_name="Test Lesson 1",
                       course = self.course1)
         self.lesson.save() 
+        
+    def test_hist2list(self):
+        """Test conversion of JSON encoded history to tuple list"""
 
+        #History will need some activity to test. Since model doesn't need a
+        #download method, best to create this in views via client        
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/interaction/attachment/1/download')
+        assert(response)
+        response = self.client.get('/interaction/attachment/1/download')
+        h2l_output = self.att1.hist2list()
+        self.assertIsInstance(h2l_output, list, "Output should be a list")
+        for row in h2l_output:
+            self.assertIsInstance(row, tuple, "Entry should be a tuple")
+            self.assertIsInstance(row[0], datetime.datetime, 
+                                  "Should be a datetime")
+            self.assertTrue(is_aware(row[0]), "Datetime not TZ aware")
+            self.assertIn(row[1], UAActions, 
+                             "Action should be DOWNLOADING etc")
+                             
     def test___unicode__(self):
         self.assertEqual(u"UA:%s, User:%s, A:%s" % \
             (self.u_att.pk, self.user1.pk, self.att.pk), 
@@ -703,5 +724,3 @@ class UserAttachmentModelTests(TestCase):
         self.assertEqual(u"User %s's data for attachment:%s..." % \
             (self.user1.username, str(self.att.attachment)[-10:]), self.u_att.__str__())
     
-    def test_download(self):
-        self.fail
