@@ -1,10 +1,16 @@
 {% extends "attachment/base_attachment.html" %}
 
 {% block contentheading %}
-    Edit Bio: {{ att.attachment_name }}
+    Details for attachment: {{ att.att_code }} {{ att.att_name }}
 {% endblock contentheading %}
 
 {% block zone1 %}
-    <h3>Meta Data for Attachment</h3>
-    {{ att }}
+    <h3>Meta Data for Attachment {{ att.att_code }}</h3>
+    <br>{{ att.att_code }}
+    <br>{{ att.att_name }}
+    <br>{{ att.lesson }}
+    <br>{{ att.course }}
+    <br>{{ att.att_desc }}
+    <br>{{ att.att_seq }}
+    <br>{{ att.attachment }}
 {% endblock zone1 %}

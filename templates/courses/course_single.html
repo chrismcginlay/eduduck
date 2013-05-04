@@ -19,6 +19,17 @@
             {% endfor %}
             {{ course.course_abstract }}
         </p>
+
+        <ol>
+        {% for a in course.attachment_set.all %}
+            <li>{{ a.att_code}} 
+                <a href='{{ a.get_absolute_url }}'>{{ a.att_name }}</a>
+                : {{ a.attachment.size }} bytes, {{ a.att_desc }}
+                <a href='{{ a.get_metadata_url }}'>(View MetaData here)</a>
+            </li>
+        {% endfor %}
+        </ol>  
+
         <p>There 
         {{course.lesson_set.count|pluralize:"is,are"}} {{course.lesson_set.count}} 
         lesson{{course.lesson_set.count|pluralize:",s"}} in this course.</p>

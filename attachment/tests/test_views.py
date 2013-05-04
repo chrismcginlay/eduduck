@@ -21,17 +21,17 @@ class AttachmentViewTests(TestCase):
                     'abstract': 'A summary of what we cover',
                    }
     att1_data = {'att_code': 'DOC1',
-                        'att_name': 'Reading List',
-                        'att_desc': 'Useful stuff you might need',
-                        'att_seq': 3,
-                        'attachment': 'empty_attachment_test.txt',
-                        }
+                'att_name': 'Reading List',
+                'att_desc': 'Useful stuff you might need',
+                'att_seq': 3,
+                'attachment': 'empty_attachment_test.txt',
+                }
     att2_data = {'att_code': 'DOC2',
-                        'att_name': 'Grammer Guide',
-                        'att_desc': 'How do you even spell grammer?',
-                        'att_seq': 2,
-                        'attachment': 'empty_attachment_test.txt',
-                        }
+                'att_name': 'Grammer Guide',
+                'att_desc': 'How do you even spell grammer?',
+                'att_seq': 2,
+                'attachment': 'empty_attachment_test.txt',
+                }
 
     def setUp(self):
         self.course1 = Course(**self.course1_data)
@@ -54,10 +54,11 @@ class AttachmentViewTests(TestCase):
     def test_view_metadata(self):
         """Verify that the relevant metadata get rendered"""
 
-        import pdb; pdb.set_trace()        
         response = self.client.get(self.att1.get_metadata_url())
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
             for x in ['attachment'])
         self.assertIn("Reading List", response.content, 
-                      "detail missing from response")
+                      u"detail missing from response")
+        self.assertIn(u"DOC1", response.content, 
+                      u"detail missing from response")
