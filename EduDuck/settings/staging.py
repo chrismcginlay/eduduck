@@ -7,7 +7,7 @@ TEMPLATE_DEBUG = DEBUG
 #TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
 TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
 
-ALLOWED_HOSTS = ['www.eduduck.com']
+ALLOWED_HOSTS = ['.eduduck.com']
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
