@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 
 from outcome.models import LearningIntention, LearningIntentionDetail
 from courses.models import Course, Lesson
+from attachment.models import Attachment
 from ..models import (UserCourse, 
                       UserLesson,
                       UserLearningIntention,
@@ -20,8 +21,6 @@ from ..models import (UserCourse,
                       UserAttachment,
                       UAActions
                       )
-
-import pdb
 
 class UserCourseModelTests(TestCase):
     """Test models user interaction with courses"""
@@ -681,6 +680,18 @@ class UserAttachmentModelTests(TestCase):
                    'course_level': 'Basic',
                    'course_credits': 30,
                    }
+    att1_data = {'att_code': 'DOC1',
+                    'att_name': 'Reading List',
+                    'att_desc': 'Useful stuff you might need',
+                    'att_seq': 3,
+                    'attachment': 'empty_attachment_test.txt',
+                }
+    att2_data = {'att_code': 'DOC2',
+                        'att_name': 'Grammer Guide',
+                        'att_desc': 'How do you even spell grammer?',
+                        'att_seq': 2,
+                        'attachment': 'empty_attachment_test.txt',
+                }
 
     def setUp(self):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
@@ -691,10 +702,21 @@ class UserAttachmentModelTests(TestCase):
         self.course1.save() 
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
-        self.lesson = Lesson(lesson_code="L1", 
+        self.lesson1 = Lesson(lesson_code="L1", 
                       lesson_name="Test Lesson 1",
                       course = self.course1)
-        self.lesson.save() 
+        self.lesson1.save()
+        #att1 attached to course
+        self.att1 = Attachment(course=self.course1, **self.att1_data)
+        self.att1.save()      
+        #att2 attached to lesson
+        self.att2 = Attachment(lesson=self.lesson1, **self.att1_data)
+        self.att2.save()   
+        
+        self.u_att1 = UserAttachment(attachment=self.att1, user=self.user1)
+        self.u_att2 = UserAttachment(attachment=self.att2, user=self.user1)
+        self.u_att1.save()
+        self.u_att2.save()        
         
     def test_hist2list(self):
         """Test conversion of JSON encoded history to tuple list"""
@@ -705,7 +727,7 @@ class UserAttachmentModelTests(TestCase):
         response = self.client.get('/interaction/attachment/1/download')
         assert(response)
         response = self.client.get('/interaction/attachment/1/download')
-        h2l_output = self.att1.hist2list()
+        h2l_output = self.u_att1.hist2list()
         self.assertIsInstance(h2l_output, list, "Output should be a list")
         for row in h2l_output:
             self.assertIsInstance(row, tuple, "Entry should be a tuple")
@@ -716,11 +738,15 @@ class UserAttachmentModelTests(TestCase):
                              "Action should be DOWNLOADING etc")
                              
     def test___unicode__(self):
-        self.assertEqual(u"UA:%s, User:%s, A:%s" % \
-            (self.u_att.pk, self.user1.pk, self.att.pk), 
-            self.u_att.__unicode__())        
+        self.assertEqual(u"UA:%s, User:%s, Attachment:%s" % \
+            (self.u_att1.pk, self.user1.pk, self.att1.pk), 
+            self.u_att1.__unicode__())        
         
     def test___str__(self):
-        self.assertEqual(u"User %s's data for attachment:%s..." % \
-            (self.user1.username, str(self.att.attachment)[-10:]), self.u_att.__str__())
+        self.assertEqual(u"User %s's data for attachment: ...%s" % \
+            (self.user1.username, str(self.att1.attachment)[-10:]), self.u_att1.__str__())
     
+    def test_get_absolute_url(self):
+        self.assertEqual(u"/interaction/attachment/1/download/", 
+                         self.u_att1.get_absolute_url())
+                         

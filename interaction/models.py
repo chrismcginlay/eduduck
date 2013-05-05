@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from time import mktime
 
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 from django.utils.timezone import utc, is_naive
 from django.db import models
 from django.contrib.auth.models import User
@@ -11,7 +12,6 @@ from courses.models import Course, Lesson
 from outcome.models import LearningIntention, LearningIntentionDetail
 from attachment.models import Attachment
 
-import pdb 
 import logging
 logger = logging.getLogger(__name__)
 
@@ -750,8 +750,8 @@ class UserAttachment(models.Model):
         of the form (datetime, action)"""
         
         assert(self.history)
-        logger.info("User:"+str(self.user.pk)+",Attachment:"
-            +str(self.attachment.pk)+" load history")
+        logger.info("UA: %s, User: %s, Attachment: %s loading history" %\
+            (self.pk, self.user.pk, self.attachment.pk))
         history = json.loads(self.history)
         list_tuple_hist = []
         for row in history:
@@ -762,7 +762,7 @@ class UserAttachment(models.Model):
             
     def __init__(self, *args, **kwargs):
         """Run _checkrep on instantiation"""
-        super (UserLesson, self).__init__(*args, **kwargs)
+        super (UserAttachment, self).__init__(*args, **kwargs)
 
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
@@ -773,17 +773,17 @@ class UserAttachment(models.Model):
         """Perform history save steps"""
         
         existing_row = self.pk
-        super(UserLesson, self).save(*args, **kwargs)
+        super(UserAttachment, self).save(*args, **kwargs)
         if not existing_row:
             #Model should not try to record download unless user is 
             #registered on relevant course. Attachment can be linked to course
             #or to individual lesson, either way, we need to get to the course
             try:
                 course_record = self.user.usercourse_set.get(course=self.attachment.course)
-            except DoesNotExist:
+            except ObjectDoesNotExist:
                 try:
                     course_record = self.user.usercourse_set.get(course=self.attachment.lesson.course)
-                except DoesNotExist:
+                except ObjectDoesNotExist:
                     course_record = None
             logger.info("User:"+str(self.user.pk)+",Attachment:"+str(self.attachment.pk)+" download")
             if course_record:
@@ -796,18 +796,15 @@ class UserAttachment(models.Model):
                 self.visited = True
                 self.save()
             else:
-                #If user not on course, serve file, don't create record
-                return
-
-    def download(self):
-        """User downloads attachment"""
-        pass
+                #Getting here implies no course_record. Should not be storing
+                #record of interaction if user not on course
+                assert(False)
                 
     def __str__(self):
         """Human readable summary"""
         
-        return u"User " + self.user.username + \
-            u"'s data for attachment:" + str(self.attachment.attachment)
+        return u"User %s's data for attachment: ...%s" %\
+            (self.user.username, str(self.attachment.attachment)[-10:])
             
     def __unicode__(self):
         """Summary for internal use"""
@@ -815,12 +812,11 @@ class UserAttachment(models.Model):
         return u"UA:%s, User:%s, Attachment:%s" % \
             (self.pk, self.user.pk, self.attachment.pk)
     
-    @models.permalink
     def get_absolute_url(self):
         assert self.id
         assert self.attachment
         assert self.user
+
+        return reverse(u"interaction.views.attachment_download",
+                       kwargs= {'att_id': self.attachment.pk})
         
-        return ('interaction.attachment.views.download', (), {
-            'user_id': self.user.pk,
-            'att_id': self.attachment.pk })

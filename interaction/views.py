@@ -15,8 +15,6 @@ from .models import (
     UserLearningIntentionDetail
 )
 
-import pdb
-
 import logging
 logger = logging.getLogger(__name__)
 
@@ -132,5 +130,6 @@ def attachment_download(request, att_id):
     """
     
     #TODO - this just hands off download straight away.
+    import pdb; pdb.set_trace()
     attachment = get_object_or_404(Attachment, id=att_id)
     return HttpResponseRedirect(attachment.attachment.url)
