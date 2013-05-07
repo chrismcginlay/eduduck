@@ -714,7 +714,7 @@ class UserAttachment(models.Model):
     Methods:
         save        Overrides base class save. For new row, 
                     creates JSON coded history entries.
-        download    User downloads attachment
+        record_download    Record a user download of attachment
         
     Helper Methods:
         hist2list  Convert the JSON history to a list of (date, action) tuples
@@ -759,6 +759,21 @@ class UserAttachment(models.Model):
                 datetime.utcfromtimestamp(row[0]).replace(tzinfo=utc), 
                 UAActions[row[1]]))
         return list_tuple_hist
+        
+    def record_download(self):
+        """Add record of download to history"""
+        
+        assert self._checkrep()
+        logger.info("UA: %s, User: %s, Attachment: %s download." %\
+            (self.pk, self.user.pk, self.attachment.pk))
+        hist = json.loads(self.history)
+        current_time = mktime(datetime.utcnow()
+            .replace(tzinfo=utc)
+            .utctimetuple())
+        hist.append((current_time, UAActions.DOWNLOADING))
+        self.history = json.dumps(hist)
+        self.save()
+        assert self._checkrep()
             
     def __init__(self, *args, **kwargs):
         """Run _checkrep on instantiation"""

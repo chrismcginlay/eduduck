@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import (render_to_response, 
                               get_object_or_404)
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone    
 from django.contrib.auth.decorators import login_required
 
@@ -12,7 +13,8 @@ from .models import (
     UserCourse, 
     UserLesson,
     UserLearningIntention,
-    UserLearningIntentionDetail
+    UserLearningIntentionDetail,
+    UserAttachment
 )
 
 import logging
@@ -129,7 +131,21 @@ def attachment_download(request, att_id):
     then trigger webserver download with File field of underlying model.
     """
     
-    #TODO - this just hands off download straight away.
     import pdb; pdb.set_trace()
-    attachment = get_object_or_404(Attachment, id=att_id)
-    return HttpResponseRedirect(attachment.attachment.url)
+
+    attachment = get_object_or_404(Attachment, id=att_id)    
+    try:
+        course_record = request.user.usercourse_set.get(course=attachment.course)
+    except ObjectDoesNotExist:
+        try:
+            course_record = request.user.usercourse_set.get(course=attachment.lesson.course)
+        except ObjectDoesNotExist:
+            course_record = None
+    if course_record:
+        #get_or_create return tuple (object, success_state)
+        uad = UserAttachment.objects.get_or_create(user=request.user, attachment=attachment)
+        uad[0].record_download()
+        dl_link = uad[0].attachment.get_absolute_url()               
+    else:
+        dl_link = attachment.get_absolute_url()
+    return HttpResponseRedirect(dl_link)
