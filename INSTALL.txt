@@ -21,15 +21,9 @@ Or you can git clone the django development repo.
 
 git clone https://github.com/django/django.git)
 
-4. Edit eduduck/EduDuck/settings.py, modify the SITE_URL to point to the 
-hostname or IP address of your workstation. Mine is called caicectus 
-because that is what Magnus calls a cactus.
-
-SITE_URL = 'http://caicectus:8000'
-
-The rest of the settings constants should be deduced automatically from the
-SITE_URL and SITE_ROOT. The latter of these two is determined
-programmatically.
+4. Run collectstatic, first:
+DJANGO_SETTINGS_MODULE=Eduduck.settings.staging 
+python manage.py collectstatic
 
 5. Django package dependencies.
 a. https://bitbucket.org/ubernostrum/django-registration
