@@ -130,8 +130,6 @@ def attachment_download(request, att_id):
     Basic idea is to hook in to downloads here to update record of downloads
     then trigger webserver download with File field of underlying model.
     """
-    
-    import pdb; pdb.set_trace()
 
     attachment = get_object_or_404(Attachment, id=att_id)    
     try:
@@ -144,7 +142,8 @@ def attachment_download(request, att_id):
     if course_record:
         #get_or_create return tuple (object, success_state)
         uad = UserAttachment.objects.get_or_create(user=request.user, attachment=attachment)
-        uad[0].record_download()
+        #newly created record will automatically record download
+        if (uad[1]==False): uad[0].record_download()
         dl_link = uad[0].attachment.get_absolute_url()               
     else:
         dl_link = attachment.get_absolute_url()

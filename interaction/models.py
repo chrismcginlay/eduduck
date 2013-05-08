@@ -808,7 +808,6 @@ class UserAttachment(models.Model):
                     .utctimetuple())
                 hist.append((current_time, UAActions.DOWNLOADING))
                 self.history = json.dumps(hist)
-                self.visited = True
                 self.save()
             else:
                 #Getting here implies no course_record. Should not be storing

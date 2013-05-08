@@ -4,6 +4,7 @@ Unit tests for Interaction views
 
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 from courses.models import Course, Lesson
 from outcome.models import LearningIntention, LearningIntentionDetail
@@ -255,16 +256,21 @@ class UserAttachmentViewTests(TestCase):
         self.att2 = Attachment(lesson=self.lesson1, **self.att1_data)
         self.att2.save()   
         
-        self.u_att1 = UserAttachment(attachment=self.att1, user=self.user1)
-        self.u_att2 = UserAttachment(attachment=self.att2, user=self.user1)
-        self.u_att1.save()
-        self.u_att2.save()    
         
     def test_attachment_download(self):
-        #Not logged in, redirect
-        response = self.client.get('/interaction/attachment/1/download/')
+        #Not logged in, redirect, dont record
+
+        response = self.client.get('/interaction/attachment/2/download/')
         self.assertEqual(response.status_code, 302)
+        self.assertRaises(ObjectDoesNotExist, UserAttachment.objects.get, id=2)
         
         #Now logged in
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/interaction/attachment/1/download/')
+        self.assertEqual(response.status_code, 302)      
+        u_att1 = UserAttachment.objects.get(pk=1)
+        self.assertEqual(len(u_att1.hist2list()),1)
+        response = self.client.get('/interaction/attachment/1/download/')
+        u_att1 = UserAttachment.objects.get(pk=1)
+        self.assertEqual(len(u_att1.hist2list()),2)
+            
