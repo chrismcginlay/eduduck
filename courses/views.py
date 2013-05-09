@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
-from django.conf import settings
 from django.shortcuts import (render_to_response, get_object_or_404, 
     get_list_or_404)
 from django.template import RequestContext
@@ -9,8 +8,6 @@ from django.utils import timezone
 
 from interaction.models import UserCourse, UserLesson
 from .models import Course, Lesson
-
-import pdb
 
 import logging
 logger = logging.getLogger(__name__)
@@ -178,6 +175,20 @@ def lesson(request, course_id, lesson_id):
             except:
                 #not registered on course, do nothing quietly, no need to log
                 history = None
+        
+        import pdb; pdb.set_trace()
+        attachments_in_lesson = ul.lesson.attachment_set.all() #all attachments in lesson
+        attachments_downloaded = ul.user.userattachment_set.all() #downloaded attachments
+        #Prepare a list of tuples to pass to template. 
+        #(attachment, userattachment interaction or None)
+        attachments = []
+        for ail in attachments_in_lesson:
+            #see if the attachment has been downloaded
+            try:
+                ad = attachments_downloaded.get(attachment=ail)
+            except ObjectDoesNotExist:
+                ad = None   
+            attachments.append((ail, ad))
     else:
         #User is not even authenticated, don't record anything
         ul = None
@@ -189,6 +200,7 @@ def lesson(request, course_id, lesson_id):
     context_data =  {'course':  course,
                      'lesson':  lesson,
                      'ul':      ul,
+                     'attachments': attachments,
                      'history': history,
                      'learning_intentions': learning_intentions,
                     }

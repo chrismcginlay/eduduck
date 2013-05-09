@@ -36,17 +36,22 @@
     <section id="zone1">
         <article>
             <h4>Attachments</h4>
-            <ol><h1>Amend this to use interaction</h1>
-            {% for a in lesson.attachment_set.all %}
-                <li>{{ a.att_code}} 
-                    <a href='{{ a.get_absolute_url }}'>{{ a.att_name }}</a>
-                    : {{ a.attachment.size }} bytes, {{ a.att_desc }}
-                    <a href='{{ a.get_metadata_url }}'>(View MetaData here)</a>
-                </li>
-            {% empty %}
-                <li>No attachments in this lesson</li>
+            <table>
+            {% for attachment, ua in attachments %}<tr>
+                <td>
+                {% if ua %}Downloaded
+                {% else %}Not Downloaded
+                {% endif %}
+                </td>
+                <td><a href='{{ ua.get_absolute_url }}'>{{ ua.attachment.att_name }}</td>
+                <td><a href='{{ ua.attachment.get_metadata_url }}'>(View MetaData here)</a></td>
+                <td>{{ ua.attachment.att_code }}{{ ua.attachment.size }}</td>  
+            </tr>
             {% endfor %}
-            </ol>  
+            {% empty %}
+                <tr>No attachments in this lesson</tr>
+            {% endfor %}
+            </table>  
         </article>
 
         <article>
