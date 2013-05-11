@@ -175,20 +175,6 @@ def lesson(request, course_id, lesson_id):
             except:
                 #not registered on course, do nothing quietly, no need to log
                 history = None
-        
-        import pdb; pdb.set_trace()
-        attachments_in_lesson = ul.lesson.attachment_set.all() #all attachments in lesson
-        attachments_downloaded = ul.user.userattachment_set.all() #downloaded attachments
-        #Prepare a list of tuples to pass to template. 
-        #(attachment, userattachment interaction or None)
-        attachments = []
-        for ail in attachments_in_lesson:
-            #see if the attachment has been downloaded
-            try:
-                ad = attachments_downloaded.get(attachment=ail)
-            except ObjectDoesNotExist:
-                ad = None   
-            attachments.append((ail, ad))
     else:
         #User is not even authenticated, don't record anything
         ul = None
@@ -200,7 +186,6 @@ def lesson(request, course_id, lesson_id):
     context_data =  {'course':  course,
                      'lesson':  lesson,
                      'ul':      ul,
-                     'attachments': attachments,
                      'history': history,
                      'learning_intentions': learning_intentions,
                     }

@@ -57,6 +57,18 @@ class Attachment(models.Model):
         
         assert self.id
         return self.attachment.url
+        
+    def get_loggable_url(self):
+        """Get a URL which will allow download to be logged.
+        
+        Couples to interaction module.
+        """
+        
+        assert self.id
+        assert self.attachment
+
+        return reverse(u"interaction.views.attachment_download",
+                       kwargs= {'att_id': self.id})
                 
     def get_metadata_url(self):
         """Provide URL for viewing attachment metadata"""

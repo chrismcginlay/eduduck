@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from .models import UserCourse, UserLesson, UserLearningIntentionDetail
+from .models import (
+    UserCourse, 
+    UserLesson, 
+    UserLearningIntentionDetail,
+    UserAttachment
+    )
 
 class UserCourseAdmin(admin.ModelAdmin):
     list_display = ('pk', 'user', 'course', 'active')
@@ -24,3 +29,4 @@ admin.site.register(UserCourse, UserCourseAdmin)
 admin.site.register(UserLesson, UserLessonAdmin)
 admin.site.register(UserLearningIntentionDetail, 
                     UserLearningIntentionDetailAdmin)
+admin.site.register(UserAttachment)
