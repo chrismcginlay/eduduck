@@ -33,6 +33,10 @@ def index(request):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
     
+def iterNone(): 
+    """Make None type iterable for zip function used below"""
+    
+    yield None
     
 def single(request, course_id):
     """Prepare variables for detail of a single course
@@ -113,6 +117,31 @@ def single(request, course_id):
     else:
         context_data = {'course': course,
                         'status': 'anon'}
+                        
+    #get attachment data ready
+    userattachments_attachments_tuple = [] #to be tuples (user_att|None, uri)
+    attachments = course.attachment_set.all()
+    user_att_in_course = []
+
+    #TODO try to merge these two loops together,
+    #merge the entire attachment construction with above request.user loop
+    if request.user.is_authenticated():
+        #Now get only the user_attachments relevant to the lesson at hand
+        user_attachments = request.user.userattachment_set.all()
+        for ua in user_attachments:
+            if ua.attachment in attachments:
+                user_att_in_course.append(ua)
+
+        for attachment in attachments:
+            try:
+                ua = user_attachments.get(attachment=attachment)
+            except ObjectDoesNotExist:
+                ua = None
+            userattachments_attachments_tuple.append((ua, attachment))
+    else:
+        userattachments_attachments_tuple = zip(iterNone(), attachments)
+    context_data.update({'attachments': userattachments_attachments_tuple})
+    
     logger.debug('courses.single request context: status='+context_data['status']) 
     template = 'courses/course_single.html'        
     context_instance = RequestContext(request)
@@ -182,11 +211,34 @@ def lesson(request, course_id, lesson_id):
 
     learning_intentions = lesson.learningintention_set.all()
     
+    #get attachment data ready
+    userattachments_attachments_tuple = [] #to be tuples (user_att|None, uri)
+    attachments = lesson.attachment_set.all()
+    user_att_in_lesson = []
+
+    #TODO try to merge these two loops or similar 
+    if request.user.is_authenticated():
+        #Now get only the user_attachments relevant to the lesson at hand
+        user_attachments = request.user.userattachment_set.all()
+        for ua in user_attachments:
+            if ua.attachment in attachments:
+                user_att_in_lesson.append(ua)
+
+        for attachment in attachments:
+            try:
+                ua = user_attachments.get(attachment=attachment)
+            except ObjectDoesNotExist:
+                ua = None
+            userattachments_attachments_tuple.append((ua, attachment))
+    else:
+        userattachments_attachments_tuple = zip(iterNone(), attachments)
+    
     template = 'courses/course_lesson.html'
     context_data =  {'course':  course,
                      'lesson':  lesson,
                      'ul':      ul,
                      'history': history,
+                     'attachments': userattachments_attachments_tuple,
                      'learning_intentions': learning_intentions,
                     }
     context_instance = RequestContext(request)

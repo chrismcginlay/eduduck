@@ -20,12 +20,17 @@
             {{ course.course_abstract }}
         </p>
 
-        <ol><h1>Amend this to use interaction</h1>
-        {% for a in course.attachment_set.all %}
-            <li>{{ a.att_code}} 
-                <a href='{{ a.get_absolute_url }}'>{{ a.att_name }}</a>
-                : {{ a.attachment.size }} bytes, {{ a.att_desc }}
-                <a href='{{ a.get_metadata_url }}'>(View MetaData here)</a>
+        <ol>
+        {% for a in attachments %}
+            <li>{{ a.1.att_code}}&nbsp;[
+                {% if a.0 %}
+                Downloaded
+                {% else %}
+                Not Downloaded
+                {% endif %}]&nbsp;   
+                <a href='{{ a.1.get_loggable_url }}'>{{ a.1.att_name }}</a>
+                : {{ a.1.attachment.size }} bytes, {{ a.1.att_desc }}
+                <a href='{{ a.1.get_metadata_url }}'>(View MetaData here)</a>
             </li>
         {% endfor %}
         </ol>  

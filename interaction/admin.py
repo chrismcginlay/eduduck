@@ -25,8 +25,13 @@ class UserLearningIntentionDetailAdmin(admin.ModelAdmin):
     search_fields = ('user', 'learning_intention_detail')
     readonly_fields = ('user', 'learning_intention_detail', 'condition', 'history')
     
+class UserAttachmentAdmin(admin.ModelAdmin):
+    list_filter = ('user', 'attachment')
+    search_fields = ('user', 'attachment')
+    readonly_fields = ('user', 'attachment', 'history')
+    
 admin.site.register(UserCourse, UserCourseAdmin)
 admin.site.register(UserLesson, UserLessonAdmin)
 admin.site.register(UserLearningIntentionDetail, 
                     UserLearningIntentionDetailAdmin)
-admin.site.register(UserAttachment)
+admin.site.register(UserAttachment, UserAttachmentAdmin)

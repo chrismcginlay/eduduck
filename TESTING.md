@@ -8,11 +8,15 @@
 4. executed before merging to master
 
 ##Unit tests at present, and how to run them:##
-`python manage.py test courses --settings=Eduduck.settings.test`
-`python manage.py test interaction --settings=Eduduck.settings.test`
-`python manage.py test bio --settings=Eduduck.settings.test`
-`python manage.py test outcome --settings=Eduduck.settings.test`
-`python manage.py test support --settings=Eduduck.settings.test`
+`python manage.py test courses`
+`python manage.py test interaction`
+`python manage.py test bio`
+`python manage.py test outcome`
+`python manage.py test support`
+`python manage.py test attachment`
+
+Or just run them all:
+`python manage.py test courses interaction bio outcome support attachment`
 
 ##WARNING status in logs after running tests##
 Because the tests intentionally subject the models to failure cases, the tests 
@@ -20,5 +24,5 @@ check that the models raise correct errors and log correct messages.
 Therefore logs will show 
 `WARNING [interaction.models:79] UC Checkrep failed`
 ..or similar during test runs. This means that _checkrep is picking up the 
-failing state correctly.
+failing state correctly when presented with an inconsistent state in tests.
 Obviously, we don't want to see such errors during production or even dev runs.

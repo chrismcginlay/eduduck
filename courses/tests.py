@@ -234,8 +234,10 @@ class CourseViewTests(TestCase):
             "Missing template var: course")
         self.assertNotIn('uc', response.context, \
             "Missing template var: uc")
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertNotIn('history', response.context, \
-            "Missing template var: history")       
+            " Template var should not be there: history")       
         self.assertEqual('auth_noreg', response.context['status'], \
             "Registration status should be auth_noreg")
             
@@ -249,6 +251,8 @@ class CourseViewTests(TestCase):
             "Missing template var: course")
         self.assertIn('uc', response.context, \
             "Missing template var: uc")
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertIn('history', response.context, \
             "Missing template var: history")
         self.assertEqual('auth_reg', response.context['status'], \
@@ -307,6 +311,8 @@ class CourseViewTests(TestCase):
         #check template variables present and correct
         self.assertIn('course', response.context, \
             "Missing template var: course")
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertNotIn('uc', response.context, \
             "Missing template var: uc")
         self.assertNotIn('history', response.context, \
@@ -323,7 +329,7 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/lesson/1/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
-            for x in ['course', 'lesson', 'ul', 
+            for x in ['course', 'lesson', 'ul', 'attachments',
                       'history', 'learning_intentions'])
         self.assertEqual(response.context['history'], None, 
                          "There should be no history - unauthenticate")
@@ -339,6 +345,8 @@ class CourseViewTests(TestCase):
         uc = UserCourse(course=self.course1, user=self.user1)
         uc.save()        
         response = self.client.get('/courses/1/lesson/1/')
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertEqual(response.status_code, 200)
         hist = response.context['history'].pop()
         self.assertIsInstance(hist[0], datetime, 
@@ -361,6 +369,8 @@ class CourseViewTests(TestCase):
         #then check context for user not registered on course
         response = self.client.get('/courses/3/lesson/2/')
         self.assertEqual(response.status_code, 200)
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertEqual(response.context['history'], None, 
                          "There should be no history - unregistered")
         self.assertEqual(response.context['ul'], None, 
