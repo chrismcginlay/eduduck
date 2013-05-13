@@ -19,12 +19,6 @@ SITE_ROOT = os.path.join(os.path.dirname(__file__),
                                          os.path.pardir, 
                                          os.path.pardir)
 
-#TODO do this properly
-#set the base URL, not sure if this is the django way of doing it
-#It's not. https://docs.djangoproject.com/en/dev/ref/contrib/sites/?from=olddocs
-#Nevertheless, SITE_URL is an efficient hack in this context.
-SITE_URL = 'http://www.eduduck.com:8000'
-
 # User Profile model 
 AUTH_PROFILE_MODULE = 'bio.Bio'
 LOGIN_REDIRECT_URL = '/courses/'
@@ -58,12 +52,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(SITE_ROOT, 'media')
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = SITE_URL+'/media/'
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -141,6 +135,7 @@ INSTALLED_APPS = (
     'bio',
     'interaction',
     'outcome',
+    'attachment',
     #following provides account activation via email via django-registration
     'registration',
 )

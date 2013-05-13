@@ -3,17 +3,17 @@ Unit tests for Interaction views
 """
 
 from django.test import TestCase
-from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 from courses.models import Course, Lesson
 from outcome.models import LearningIntention, LearningIntentionDetail
+from attachment.models import Attachment
 from ..models import (UserCourse, 
                       UserLesson, 
                       UserLearningIntention,
-                      UserLearningIntentionDetail)
-
-import pdb
+                      UserLearningIntentionDetail,
+                      UserAttachment)
 
 class UserCourseViewTests(TestCase):
     """Test usercourse views"""
@@ -212,4 +212,65 @@ class UserLearningIntentionViewTests(TestCase):
         response = self.client.get('/interaction/learningintentiondetail/1/progress/', CONTENT_TYPE='application/json')
         self.assertEqual(response.status_code, 200)
         """
+
+class UserAttachmentViewTests(TestCase):
+    """Test view functions for user interaction with attachments"""
+    
+    course1_data = {'course_code': 'EDU02',
+                   'course_name': 'A Course of Leeches',
+                   'course_abstract': 'Learn practical benefits of leeches',
+                   'course_organiser': 'Van Gogh',
+                   'course_level': 'Basic',
+                   'course_credits': 30,
+                   }
+    att1_data = {'att_code': 'DOC1',
+                    'att_name': 'Reading List',
+                    'att_desc': 'Useful stuff you might need',
+                    'att_seq': 3,
+                    'attachment': 'empty_attachment_test.txt',
+                }
+    att2_data = {'att_code': 'DOC2',
+                        'att_name': 'Grammer Guide',
+                        'att_desc': 'How do you even spell grammer?',
+                        'att_seq': 2,
+                        'attachment': 'empty_attachment_test.txt',
+                }
+
+    def setUp(self):
+        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
+                                              'bertword')
+        self.user1.is_active = True
+        self.user1.save()    
+        self.course1 = Course(**self.course1_data)
+        self.course1.save() 
+        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc.save()
+        self.lesson1 = Lesson(lesson_code="L1", 
+                      lesson_name="Test Lesson 1",
+                      course = self.course1)
+        self.lesson1.save()
+        #att1 attached to course
+        self.att1 = Attachment(course=self.course1, **self.att1_data)
+        self.att1.save()      
+        #att2 attached to lesson
+        self.att2 = Attachment(lesson=self.lesson1, **self.att1_data)
+        self.att2.save()   
         
+        
+    def test_attachment_download(self):
+        #Not logged in, redirect, dont record
+
+        response = self.client.get('/interaction/attachment/2/download/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRaises(ObjectDoesNotExist, UserAttachment.objects.get, id=2)
+        
+        #Now logged in
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/interaction/attachment/1/download/')
+        self.assertEqual(response.status_code, 302)      
+        u_att1 = UserAttachment.objects.get(pk=1)
+        self.assertEqual(len(u_att1.hist2list()),1)
+        response = self.client.get('/interaction/attachment/1/download/')
+        u_att1 = UserAttachment.objects.get(pk=1)
+        self.assertEqual(len(u_att1.hist2list()),2)
+            

@@ -11,8 +11,9 @@ from bio.models import Bio
 
 from interaction.models import UserCourse
 from outcome.models import LearningIntention, LearningIntentionDetail
+from attachment.models import Attachment
 
-from .models import (Course, Lesson, Video, Attachment)
+from .models import Course, Lesson, Video
 
 import pdb
 
@@ -72,6 +73,7 @@ class CourseModelTests(TestCase):
         self.bio1 = Bio.objects.get(user_id=1)
         self.bio1.accepted_terms = True
         self.bio1.signature_line = 'Learning stuff'
+        self.bio1.user_tz = "Europe/Rome"
         self.bio1.save()
        
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
@@ -192,6 +194,7 @@ class CourseViewTests(TestCase):
         self.bio1 = Bio.objects.get(user_id=1)
         self.bio1.accepted_terms = True
         self.bio1.signature_line = 'Learning stuff'
+        self.bio1.user_tz = "Europe/Rome"
         self.bio1.save()     
 #        self.bio1.registered_courses.add(self.course1)
         
@@ -231,8 +234,10 @@ class CourseViewTests(TestCase):
             "Missing template var: course")
         self.assertNotIn('uc', response.context, \
             "Missing template var: uc")
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertNotIn('history', response.context, \
-            "Missing template var: history")       
+            " Template var should not be there: history")       
         self.assertEqual('auth_noreg', response.context['status'], \
             "Registration status should be auth_noreg")
             
@@ -246,6 +251,8 @@ class CourseViewTests(TestCase):
             "Missing template var: course")
         self.assertIn('uc', response.context, \
             "Missing template var: uc")
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertIn('history', response.context, \
             "Missing template var: history")
         self.assertEqual('auth_reg', response.context['status'], \
@@ -304,6 +311,8 @@ class CourseViewTests(TestCase):
         #check template variables present and correct
         self.assertIn('course', response.context, \
             "Missing template var: course")
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertNotIn('uc', response.context, \
             "Missing template var: uc")
         self.assertNotIn('history', response.context, \
@@ -320,7 +329,7 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/lesson/1/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
-            for x in ['course', 'lesson', 'ul', 
+            for x in ['course', 'lesson', 'ul', 'attachments',
                       'history', 'learning_intentions'])
         self.assertEqual(response.context['history'], None, 
                          "There should be no history - unauthenticate")
@@ -336,6 +345,8 @@ class CourseViewTests(TestCase):
         uc = UserCourse(course=self.course1, user=self.user1)
         uc.save()        
         response = self.client.get('/courses/1/lesson/1/')
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertEqual(response.status_code, 200)
         hist = response.context['history'].pop()
         self.assertIsInstance(hist[0], datetime, 
@@ -358,10 +369,9 @@ class CourseViewTests(TestCase):
         #then check context for user not registered on course
         response = self.client.get('/courses/3/lesson/2/')
         self.assertEqual(response.status_code, 200)
+        self.assertIn('attachments', response.context, \
+            "Missing template var: attachments")
         self.assertEqual(response.context['history'], None, 
                          "There should be no history - unregistered")
         self.assertEqual(response.context['ul'], None, 
                          "There should be no userlesson - unregistered")                 
-
-                                                        
-            

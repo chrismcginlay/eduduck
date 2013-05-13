@@ -19,6 +19,22 @@
             {% endfor %}
             {{ course.course_abstract }}
         </p>
+
+        <ol>
+        {% for a in attachments %}
+            <li>{{ a.1.att_code}}&nbsp;[
+                {% if a.0 %}
+                Downloaded
+                {% else %}
+                Not Downloaded
+                {% endif %}]&nbsp;   
+                <a href='{{ a.1.get_loggable_url }}'>{{ a.1.att_name }}</a>
+                : {{ a.1.attachment.size }} bytes, {{ a.1.att_desc }}
+                <a href='{{ a.1.get_metadata_url }}'>(View MetaData here)</a>
+            </li>
+        {% endfor %}
+        </ol>  
+
         <p>There 
         {{course.lesson_set.count|pluralize:"is,are"}} {{course.lesson_set.count}} 
         lesson{{course.lesson_set.count|pluralize:",s"}} in this course.</p>

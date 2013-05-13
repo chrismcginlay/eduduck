@@ -3,18 +3,19 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import (render_to_response, 
                               get_object_or_404)
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone    
 from django.contrib.auth.decorators import login_required
 
 from outcome.models import LearningIntentionDetail
+from attachment.models import Attachment
 from .models import (
     UserCourse, 
     UserLesson,
     UserLearningIntention,
-    UserLearningIntentionDetail
+    UserLearningIntentionDetail,
+    UserAttachment
 )
-
-import pdb
 
 import logging
 logger = logging.getLogger(__name__)
@@ -26,11 +27,11 @@ def usercourse_single(request, user_id, course_id):
     logger.info("User:"+str(user_id)+",Course:"+str(course_id)+" view interactions")
     uc = get_object_or_404(UserCourse, course=course_id, user=user_id)
     history = uc.hist2list()
-    tz = request.user.bio.user_tz
     try:
+        tz = request.user.bio.user_tz    
         timezone.activate(tz)
     except:
-        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+        logger.warning("Reverting to default timezone (UTC)")
         timezone.activate(timezone.utc)
         
     template = 'interaction/usercourse_single.html'
@@ -45,11 +46,11 @@ def userlesson_single(request, user_id, lesson_id):
     logger.info("User:"+str(user_id)+",Lesson:"+str(lesson_id)+" view interactions")
     ul = get_object_or_404(UserLesson, lesson=lesson_id, user=user_id)
     history = ul.hist2list()
-    tz = request.user.bio.user_tz
     try:
+        tz = request.user.bio.user_tz    
         timezone.activate(tz)
     except:
-        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+        logger.warning("Reverting to default timezone (UTC)")
         timezone.activate(timezone.utc)
     
     template = 'interaction/userlesson_single.html'
@@ -67,11 +68,11 @@ def userlearningintentiondetail_single(request, user_id, lid_id):
                              learning_intention_detail=lid_id)
     logger.info(ulid.__unicode__()+" view interactions")
     history = ulid.hist2list()
-    tz = request.user.bio.user_tz
     try:
+        tz = request.user.bio.user_tz    
         timezone.activate(tz)
     except:
-        logger.error("Unknown timezone: %s. Drop to UTC", tz, exc_info=1)
+        logger.warning("Reverting to default timezone (UTC)")
         timezone.activate(timezone.utc)
     
     template = 'interaction/userlearningintentiondetail_single.html'
@@ -121,3 +122,29 @@ def userlearningintention_progress_bar(request, lid_id):
     result = {'progress': uli.progress()}
     jresult = json.dumps(result)
     return HttpResponse(jresult, mimetype='application/json')
+
+@login_required
+def attachment_download(request, att_id):
+    """Record interaction with download prior to handing off to webserver
+    
+    Basic idea is to hook in to downloads here to update record of downloads
+    then trigger webserver download with File field of underlying model.
+    """
+
+    attachment = get_object_or_404(Attachment, id=att_id)    
+    try:
+        course_record = request.user.usercourse_set.get(course=attachment.course)
+    except ObjectDoesNotExist:
+        try:
+            course_record = request.user.usercourse_set.get(course=attachment.lesson.course)
+        except ObjectDoesNotExist:
+            course_record = None
+    if course_record:
+        #get_or_create return tuple (object, success_state)
+        uad = UserAttachment.objects.get_or_create(user=request.user, attachment=attachment)
+        #newly created record will automatically record download
+        if (uad[1]==False): uad[0].record_download()
+        dl_link = uad[0].attachment.get_absolute_url()               
+    else:
+        dl_link = attachment.get_absolute_url()
+    return HttpResponseRedirect(dl_link)
