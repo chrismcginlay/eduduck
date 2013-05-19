@@ -7,7 +7,7 @@ TEMPLATE_DEBUG = DEBUG
 #TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
 TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
 
-ALLOWED_HOSTS = ['.eduduck.com']
+ALLOWED_HOSTS = ['eduduck.com', 'www.eduduck.com', 'static.eduduck.com', 'media.eduduck.com']
 
 # Make SECRET_KEY unique, and don't share it with anybody.
 # see issue #43 for key generation method.
@@ -22,7 +22,7 @@ STATIC_ROOT = '/var/www/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = 'http://static.eduduck.com/'
+STATIC_URL = 'http://static.eduduck.com:8080/'
 
 
 #django-registration needs an MTA. For development just use console
