@@ -19,10 +19,29 @@ From http://virtualenvwrapper.readthedocs.org/en/latest/:
   $ mkdir -p $WORKON_HOME
   $ source /usr/local/bin/virtualenvwrapper.sh
   $ mkvirtualenv towel
+ 
+Apend source command to .bashrc:
+  $ echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+  
+When wishing to work on the environment 'towel' in future sessions just issue:
+  $ workon towel
   
 4. Within the virtualenvironment, check the Python version which should be 2.7 at present, not 3.x
   $ python --version
   
-5. 
+5. Install django version 1.4. WE ARE NOT READY FOR DJANGO 1.5 YET
+  $ sudo pip install django==1.4
+
+6. Finally, time to get the Eduduck code and pop it onto your homedir someplace. I keep mine under a directory titled coding, but, hey, fry your own bacon dude. 
+  $ cd coding
+  $ git clone git@github.com:mrintegrity/eduduck.git ~/coding/eduduck
+(You may of course need to add an ssh key to your github if its a new OS install)
+
+7. Run the development server and happy hacking
+  $ cd ~/coding/eduduck
+  $ python manage.py runserver
+
+
+
   
   
