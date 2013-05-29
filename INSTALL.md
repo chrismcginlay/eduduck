@@ -40,14 +40,18 @@ Revised installation instructions for development and testing.
 5. Install django version 1.4. WE ARE NOT READY FOR DJANGO 1.5 YET
 
   $ sudo pip install django==1.4
+  
+6. Install required packages
 
-6. Finally, time to get the Eduduck code and pop it onto your homedir someplace. I keep mine under a directory titled coding, but, hey, fry your own bacon dude.
+  $ sudo pip install django-registration pytz
+
+7. Finally, time to get the Eduduck code and pop it onto your homedir someplace. I keep mine under a directory titled coding, but, hey, fry your own bacon dude.
 
   $ cd coding
   $ git clone git@github.com:mrintegrity/eduduck.git ~/coding/eduduck
   (You may of course need to add an ssh key to your github if its a new OS install)
 
-7. Run the development server and happy hacking
+8. Run the development server and happy hacking
 
   $ cd ~/coding/eduduck
   $ python manage.py runserver
