@@ -15,7 +15,6 @@ framework.
 """
 import os
 
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "EduDuck.settings.staging")
 
 # This application object is used by any WSGI server configured to use this
@@ -23,12 +22,4 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "EduDuck.settings.staging")
 # setting points here.
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
-
-#old for Django 1.3?
-#import django.core.handlers.wsgi
-#application = django.core.handlers.wsgi.WSGIHandler()
-
-# Apply WSGI middleware here. Issue #46
-#from EduDuck.wsgi import EduDuckApplication
-#application = EduDuckApplication(application)
 
