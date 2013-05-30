@@ -50,12 +50,6 @@ def single(request, course_id):
   
     logger.info('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
-    try:
-        tz = request.user.bio.user_tz
-        timezone.activate(tz)
-    except:
-        logger.warning("Reverting to default timezone (UTC)")
-        timezone.activate(timezone.utc)
 
     if request.user.is_authenticated():
         uc_set = request.user.usercourse_set.filter(course=course)
@@ -156,13 +150,6 @@ def lesson(request, course_id, lesson_id):
     course = get_object_or_404(Course, id=course_id)
     lesson = get_object_or_404(Lesson, id=lesson_id)
 
-    try:
-        tz = request.user.bio.user_tz
-        timezone.activate(tz)
-    except :
-        logger.warning("Reverting to default timezone (UTC)")
-        timezone.activate(timezone.utc)
-    
     #data on user interaction with lesson
     ul = None
     if request.user.is_authenticated():
