@@ -22,12 +22,13 @@ STATIC_ROOT = '/var/www/static/'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = 'http://static.eduduck.com:8080/'
+STATIC_URL = 'http://static.eduduck.com/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'http://media.eduduck.com:8080/'
+MEDIA_URL = 'http://media.eduduck.com/'
+MEDIA_ROOT = '/var/www/media/'
 
 #django-registration needs an MTA. For development just use console
 #smtp is the default, so for production, use default EMAIL_BACKEND 
