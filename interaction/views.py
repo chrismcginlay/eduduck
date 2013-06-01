@@ -123,6 +123,10 @@ def userlearningintention_progress_bar(request, lid_id):
     jresult = json.dumps(result)
     return HttpResponse(jresult, mimetype='application/json')
 
+<<<<<<< HEAD
+=======
+#@login_required
+>>>>>>> 9ecabdda153a08c4e2626614f18c035bde4646b1
 def attachment_download(request, att_id):
     """Record interaction with download prior to handing off to webserver
     
@@ -130,9 +134,19 @@ def attachment_download(request, att_id):
     then trigger webserver download with File field of underlying model.
     """
 
+    #Some implementation notes:
+    #If using login_required decorator the request.user.usercourse_set ORM call
+    #will work or throw ObjectDoesNotExist
+    #If not using login_required decorator (ie anon user can download) then 
+    #request.user.usercourse_set will throw AttributeError due to AnonymousUser
+    #not having a usercourse_set attribute.
+    #So catch it. Just NB that if using login_required, then the exception will
+    #never be thrown.
     attachment = get_object_or_404(Attachment, id=att_id)    
     try:
         course_record = request.user.usercourse_set.get(course=attachment.course)
+    except AttributeError:
+        course_record = None
     except ObjectDoesNotExist:
         try:
             course_record = request.user.usercourse_set.get(course=attachment.lesson.course)
