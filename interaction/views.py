@@ -123,10 +123,7 @@ def userlearningintention_progress_bar(request, lid_id):
     jresult = json.dumps(result)
     return HttpResponse(jresult, mimetype='application/json')
 
-<<<<<<< HEAD
-=======
-#@login_required
->>>>>>> 9ecabdda153a08c4e2626614f18c035bde4646b1
+@login_required
 def attachment_download(request, att_id):
     """Record interaction with download prior to handing off to webserver
     
@@ -160,5 +157,8 @@ def attachment_download(request, att_id):
         dl_link = uad[0].attachment.get_absolute_url()               
     else:
         dl_link = attachment.get_absolute_url()
-    logger.info('Absolute download URI for redirect is ' + dl_link)	
-    return HttpResponseRedirect(dl_link)
+    logger.debug('Absolute download URI for redirect is ' + dl_link)	
+    redir_resp = HttpResponseRedirect(dl_link)
+    return redir_resp
+
+
