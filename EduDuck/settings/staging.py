@@ -10,7 +10,7 @@ TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
 ALLOWED_HOSTS = ['eduduck.com', 'www.eduduck.com', 'static.eduduck.com', 'media.eduduck.com']
 
 # Make SECRET_KEY unique, and don't share it with anybody.
-# see issue #43 for key generation method.
+# see issue #43 for key generation method and location of Env Vars
 assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
 SECRET_KEY = os.environ['SECRET_KEY']
 
@@ -41,14 +41,18 @@ EMAIL_HOST_USER = 'bob'
 EMAIL_HOST_PASSWORD = 'bobo'
 EMAIL_USE_TLS = 'True'
 
+assert 'DATABASE_NAME' in os.environ, 'DATABASE_NAME missing from environment'
+assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
+assert 'DATABASE_PASSWORD' in os.environ, 'DATABASE_PASSWORD missing from environment'
+assert 'DATABASE_PORT' in os.environ, 'DATABASE_PORT missing from environment'
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(SITE_ROOT, 'EduDuck.db'),
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': os.environ['DATABASE_NAME'],
+        'USER': os.environ['DATABASE_USER'],
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'HOST': '',
+        'PORT': os.environ['DATABASE_PORT']
     }
 }
 
