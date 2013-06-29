@@ -1,8 +1,12 @@
-#settings/staging.py
+#settings/temp_deploy.py
+
+#Use this if you need to run manage.py syncdb from shell to create database tables in MySQL
+#with proper secrets loaded (as they won't be available, since apache loads them from its environment variables
+
 from base import *
 import os
  
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 #TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
 TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
@@ -11,8 +15,15 @@ ALLOWED_HOSTS = ['eduduck.com', 'www.eduduck.com', 'static.eduduck.com', 'media.
 
 # Make SECRET_KEY unique, and don't share it with anybody.
 # see issue #43 for key generation method and location of Env Vars
-assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY=''
+
+DATABASE_PASSWORD=''
+DATABASE_USER=''
+DATABASE_NAME=''
+DATABASE_PORT=''
+
+EMAIL_PASSWORD=''
+
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -34,27 +45,21 @@ MEDIA_ROOT = '/var/www/media/'
 #smtp is the default, so for production, use default EMAIL_BACKEND 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-assert 'EMAIL_PASSWORD' in os.environ, 'EMAIL_PASSWORD missing from environment'
+#assert 'EMAIL_PASSWORD' in os.environ, 'EMAIL_PASSWORD missing from environment'
 #Fill in for given MTA
-#EMAIL_HOST = 'a2s73.a2hosting.com'
-EMAIL_HOST = 'mail.unpossible.info'
-EMAIL_PORT = 25
-#EMAIL_PORT = 465
+EMAIL_HOST = 'a2s73.a2hosting.com'
+EMAIL_PORT = 465
 EMAIL_HOST_USER = 'educk@unpossible.info'
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
-#EMAIL_USE_TLS = 'True'
+EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
+EMAIL_USE_TLS = 'True'
 
-assert 'DATABASE_NAME' in os.environ, 'DATABASE_NAME missing from environment'
-assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
-assert 'DATABASE_PASSWORD' in os.environ, 'DATABASE_PASSWORD missing from environment'
-assert 'DATABASE_PORT' in os.environ, 'DATABASE_PORT missing from environment'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-	'USER': os.environ['DATABASE_USER'],
-   	'PASSWORD': os.environ['DATABASE_PASSWORD'],
-	'NAME': os.environ['DATABASE_NAME'],
-	'PORT': os.environ['DATABASE_PORT'],
+	'USER': DATABASE_USER,
+   	'PASSWORD': DATABASE_PASSWORD,
+	'NAME': DATABASE_NAME,
+	'PORT': DATABASE_PORT,
         'HOST': '',
         'OPTIONS': {
 #            'read_default_file': '/etc/mysql/conf.d/eduduck_my.cnf',
