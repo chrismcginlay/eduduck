@@ -22,17 +22,17 @@ DATABASES = {
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     },
-    'mysql_sync': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': '',
-	'NAME': 'eduduck',
-	'USER': 'put it back if you need to resync',
-	'PORT': '2369',
-	'PASSWORD': "put it back if you need to resync",
-        'OPTIONS': {
-            'init_command': 'SET storage_engine=INNODB',
-        },
-    },
+#    'mysql_sync': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'HOST': '',
+#	'NAME': 'eduduck',
+#	'USER': 'put it back if you need to resync',
+#	'PORT': '2369',
+#	'PASSWORD': "put it back if you need to resync",
+#        'OPTIONS': {
+#            'init_command': 'SET storage_engine=INNODB',
+#        },
+#    },
 }
 
 #Not very secret SECRET_KEY. Just for dev. Staging and prod. use env var.
