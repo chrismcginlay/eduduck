@@ -8,7 +8,7 @@ class LearningIntentionDetailInline(admin.TabularInline):
     model = LearningIntentionDetail
     
 class LearningIntentionAdmin(admin.ModelAdmin):
-    readonly_fields = ("lesson",)
+#    readonly_fields = ("lesson",)
     inlines = [LearningIntentionDetailInline]
 
 admin.site.register(LearningIntention, LearningIntentionAdmin)
