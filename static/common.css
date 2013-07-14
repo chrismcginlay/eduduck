@@ -4,109 +4,114 @@ Thrown together by Chris McGinlay Jan 2013
 
 /* Fonts */
 body, html {
-    background-color:   #588f27;
-    font-size:          100%;
-    font-family:    sans-serif;
+    background-color:   #fdfbf9;
+    font-size:          100%
 
+    color: rgb(34, 34, 34);
 }
 
 h1 {
-    color:          #1c3803;    /*dark emerald*/
     text-align:     center;
     font-size:      1.3em;
+    font-family: 'Lato', sans-serif;
+    color: rgb(34, 34, 34);
 
 }
 
 h2 {
-    color:          #cafcd8;
     text-align:     left;
+    font-family: 'Lato', sans-serif;
     font-size:      1.5em;
     margin:         0;
     padding:        5px 0 15px 10px;
+    color: rgb(34, 34, 34);
+
 }
 
 h3 {
-    color:          #04bfbf;
     text-align:     left;
+    font-family: 'Lato', sans-serif;
     font-size:      1.4em;
     margin:     10px;
+    color: rgb(34, 34, 34);
+
 }
 
 h4, h4 a {
-    color:          #588f27;
+    color: rgb(34, 34, 34);
+
 }
 
 p {
-    font-size:      1em;
+   font-family: 'Lato', sans-serif;
+     font-size:      1em;
+    color: rgb(34, 34, 34);
+
 }
 
 p#strapline {
-    color:          #1c3803;
     font-size:      1.2em;
-    height:         40px;
-    line-height:    40px;
+    font-family: 'Lato', sans-serif;
+    color: rgb(34, 34, 34);
+
 }
 
 /* Layout and everything else */
-.fix_container {
-    /*Fixed position container, use to center and fix*/
-    position:           fixed;
+
+#wrapper {
+    width:  95%;
+    margin: auto;
+    margin-top: 15px;
+    background: #fdfbf9;
+}
+
+#userprof {
+    background-color:   #04bfbf;
+    border:             none;
     top:                0;
     left:               0;
     right:              0;
     left:               0;
     text-align:         center;
-    z-index:            10;
+	z-index:	-10;
 }
 
-#wrapper {
-    width:  95%;
-    margin: auto;
-    margin-top: 5px;
-    background: #e0ffe9;
-}
-
-#userprof {
-    display:            inline-block;
-    text-align:         left;
-    background-color:   #04bfbf;
-    border:             1px solid #1c3803;
+#branding a { 
+        color: rgb(34, 34, 34);
+    text-decoration:none;
+    display: table-cell; // this says treat this element like a table cell
+    vertical-align:middle; //now we can center vertically like in a TD
 }
 
 #branding {
     position:           relative;
-    background-color:   #f7e967;
-    border:             #1c3803 solid 2px;
-    min-height:         85px;
-}
-
-#branding img {
-    float:          left;
-    padding-top:    15px;
-    padding-left:   10px;
+    background-color:   #6699cc;
+    border:             none;
+    min-height:         185px;
 }
 
 #branding h1 {
-    float:      left;
-    width:      100px;
-    text-align: left;
+    float:      none;
+    width:      75%;
     margin-left:10px;
+	height: 180px;
+    display: table-cell; // this says treat this element like a table cell
+    vertical-align:middle; //now we can center vertically like in a TD
 }
 
 #search  {
-    position:   absolute;
     bottom:     5px;
     left:       65%;
     width:      34%;
     height:     1.5em;
     margin:     0;
     padding:    0;
-    background: #f7e967;
 }
 
 #primary {
-    clear:              both;
-    background-color:   #cafcd8;
+   clear:              both;
+top: 0;
+    background-color:   #6699cc;
     padding:            15px 0 15px 0;
     width:              100%;
 }
@@ -122,7 +127,7 @@ p#strapline {
 
 #devmenu {
     position:   fixed;
-    border:     black dashed 1px;
+    border:     none;
     top:        300px;
     left:       88%;
     width:      10%;
@@ -136,7 +141,7 @@ p#strapline {
 }
 
 #content {
-    background-color:   #04bfbf;
+    background-color:   #6699cc;
     }
 
 #content section#zone1 {
@@ -144,8 +149,8 @@ p#strapline {
     width:              45%;
     padding-left:       2%;
     padding-right:      2%;
-    background-color:   #e0ffe9;
-    border:             outset;
+    background-color:   #f3e7dc;
+    border:             none;
 }
 
 #content section#zone2 {
@@ -153,15 +158,17 @@ p#strapline {
     width:          45%;
     padding-left:   2%;
     padding-right:  2%;
-    background:     #e0ffe9;
-    border:         outset;
+    background:     #f3e7dc;
+    border:         none;
 }
 
 #pagefoot {
-    clear:              both;
-    background-color:   #cafcd8;
-    color:              04bfbf;
+    background-color:   #fdfbf9;
     padding:            0 20px 0 20px;
+    width: 100%; 
+    height: 80px; 
+    bottom: 0; 
+    left: 0;
 }
 
 #pagefoot p {
@@ -188,17 +195,14 @@ div#userprof li > a {
 
 div#userprof li a:link, div#userprof li a:visited {
     text-decoration:    none;
-    color:              #cafcd8;
 }
 
 div#userprof li a:hover, div#userprof li a:active {
     text-decoration:    none;
-    color:              #f7e967;
 }
 
 .abstract {
-    background-color:   #7b9c31;    /*Grass is green*/
-    color:              white;
+    background-color:   #fdfbf9;    /*Grass is <strike>green</strike> fucking ugly when used for text background!!!*/
     font-size:          0.8em;
     padding:            5px;
     text-align:         justify;
@@ -218,7 +222,7 @@ div#userprof li a:hover, div#userprof li a:active {
 .FYI {
 /*    background-color:   #9e5909;*/
 /*    color:              #f2edce;*/
-    border:             solid 4px #f7e967;
+    border:             none;
     font-size:          0.8em;
     padding:            2px 10px 4px 10px;
     text-align:         justify;
