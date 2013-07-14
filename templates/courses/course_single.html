@@ -2,6 +2,15 @@
 {% load staticfiles %}
 {% load tz %}
 
+{% block pagenav %}
+    {{ block.super }}
+	| <a href=''>Course Home</a> |
+    {% for lesson in course.lesson_set.all %}
+	<a href='{{ lesson.get_absolute_url }}'
+       title='{{ lesson.lesson_name}}'>{{ forloop.counter }} |</a>
+    {% endfor %}	
+{% endblock pagenav %}
+	
 {% block contentheading %}
 {{ course.course_name }}
 {% endblock contentheading %}
@@ -9,8 +18,9 @@
 {% block content %}
 
     <section id="zone1">
-        <h3>{{ course.course_name }}, {{ course.course_organiser }}</h3>
-        <p>Hi, and welcome to {{ course.course_name }}</p>
+        <h3>Course {{ course.course_code }}: {{ course.course_name }}</h3>
+        <p>Hi, and welcome to {{ course.course_name }}, 
+          by {{ course.course_organiser }}</p>
         <p class="abstract">
             {% for v in course.video_set.all %}
             <iframe width="280" height="158" src='{{ v.url }}' 

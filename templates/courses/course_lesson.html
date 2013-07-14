@@ -3,28 +3,28 @@
 {% load tz %}
 
 {% block pagenav %}
-<a href='{{ lesson.course.get_absolute_url }}'>
-    Course Home</a>
-<span class='prevnext'>
+	{{ block.super }}
+	| <a href='{{ lesson.course.get_absolute_url }}'>Course Home</a>
+    <span class='prevnext'>
     {% if lesson.get_prev %}
-        &lt; 
-        <a href='{{ lesson.get_prev.get_absolute_url }}'>
-        {{lesson.get_prev}}</a> 
+        &lt;<a href='{{ lesson.get_prev.get_absolute_url }}'
+		title='{{ lesson.get_prev }}'>{{ lesson.get_prev|truncatechars:10 }}</a> 
     {% else %}
         ---
     {% endif %}
-    | {{ lesson.lesson_code }} | 
+    | <span title='{{ lesson.lesson_code }}:{{ lesson }}'>
+          {{ lesson|truncatechars:10 }}</span> | 
     {% if lesson.get_next %}
-        <a href='{{ lesson.get_next.get_absolute_url }}'>
-        {{ lesson.get_next }}</a> &gt;
+        <a href='{{ lesson.get_next.get_absolute_url }}'
+		title='{{ lesson.get_next }}'>{{ lesson.get_next|truncatechars:10 }}</a>&gt;
     {% else %}
         ---
     {% endif %} 
-</span>
+	</span>
 {% endblock %}
 
 {% block contentheading %}
-    {{lesson.lesson_code}}: {{lesson.lesson_name}}
+    Lesson {{lesson.lesson_code}}: {{lesson.lesson_name}}
 {% endblock contentheading %}
 
 {% block content %}
@@ -96,6 +96,20 @@
         {% empty %}
             <p>Bizarrely, no learning intentions given for this lesson</p>
         {% endfor %}
+		<h3>Change Lesson</h3>
+        {% if lesson.get_prev %}
+        <a href='{{ lesson.get_prev.get_absolute_url }}'
+		title='{{ lesson.get_prev }}'>Previous Lesson</a> 
+        {% else %}
+        	(On first lesson)
+        {% endif %}
+        &nbsp;|&nbsp; 
+        {% if lesson.get_next %}
+        <a href='{{ lesson.get_next.get_absolute_url }}'
+		title='{{ lesson.get_next }}'>Next Lesson</a>
+        {% else %}
+        	(On last lesson)
+        {% endif %} 
     </section>    
 
 {% endblock content %}

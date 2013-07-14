@@ -12,18 +12,25 @@
 {% endblock extra_script %}
 
 {% block pagenav %}
-<span class='prevnext'>
+{{ block.super }}
+	| <a href='{{ lesson.course.get_absolute_url }}'
+         title='{{ lesson.course }}'>Course Home</a>
+    | <a href='{{ lesson.get_absolute_url }}'
+         title='{{ lesson }}'>Lesson Home</a>
+    <span class='prevnext'>
     {% if learning_intention.get_prev %}
-        &lt; 
-        <a href='{{ learning_intention.get_prev.get_absolute_url }}'>
-        {{learning_intention.get_prev}}</a> 
+        &lt;<a href='{{ learning_intention.get_prev.get_absolute_url }}'
+        title='{{ learning_intention.get_prev }}'>
+        {{ learning_intention.get_prev|truncatechars:10 }}</a> 
     {% else %}
         ---
     {% endif %}
-    | LI {{ learning_intention.pk }} | 
+    | <span title='{{ learning_intention.pk }}:{{ learning_intention }}'>
+        {{ learning_intention|truncatechars:10 }}</span> |
     {% if learning_intention.get_next %}
-        <a href='{{ learning_intention.get_next.get_absolute_url }}'>
-        {{ learning_intention.get_next }}</a> &gt;
+        <a href='{{ learning_intention.get_next.get_absolute_url }}'
+           title='{{ learning_intention.get_next }}'>
+        {{ learning_intention.get_next|truncatechars:10 }}</a>&gt;
     {% else %}
         ---
     {% endif %} 
@@ -31,7 +38,7 @@
 {% endblock %}
 
 {% block contentheading %}
-    {{lesson.lesson_code}}: {{lesson.lesson_name}}
+    Learning Intentions for {{lesson.lesson_code}}: {{lesson.lesson_name}}
 {% endblock contentheading %}
 
 {% block content %}

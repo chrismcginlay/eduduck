@@ -9,13 +9,6 @@
     <meta name="description" content="Massive online education" />
     <meta charset="utf-8" />
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' />
-{% comment %}
-Use fonts in stylesheets as follows:
-    font-family: 'Merienda', cursive;
-    font-family: 'Junge', serif;
-    font-family: 'Lemon', cursive;
-    font-family: 'Pontano Sans', sans-serif;
-{% endcomment %}
     <link href="{% static 'normalize.css' %}" rel="stylesheet" media="screen" />    
     <link href="{% static 'common.css' %}" rel="stylesheet" media="screen" />
 {% block extra_style %}{% endblock extra_style %}
@@ -68,9 +61,7 @@ Use fonts in stylesheets as follows:
 
         <nav id="primary">
             {% block pagenav %}
-            <ul>
-                For page relevant navigation. See what happens here in a lesson for example
-            </ul>
+                <a href='/'>Home</a>
             {% endblock pagenav %}
         </nav>
 
