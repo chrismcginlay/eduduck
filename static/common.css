@@ -126,7 +126,7 @@ p#strapline {
     clear:              both;
     margin-top:			5px;
     top: 				0;
-    background-color:   #6699cc;
+    background-color:   #4477aa;
     padding-top:		15px;
     padding-bottom:		15px;
 	padding-left:		1%;
@@ -221,7 +221,7 @@ div#userprof li a:hover, div#userprof li a:active {
 }
 
 .abstract {
-    background-color:   #fdfbf9;    /*Grass is <strike>green</strike> fucking ugly when used for text background!!!*/
+    background-color:   #eee1cc;
     font-size:          0.8em;
     padding:            5px;
     text-align:         justify;
