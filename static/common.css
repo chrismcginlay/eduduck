@@ -144,6 +144,7 @@ p#strapline {
 }
 
 #devmenu {
+    display:	none;
     position:   fixed;
     border:     none;
     top:        300px;

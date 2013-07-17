@@ -43,7 +43,7 @@ Revised installation instructions for development and testing.
   
 6. Install required packages
 
-  $ sudo pip install django-registration pytz
+  $ sudo pip install django-registration pytz django-haystack
 
 7. Finally, time to get the Eduduck code and pop it onto your homedir someplace. I keep mine under a directory titled coding, but, hey, fry your own bacon dude.
 

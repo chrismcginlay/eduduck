@@ -38,6 +38,7 @@
                     Login</a></li>
             {% endif %}
                 <li><a href="/about/">About</a></li>
+                <li><a href="/search/">Search</a></li>
             {% endblock userprof %}
         </div> <!-- #userprof-->
         </div> <!-- .fix_container --> 
@@ -53,8 +54,8 @@
             {% endif %}
             <div id="search">
             {% block search %}
-                <form action="">
-                  <input type="search" name="elasticsearch" value="does nothing yet" />
+                <form method="get" action="search">
+                  <input type="search" name="elasticsearch" value="will be working soon" />
                   <input value="search" type="submit" id="search"/>
                 </form>
             {% endblock search %}
@@ -72,7 +73,6 @@
             <ul id="dev">
                 {% if user.is_authenticated %}
                 <li><a href="/admin/">Admin</a></li>
-                <li><a href="{% url 'courses.views.index' %}">Courses</a></li>
                 {% else %}
                 {% endif %}
                 <li><a href="/quizzes/">Quizzes</a></li>

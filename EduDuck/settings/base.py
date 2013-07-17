@@ -130,6 +130,13 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+
+    #django-haystack via elasticsearch backend
+    'haystack',
+    #following provides account activation via email via django-registration
+    'registration',
+
+    #eduduck apps
     'courses',
     'quiz',
     'support',
@@ -137,9 +144,15 @@ INSTALLED_APPS = (
     'interaction',
     'outcome',
     'attachment',
-    #following provides account activation via email via django-registration
-    'registration',
 )
+
+# See http://django-haystack.readthedocs.org/en/latest/tutorial.html#simple
+# and override this in staging.py and production.py
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
