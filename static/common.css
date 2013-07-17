@@ -159,7 +159,8 @@ p#strapline {
 }
 
 #content {
-    background-color:   #6699cc;
+    background-color:   #f3e7dc;
+    border-bottom:       1em;
     }
 
 #content section#zone1 {

@@ -28,8 +28,8 @@
 {% endblock contentheading %}
 
 {% block content %}
+    <h3>Abstract</h3>
     <article class="abstract">
-        <h3>Abstract</h3>
         <p>{{ lesson.abstract }}</p>
     </article>
 
@@ -71,7 +71,7 @@
     <section id="zone2">
     {% if user.is_authenticated and history %}
         <h3>Your Progress</h3>
-        <ol>{% for event in history %}
+        <ol class="abstract">{% for event in history %}
             <li>{{ event.1 }} lesson on {{ event.0|localtime }}</li>
         {% endfor %}</ol>
         {% if not ul.completed %}
@@ -91,11 +91,13 @@
         a detailed log of your awesomeness here.</p>
     {% endif %}
         <h3>Learning Intentions</h3>
-        {% for li in learning_intentions %}
-            <p class="abstract">[<a href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.li_text }}</p>
-        {% empty %}
+        <article class="abstract">
+            {% for li in learning_intentions %}
+            <p>[<a href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.li_text }}</p>
+            {% empty %}
             <p>Bizarrely, no learning intentions given for this lesson</p>
-        {% endfor %}
+            {% endfor %}
+        </article>
 		<h3>Change Lesson</h3>
         {% if lesson.get_prev %}
         <a href='{{ lesson.get_prev.get_absolute_url }}'
