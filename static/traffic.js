@@ -64,7 +64,7 @@ function cycle_and_progress(img) {
 }
 
 $(document).ready(function(){
-    $("input").remove();
+    $("input.traffic").remove();
     $("img").dblclick(function(){
 	cycle_and_progress($(this))
     });

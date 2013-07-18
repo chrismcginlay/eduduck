@@ -81,7 +81,7 @@
                 <img id="SC{{ sc.0.pk }}" 
                     src="{% static 'images/img_trans.png' %}" 
                     style="background-position: {{ sc.1 }}px 0px" />
-<input type="submit" name="cycle{{ sc.0.pk }}" value="Cycle"
+<input class="traffic" type="submit" name="cycle{{ sc.0.pk }}" value="Cycle"
 title="Cycle status R->A->G->R">
                 {{ sc.0.lid_text }}
             </li>
@@ -125,7 +125,7 @@ title="Cycle status R->A->G->R">
                 <img id="LO{{ lo.0.pk }}" 
                     src="{% static 'images/img_trans.png' %}"
                     style="background-position: {{ lo.1 }}px 0px" />
-<input type="submit" name="cycle{{ lo.0.pk }}" value="Cycle"
+<input class="traffic" type="submit" name="cycle{{ lo.0.pk }}" value="Cycle"
 title="Cycle status R->A->G->R">
                 {{ lo.0.lid_text }}
             </li>
