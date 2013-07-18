@@ -29,6 +29,7 @@ Search
 
             {% for result in page.object_list %}
                 <p>
+                    {{ result.verbose_name }}:
                     <a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a>
                 </p>
             {% empty %}

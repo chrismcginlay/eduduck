@@ -151,9 +151,7 @@ class Video(models.Model):
 
     def __unicode__(self):
         return self.video_name
-
-# TODO No video view defined yet 
-#    @models.permalink
-#    def get_absolute_url(self):
-#        return ('TODO')
+    
+    def get_absolute_url(self):
+        return self.url
         

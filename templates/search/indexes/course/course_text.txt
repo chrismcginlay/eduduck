@@ -1,0 +1,5 @@
+{{ object.course_code }}
+{{ object.course_name }}
+{{ object.course_organiser }}
+{{ object.course_abstract }}
+

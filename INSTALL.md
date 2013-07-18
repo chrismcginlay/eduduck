@@ -45,13 +45,26 @@ Revised installation instructions for development and testing.
 
   $ sudo pip install django-registration pytz django-haystack
 
-7. Finally, time to get the Eduduck code and pop it onto your homedir someplace. I keep mine under a directory titled coding, but, hey, fry your own bacon dude.
+7. Next, time to get the Eduduck code and pop it onto your homedir someplace. I keep mine under a directory titled coding, but, hey, fry your own bacon dude.
 
   $ cd coding
   $ git clone git@github.com:mrintegrity/eduduck.git ~/coding/eduduck
   (You may of course need to add an ssh key to your github if its a new OS install)
 
-8. Run the development server and happy hacking
+8. Build the search index for django-haystack
+
+If this is a staging or production install then we are using the elasticsearch backend for django-haystack, so on installation, you need to build the search index one time:
+   
+   $ python manage.py rebuild_index
+
+Then add python manage.py update_index to the crontab, something like this (not tested):
+
+   @daily PYTHONPATH=/home/username/webapps/django/lib/pythonX.Y /usr/local/bin/pythonX.Y ~/webapps/django/myproj/manage.py update_index --settings=staging
+
+If it's just development install then django-haystack uses a simple backend and this is not required.
+
+
+9. Run the development server and happy hacking
 
   $ cd ~/coding/eduduck
   $ python manage.py runserver

@@ -1,0 +1,3 @@
+{{ object.lesson_code }}
+{{ object.lesson_name }}
+{{ object.abstract }}
