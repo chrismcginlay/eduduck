@@ -54,8 +54,8 @@
             {% endif %}
             <div id="search">
             {% block search %}
-                <form method="get" action="search">
-                  <input type="search" name="elasticsearch" value="will be working soon" />
+                <form method="get" action="/search/">
+                  <input type="search" name="q" id="id_q" value="Search with Elasticsearch" />
                   <input value="search" type="submit" id="search"/>
                 </form>
             {% endblock search %}
