@@ -152,6 +152,13 @@ HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
     },
+#this is only here since I can't get python manage.py to read this config (handled via wsgi)
+#use via python manage.py rebuild_index --using='forcron'
+    'forcron': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
 }
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for

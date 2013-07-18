@@ -43,7 +43,7 @@ Revised installation instructions for development and testing.
   
 6. Install required packages
 
-  $ sudo pip install django-registration pytz django-haystack
+  $ sudo pip install django-registration pytz django-haystack pyelasticsearch
 
 7. Next, time to get the Eduduck code and pop it onto your homedir someplace. I keep mine under a directory titled coding, but, hey, fry your own bacon dude.
 
@@ -63,6 +63,19 @@ Then add python manage.py update_index to the crontab, something like this (not 
 
 If it's just development install then django-haystack uses a simple backend and this is not required.
 
+9. Maybe install elasticsearch if you want to test that locally
+
+cd ~
+sudo apt-get update
+sudo apt-get install openjdk-7-jre-headless -y
+ 
+ 
+### Check http://www.elasticsearch.org/download/ for latest version of ElasticSearch and replace wget link below
+ 
+# NEW WAY / EASY WAY
+wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.0.deb
+sudo dpkg -i elasticsearch-0.90.0.deb
+sudo service elasticsearch start
 
 9. Run the development server and happy hacking
 
