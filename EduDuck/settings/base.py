@@ -2,6 +2,7 @@
 
 import os
 import django
+from django.conf import global_settings
 
 DEBUG = False
 
@@ -87,6 +88,10 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    'core.context_processors.git_branch_render',
 )
 
 MIDDLEWARE_CLASSES = (

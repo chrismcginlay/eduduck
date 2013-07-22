@@ -48,6 +48,12 @@ p {
 
 }
 
+p#branch {
+    position: 	relative;
+    top:		0%;
+    text-align:	right;
+}
+
 p#strapline {
     margin-left:	20px;
     font-size:      1.2em;

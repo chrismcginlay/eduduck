@@ -1,5 +1,9 @@
-from django.conf import settings
+import subprocess
 
 def git_branch_render(request):
     """Obtain the active git branch and ensure it is present in template vars"""
-    return {'ACTIVE_GIT_BRANCH': settings.ACTIVE_GIT_BRANCH}
+    
+    process = subprocess.Popen("git branch |grep '*' |cut -c 2-", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    agb = process.stdout.read()
+
+    return {'ACTIVE_GIT_BRANCH': agb}
