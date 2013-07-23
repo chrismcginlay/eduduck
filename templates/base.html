@@ -45,9 +45,11 @@
 
         <header id="branding" title="Home">
           	{% if COMPLETION_RATIO > 50 %}
-          	<img id="survey" width='195' height='250' 
-                 title='Complete our Survey!' alt='Complete our Survey!'
-                 src="{% static 'images/SurveyIcon_195.png' %}">
+          		<a href='https://docs.google.com/forms/d/1VrUfHZ3oVFByCeZf19CNl_OY0po9gTuMlKIT20rKY48/viewform'>
+                   <img id="survey" width='195' height='250' 
+                        title='Complete our Survey!' alt='Complete our Survey!'
+                        src="{% static 'images/SurveyIcon_195.png' %}">
+                </a>
             {% endif %}
             <p id="branch">Running Branch: {{ ACTIVE_GIT_BRANCH }}</p>
             <a href="/">
