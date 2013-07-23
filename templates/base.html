@@ -44,15 +44,19 @@
         </div> <!-- .fix_container --> 
 
         <header id="branding" title="Home">
-          	<p id="survey">% {{ COMPLETION_RATIO }}</p>
+          	{% if COMPLETION_RATIO > 50 %}
+          	<img id="survey" width='195' height='250' 
+                 title='Complete our Survey!' alt='Complete our Survey!'
+                 src="{% static 'images/SurveyIcon_195.png' %}">
+            {% endif %}
             <p id="branch">Running Branch: {{ ACTIVE_GIT_BRANCH }}</p>
             <a href="/">
-<!--                <img src="{% static 'images/sutrannu_Duck100.png' %}" width="100px" height="48px"/>-->
+<!--               <img src="{% static 'images/sutrannu_Duck100.png' %}" width="100px" height="48px"/>-->
                 <h1>Edu Duck</h1>
                 <p id="strapline">Quackers About Learning</p>
             </a>
             {% if user.is_authenticated %}
-                <p>{{ TIME_ZONE }}</p>
+                <p id="timezone">{{ TIME_ZONE }}</p>
             {% endif %}
             <div id="search">
             {% block search %}
