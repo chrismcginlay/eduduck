@@ -70,6 +70,14 @@
 
     <section id="zone2">
     {% if user.is_authenticated and history %}
+		{% if not lesson.get_next %}
+    	<h3>Nearly Finished! Well done</h3>
+       		<a href='https://docs.google.com/forms/d/1VrUfHZ3oVFByCeZf19CNl_OY0po9gTuMlKIT20rKY48/viewform'>
+            <img width='156' height='200' 
+                 title='Complete our Survey!' alt='Complete our Survey!'
+                 src="{% static 'images/SurveyIcon_156.png' %}">
+            </a>
+        {% endif %}
         <h3>Your Progress</h3>
         <ol class="abstract">{% for event in history %}
             <li>{{ event.1 }} lesson on {{ event.0|localtime }}</li>
