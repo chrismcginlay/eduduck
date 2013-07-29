@@ -12,7 +12,8 @@ class Course(models.Model):
         course_code         Course code for human consumption
         course_name         Human readable name of course
         course_abstract     Summary paragraph outlining course
-        course_organiser    Person responsible for this course
+        course_organiser    Foreign key: user organising course
+        course_instructor   Foreign key: user providing instruction 
         course_level        Level of difficulty of this course (eg SCQF)
         course_credits      Number of points awarded on completion
        
@@ -27,8 +28,10 @@ class Course(models.Model):
     course_abstract = models.TextField(help_text="summary of the course "
                                        "in a couple of paragraphs")
                                            
-    #TODO change this to ForeignKey(User)
-    course_organiser = models.CharField(max_length=100)
+    course_organiser = models.ForeignKey(User,
+                                         help_text="This user is organising the course")
+    course_instructor = models.ForeignKey(User,
+                                          help_text="This user is providing the instruction")
     course_level = models.CharField(max_length=10, blank=True, null=True,
                                     help_text="e.g. SCQF level")
     course_credits = models.IntegerField(blank=True, null=True,)
@@ -42,6 +45,7 @@ class Course(models.Model):
             assert self.course_code
             assert self.course_name
             assert self.course_organiser
+            assert self.course_instructor
             #NB course_level is a string (eg. 'Foundation', '2')
             assert self.course_level
             assert self.course_credits >= 0
