@@ -38,13 +38,13 @@
 {% endblock %}
 
 {% block contentheading %}
-    Learning Intentions for {{lesson.lesson_code}}: {{lesson.lesson_name}}
+    Learning Intentions for {{lesson.code}}: {{lesson.name}}
 {% endblock contentheading %}
 
 {% block content %}
     <article class="abstract">
         <h3>Learning Intention {{ learning_intention.id }}</h3>
-        <p>{{ learning_intention.li_text }}</p>
+        <p>{{ learning_intention.text }}</p>
     </article>
 
     <section id="zone1">
@@ -83,7 +83,7 @@
                     style="background-position: {{ sc.1 }}px 0px" />
 <input class="traffic" type="submit" name="cycle{{ sc.0.pk }}" value="Cycle"
 title="Cycle status R->A->G->R">
-                {{ sc.0.lid_text }}
+                {{ sc.0.text }}
             </li>
         {% empty %}
             <li>No success criteria for this learning intention</li>
@@ -127,7 +127,7 @@ title="Cycle status R->A->G->R">
                     style="background-position: {{ lo.1 }}px 0px" />
 <input class="traffic" type="submit" name="cycle{{ lo.0.pk }}" value="Cycle"
 title="Cycle status R->A->G->R">
-                {{ lo.0.lid_text }}
+                {{ lo.0.text }}
             </li>
         {% empty %}
             <li>Not a single learning outcome specified!</li>

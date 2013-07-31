@@ -12,13 +12,13 @@ class LearningIntention(models.Model):
     
     Attributes:
         lesson      ForeignKey to parent lesson.
-        li_text     Actual text content of the learning intention.
+        text        Actual text content of the learning intention.
         
     """
     
     lesson = models.ForeignKey(Lesson,
                                help_text="parent lesson for this intention")
-    li_text = models.CharField(max_length=200)
+    text = models.CharField(max_length=200)
 
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
@@ -27,7 +27,7 @@ class LearningIntention(models.Model):
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
             assert self.lesson
-            assert self.li_text
+            assert self.text
 
     def get_next(self):
         """Return the next learning intention in the lesson"""
@@ -48,11 +48,11 @@ class LearningIntention(models.Model):
         return False
 
     def __unicode__(self):
-        return self.li_text
+        return self.text
         
     def __str__(self):
         """Human readable for debug mostly"""
-        return "LI " + str(self.pk) + ": " + self.li_text
+        return "LI " + str(self.pk) + ": " + self.text
         
     @models.permalink
     def get_absolute_url(self):
@@ -75,8 +75,8 @@ class LearningIntentionDetail(models.Model):
     
     Attributes:
         learning_intention:     ForeignKey to parent
-        lid_text:               Actual text of the learning intention detail
-        lid_type:               Choice of either SC or LO
+        text:                   Actual text of the learning intention detail
+        type:                   Choice of either SC or LO
 
     """
     
@@ -89,8 +89,8 @@ class LearningIntentionDetail(models.Model):
     learning_intention = models.ForeignKey(LearningIntention,
                                            help_text="parent learning intent"
                                            "ion for this criterion")
-    lid_text = models.CharField(max_length=200)
-    lid_type = models.CharField(max_length=2, choices=LID_DETAIL_CHOICES)
+    text = models.CharField(max_length=200)
+    type = models.CharField(max_length=2, choices=LID_DETAIL_CHOICES)
 
     class Meta:
         verbose_name = "learning intention detail"
@@ -102,12 +102,12 @@ class LearningIntentionDetail(models.Model):
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
             assert self.learning_intention
-            assert self.lid_text
-            assert self.lid_type
+            assert self.text
+            assert self.type
 
     def __unicode__(self):
-        return self.lid_text
+        return self.text
         
     def __str__(self):
         """Human readable for debug mostly"""
-        return self.lid_type + ": " + str(self.pk) + ": " + self.lid_text
+        return self.type + ": " + str(self.pk) + ": " + self.text

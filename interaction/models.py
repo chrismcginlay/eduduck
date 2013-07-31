@@ -230,7 +230,7 @@ class UserCourse(models.Model):
         """Human readable summary"""
         
         return u"User " + self.user.username + \
-            u"'s data for course:" + self.course.course_name
+            u"'s data for course:" + self.course.name
             
     def __unicode__(self):
         """Summary for internal use"""
@@ -443,7 +443,7 @@ class UserLesson(models.Model):
         """Human readable summary"""
         
         return u"User " + self.user.username + \
-            u"'s data for lesson:" + self.lesson.lesson_name
+            u"'s data for lesson:" + self.lesson.name
             
     def __unicode__(self):
         """Summary for internal use"""

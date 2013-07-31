@@ -2,12 +2,12 @@
 {% load tz %}
 
 {% block contentheading %}
-LI: {{ ulid.learning_intention_detail.learning_intention.li_text }}
+LI: {{ ulid.learning_intention_detail.learning_intention.text }}
 {% endblock contentheading %}
 
 {% block zone1 %}
     <h3>Your history with this Success Criterion or Learning Outcome</h3>
-    <p>{{ ulid.learning_intention_detail.lid_text }}</p>
+    <p>{{ ulid.learning_intention_detail.text }}</p>
     <ol>
     {% for event in history %}
         <li>{{ event.1 }} on {{ event.0|localtime }}</li>

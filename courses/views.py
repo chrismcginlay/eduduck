@@ -1,3 +1,5 @@
+#courses/views.py
+
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import (render_to_response, get_object_or_404, 
@@ -12,8 +14,6 @@ from .models import Course, Lesson
 import logging
 logger = logging.getLogger(__name__)
 
-#TODO: csrf check https://docs.djangoproject.com/en/dev/ref/contrib/csrf/ 
-#^ esp. for AJAX, when time comes.
 
 def index(request):
     """Prepare variables for list of all courses"""

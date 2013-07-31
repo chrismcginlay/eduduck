@@ -1,16 +1,16 @@
 {% extends "attachment/base_attachment.html" %}
 
 {% block contentheading %}
-    Details for attachment: {{ att.att_code }} {{ att.att_name }}
+    Details for attachment: {{ att.code }} {{ att.name }}
 {% endblock contentheading %}
 
 {% block zone1 %}
-    <h3>Meta Data for Attachment {{ att.att_code }}</h3>
-    <br>{{ att.att_code }}
-    <br>{{ att.att_name }}
+    <h3>Meta Data for Attachment {{ att.code }}</h3>
+    <br>{{ att.code }}
+    <br>{{ att.name }}
     <br>{{ att.lesson }}
     <br>{{ att.course }}
-    <br>{{ att.att_desc }}
-    <br>{{ att.att_seq }}
+    <br>{{ att.desc }}
+    <br>{{ att.seq }}
     <br>{{ att.attachment }}
 {% endblock zone1 %}

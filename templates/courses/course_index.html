@@ -8,16 +8,16 @@
         <h3>Your Courses</h3>
 
         {% for course in course_list %}
-        <article id={{ course.course_code }}>
-        <h4>{{ course.course_code }} 
-        <a href='{{ course.get_absolute_url }}'>{{ course.course_name }}</a>
+        <article id={{ course.code }}>
+        <h4>{{ course.code }} 
+        <a href='{{ course.get_absolute_url }}'>{{ course.name }}</a>
         </h4> 
         <p>(With {{ course.lesson_set.count }} 
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 
-        Level {{ course.course_level }}, {{ course.course_credits }}
-        point{{course.course_credits|pluralize:",s"}}.
-        Contact {{ course.course_organiser }}</p>
-        <p class="abstract">{{ course.course_abstract }}</p>
+        Level {{ course.level }}, {{ course.credits }}
+        point{{course.credits|pluralize:",s"}}.
+        Contact {{ course.organiser }}</p>
+        <p class="abstract">{{ course.abstract }}</p>
         {% empty %}
         <h4>You aren't enrolled in any courses yet.</h4>
         {% endfor %}
@@ -31,16 +31,16 @@ wish to register for in future</p>
     <section id="zone1">
         <h3>Featured Courses</h3>
         {% for course in course_list %}
-        <article id={{ course.course_code }}>
-        <h4>{{ course.course_code }} 
-        <a href='{{ course.get_absolute_url }}'>{{ course.course_name }}</a>
+        <article id={{ course.code }}>
+        <h4>{{ course.code }} 
+        <a href='{{ course.get_absolute_url }}'>{{ course.name }}</a>
         </h4> 
         <p>(With {{ course.lesson_set.count }} 
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 
-        Level {{ course.course_level }}, {{ course.course_credits }}
-        point{{course.course_credits|pluralize:",s"}}.
-        Contact {{ course.course_organiser }}</p>
-        <p class="abstract">{{ course.course_abstract }}</p>
+        Level {{ course.level }}, {{ course.credits }}
+        point{{course.credits|pluralize:",s"}}.
+        Contact {{ course.organiser }}</p>
+        <p class="abstract">{{ course.abstract }}</p>
         {% endfor %}
     </section>
 {% endif %}

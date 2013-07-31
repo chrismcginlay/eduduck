@@ -7,41 +7,41 @@
 	| <a href=''>Course Home</a> |
     {% for lesson in course.lesson_set.all %}
 	<a href='{{ lesson.get_absolute_url }}'
-       title='{{ lesson.lesson_name}}'>{{ forloop.counter }} |</a>
+       title='{{ lesson.name}}'>{{ forloop.counter }} |</a>
     {% endfor %}	
 {% endblock pagenav %}
 	
 {% block contentheading %}
-{{ course.course_name }}
+{{ course.name }}
 {% endblock contentheading %}
 
 {% block content %}
 
     <section id="zone1">
-        <h3>Course {{ course.course_code }}: {{ course.course_name }}</h3>
+        <h3>Course {{ course.code }}: {{ course.name }}</h3>
         <h4>About the Course</h4>
         <article class="abstract">
-            <p>Hi, and welcome to {{ course.course_name }}, 
-            by {{ course.course_organiser }}</p>
+            <p>Hi, and welcome to {{ course.name }}, 
+            by {{ course.organiser }}</p>
 
             {% for v in course.video_set.all %}
             <iframe width="280" height="158" src='{{ v.url }}' 
                 frameborder="0" allowfullscreen></iframe>
             <br />
             {% endfor %}
-            {{ course.course_abstract }}
+            {{ course.abstract }}
 
             <ol>
               {% for a in attachments %}
               <li>
-		        {{ a.1.att_code}}&nbsp;[
+		        {{ a.1.code}}&nbsp;[
                 {% if a.0 %}
                 Downloaded
                 {% else %}
                 Not Downloaded
                 {% endif %}]&nbsp;   
-                <a href='{{ a.1.get_loggable_url }}'>{{ a.1.att_name }}</a>
-                : {{ a.1.attachment.size }} bytes, {{ a.1.att_desc }}
+                <a href='{{ a.1.get_loggable_url }}'>{{ a.1.name }}</a>
+                : {{ a.1.attachment.size }} bytes, {{ a.1.desc }}
                 <a href='{{ a.1.get_metadata_url }}'>(View MetaData here)</a>
               </li>
               {% endfor %}
@@ -52,12 +52,12 @@
               lesson{{course.lesson_set.count|pluralize:",s"}} in this course.</p>
         </article>
 
-        {% regroup course.lesson_set.all by lesson.lesson_code as lesson_list %}
+        {% regroup course.lesson_set.all by lesson.code as lesson_list %}
         {% for lesson in course.lesson_set.all %}
-        <h4>{{ lesson.lesson_code}}; {{ lesson.lesson_name }}</h4>
+        <h4>{{ lesson.code}}; {{ lesson.name }}</h4>
         <article class="abstract">
             <a href='{{ lesson.get_absolute_url }}'>
-                {{ lesson.lesson_name }}
+                {{ lesson.name }}
             </a>
             <p>{{ lesson.abstract}} 
                 <a href='{{ lesson.get_absolute_url }}'>
@@ -67,7 +67,7 @@
         {% empty %}
         <h4>No Lessons</h4>
         <article class="abstract">
-            <p>{{ course.course_oraganiser }} 
+            <p>{{ course.oraganiser }} 
             hasn't added any lessons yet!</p>
         </article>
         {% endfor %}
@@ -102,7 +102,7 @@
                     {% if ul.completed %}Completed
                     {% elif ul.visited %}Visited
                     {% endif %}
-                    </td><td>{{ lesson.lesson_name }}</td></tr>
+                    </td><td>{{ lesson.name }}</td></tr>
                 {% endfor %}
             </tbody>
             </table>

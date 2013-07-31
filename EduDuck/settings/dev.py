@@ -15,13 +15,20 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(SITE_ROOT, 'EduDuck.db'),
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'ed_dev',
+        'USER': 'ed_dev',                    
+        'PASSWORD': 'quickquackquock',                 
+        'HOST': '',
+        'PORT': '',
+#https://docs.djangoproject.com/en/dev/ref/databases/#creating-your-tables
+#After your tables have been created, you should remove this option as it adds a query that is only needed during table creation to each database connection.
+        'OPTIONS': {
+            'init_command': 'SET storage_engine=INNODB',
+        },
     },
+# following is for resyncing database on staging server (would be better to 
+# get python manage.py to read the staging.py config, as opposed to having this here.
 #    'mysql_sync': {
 #        'ENGINE': 'django.db.backends.mysql',
 #        'HOST': '',

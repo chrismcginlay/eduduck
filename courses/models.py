@@ -9,32 +9,34 @@ class Course(models.Model):
     """A self contained course of study.
     
     Attributes:
-        course_code         Course code for human consumption
-        course_name         Human readable name of course
-        course_abstract     Summary paragraph outlining course
-        course_organiser    Foreign key: user organising course
-        course_instructor   Foreign key: user providing instruction 
-        course_level        Level of difficulty of this course (eg SCQF)
-        course_credits      Number of points awarded on completion
+        code         Course code for human consumption
+        name         Human readable name of course
+        abstract     Summary paragraph outlining course
+        organiser    Foreign key: user organising course
+        instructor   Foreign key: user providing instruction 
+        level        Level of difficulty of this course (eg SCQF)
+        credits      Number of points awarded on completion
        
     """
 
-    course_code = models.CharField(max_length=10, 
+    code = models.CharField(max_length=10, 
                                    help_text="arbitrary course code for "
                                    "author's reference")
-    course_name = models.CharField(max_length=150, 
+    name = models.CharField(max_length=150, 
                                    help_text="human readable name of "
                                    "the course")
-    course_abstract = models.TextField(help_text="summary of the course "
-                                       "in a couple of paragraphs")
+    abstract = models.TextField(help_text="summary of the course "
+                                "in a couple of paragraphs")
                                            
-    course_organiser = models.ForeignKey(User,
-                                         help_text="This user is organising the course")
-    course_instructor = models.ForeignKey(User,
-                                          help_text="This user is providing the instruction")
-    course_level = models.CharField(max_length=10, blank=True, null=True,
-                                    help_text="e.g. SCQF level")
-    course_credits = models.IntegerField(blank=True, null=True,)
+    organiser = models.ForeignKey(User,
+                                  related_name="courses_organised_set",
+                                  help_text="This user is organising the course")
+    instructor = models.ForeignKey(User,
+                                   related_name="courses_instructed_set",
+                                   help_text="This user is providing the instruction")
+    level = models.CharField(max_length=10, blank=True, null=True,
+                             help_text="e.g. SCQF level")
+    credits = models.IntegerField(blank=True, null=True,)
 
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
@@ -42,16 +44,16 @@ class Course(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.course_code
-            assert self.course_name
-            assert self.course_organiser
-            assert self.course_instructor
+            assert self.code
+            assert self.name
+            assert self.organiser
+            assert self.instructor
             #NB course_level is a string (eg. 'Foundation', '2')
-            assert self.course_level
-            assert self.course_credits >= 0
+            assert self.level
+            assert self.credits >= 0
         
     def __unicode__(self):
-        return self.course_name
+        return self.name
     
     @models.permalink
     def get_absolute_url(self):
@@ -63,22 +65,22 @@ class Lesson(models.Model):
     """A digestible chunk of learning material within a course.
     
     Attributes:
-        lesson_code     Lesson code for human consumption
-        lesson_name     Human readable full lesson name
+        code     	Lesson code for human consumption
+        name     	Human readable full lesson name
         course          ForeignKey - course to which lesson belongs
         abstract        short text description of the lesson
         
     """
     
-    lesson_code = models.CharField(max_length=10, blank=True, null=True,
-                                   help_text="arbitrary lesson code for "
-                                   "author's reference")
-    lesson_name = models.CharField(max_length=200)
+    code = models.CharField(max_length=10, blank=True, null=True,
+                            help_text="arbitrary lesson code for "
+                            "author's reference")
+    name = models.CharField(max_length=200)
     course = models.ForeignKey(Course, 
                                help_text="course to which this "
                                "lesson belongs")
     abstract = models.TextField(help_text="summary of the lesson "
-                                       "in a couple of paragraphs")
+                                "in a couple of paragraphs")
 
     def get_next(self):
         """Return the next lesson in the course"""
@@ -104,12 +106,12 @@ class Lesson(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.lesson_code
-            assert self.lesson_name
+            assert self.code
+            assert self.name
             assert self.course
         
     def __unicode__(self):
-        return self.lesson_name
+        return self.name
     
     @models.permalink
     def get_absolute_url(self):
@@ -127,17 +129,16 @@ class Video(models.Model):
     to lessons. This allows for introductory videos to belong to whole course
         
     Attributes:
-        video_code  Video code for human consumption
-        video_name  Full human readable name of video
+        code  Video code for human consumption
+        name  Full human readable name of video
         url         url of the video resource
         lesson      ForeignKey - if the video is embedded in a lesson
-        course      ForeignKey - if the video is embedded directly in course
-    
+        course      ForeignKey - if the video is embedded directly in course    
     """
     
     #TODO: use YouTube / Vimeo APIs to pull video meta data such as title, tags    
-    video_code = models.CharField(max_length=10, blank=True, null=True)
-    video_name = models.CharField(max_length=200)
+    code = models.CharField(max_length=10, blank=True, null=True)
+    name = models.CharField(max_length=200)
     url = models.URLField()
     #TODO override __init__ to ensure precisely one of these is not null
     lesson = models.ForeignKey(Lesson, blank=True, null=True)

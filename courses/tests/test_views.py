@@ -18,43 +18,43 @@ from ..models import Course, Lesson, Video
 class CourseViewTests(TestCase):
     """Test the course views"""
     
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'organiser': 'Van Gogh',
+                   'level': 'basic',
+                   'credits': 30,
                    }
-    course2_data = {'course_code': 'FBR9',
-                   'course_name': 'Basic Knitting',
-                   'course_abstract': 'Casting on',
-                   'course_organiser': 'Lee Marvin',
-                   'course_level': '5',
-                   'course_credits': 20,
+    course2_data = {'code': 'FBR9',
+                   'name': 'Basic Knitting',
+                   'abstract': 'Casting on',
+                   'organiser': 'Lee Marvin',
+                   'level': '5',
+                   'credits': 20,
                    }  
-    course3_data = {'course_code': 'G3',
-                   'course_name': 'Nut Bagging',
-                   'course_abstract': 'Put the nuts in the bag',
-                   'course_organiser': 'Arthur H. Boffin',
-                   'course_level': '4',
-                   'course_credits': 42,
+    course3_data = {'code': 'G3',
+                   'name': 'Nut Bagging',
+                   'abstract': 'Put the nuts in the bag',
+                   'organiser': 'Arthur H. Boffin',
+                   'level': '4',
+                   'credits': 42,
                    }
-    lesson1_data = {'lesson_code': 'B1',
-                    'lesson_name': 'Introduction to Music',
+    lesson1_data = {'code': 'B1',
+                    'name': 'Introduction to Music',
                     'abstract': 'A summary of what we cover',
                    }
-    lesson2_data = {'lesson_code': 'B2',
-                    'lesson_name': 'Stuff',
+    lesson2_data = {'code': 'B2',
+                    'name': 'Stuff',
                     'abstract': 'Not a lot',
                    }
-    video1_data = {'video_code': 'MV2',
+    video1_data = {'code': 'MV2',
                    'url': 'http://youtu.be/LIM--jfnKeU',
-                   'video_name': 'Music introduction',
+                   'name': 'Music introduction',
                   }
-    attachment1_data = {'att_code': 'DOC1',
-                        'att_name': 'Reading List',
-                        'att_desc': 'Useful stuff you might need',
-                        'att_seq': 3,
+    attachment1_data = {'code': 'DOC1',
+                        'name': 'Reading List',
+                        'desc': 'Useful stuff you might need',
+                        'seq': 3,
                         'attachment': 'empty_attachment_test.txt',
                         }                   
     def setUp(self):
@@ -86,18 +86,18 @@ class CourseViewTests(TestCase):
 #        self.bio1.registered_courses.add(self.course1)
         
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
-                                                    li_text = "Practise")
+                                                    text = "Practise")
         self.learningintention1.save()
         self.learningintentiondetail1 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            lid_text = "Choose",
-            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
+            text = "Choose",
+            type = LearningIntentionDetail.SUCCESS_CRITERION
         )
         self.learningintentiondetail1.save()
         self.learningintentiondetail2 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
-            lid_text = "Calculate",
-            lid_type = LearningIntentionDetail.LEARNING_OUTCOME
+            text = "Calculate",
+            type = LearningIntentionDetail.LEARNING_OUTCOME
         )
         self.learningintentiondetail2.save()
         
