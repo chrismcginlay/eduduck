@@ -27,16 +27,12 @@ class CourseModelTests(TestCase):
     course1_data = {'code': 'EDU02',
                    'name': 'A Course of Leeches',
                    'abstract': 'Learn practical benefits of leeches',
-                   'organiser': 1,
-                   'instructor': 2,
                    'level': 'Basic',
                    'credits': 30,
                    }
     course2_data = {'code': 'FBR9',
                    'name': 'Basic Knitting',
                    'abstract': 'Casting on',
-                   'organiser': 1,
-                   'instructor': 1,
                    'level': '5',
                    'credits': 20,
                    }
@@ -56,19 +52,6 @@ class CourseModelTests(TestCase):
                         }
         
     def setUp(self):
-        self.course1 = Course(**self.course1_data)
-        self.course1.save()
-        self.course2 = Course(**self.course2_data)
-        self.course2.save()
-        self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
-        self.lesson1.save()
-        self.video1 = Video(course=self.course1, **self.video1_data)
-        self.video1.save()
-        self.video2 = Video(lesson=self.lesson1, **self.video1_data)
-        self.video2.save()
-        self.attachment1 = Attachment(course=self.course1, 
-                                      **self.attachment1_data)
-        self.attachment1.save()
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
@@ -85,6 +68,26 @@ class CourseModelTests(TestCase):
         self.bio2.signature_line = 'Tieing knots'
         self.bio2.user_tz = 'Atlantic/St_Helena'
         self.bio2.save()
+
+        self.course1 = Course(**self.course1_data)
+        self.course1.organiser = self.user1
+        self.course1.instructor = self.user2
+        self.course1.save()
+
+        self.course2 = Course(**self.course2_data)
+        self.course2.organiser = self.user1
+        self.course2.instructor = self.user2
+        self.course2.save()
+
+        self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
+        self.lesson1.save()
+        self.video1 = Video(course=self.course1, **self.video1_data)
+        self.video1.save()
+        self.video2 = Video(lesson=self.lesson1, **self.video1_data)
+        self.video2.save()
+        self.attachment1 = Attachment(course=self.course1, 
+                                      **self.attachment1_data)
+        self.attachment1.save()
        
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
                                                     text = "Practise")

@@ -21,21 +21,18 @@ class CourseViewTests(TestCase):
     course1_data = {'code': 'EDU02',
                    'name': 'A Course of Leeches',
                    'abstract': 'Learn practical benefits of leeches',
-                   'organiser': 'Van Gogh',
                    'level': 'basic',
                    'credits': 30,
                    }
     course2_data = {'code': 'FBR9',
                    'name': 'Basic Knitting',
                    'abstract': 'Casting on',
-                   'organiser': 'Lee Marvin',
                    'level': '5',
                    'credits': 20,
                    }  
     course3_data = {'code': 'G3',
                    'name': 'Nut Bagging',
                    'abstract': 'Put the nuts in the bag',
-                   'organiser': 'Arthur H. Boffin',
                    'level': '4',
                    'credits': 42,
                    }
@@ -58,12 +55,38 @@ class CourseViewTests(TestCase):
                         'attachment': 'empty_attachment_test.txt',
                         }                   
     def setUp(self):
+        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
+        self.user1.is_active = True
+        self.user1.save()
+        self.user2 = User.objects.create_user('hank', 'hank@example.com', 'hankdo')
+        self.user2.is_active = True
+        self.user2.save()
+        self.bio1 = Bio.objects.get(user_id=1)
+        self.bio1.accepted_terms = True
+        self.bio1.signature_line = 'Learning stuff'
+        self.bio1.user_tz = "Europe/Rome"
+        self.bio1.save()
+        self.bio2 = Bio.objects.get(user_id=2)
+        self.bio2.accepted_terms = True
+        self.bio2.signature_line = 'Tieing knots'
+        self.bio2.user_tz = 'Atlantic/St_Helena'
+        self.bio2.save()
+
         self.course1 = Course(**self.course1_data)
+        self.course1.organiser = self.user1
+        self.course1.instructor = self.user1
         self.course1.save()
+
         self.course2 = Course(**self.course2_data)
+        self.course2.organiser = self.user1
+        self.course2.instructor = self.user2
         self.course2.save()
+
         self.course3 = Course(**self.course3_data)
+        self.course3.organiser = self.user2
+        self.course3.instructor = self.user2
         self.course3.save()
+
         self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
         self.lesson1.save()
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
@@ -75,15 +98,6 @@ class CourseViewTests(TestCase):
         self.attachment1 = Attachment(course=self.course1, 
                                       **self.attachment1_data)
         self.attachment1.save()
-        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
-        self.user1.is_active = True
-        self.user1.save()
-        self.bio1 = Bio.objects.get(user_id=1)
-        self.bio1.accepted_terms = True
-        self.bio1.signature_line = 'Learning stuff'
-        self.bio1.user_tz = "Europe/Rome"
-        self.bio1.save()     
-#        self.bio1.registered_courses.add(self.course1)
         
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
                                                     text = "Practise")
