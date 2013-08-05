@@ -150,12 +150,12 @@ class Video(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.video_code
+            assert self.code
             assert self.url
-            assert self.video_name
+            assert self.name
 
     def __unicode__(self):
-        return self.video_name
+        return self.name
     
     def get_absolute_url(self):
         return self.url

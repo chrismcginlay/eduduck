@@ -61,16 +61,16 @@ class CourseViewTests(TestCase):
         self.user2 = User.objects.create_user('hank', 'hank@example.com', 'hankdo')
         self.user2.is_active = True
         self.user2.save()
-        self.bio1 = self.user1.bio
-        self.bio1.accepted_terms = True
-        self.bio1.signature_line = 'Learning stuff'
-        self.bio1.user_tz = "Europe/Rome"
-        self.bio1.save()
-        self.bio2 = self.user2.bio
-        self.bio2.accepted_terms = True
-        self.bio2.signature_line = 'Tieing knots'
-        self.bio2.user_tz = 'Atlantic/St_Helena'
-        self.bio2.save()
+#        self.bio1 = self.user1.bio
+#        self.bio1.accepted_terms = True
+#        self.bio1.signature_line = 'Learning stuff'
+#        self.bio1.user_tz = "Europe/Rome"
+#        self.bio1.save()s
+#        self.bio2 = self.user2.bio
+#        self.bio2.accepted_terms = True
+#        self.bio2.signature_line = 'Tieing knots'
+#        self.bio2.user_tz = 'Atlantic/St_Helena'
+#        self.bio2.save()
 
         self.course1 = Course(**self.course1_data)
         self.course1.organiser = self.user1
@@ -126,9 +126,14 @@ class CourseViewTests(TestCase):
     def test_course_single_auth(self):
         """Check course page loads for authorised user"""
 
+        c1 = self.course1.pk
+        url1 = '/courses/{0}/'.format(c1)
+        c2 = self.course2.pk
+        url2 = '/courses/{0}/'.format(c2)
+
         #First, when the user is not registered on course
         self.client.login(username='bertie', password='bertword')
-        response = self.client.get('/courses/1/')
+        response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         #check template variables present as approp
         self.assertIn('course', response.context, \
@@ -145,7 +150,7 @@ class CourseViewTests(TestCase):
         #Register the user and repeat
         uc = UserCourse(user=self.user1, course=self.course1)
         uc.save()
-        response = self.client.get('/courses/1/')
+        response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         #check template variables present and correct
         self.assertIn('course', response.context, \
@@ -158,23 +163,23 @@ class CourseViewTests(TestCase):
             "Missing template var: history")
         self.assertEqual('auth_reg', response.context['status'], \
             "Registration status should be auth_reg")
-        self.assertEqual(response.context['course'].pk, 1)
+        self.assertEqual(response.context['course'].pk, c1)
         
         #check 404 for non-existent course
-        response = self.client.get('/courses/5/')
+        response = self.client.get('/courses/x/')
         self.assertEqual(response.status_code, 404)
         
         #check redirect for trailing slash
-        response = self.client.get('/courses/5')
+        response = self.client.get('/courses/x')
         self.assertEqual(response.status_code, 301)
 
         #see that unregistered user get the register button
-        response = self.client.get('/courses/2/')
+        response = self.client.get(url2)
         self.assertIn('course_register', response.content)
         self.assertEqual(response.context['status'], 'auth_noreg')
         
         #see that registration button works (user registers)
-        response = self.client.post('/courses/2/', {'course_register':'Register'})
+        response = self.client.post(url2, {'course_register':'Register'})
         self.assertEqual(response.context['status'], 'auth_reg')
         self.assertEqual(response.context['course'], self.course2)
         self.assertIn('course_complete', response.content)
@@ -182,14 +187,14 @@ class CourseViewTests(TestCase):
         self.assertEqual(response.context['uc'].active, True)        
         
         #see that a registered user can withdraw
-        response = self.client.post('/courses/2/', {'course_withdraw':'Withdraw'})
+        response = self.client.post(url2, {'course_withdraw':'Withdraw'})
         self.assertEqual(response.context['status'], 'auth_reg')
         self.assertIn('course_reopen', response.content)
         self.assertEqual(response.context['uc'].active, False)        
         self.assertEqual(response.context['uc'].withdrawn, True)        
         
         #see that a withdrawn user can reopen
-        response = self.client.post('/courses/2/', {'course_reopen':'Re-open'})
+        response = self.client.post(url2, {'course_reopen':'Re-open'})
         self.assertEqual(response.context['status'], 'auth_reg')
         self.assertIn('course_complete', response.content)
         self.assertIn('course_withdraw', response.content)
@@ -197,7 +202,7 @@ class CourseViewTests(TestCase):
         self.assertEqual(response.context['uc'].withdrawn, False)                
         
         #see that a registered user can complete
-        response = self.client.post('/courses/2/', {'course_complete':'Complete'})
+        response = self.client.post(url2, {'course_complete':'Complete'})
         self.assertEqual(response.context['status'], 'auth_reg')
         self.assertIn('course_reopen', response.content)
         self.assertEqual(response.context['uc'].active, False)                
@@ -225,9 +230,14 @@ class CourseViewTests(TestCase):
 
     def test_course_lesson_unauth(self):
         """Test view of single lesson for unauthenticated user"""
+        
+        c1 = self.course1.pk
+        l1 = self.lesson1.pk
+        url1 = '/courses/{0}/lesson/{1}/'.format(c1,l1)
 
         self.client.logout()        
-        response = self.client.get('/courses/1/lesson/1/')
+        import pdb; pdb.set_trace()
+        response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
             for x in ['course', 'lesson', 'ul', 'attachments',
@@ -241,15 +251,18 @@ class CourseViewTests(TestCase):
         """Test view of single lesson for authenticated user"""
 
         self.client.login(username='bertie', password='bertword')        
+        c1 = self.course1.pk
+        l1 = self.lesson1.pk
+        url1 = '/courses/{0}/lesson/{1}/'.format(c1, l1)
+        c3 = self.course3.pk
+        l2 = self.lesson2.pk
+        url3 = '/courses/{0}/lesson/{1}/'.format(c3, l2)
 
         #First for user who is registered on course
         uc = UserCourse(course=self.course1, user=self.user1)
         uc.save()
-        c = self.course1.pk
-        url = '/courses/{0}/lesson/1/'.format(c)
-        response = self.client.get(url)
+        response = self.client.get(url1)
 
-        import pdb; pdb.set_trace()
         self.assertIn('attachments', response.context, \
             "Missing template var: attachments")
         self.assertEqual(response.status_code, 200)
@@ -262,17 +275,17 @@ class CourseViewTests(TestCase):
         self.assertNotEqual(response.context['ul'], None, 
                          "There should be a userlesson - authenticated")                 
         #see that lesson complete button works 
-        response = self.client.post('/courses/1/lesson/1/', {'lesson_complete':'Complete'})
+        response = self.client.post(url1, {'lesson_complete':'Complete'})
         self.assertIn('lesson_reopen', response.content)
         self.assertEqual(response.context['ul'].completed, True) 
                 
         #see that lesson reopen button works 
-        response = self.client.post('/courses/1/lesson/1/', {'lesson_reopen':'Re-open'})
+        response = self.client.post(url1, {'lesson_reopen':'Re-open'})
         self.assertIn('lesson_complete', response.content)
         self.assertEqual(response.context['ul'].completed, False)        
                          
         #then check context for user not registered on course
-        response = self.client.get('/courses/3/lesson/2/')
+        response = self.client.get(url3)
         self.assertEqual(response.status_code, 200)
         self.assertIn('attachments', response.context, \
             "Missing template var: attachments")
