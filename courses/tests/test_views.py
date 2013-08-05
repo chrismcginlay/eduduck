@@ -61,12 +61,12 @@ class CourseViewTests(TestCase):
         self.user2 = User.objects.create_user('hank', 'hank@example.com', 'hankdo')
         self.user2.is_active = True
         self.user2.save()
-        self.bio1 = Bio.objects.get(user_id=1)
+        self.bio1 = self.user1.bio
         self.bio1.accepted_terms = True
         self.bio1.signature_line = 'Learning stuff'
         self.bio1.user_tz = "Europe/Rome"
         self.bio1.save()
-        self.bio2 = Bio.objects.get(user_id=2)
+        self.bio2 = self.user2.bio
         self.bio2.accepted_terms = True
         self.bio2.signature_line = 'Tieing knots'
         self.bio2.user_tz = 'Atlantic/St_Helena'
@@ -105,13 +105,13 @@ class CourseViewTests(TestCase):
         self.learningintentiondetail1 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
             text = "Choose",
-            type = LearningIntentionDetail.SUCCESS_CRITERION
+            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
         )
         self.learningintentiondetail1.save()
         self.learningintentiondetail2 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
             text = "Calculate",
-            type = LearningIntentionDetail.LEARNING_OUTCOME
+            lid_type = LearningIntentionDetail.LEARNING_OUTCOME
         )
         self.learningintentiondetail2.save()
         
@@ -244,8 +244,12 @@ class CourseViewTests(TestCase):
 
         #First for user who is registered on course
         uc = UserCourse(course=self.course1, user=self.user1)
-        uc.save()        
-        response = self.client.get('/courses/1/lesson/1/')
+        uc.save()
+        c = self.course1.pk
+        url = '/courses/{0}/lesson/1/'.format(c)
+        response = self.client.get(url)
+
+        import pdb; pdb.set_trace()
         self.assertIn('attachments', response.context, \
             "Missing template var: attachments")
         self.assertEqual(response.status_code, 200)

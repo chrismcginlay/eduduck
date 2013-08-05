@@ -20,9 +20,10 @@ def show_survey_link(request):
     #Obtain total number of lessons in course
     lessons_total = 0
     if request.user.is_authenticated():
+        #TODO - rip this shit out for MVP0.2
         #All the lessons will be in the one and only course for MVP0.1
         lessons_total = len(Lesson.objects.all())
-        lessons_visited = len(get_list_or_404(UserLesson, user=request.user, 
+        lessons_visited = len(UserLesson.objects.filter(user=request.user, 
                                       visited=True))
     
     if (lessons_total==0):

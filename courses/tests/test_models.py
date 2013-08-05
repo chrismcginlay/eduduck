@@ -37,7 +37,7 @@ class CourseModelTests(TestCase):
                    'credits': 20,
                    }
     lesson1_data = {'code': 'B1',
-                    '_name': 'Introduction to Music',
+                    'name': 'Introduction to Music',
                     'abstract': 'A summary of what we cover',
                    }
     video1_data = {'code': 'MV2',
@@ -58,12 +58,12 @@ class CourseModelTests(TestCase):
         self.user2 = User.objects.create_user('hank', 'hank@example.com', 'hankdo')
         self.user2.is_active = True
         self.user2.save()
-        self.bio1 = Bio.objects.get(user_id=1)
+        self.bio1 = self.user1.bio
         self.bio1.accepted_terms = True
         self.bio1.signature_line = 'Learning stuff'
         self.bio1.user_tz = "Europe/Rome"
         self.bio1.save()
-        self.bio2 = Bio.objects.get(user_id=2)
+        self.bio2 = self.user2.bio
         self.bio2.accepted_terms = True
         self.bio2.signature_line = 'Tieing knots'
         self.bio2.user_tz = 'Atlantic/St_Helena'
@@ -95,13 +95,13 @@ class CourseModelTests(TestCase):
         self.learningintentiondetail1 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
             text = "Choose",
-            type = LearningIntentionDetail.SUCCESS_CRITERION
+            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
         )
         self.learningintentiondetail1.save()                                          
         self.learningintentiondetail2 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
             text = "Calculate",
-            type = LearningIntentionDetail.LEARNING_OUTCOME
+            lid_type = LearningIntentionDetail.LEARNING_OUTCOME
         )
         self.learningintentiondetail2.save()                                        
         
@@ -133,10 +133,4 @@ class CourseModelTests(TestCase):
         for key,val in self.attachment1_data.items():
             self.assertEqual(self.attachment1.__dict__[key], val)   
         self.assertEqual(self.attachment1.course, self.course1)
-
-    def test_bio_create(self):
-        """Bio instance attributes are created OK"""
-        self.assertEqual(self.bio1.user, self.user1)
-        self.assertEqual(self.bio1.lessons.all()[0], self.lesson1)
-        self.assertEqual(self.bio1.registered_courses, self.registered_courses)
           

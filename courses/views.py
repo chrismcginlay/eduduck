@@ -47,7 +47,7 @@ def single(request, course_id):
     2. Authenticated, but not registered on this course. Provide 'register'.
     3. Authenticated and registered. Provide full context variables.
     """
-  
+
     logger.info('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
 

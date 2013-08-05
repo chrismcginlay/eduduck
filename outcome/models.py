@@ -76,7 +76,7 @@ class LearningIntentionDetail(models.Model):
     Attributes:
         learning_intention:     ForeignKey to parent
         text:                   Actual text of the learning intention detail
-        type:                   Choice of either SC or LO
+        lid_type:               Choice of either SC or LO
 
     """
     
@@ -90,7 +90,7 @@ class LearningIntentionDetail(models.Model):
                                            help_text="parent learning intent"
                                            "ion for this criterion")
     text = models.CharField(max_length=200)
-    type = models.CharField(max_length=2, choices=LID_DETAIL_CHOICES)
+    lid_type = models.CharField(max_length=2, choices=LID_DETAIL_CHOICES)
 
     class Meta:
         verbose_name = "learning intention detail"
@@ -103,11 +103,11 @@ class LearningIntentionDetail(models.Model):
         if self.pk != None:
             assert self.learning_intention
             assert self.text
-            assert self.type
+            assert self.lid_type
 
     def __unicode__(self):
         return self.text
         
     def __str__(self):
         """Human readable for debug mostly"""
-        return self.type + ": " + str(self.pk) + ": " + self.text
+        return self.lid_type + ": " + str(self.pk) + ": " + self.text
