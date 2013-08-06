@@ -170,7 +170,7 @@ class CourseViewTests(TestCase):
         self.assertEqual(response.status_code, 404)
         
         #check redirect for trailing slash
-        response = self.client.get('/courses/x')
+        response = self.client.get('/courses/1')
         self.assertEqual(response.status_code, 301)
 
         #see that unregistered user get the register button
@@ -212,7 +212,9 @@ class CourseViewTests(TestCase):
     def test_course_single_unauth(self):        
         """Check individual course page loads for unauth user"""
 
-        response = self.client.get('/courses/1/')
+        c1 = self.course1.pk
+        url1 = '/courses/{0}/'.format(c1)
+        response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         #check template variables present and correct
         self.assertIn('course', response.context, \
@@ -225,7 +227,7 @@ class CourseViewTests(TestCase):
             "Missing template var: history")
         self.assertEqual('anon', response.context['status'], \
             "Registration status should be anon")
-        self.assertEqual(response.context['course'].pk, 1)   
+        self.assertEqual(response.context['course'].pk, c1)   
         
 
     def test_course_lesson_unauth(self):
@@ -236,14 +238,13 @@ class CourseViewTests(TestCase):
         url1 = '/courses/{0}/lesson/{1}/'.format(c1,l1)
 
         self.client.logout()        
-        import pdb; pdb.set_trace()
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
             for x in ['course', 'lesson', 'ul', 'attachments',
                       'history', 'learning_intentions'])
         self.assertEqual(response.context['history'], None, 
-                         "There should be no history - unauthenticate")
+                         "There should be no history - unauthenticated")
         self.assertEqual(response.context['ul'], None, 
                          "There should be no userlesson - unauthenticated")                 
 
