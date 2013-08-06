@@ -1,4 +1,4 @@
-#attachment/models.py
+#Attachment/models.py
 from django.db import models
 from django.core.urlresolvers import reverse
 from courses.models import Course, Lesson

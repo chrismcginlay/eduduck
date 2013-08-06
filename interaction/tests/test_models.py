@@ -29,36 +29,36 @@ class UserCourseModelTests(TestCase):
 #(in which case some of the assertions outwith loops over dicts 
 #become redundant, which would be a good thing)
 
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'organiser': 'Van Gogh',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
 
-    course2_data = {'course_code': 'EDU03',
-                   'course_name': 'The Coarse and The Hoarse',
-                   'course_abstract': 'High volume swearing leading to loss'
-                   'of voice',
-                   'course_organiser': 'Genghis Khan',
-                   'course_level': 'Advanced',
-                   'course_credits': 30,
+    course2_data = {'code': 'EDU03',
+                   'name': 'The Coarse and The Hoarse',
+                   'abstract': 'High volume swearing leading to loss of voice',
+                   'organiser': 'Genghis Khan',
+                   'level': 'Advanced',
+                   'credits': 30,
                    }
-    course3_data = {'course_code': 'EDU04',
-                   'course_name': 'Pie Eating',
-                   'course_abstract': 'Gut Busting leads to Butt Gusting',
-                   'course_organiser': 'Phat Bstard',
-                   'course_level': 'Horizontal',
-                   'course_credits': 30,
+    course3_data = {'code': 'EDU04',
+                   'name': 'Pie Eating',
+                   'abstract': 'Gut Busting leads to Butt Gusting',
+                   'organiser': 'Phat Bstard',
+                   'level': 'Horizontal',
+                   'credits': 30,
                    }
-    course4_data = {'course_code': 'EDU05',
-                   'course_name': 'Golk',
-                   'course_abstract': 'The Contact Sport',
-                   'course_organiser': 'Ahfu Dent',
-                   'course_level': 'Medium',
-                   'course_credits': 30,
-                   }                   
+    course4_data = {'code': 'EDU05',
+                   'name': 'Golk',
+                   'abstract': 'The Contact Sport',
+                   'organiser': 'Ahfu Dent',
+                   'level': 'Medium',
+                   'credits': 30,
+                   }
+                   
     def setUp(self):
         self.course1 = Course(**self.course1_data)
         self.course1.save()
@@ -238,21 +238,18 @@ class UserCourseModelTests(TestCase):
 class UserLessonModelTests(TestCase):
     """Test models user interaction with lessons"""
 
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
                    
-    course2_data = {'course_code': 'EDU03',
-               'course_name': 'The Coarse and The Hoarse',
-               'course_abstract': 'High volume swearing leading '
-               'to loss of voice',
-               'course_organiser': 'Genghis Khan',
-               'course_level': 'Advanced',
-               'course_credits': 30,
+    course2_data = {'code': 'EDU03',
+               'name': 'The Coarse and The Hoarse',
+               'abstract': 'High volume swearing leading to loss of voice',
+               'level': 'Advanced',
+               'credits': 30,
                }
 
     def setUp(self):
@@ -423,12 +420,11 @@ class UserLessonModelTests(TestCase):
 class UserLearningIntentionModelTests(TestCase):
     """Test model behaviour of user interaction with learning intentions"""
     
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
 
     def setUp(self):
@@ -534,12 +530,11 @@ class UserLearningIntentionDetailModelTests(TestCase):
     """Test model behaviour of user interaction with 
     learning intention details"""
 
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
 
     def setUp(self):
@@ -673,24 +668,24 @@ class UserLearningIntentionDetailModelTests(TestCase):
 class UserAttachmentModelTests(TestCase):
     """Test model behaviour of user interaction with attachments"""
     
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'organiser': 'Van Gogh',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
-    att1_data = {'att_code': 'DOC1',
-                    'att_name': 'Reading List',
-                    'att_desc': 'Useful stuff you might need',
-                    'att_seq': 3,
-                    'attachment': 'empty_attachment_test.txt',
+    att1_data = {'code': 'DOC1',
+                 'name': 'Reading List',
+                 'desc': 'Useful stuff you might need',
+                 'seq': 3,
+                 'attachment': 'empty_attachment_test.txt',
                 }
-    att2_data = {'att_code': 'DOC2',
-                        'att_name': 'Grammer Guide',
-                        'att_desc': 'How do you even spell grammer?',
-                        'att_seq': 2,
-                        'attachment': 'empty_attachment_test.txt',
+    att2_data = {'code': 'DOC2',
+                 'name': 'Grammer Guide',
+                 'desc': 'How do you even spell grammer?',
+                 'seq': 2,
+                 'attachment': 'empty_attachment_test.txt',
                 }
 
     def setUp(self):

@@ -22,35 +22,32 @@ class UserCourseViewTests(TestCase):
 #(in which case some of the assertions outwith loops over dicts 
 #become redundant, which would be a good thing)
 
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
 
-    course2_data = {'course_code': 'EDU03',
-                   'course_name': 'The Coarse and The Hoarse',
-                   'course_abstract': 'High volume swearing leading to loss of voice',
-                   'course_organiser': 'Genghis Khan',
-                   'course_level': 'Advanced',
-                   'course_credits': 30,
+    course2_data = {'code': 'EDU03',
+                   'name': 'The Coarse and The Hoarse',
+                   'abstract': 'High volume swearing leading to loss of voice',
+                   'level': 'Advanced',
+                   'credits': 30,
                    }
-    course3_data = {'course_code': 'EDU04',
-                   'course_name': 'Pie Eating',
-                   'course_abstract': 'Gut Busting leads to Butt Gusting',
-                   'course_organiser': 'Phat Bstard',
-                   'course_level': 'Horizontal',
-                   'course_credits': 30,
+    course3_data = {'code': 'EDU04',
+                   'name': 'Pie Eating',
+                   'abstract': 'Gut Busting leads to Butt Gusting',
+                   'level': 'Horizontal',
+                   'credits': 30,
                    }
-    course4_data = {'course_code': 'EDU05',
-                   'course_name': 'Golf',
-                   'course_abstract': 'The Contact Sport',
-                   'course_organiser': 'Ahfu Dent',
-                   'course_level': 'Medium',
-                   'course_credits': 30,
-                   }                   
+    course4_data = {'code': 'EDU05',
+                   'name': 'Golf',
+                   'abstract': 'The Contact Sport',
+                   'level': 'Medium',
+                   'credits': 30,
+                   }
+                   
     def setUp(self):
         self.course1 = Course(**self.course1_data)
         self.course1.save()
@@ -70,7 +67,30 @@ class UserCourseViewTests(TestCase):
         self.uc2.save()
         self.uc3 = UserCourse(course=self.course3, user=self.user1)
         self.uc3.save()
-        
+
+        self.user2 = User.objects.create_user('Van Gogh', 'van@goch.com', 'vancode')
+        self.user2.is_active = True
+        self.user2.save()
+        self.user3 = User.objects.create_user('Chuck Norris', 'chuck@tree.far', 'dontask')
+        self.user3.is_active = True
+        self.user3.save()
+        self.user4 = User.objects.create_user('James Maxwell', 'em@c', 'pdq')
+        self.user4.is_active = True
+        self.user4.save()
+
+        self.course1.organiser = self.user2
+        self.course1.instructor = self.user2
+        self.course2.organiser = self.user3
+        self.course2.instructor = self.user2
+        self.course3.organiser = self.user4
+        self.course3.instructor = self.user4
+        self.course4.organiser = self.user2
+        self.course4.instructor = self.user3
+        self.course1.save()
+        self.course2.save()
+        self.course3.save()
+        self.course4.save()
+
     def test_usercourse_single(self):
         """Test that the view contains the correct context vars"""
         
@@ -93,20 +113,18 @@ class UserCourseViewTests(TestCase):
 class UserLessonViewTests(TestCase):
     """Test userlesson views"""
     
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
 
-    course2_data = {'course_code': 'EDU03',
-                   'course_name': 'The Coarse and The Hoarse',
-                   'course_abstract': 'High volume swearing leading to loss of voice',
-                   'course_organiser': 'Genghis Khan',
-                   'course_level': 'Advanced',
-                   'course_credits': 30,
+    course2_data = {'code': 'EDU03',
+                   'name': 'The Coarse and The Hoarse',
+                   'abstract': 'High volume swearing leading to loss of voice',
+                   'level': 'Advanced',
+                   'credits': 30,
                    }
                    
     def setUp(self):
@@ -125,7 +143,24 @@ class UserLessonViewTests(TestCase):
         self.lesson1.save()
         self.ul = UserLesson(user=self.user1, lesson=self.lesson1)
         self.ul.save()
+
+        self.user2 = User.objects.create_user('Van Gogh', 'van@goch.com', 'vancode')
+        self.user2.is_active = True
+        self.user2.save()
+        self.user3 = User.objects.create_user('Chuck Norris', 'chuck@tree.far', 'dontask')
+        self.user3.is_active = True
+        self.user3.save()
+        self.user4 = User.objects.create_user('James Maxwell', 'em@c', 'pdq')
+        self.user4.is_active = True
+        self.user4.save()
         
+        self.course1.organiser = self.user2
+        self.course1.instructor = self.user2
+        self.course2.organiser = self.user3
+        self.course2.instructor = self.user2
+        self.course1.save()
+        self.course2.save()
+
     def test_userlesson_single(self):
         """View contains correct context variables"""
         
@@ -147,12 +182,11 @@ class UserLessonViewTests(TestCase):
 class UserLearningIntentionViewTests(TestCase):
     """Test views for learning intention interaction"""
 
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
 
     def setUp(self):
@@ -162,6 +196,18 @@ class UserLearningIntentionViewTests(TestCase):
         self.user1.save()    
         self.course1 = Course(**self.course1_data)
         self.course1.save() 
+
+        self.user2 = User.objects.create_user('Van Gogh', 'van@goch.com', 'vancode')
+        self.user2.is_active = True
+        self.user2.save()
+        self.user3 = User.objects.create_user('Chuck Norris', 'chuck@tree.far', 'dontask')
+        self.user3.is_active = True
+        self.user3.save()
+
+        self.course1.organiser = self.user2
+        self.course1.instructor = self.user2
+        self.course1.save()
+
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
         self.lesson = Lesson(lesson_code="L1", 
@@ -216,24 +262,23 @@ class UserLearningIntentionViewTests(TestCase):
 class UserAttachmentViewTests(TestCase):
     """Test view functions for user interaction with attachments"""
     
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
-    att1_data = {'att_code': 'DOC1',
-                    'att_name': 'Reading List',
-                    'att_desc': 'Useful stuff you might need',
-                    'att_seq': 3,
-                    'attachment': 'empty_attachment_test.txt',
+    att1_data = {'code': 'DOC1',
+                 'name': 'Reading List',
+                 'desc': 'Useful stuff you might need',
+                 'seq': 3,
+                 'attachment': 'empty_attachment_test.txt',
                 }
-    att2_data = {'att_code': 'DOC2',
-                        'att_name': 'Grammer Guide',
-                        'att_desc': 'How do you even spell grammer?',
-                        'att_seq': 2,
-                        'attachment': 'empty_attachment_test.txt',
+    att2_data = {'code': 'DOC2',
+                 'name': 'Grammer Guide',
+                 'desc': 'How do you even spell grammer?',
+                 'seq': 2,
+                 'attachment': 'empty_attachment_test.txt',
                 }
 
     def setUp(self):
