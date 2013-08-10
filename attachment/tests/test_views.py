@@ -9,40 +9,42 @@ from ..models import Attachment
 class AttachmentViewTests(TestCase):
     """Test views for user interaction with attachments"""
 
-    course1_data = {'course_code': 'EDU02',
-                   'course_name': 'A Course of Leeches',
-                   'course_abstract': 'Learn practical benefits of leeches',
-                   'course_organiser': 'Van Gogh',
-                   'course_level': 'Basic',
-                   'course_credits': 30,
+    course1_data = {'code': 'EDU02',
+                   'name': 'A Course of Leeches',
+                   'abstract': 'Learn practical benefits of leeches',
+                   'level': 'Basic',
+                   'credits': 30,
                    }
-    lesson1_data = {'lesson_code': 'B1',
-                    'lesson_name': 'Introduction to Music',
+    lesson1_data = {'code': 'B1',
+                    'name': 'Introduction to Music',
                     'abstract': 'A summary of what we cover',
                    }
-    att1_data = {'att_code': 'DOC1',
-                'att_name': 'Reading List',
-                'att_desc': 'Useful stuff you might need',
-                'att_seq': 3,
-                'attachment': 'empty_attachment_test.txt',
+    att1_data = {'code': 'DOC1',
+                 'name': 'Reading List',
+                 'desc': 'Useful stuff you might need',
+                 'seq': 3,
+                 'attachment': 'empty_attachment_test.txt',
                 }
-    att2_data = {'att_code': 'DOC2',
-                'att_name': 'Grammer Guide',
-                'att_desc': 'How do you even spell grammer?',
-                'att_seq': 2,
-                'attachment': 'empty_attachment_test.txt',
+    att2_data = {'code': 'DOC2',
+                 'name': 'Grammer Guide',
+                 'desc': 'How do you even spell grammer?',
+                 'seq': 2,
+                 'attachment': 'empty_attachment_test.txt',
                 }
 
     def setUp(self):
-        self.course1 = Course(**self.course1_data)
-        self.course1.save()
-        self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
-        self.lesson1.save()
-        
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
                                               'bertword')
         self.user1.is_active = True
         self.user1.save()
+
+        self.course1 = Course(**self.course1_data)
+        self.course1.organiser = self.user1
+        self.course1.instructor = self.user1
+        self.course1.save()
+        self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
+        self.lesson1.save()
+        
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
         
