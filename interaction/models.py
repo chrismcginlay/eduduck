@@ -510,7 +510,7 @@ class UserLearningIntention(models.Model):
         
         return u"User " + self.user.username + \
             u"'s data for LI:" + \
-            self.learning_intention.li_text[:10] + "..."
+            self.learning_intention.text[:10] + "..."
             
     def __unicode__(self):
         """Summary for internal use"""
@@ -679,11 +679,9 @@ class UserLearningIntentionDetail(models.Model):
     def __str__(self):
         """Human readable summary"""
         
-        return u"User " + self.user.username + \
-            u"'s data for LID:" + \
-            self.learning_intention_detail.lid_text[:10] + "..."
-            
-            
+        return u"User " + self.user.username + u"'s data for LID:" + \
+            self.learning_intention_detail.text[:10] + "..."
+
     def __unicode__(self):
         """Summary for internal use"""
         
