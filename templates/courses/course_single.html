@@ -22,7 +22,7 @@
         <h4>About the Course</h4>
         <article class="abstract">
             <p>Hi, and welcome to {{ course.name }}, 
-            by {{ course.organiser }}</p>
+            by {{ course.instructor }}</p>
 
             {% for v in course.video_set.all %}
             <iframe width="280" height="158" src='{{ v.url }}' 

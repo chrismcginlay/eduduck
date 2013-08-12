@@ -28,7 +28,6 @@ def index(request):
     template = 'courses/course_index.html'
     context_data = {'course_list':  course_list,
                     'course_count': course_count,
-                    'profile':      profile,
                    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
