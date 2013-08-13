@@ -1,299 +1,146 @@
 [
     {
-        "pk": 12,
-        "model": "contenttypes.contenttype",
+        "pk": 1,
+        "model": "auth.user",
         "fields": {
-            "model": "answer",
-            "name": "answer",
-            "app_label": "quiz"
-        }
-    },
-    {
-        "pk": 25,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "attachment",
-            "name": "attachment",
-            "app_label": "attachment"
-        }
-    },
-    {
-        "pk": 17,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "bio",
-            "name": "bio",
-            "app_label": "bio"
-        }
-    },
-    {
-        "pk": 4,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "contenttype",
-            "name": "content type",
-            "app_label": "contenttypes"
-        }
-    },
-    {
-        "pk": 8,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "course",
-            "name": "course",
-            "app_label": "courses"
+            "username": "chris",
+            "first_name": "Chris",
+            "last_name": "\u00dcberbiscuit",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2013-06-04T21:22:17.347Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$64IjYIHrovTK$pbjD4Ny9YTRA83zBRSr4l+W951EH+wdLK7xIaqak35w=",
+            "email": "ctmcginlay@gmail.com",
+            "date_joined": "2012-08-01T22:14:23Z"
         }
     },
     {
         "pk": 2,
-        "model": "contenttypes.contenttype",
+        "model": "auth.user",
         "fields": {
-            "model": "group",
-            "name": "group",
-            "app_label": "auth"
-        }
-    },
-    {
-        "pk": 22,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "learningintention",
-            "name": "learning intention",
-            "app_label": "outcome"
-        }
-    },
-    {
-        "pk": 23,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "learningintentiondetail",
-            "name": "learning intention detail",
-            "app_label": "outcome"
-        }
-    },
-    {
-        "pk": 9,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "lesson",
-            "name": "lesson",
-            "app_label": "courses"
-        }
-    },
-    {
-        "pk": 7,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "logentry",
-            "name": "log entry",
-            "app_label": "admin"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "permission",
-            "name": "permission",
-            "app_label": "auth"
-        }
-    },
-    {
-        "pk": 13,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "question",
-            "name": "question",
-            "app_label": "quiz"
-        }
-    },
-    {
-        "pk": 16,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "questionattempt",
-            "name": "question attempt",
-            "app_label": "quiz"
-        }
-    },
-    {
-        "pk": 14,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "quiz",
-            "name": "quiz",
-            "app_label": "quiz"
-        }
-    },
-    {
-        "pk": 15,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "quizattempt",
-            "name": "quiz attempt",
-            "app_label": "quiz"
-        }
-    },
-    {
-        "pk": 24,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "registrationprofile",
-            "name": "registration profile",
-            "app_label": "registration"
-        }
-    },
-    {
-        "pk": 5,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "session",
-            "name": "session",
-            "app_label": "sessions"
-        }
-    },
-    {
-        "pk": 6,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "site",
-            "name": "site",
-            "app_label": "sites"
+            "username": "Nomski",
+            "first_name": "Nom",
+            "last_name": "Ski",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-08-02T23:03:03Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$Y5rpDi6PIzzz$ev7k9AV26KyEWGEioXGEPDPXQ0Zow2mKm5hlne1LQPY=",
+            "email": "dude@nomski.com",
+            "date_joined": "2012-08-02T23:03:03Z"
         }
     },
     {
         "pk": 3,
-        "model": "contenttypes.contenttype",
+        "model": "auth.user",
         "fields": {
-            "model": "user",
-            "name": "user",
-            "app_label": "auth"
+            "username": "alanm",
+            "first_name": "Alan",
+            "last_name": "McGinlay",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2013-01-09T22:51:46Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$fVvVW0y7Hy2K$CagquMjgzvGS6RkUace1LrgdsygPdoRPMY6QEIHBIFg=",
+            "email": "mcginlay.alan@gmail.com",
+            "date_joined": "2012-09-11T22:43:11Z"
         }
     },
     {
-        "pk": 26,
-        "model": "contenttypes.contenttype",
+        "pk": 4,
+        "model": "auth.user",
         "fields": {
-            "model": "userattachment",
-            "name": "user attachment",
-            "app_label": "interaction"
+            "username": "bert",
+            "first_name": "Bertimus",
+            "last_name": "Bertski",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-08-08T22:38:33Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$Wme9DK7EHZwh$xo2RTKBAJMCo+pnCLlgJ9V++zDJoo/Y2Wq3+0v5/PvU=",
+            "email": "berti@bertski.example.com",
+            "date_joined": "2012-08-08T22:38:33Z"
         }
     },
     {
-        "pk": 18,
-        "model": "contenttypes.contenttype",
+        "pk": 5,
+        "model": "auth.user",
         "fields": {
-            "model": "usercourse",
-            "name": "user course",
-            "app_label": "interaction"
+            "username": "boris",
+            "first_name": "Boron",
+            "last_name": "Bolafoid",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-02-01T22:31:41Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$nFxkvrzp8ohN$+XhZFafwfy3boZt35hU3JZ1ozg0S05jary9i4jIaHJk=",
+            "email": "boris@example.com",
+            "date_joined": "2012-08-07T14:04:29Z"
         }
     },
     {
-        "pk": 20,
-        "model": "contenttypes.contenttype",
+        "pk": 6,
+        "model": "auth.user",
         "fields": {
-            "model": "userlearningintention",
-            "name": "user learning intention",
-            "app_label": "interaction"
+            "username": "gordon",
+            "first_name": "Gordon",
+            "last_name": "Basiljet",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2012-08-08T21:07:38Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$A69eaHX2hi5T$C5lmEqct67XGc61kWZoDUZ7DLOyA1NnGoHAnn7Fxs4w=",
+            "email": "basiljet@example.com",
+            "date_joined": "2012-08-08T21:07:38Z"
         }
     },
     {
-        "pk": 19,
-        "model": "contenttypes.contenttype",
+        "pk": 7,
+        "model": "auth.user",
         "fields": {
-            "model": "userlesson",
-            "name": "user lesson",
-            "app_label": "interaction"
+            "username": "gaffer",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2013-06-22T10:58:57.608Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$FRhnZy1saimW$7D58IlwqyaGegny/jd8C8E5i8aV2Glav/Y14waqZw1U=",
+            "email": "chris@unpossible.info",
+            "date_joined": "2013-06-22T10:58:57.608Z"
         }
     },
     {
-        "pk": 21,
-        "model": "contenttypes.contenttype",
+        "pk": 8,
+        "model": "auth.user",
         "fields": {
-            "model": "userlearningintentiondetail",
-            "name": "user's learning intention detail",
-            "app_label": "interaction"
-        }
-    },
-    {
-        "pk": 10,
-        "model": "contenttypes.contenttype",
-        "fields": {
-            "model": "video",
-            "name": "video",
-            "app_label": "courses"
-        }
-    },
-    {
-        "pk": "34ab331bf0b93a180d5c53f3144d605e",
-        "model": "sessions.session",
-        "fields": {
-            "expire_date": "2013-05-09T22:22:47.797Z",
-            "session_data": "MmE5OGVmNjk1M2YwNGNmNzEzZjU3YjhmNGI1ODY5YjY4ODA2NzU0MDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
-        }
-    },
-    {
-        "pk": "f11ee5080cecbb76e19d28856dcd4299",
-        "model": "sessions.session",
-        "fields": {
-            "expire_date": "2013-05-27T21:40:04.884Z",
-            "session_data": "Yjc4MjRmZjc1ODFkNWFkMjAyM2Q4Yzg3OTY1MGExNDA2ZWM5ZDJkYjqAAn1xAVUKdGVzdGNvb2tp\nZXECVQZ3b3JrZWRxA3Mu\n"
-        }
-    },
-    {
-        "pk": "6cf17ebc65003897e62048bb0b11f929",
-        "model": "sessions.session",
-        "fields": {
-            "expire_date": "2013-06-09T20:38:38.791Z",
-            "session_data": "YjI1OTQzZGVhZDdmYzM4MGViYzI3ZDk5ZWJmM2EzNmIzZGMwMWY1MDqAAn1xAS4=\n"
-        }
-    },
-    {
-        "pk": "86284e4dcafbdd9020672dbe181aec23",
-        "model": "sessions.session",
-        "fields": {
-            "expire_date": "2013-06-09T20:38:53.662Z",
-            "session_data": "Yzc2ZDkzM2MzOTAxNmM0ZDdlNTMyNWI0NjRkNmRmZTBhMDgyYmFiMDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
-        }
-    },
-    {
-        "pk": "d656106a3b31b4e41b4439f8b308db16",
-        "model": "sessions.session",
-        "fields": {
-            "expire_date": "2013-06-13T00:04:26.919Z",
-            "session_data": "MmE5OGVmNjk1M2YwNGNmNzEzZjU3YjhmNGI1ODY5YjY4ODA2NzU0MDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
-        }
-    },
-    {
-        "pk": "0bcf0d761799eb60050e1120d7844069",
-        "model": "sessions.session",
-        "fields": {
-            "expire_date": "2013-06-13T22:54:36.398Z",
-            "session_data": "Yzc2ZDkzM2MzOTAxNmM0ZDdlNTMyNWI0NjRkNmRmZTBhMDgyYmFiMDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
-        }
-    },
-    {
-        "pk": "213f66e6aedc69abcc80d963c195681d",
-        "model": "sessions.session",
-        "fields": {
-            "expire_date": "2013-06-14T09:34:08.483Z",
-            "session_data": "YjI1OTQzZGVhZDdmYzM4MGViYzI3ZDk5ZWJmM2EzNmIzZGMwMWY1MDqAAn1xAS4=\n"
-        }
-    },
-    {
-        "pk": "aca8b1ca957e8e5dc9ccc96f543b006a",
-        "model": "sessions.session",
-        "fields": {
-            "expire_date": "2013-06-18T21:22:17.510Z",
-            "session_data": "Yzc2ZDkzM2MzOTAxNmM0ZDdlNTMyNWI0NjRkNmRmZTBhMDgyYmFiMDqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQRLAXUu\n"
-        }
-    },
-    {
-        "pk": "23b7d8e14c240e635ae5138def093e2a",
-        "model": "sessions.session",
-        "fields": {
-            "expire_date": "2013-07-28T16:37:50.971Z",
-            "session_data": "Yjc4MjRmZjc1ODFkNWFkMjAyM2Q4Yzg3OTY1MGExNDA2ZWM5ZDJkYjqAAn1xAVUKdGVzdGNvb2tp\nZXECVQZ3b3JrZWRxA3Mu\n"
+            "username": "root",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2013-06-22T15:36:38.408Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$vcQmE5FEMNLO$PeZeR6VQ5tj+QQpIbb1jhQbQLfH89FRSDIbysEN/pOk=",
+            "email": "chris@unpossible.info",
+            "date_joined": "2013-06-22T15:36:38.408Z"
         }
     },
     {
@@ -308,24 +155,26 @@
         "pk": 1,
         "model": "courses.course",
         "fields": {
-            "course_name": "TEST Introduction to Blender",
-            "course_level": "1",
-            "course_organiser": "Chris McGinlay",
-            "course_credits": 15,
-            "course_abstract": "This demonstration course is not intended to be a usable learning resource. Its sole purpose is to assist in the development of our online learning platform. In the three lessons, we will introduce the Blender 3D package, review some Blender-made artwork, learn the basics of the user interface and of controlling the 3D viewport.",
-            "course_code": "GR10"
+            "name": "TEST Introduction to Blender",
+            "level": "1",
+            "organiser": 1,
+            "instructor": 1,
+            "credits": 15,
+            "abstract": "This demonstration course is not intended to be a usable learning resource. Its sole purpose is to assist in the development of our online learning platform. In the three lessons, we will introduce the Blender 3D package, review some Blender-made artwork, learn the basics of the user interface and of controlling the 3D viewport.",
+            "code": "GR10"
         }
     },
     {
         "pk": 2,
         "model": "courses.course",
         "fields": {
-            "course_name": "Capital Cities of Earth",
-            "course_level": "5",
-            "course_organiser": "Miss Piggy.",
-            "course_credits": 20,
-            "course_abstract": "Learn the capital cities of Earth. Fully equip yourself for your next visit (to Earth)",
-            "course_code": "B2"
+            "name": "Capital Cities of Earth",
+            "level": "5",
+            "organiser": 1,
+            "instructor": 1,
+            "credits": 20,
+            "abstract": "Learn the capital cities of Earth. Fully equip yourself for your next visit (to Earth)",
+            "code": "B2"
         }
     },
     {
@@ -334,8 +183,8 @@
         "fields": {
             "course": 1,
             "abstract": "Be clear what Blender is, where to download it, what it can achieve, sources of community support.\r\n",
-            "lesson_code": "BL1",
-            "lesson_name": "What is Blender for?"
+            "code": "BL1",
+            "name": "What is Blender for?"
         }
     },
     {
@@ -344,8 +193,8 @@
         "fields": {
             "course": 1,
             "abstract": "Develop basic familiarity with the main parts of the default user interface.",
-            "lesson_code": "BL2",
-            "lesson_name": "Basics of the User Interface"
+            "code": "BL2",
+            "name": "Basics of the User Interface"
         }
     },
     {
@@ -354,8 +203,8 @@
         "fields": {
             "course": 1,
             "abstract": "Learn how to use the number pad to control your point of view in the 3D viewport.\r\nWatch the video that accompanies this lesson, then load the faceviewcube.blend file into blender and try it out for yourself.",
-            "lesson_code": "BL3",
-            "lesson_name": "Orientation in 3D Space"
+            "code": "BL3",
+            "name": "Orientation in 3D Space"
         }
     },
     {
@@ -364,8 +213,8 @@
         "fields": {
             "course": 2,
             "abstract": "Features of the 7 continents of Earth.",
-            "lesson_code": "CC1",
-            "lesson_name": "The Continents"
+            "code": "CC1",
+            "name": "The Continents"
         }
     },
     {
@@ -374,8 +223,8 @@
         "fields": {
             "course": 1,
             "abstract": "Blank lesson to debug next/prev links",
-            "lesson_code": "BL4",
-            "lesson_name": "Some Other Blender Thing"
+            "code": "BL4",
+            "name": "Some Other Blender Thing"
         }
     },
     {
@@ -383,10 +232,10 @@
         "model": "courses.video",
         "fields": {
             "url": "http://youtube.com/embed/A6TgJXpPDr8?rel=0",
-            "video_code": "BL1",
+            "code": "BL1",
             "lesson": null,
             "course": 1,
-            "video_name": "TEST Blender Course Intro"
+            "name": "TEST Blender Course Intro"
         }
     },
     {
@@ -394,10 +243,10 @@
         "model": "courses.video",
         "fields": {
             "url": "http://youtube.com/embed/tXyh_lvvQBU?rel=0",
-            "video_code": "BL2",
+            "code": "BL2",
             "lesson": 1,
             "course": null,
-            "video_name": "What is Blender?"
+            "name": "What is Blender?"
         }
     },
     {
@@ -405,10 +254,10 @@
         "model": "courses.video",
         "fields": {
             "url": "http://youtube.com/embed/1uKZmb1O-os?rel=0",
-            "video_code": "BL4",
+            "code": "BL4",
             "lesson": 3,
             "course": null,
-            "video_name": "Controlling Orientation"
+            "name": "Controlling Orientation"
         }
     },
     {
@@ -416,525 +265,10 @@
         "model": "courses.video",
         "fields": {
             "url": "http://youtube.com/embed/LXrA6Fz0Nxc?rel=0",
-            "video_code": "BL3",
+            "code": "BL3",
             "lesson": 2,
             "course": null,
-            "video_name": "Basics of the User Interface"
-        }
-    },
-    {
-        "pk": 2,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "No, that's the United Kingdom",
-            "answer_text": "London"
-        }
-    },
-    {
-        "pk": 3,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Yep. That's the one.",
-            "answer_text": "Stockholm"
-        }
-    },
-    {
-        "pk": 4,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "France is not actually a city, it is a country.",
-            "answer_text": "France"
-        }
-    },
-    {
-        "pk": 5,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Nope.",
-            "answer_text": "www.blender.net"
-        }
-    },
-    {
-        "pk": 6,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "That's the one.",
-            "answer_text": "www.blender.org"
-        }
-    },
-    {
-        "pk": 7,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Nope.",
-            "answer_text": "www.blender.com"
-        }
-    },
-    {
-        "pk": 8,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Not really. You can truncate audio files, but that's about it.",
-            "answer_text": "audio"
-        }
-    },
-    {
-        "pk": 9,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Not designed for editing photos, although Blender can use photos as materials.",
-            "answer_text": "photos"
-        }
-    },
-    {
-        "pk": 10,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "No. Possible, but very cumbersome for this task.",
-            "answer_text": "diagrams"
-        }
-    },
-    {
-        "pk": 11,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Yes, this is a primary design goal of Blender.",
-            "answer_text": "3D modelling"
-        }
-    },
-    {
-        "pk": 12,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Yes. This is a primary design goal of Blender.",
-            "answer_text": "animated sequences"
-        }
-    },
-    {
-        "pk": 14,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "For a start try:\r\nblenderartists.org\r\nblenderunderground.com/forums\r\nblender.org/forum\r\nblenderguru.com\r\n",
-            "answer_text": "True"
-        }
-    },
-    {
-        "pk": 15,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Wrong. There are many forums, try:\r\n\r\nblenderartists.org\r\nblenderunderground.com/forums\r\nblender.org/forum\r\nblenderguru.com",
-            "answer_text": "False"
-        }
-    },
-    {
-        "pk": 16,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "No. It's free software.",
-            "answer_text": "proprietary"
-        }
-    },
-    {
-        "pk": 17,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "BSD offers certain commericialisable aspects, which Blender's licence does not permit.",
-            "answer_text": "BSD"
-        }
-    },
-    {
-        "pk": 18,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Yep, it's Free Software, under the GNU General Public Licence.",
-            "answer_text": "GNU GPL"
-        }
-    },
-    {
-        "pk": 19,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "That's in Scotland.",
-            "answer_text": "Edinburgh"
-        }
-    },
-    {
-        "pk": 20,
-        "model": "quiz.answer",
-        "fields": {
-            "explan_text": "Berlin is in Germany",
-            "answer_text": "Berlin"
-        }
-    },
-    {
-        "pk": 1,
-        "model": "quiz.question",
-        "fields": {
-            "correct_answer": 3,
-            "question_text": "Which of these cities is the capital of Sweden?",
-            "answers": [
-                2,
-                3,
-                4
-            ]
-        }
-    },
-    {
-        "pk": 2,
-        "model": "quiz.question",
-        "fields": {
-            "correct_answer": 6,
-            "question_text": "What is the address of the website from which you can download Blender?",
-            "answers": [
-                5,
-                6,
-                7
-            ]
-        }
-    },
-    {
-        "pk": 3,
-        "model": "quiz.question",
-        "fields": {
-            "correct_answer": 11,
-            "question_text": "Is blender good for creating or editing any of the following types of file (check all that apply - actually you can't at the moment)",
-            "answers": [
-                8,
-                9,
-                10,
-                11,
-                12
-            ]
-        }
-    },
-    {
-        "pk": 4,
-        "model": "quiz.question",
-        "fields": {
-            "correct_answer": 14,
-            "question_text": "There are many online forums where I can ask for help and discuss my Blender projects. (T/F)",
-            "answers": [
-                14,
-                15
-            ]
-        }
-    },
-    {
-        "pk": 5,
-        "model": "quiz.question",
-        "fields": {
-            "correct_answer": 18,
-            "question_text": "Name the licence used to distribute Blender?",
-            "answers": [
-                16,
-                17,
-                18
-            ]
-        }
-    },
-    {
-        "pk": 6,
-        "model": "quiz.question",
-        "fields": {
-            "correct_answer": 20,
-            "question_text": "Which of these cities is the capital of Germany?",
-            "answers": [
-                2,
-                3,
-                4,
-                19,
-                20
-            ]
-        }
-    },
-    {
-        "pk": 1,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 1,
-            "score": 0,
-            "question": 2,
-            "answer_given": 5
-        }
-    },
-    {
-        "pk": 2,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 1,
-            "score": 1,
-            "question": 3,
-            "answer_given": 11
-        }
-    },
-    {
-        "pk": 3,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 1,
-            "score": 1,
-            "question": 4,
-            "answer_given": 14
-        }
-    },
-    {
-        "pk": 4,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 1,
-            "score": 1,
-            "question": 5,
-            "answer_given": 18
-        }
-    },
-    {
-        "pk": 5,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 2,
-            "score": 0,
-            "question": 2,
-            "answer_given": 5
-        }
-    },
-    {
-        "pk": 6,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 2,
-            "score": 1,
-            "question": 3,
-            "answer_given": 11
-        }
-    },
-    {
-        "pk": 7,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 2,
-            "score": 1,
-            "question": 4,
-            "answer_given": 14
-        }
-    },
-    {
-        "pk": 8,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 2,
-            "score": 1,
-            "question": 5,
-            "answer_given": 18
-        }
-    },
-    {
-        "pk": 9,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 3,
-            "score": 0,
-            "question": 2,
-            "answer_given": 5
-        }
-    },
-    {
-        "pk": 10,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 3,
-            "score": 1,
-            "question": 3,
-            "answer_given": 11
-        }
-    },
-    {
-        "pk": 11,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 3,
-            "score": 1,
-            "question": 4,
-            "answer_given": 14
-        }
-    },
-    {
-        "pk": 12,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 3,
-            "score": 1,
-            "question": 5,
-            "answer_given": 18
-        }
-    },
-    {
-        "pk": 13,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 4,
-            "score": 0,
-            "question": 2,
-            "answer_given": 5
-        }
-    },
-    {
-        "pk": 14,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 4,
-            "score": 1,
-            "question": 3,
-            "answer_given": 11
-        }
-    },
-    {
-        "pk": 15,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 4,
-            "score": 1,
-            "question": 4,
-            "answer_given": 14
-        }
-    },
-    {
-        "pk": 16,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 4,
-            "score": 1,
-            "question": 5,
-            "answer_given": 18
-        }
-    },
-    {
-        "pk": 17,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 5,
-            "score": 0,
-            "question": 2,
-            "answer_given": 7
-        }
-    },
-    {
-        "pk": 18,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 5,
-            "score": 0,
-            "question": 3,
-            "answer_given": 8
-        }
-    },
-    {
-        "pk": 19,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 5,
-            "score": 0,
-            "question": 4,
-            "answer_given": 15
-        }
-    },
-    {
-        "pk": 20,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 5,
-            "score": 0,
-            "question": 5,
-            "answer_given": 16
-        }
-    },
-    {
-        "pk": 21,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 6,
-            "score": 0,
-            "question": 2,
-            "answer_given": 5
-        }
-    },
-    {
-        "pk": 23,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 6,
-            "score": 1,
-            "question": 4,
-            "answer_given": 14
-        }
-    },
-    {
-        "pk": 24,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 6,
-            "score": 1,
-            "question": 5,
-            "answer_given": 18
-        }
-    },
-    {
-        "pk": 25,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 7,
-            "score": 1,
-            "question": 2,
-            "answer_given": 6
-        }
-    },
-    {
-        "pk": 26,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 7,
-            "score": 1,
-            "question": 3,
-            "answer_given": 11
-        }
-    },
-    {
-        "pk": 27,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 7,
-            "score": 1,
-            "question": 4,
-            "answer_given": 14
-        }
-    },
-    {
-        "pk": 28,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 7,
-            "score": 1,
-            "question": 5,
-            "answer_given": 18
-        }
-    },
-    {
-        "pk": 29,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 8,
-            "score": 0,
-            "question": 1,
-            "answer_given": 2
-        }
-    },
-    {
-        "pk": 30,
-        "model": "quiz.questionattempt",
-        "fields": {
-            "quiz_attempt": 8,
-            "score": 0,
-            "question": 6,
-            "answer_given": 4
+            "name": "Basics of the User Interface"
         }
     },
     {
@@ -942,7 +276,7 @@
         "model": "outcome.learningintention",
         "fields": {
             "lesson": 1,
-            "li_text": "Recognise a range of tasks for which Blender could be used"
+            "text": "Recognise a range of tasks for which Blender could be used"
         }
     },
     {
@@ -950,14 +284,14 @@
         "model": "outcome.learningintention",
         "fields": {
             "lesson": 1,
-            "li_text": "Identify alternative tools and techniques"
+            "text": "Identify alternative tools and techniques"
         }
     },
     {
         "pk": 1,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "Spot 3D modelling tasks",
+            "text": "Spot 3D modelling tasks",
             "learning_intention": 1,
             "lid_type": "SC"
         }
@@ -966,7 +300,7 @@
         "pk": 2,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "Spot video sequencing tasks",
+            "text": "Spot video sequencing tasks",
             "learning_intention": 1,
             "lid_type": "SC"
         }
@@ -975,7 +309,7 @@
         "pk": 3,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "Spot object animation tasks",
+            "text": "Spot object animation tasks",
             "learning_intention": 1,
             "lid_type": "SC"
         }
@@ -984,7 +318,7 @@
         "pk": 4,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "Spot object physics tasks",
+            "text": "Spot object physics tasks",
             "learning_intention": 1,
             "lid_type": "SC"
         }
@@ -993,7 +327,7 @@
         "pk": 5,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "Consider where a manual method might have advantages",
+            "text": "Consider where a manual method might have advantages",
             "learning_intention": 2,
             "lid_type": "SC"
         }
@@ -1002,7 +336,7 @@
         "pk": 6,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "Try out alternative software and compare with Blender",
+            "text": "Try out alternative software and compare with Blender",
             "learning_intention": 2,
             "lid_type": "SC"
         }
@@ -1011,7 +345,7 @@
         "pk": 7,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "Talk about the advantages/disadvantages of Blender compared to other approaches",
+            "text": "Talk about the advantages/disadvantages of Blender compared to other approaches",
             "learning_intention": 2,
             "lid_type": "SC"
         }
@@ -1020,7 +354,7 @@
         "pk": 8,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "I can correctly identify or reject various tasks as being well suited to Blender",
+            "text": "I can correctly identify or reject various tasks as being well suited to Blender",
             "learning_intention": 1,
             "lid_type": "LO"
         }
@@ -1029,7 +363,7 @@
         "pk": 9,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "I can state whether the main techique of a task involves modelling, sequencing, animating or physics simulation",
+            "text": "I can state whether the main techique of a task involves modelling, sequencing, animating or physics simulation",
             "learning_intention": 1,
             "lid_type": "LO"
         }
@@ -1038,7 +372,7 @@
         "pk": 10,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "I can make a selection of appropriate tool or technique for a given job",
+            "text": "I can make a selection of appropriate tool or technique for a given job",
             "learning_intention": 2,
             "lid_type": "LO"
         }
@@ -1047,7 +381,7 @@
         "pk": 11,
         "model": "outcome.learningintentiondetail",
         "fields": {
-            "lid_text": "I can give reasons supporting selection of a particular tool or technique.",
+            "text": "I can give reasons supporting selection of a particular tool or technique.",
             "learning_intention": 2,
             "lid_type": "LO"
         }
@@ -1057,12 +391,12 @@
         "model": "attachment.attachment",
         "fields": {
             "course": 1,
-            "att_code": "BLAT1",
+            "code": "BLAT1",
             "attachment": "attachments/course_overview.odt",
-            "att_seq": null,
+            "seq": null,
             "lesson": null,
-            "att_name": "Blender Course Overview",
-            "att_desc": "Outline of the course content..."
+            "name": "Blender Course Overview",
+            "desc": "Outline of the course content..."
         }
     },
     {
@@ -1070,12 +404,12 @@
         "model": "attachment.attachment",
         "fields": {
             "course": 1,
-            "att_code": "BLAT2",
+            "code": "BLAT2",
             "attachment": "attachments/advice.txt",
-            "att_seq": null,
+            "seq": null,
             "lesson": null,
-            "att_name": "Course Advice",
-            "att_desc": "Just some advice, dude."
+            "name": "Course Advice",
+            "desc": "Just some advice, dude."
         }
     },
     {
@@ -1083,12 +417,12 @@
         "model": "attachment.attachment",
         "fields": {
             "course": 1,
-            "att_code": "BLAT3",
+            "code": "BLAT3",
             "attachment": "attachments/dummy_file.txt",
-            "att_seq": null,
+            "seq": null,
             "lesson": null,
-            "att_name": "Dummy File",
-            "att_desc": "Dummy attachment test"
+            "name": "Dummy File",
+            "desc": "Dummy attachment test"
         }
     },
     {
@@ -1096,12 +430,12 @@
         "model": "attachment.attachment",
         "fields": {
             "course": null,
-            "att_code": "BLAT4",
+            "code": "BLAT4",
             "attachment": "attachments/lesson_notes1.odt",
-            "att_seq": null,
+            "seq": null,
             "lesson": 1,
-            "att_name": "Lesson 1 Notes",
-            "att_desc": "The background reading for Lesson 1"
+            "name": "Lesson 1 Notes",
+            "desc": "The background reading for Lesson 1"
         }
     },
     {
@@ -1109,12 +443,12 @@
         "model": "attachment.attachment",
         "fields": {
             "course": null,
-            "att_code": "BLAT5",
+            "code": "BLAT5",
             "attachment": "attachments/lesson_notes2.odt",
-            "att_seq": null,
+            "seq": null,
             "lesson": 2,
-            "att_name": "Lesson 2 Notes",
-            "att_desc": "Study notes for lesson 2"
+            "name": "Lesson 2 Notes",
+            "desc": "Study notes for lesson 2"
         }
     },
     {
@@ -1122,12 +456,12 @@
         "model": "attachment.attachment",
         "fields": {
             "course": null,
-            "att_code": "BLAT6",
+            "code": "BLAT6",
             "attachment": "attachments/blender_ui.png",
-            "att_seq": null,
+            "seq": null,
             "lesson": 2,
-            "att_name": "Blender UI",
-            "att_desc": "The Blender User Interface"
+            "name": "Blender UI",
+            "desc": "The Blender User Interface"
         }
     },
     {
@@ -1135,12 +469,12 @@
         "model": "attachment.attachment",
         "fields": {
             "course": null,
-            "att_code": "BLAT7",
+            "code": "BLAT7",
             "attachment": "attachments/blender_ui_annotated.png",
-            "att_seq": null,
+            "seq": null,
             "lesson": 2,
-            "att_name": "Blender UI annotated",
-            "att_desc": "Annotated graphic of the UI"
+            "name": "Blender UI annotated",
+            "desc": "Annotated graphic of the UI"
         }
     },
     {
@@ -1148,12 +482,12 @@
         "model": "attachment.attachment",
         "fields": {
             "course": null,
-            "att_code": "BLAT8",
+            "code": "BLAT8",
             "attachment": "attachments/faceviewcube.blend",
-            "att_seq": null,
+            "seq": null,
             "lesson": 3,
-            "att_name": "FaceViewCube Blendfile",
-            "att_desc": "The blender file for this lesson."
+            "name": "FaceViewCube Blendfile",
+            "desc": "The blender file for this lesson."
         }
     },
     {
@@ -1161,12 +495,12 @@
         "model": "attachment.attachment",
         "fields": {
             "course": null,
-            "att_code": "BLAT9",
+            "code": "BLAT9",
             "attachment": "attachments/lesson_notes3.odt",
-            "att_seq": null,
+            "seq": null,
             "lesson": 3,
-            "att_name": "Lesson 3 Notes",
-            "att_desc": "Course notes for lesson 3"
+            "name": "Lesson 3 Notes",
+            "desc": "Course notes for lesson 3"
         }
     },
     {
@@ -1845,150 +1179,6 @@
         }
     },
     {
-        "pk": 1,
-        "model": "auth.user",
-        "fields": {
-            "username": "chris",
-            "first_name": "Chris",
-            "last_name": "\u00dcberbiscuit",
-            "is_active": true,
-            "is_superuser": true,
-            "is_staff": true,
-            "last_login": "2013-06-04T21:22:17.347Z",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$64IjYIHrovTK$pbjD4Ny9YTRA83zBRSr4l+W951EH+wdLK7xIaqak35w=",
-            "email": "ctmcginlay@gmail.com",
-            "date_joined": "2012-08-01T22:14:23Z"
-        }
-    },
-    {
-        "pk": 2,
-        "model": "auth.user",
-        "fields": {
-            "username": "Nomski",
-            "first_name": "Nom",
-            "last_name": "Ski",
-            "is_active": true,
-            "is_superuser": false,
-            "is_staff": false,
-            "last_login": "2012-08-02T23:03:03Z",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$Y5rpDi6PIzzz$ev7k9AV26KyEWGEioXGEPDPXQ0Zow2mKm5hlne1LQPY=",
-            "email": "dude@nomski.com",
-            "date_joined": "2012-08-02T23:03:03Z"
-        }
-    },
-    {
-        "pk": 3,
-        "model": "auth.user",
-        "fields": {
-            "username": "alanm",
-            "first_name": "Alan",
-            "last_name": "McGinlay",
-            "is_active": true,
-            "is_superuser": true,
-            "is_staff": true,
-            "last_login": "2013-01-09T22:51:46Z",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$fVvVW0y7Hy2K$CagquMjgzvGS6RkUace1LrgdsygPdoRPMY6QEIHBIFg=",
-            "email": "mcginlay.alan@gmail.com",
-            "date_joined": "2012-09-11T22:43:11Z"
-        }
-    },
-    {
-        "pk": 4,
-        "model": "auth.user",
-        "fields": {
-            "username": "bert",
-            "first_name": "Bertimus",
-            "last_name": "Bertski",
-            "is_active": true,
-            "is_superuser": false,
-            "is_staff": false,
-            "last_login": "2012-08-08T22:38:33Z",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$Wme9DK7EHZwh$xo2RTKBAJMCo+pnCLlgJ9V++zDJoo/Y2Wq3+0v5/PvU=",
-            "email": "berti@bertski.example.com",
-            "date_joined": "2012-08-08T22:38:33Z"
-        }
-    },
-    {
-        "pk": 5,
-        "model": "auth.user",
-        "fields": {
-            "username": "boris",
-            "first_name": "Boron",
-            "last_name": "Bolafoid",
-            "is_active": true,
-            "is_superuser": false,
-            "is_staff": false,
-            "last_login": "2013-02-01T22:31:41Z",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$nFxkvrzp8ohN$+XhZFafwfy3boZt35hU3JZ1ozg0S05jary9i4jIaHJk=",
-            "email": "boris@example.com",
-            "date_joined": "2012-08-07T14:04:29Z"
-        }
-    },
-    {
-        "pk": 6,
-        "model": "auth.user",
-        "fields": {
-            "username": "gordon",
-            "first_name": "Gordon",
-            "last_name": "Basiljet",
-            "is_active": true,
-            "is_superuser": false,
-            "is_staff": false,
-            "last_login": "2012-08-08T21:07:38Z",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$A69eaHX2hi5T$C5lmEqct67XGc61kWZoDUZ7DLOyA1NnGoHAnn7Fxs4w=",
-            "email": "basiljet@example.com",
-            "date_joined": "2012-08-08T21:07:38Z"
-        }
-    },
-    {
-        "pk": 7,
-        "model": "auth.user",
-        "fields": {
-            "username": "gaffer",
-            "first_name": "",
-            "last_name": "",
-            "is_active": true,
-            "is_superuser": true,
-            "is_staff": true,
-            "last_login": "2013-06-22T10:58:57.608Z",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$FRhnZy1saimW$7D58IlwqyaGegny/jd8C8E5i8aV2Glav/Y14waqZw1U=",
-            "email": "chris@unpossible.info",
-            "date_joined": "2013-06-22T10:58:57.608Z"
-        }
-    },
-    {
-        "pk": 8,
-        "model": "auth.user",
-        "fields": {
-            "username": "root",
-            "first_name": "",
-            "last_name": "",
-            "is_active": true,
-            "is_superuser": true,
-            "is_staff": true,
-            "last_login": "2013-06-22T15:36:38.408Z",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$vcQmE5FEMNLO$PeZeR6VQ5tj+QQpIbb1jhQbQLfH89FRSDIbysEN/pOk=",
-            "email": "chris@unpossible.info",
-            "date_joined": "2013-06-22T15:36:38.408Z"
-        }
-    },
-    {
         "pk": 2,
         "model": "admin.logentry",
         "fields": {
@@ -2012,108 +1202,6 @@
             "change_message": "",
             "user": 1,
             "content_type": 25
-        }
-    },
-    {
-        "pk": 1,
-        "model": "quiz.quiz",
-        "fields": {
-            "lesson": 4,
-            "create_date": "2012-08-19",
-            "questions": [
-                1,
-                6
-            ],
-            "quiz_title": "Capital Cities",
-            "author": 2
-        }
-    },
-    {
-        "pk": 2,
-        "model": "quiz.quiz",
-        "fields": {
-            "lesson": 1,
-            "create_date": "2012-08-12",
-            "questions": [
-                2,
-                3,
-                4,
-                5
-            ],
-            "quiz_title": "Basic Facts",
-            "author": 2
-        }
-    },
-    {
-        "pk": 1,
-        "model": "quiz.quizattempt",
-        "fields": {
-            "taken_dt": "2012-09-15T12:35:10.740Z",
-            "user": 1,
-            "quiz": 2
-        }
-    },
-    {
-        "pk": 2,
-        "model": "quiz.quizattempt",
-        "fields": {
-            "taken_dt": "2012-09-15T21:15:14.050Z",
-            "user": 1,
-            "quiz": 2
-        }
-    },
-    {
-        "pk": 3,
-        "model": "quiz.quizattempt",
-        "fields": {
-            "taken_dt": "2012-09-15T21:16:08.921Z",
-            "user": 1,
-            "quiz": 2
-        }
-    },
-    {
-        "pk": 4,
-        "model": "quiz.quizattempt",
-        "fields": {
-            "taken_dt": "2012-09-15T22:18:05.893Z",
-            "user": 1,
-            "quiz": 2
-        }
-    },
-    {
-        "pk": 5,
-        "model": "quiz.quizattempt",
-        "fields": {
-            "taken_dt": "2012-09-15T22:40:39.487Z",
-            "user": 1,
-            "quiz": 2
-        }
-    },
-    {
-        "pk": 6,
-        "model": "quiz.quizattempt",
-        "fields": {
-            "taken_dt": "2012-09-16T20:23:51.284Z",
-            "user": 1,
-            "quiz": 2
-        }
-    },
-    {
-        "pk": 7,
-        "model": "quiz.quizattempt",
-        "fields": {
-            "taken_dt": "2012-09-16T21:32:10.271Z",
-            "user": 1,
-            "quiz": 2
-        }
-    },
-    {
-        "pk": 8,
-        "model": "quiz.quizattempt",
-        "fields": {
-            "taken_dt": "2013-05-30T18:50:05.149Z",
-            "user": 1,
-            "quiz": 1
         }
     },
     {

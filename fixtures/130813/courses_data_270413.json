@@ -1,0 +1,122 @@
+[
+    {
+        "pk": 1,
+        "model": "courses.course",
+        "fields": {
+            "name": "TEST Introduction to Blender",
+            "level": "1",
+            "organiser": 1,
+	        "instructor": 1,
+            "credits": 15,
+            "abstract": "This demonstration course is not intended to be a usable learning resource. Its sole purpose is to assist in the development of our online learning platform. In the three lessons, we will introduce the Blender 3D package, review some Blender-made artwork, learn the basics of the user interface and of controlling the 3D viewport.",
+            "code": "GR10"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.course",
+        "fields": {
+            "name": "Capital Cities of Earth",
+            "level": "5",
+            "organiser": 1,
+	        "instructor": 1,
+            "credits": 20,
+            "abstract": "Learn the capital cities of Earth. Fully equip yourself for your next visit (to Earth)",
+            "code": "B2"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "courses.lesson",
+        "fields": {
+            "course": 1,
+            "abstract": "Be clear what Blender is, where to download it, what it can achieve, sources of community support.\r\n",
+            "code": "BL1",
+            "name": "What is Blender for?"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.lesson",
+        "fields": {
+            "course": 1,
+            "abstract": "Develop basic familiarity with the main parts of the default user interface.",
+            "code": "BL2",
+            "name": "Basics of the User Interface"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "courses.lesson",
+        "fields": {
+            "course": 1,
+            "abstract": "Learn how to use the number pad to control your point of view in the 3D viewport.\r\nWatch the video that accompanies this lesson, then load the faceviewcube.blend file into blender and try it out for yourself.",
+            "code": "BL3",
+            "name": "Orientation in 3D Space"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "courses.lesson",
+        "fields": {
+            "course": 2,
+            "abstract": "Features of the 7 continents of Earth.",
+            "code": "CC1",
+            "name": "The Continents"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "courses.lesson",
+        "fields": {
+            "course": 1,
+            "abstract": "Blank lesson to debug next/prev links",
+            "code": "BL4",
+            "name": "Some Other Blender Thing"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/A6TgJXpPDr8?rel=0",
+            "code": "BL1",
+            "lesson": null,
+            "course": 1,
+            "name": "TEST Blender Course Intro"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/tXyh_lvvQBU?rel=0",
+            "code": "BL2",
+            "lesson": 1,
+            "course": null,
+            "name": "What is Blender?"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/1uKZmb1O-os?rel=0",
+            "code": "BL4",
+            "lesson": 3,
+            "course": null,
+            "name": "Controlling Orientation"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/LXrA6Fz0Nxc?rel=0",
+            "code": "BL3",
+            "lesson": 2,
+            "course": null,
+            "name": "Basics of the User Interface"
+        }
+    }
+]
