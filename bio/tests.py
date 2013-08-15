@@ -59,6 +59,18 @@ class BioModelTests(TestCase):
             self.user1.bio.full_clean()
         self.user1.bio.user_tz = self.bio1_data['user_tz']
             
+    def test___unicode__(self):
+        self.fail("implement this test")
+
+    def test___str__(self):
+        self.fail("implement this test")
+
+    def test_get_absoulte_url(self):
+        self.fail("Implement this test")
+
+    def test_get_profile_url(self):
+        self.fail("Implement this test")
+
 
 class BioViewTests(TestCase):
     """Test behaviour of user 'bio' views"""
@@ -105,7 +117,13 @@ class BioViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context for x in ['bio', 'form'])   
         
-        #TODO test view redirects valid form.
+        self.fail("#TODO test view redirects valid form.")
+
+    def test_bio_public(self):
+        """Test response bio.public"""
+        
+        self.fail("Implement this test")
+        
 
 class BioFormTests(TestCase):
     """Test the operation of bio forms"""

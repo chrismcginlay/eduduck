@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.shortcuts import (render_to_response, get_object_or_404, 
     get_list_or_404)
     
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from .forms import BioEditForm
@@ -51,5 +52,30 @@ def edit(request):
         
     context_data = {    'bio': bio,
                         'form': form, }
+    context_instance = RequestContext(request)
+    return render_to_response(template, context_data, context_instance)
+
+def public(request, user_id):
+    """Display publicly visible bio data"""
+
+    logger.info('Bio id=' + str(user_id) + ' public profile view')
+    template = 'bio/bio_public.html'
+    user = get_object_or_404(User, pk=user_id)
+    
+    #pass only the required public user data, prevent extraction from context data
+    fullname = user.get_full_name()
+    email = user.email
+    motto = user.bio.signature_line
+    timezone = user.bio.user_tz
+    webpage = user.bio.webpage
+    description = user.bio.description
+    
+    context_data = { 'fullname': fullname,
+                     'email': email,
+                     'motto': motto,
+                     'timezone': timezone,
+                     'webpage': webpage,
+                     'description': description,
+                    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)

@@ -16,8 +16,10 @@
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 
         Level {{ course.level }}, {{ course.credits }}
         point{{course.credits|pluralize:",s"}}.
-        Contact organiser {{ course.organiser }}</p>
-        Contact instructor {{ course.instructor }}</p>
+        <p>Contact organiser <a href='{{ course.organiser.bio.get_profile_url }}'>
+            {{ course.organiser.get_full_name }}</a></p>
+        <p>Contact instructor <a href='{{ course.instructor.bio.get_profile_url }}'>
+            {{ course.instructor.get_full_name }}</a></p>
         <p class="abstract">{{ course.abstract }}</p>
         {% empty %}
         <h4>You aren't enrolled in any courses yet.</h4>
@@ -40,8 +42,8 @@ wish to register for in future</p>
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 
         Level {{ course.level }}, {{ course.credits }}
         point{{course.credits|pluralize:",s"}}.
-        Contact organiser {{ course.organiser }}</p>
-        Contact instructor {{ course.instructor }}</p>
+        <p>Contact organiser {{ course.organiser }}</p>
+        <p>Contact instructor {{ course.instructor }}</p>
         <p class="abstract">{{ course.abstract }}</p>
         {% endfor %}
     </section>

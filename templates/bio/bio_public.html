@@ -1,0 +1,23 @@
+{% extends "bio/base_bio.html" %}
+{% load url from future %}
+
+{% block contentheading %}
+    Bio: {{ user.get_full_name }}
+{% endblock contentheading %}
+
+{% block zone1 %}
+    <h3>Public Data for {{ fullname }}</h3>
+    <table>
+        <tr><td>Email</td><td><a href='mailto:{{ email }}'>{{ email }}</a></td></tr>
+        <tr><td>Motto</td><td>
+            {{ motto|capfirst }}
+        </td></tr>
+        <tr><td>Timezone</td><td>{{ timezone }}</td></tr>
+        <tr><td>Webpage</td>
+            <td><a href='
+            {% filter force_escape %}{{ webpage }}{% endfilter %}
+            '>{{ webpage }}</a></td>
+        </tr>
+        <tr><td>Description</td><td>{{ description }}</td></tr>
+    </table>
+{% endblock zone1 %}

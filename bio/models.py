@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -53,6 +54,12 @@ class Bio(models.Model):
         assert self.id
         return ('bio.views.bio', [str(self.id)])
         
+    def get_profile_url(self):
+        """Return url for publicly visible 'bio' or profile"""
+
+        assert self.id
+        return reverse('accounts.bio.public', args=[str(self.id)])
+
 #########################################
 #   Signals Area
 #########################################
