@@ -58,7 +58,7 @@ class Bio(models.Model):
         """Return url for publicly visible 'bio' or profile"""
 
         assert self.id
-        return reverse('accounts.bio.public', args=[str(self.id)])
+        return reverse('bio.views.public', args=[str(self.id)])
 
 #########################################
 #   Signals Area
