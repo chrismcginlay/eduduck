@@ -60,13 +60,24 @@ class BioModelTests(TestCase):
         self.user1.bio.user_tz = self.bio1_data['user_tz']
             
     def test___unicode__(self):
-        self.fail("implement this test")
+        s = self.user1.__unicode__()
+        target = self.user1.username
+        self.assertEqual(s, target, "Incorrect __unicode__ return")
 
     def test___str__(self):
-        self.fail("implement this test")
 
-    def test_get_absoulte_url(self):
-        self.fail("Implement this test")
+        s = self.user1.bio.__str__()
+        target = u"Bio: %s %s" %\
+            (self.user1.pk, self.user1.username)
+        self.assertEqual(s, target, "Incorrect __str__ return")
+
+    def test_get_absolute_url(self):
+        url = self.user1.get_absolute_url()
+        target = u"/users/%s/" % self.user1.username
+        self.assertEqual(url, target, "Incorrect get_absolute_url return")
+        
 
     def test_get_profile_url(self):
-        self.fail("Implement this test")
+        url = self.user1.bio.get_profile_url()
+        target = u"/accounts/bio/public/%s/" % self.user1.id
+        self.assertEqual(url, target, "Incorrect get_profile_url return")

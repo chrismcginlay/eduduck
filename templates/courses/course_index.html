@@ -16,9 +16,9 @@
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 
         Level {{ course.level }}, {{ course.credits }}
         point{{course.credits|pluralize:",s"}}.
-        <p>Contact organiser <a href='{{ course.organiser.bio.get_profile_url }}'>
+        <p>Course organiser <a href='{{ course.organiser.bio.get_profile_url }}'>
             {{ course.organiser.get_full_name }}</a></p>
-        <p>Contact instructor <a href='{{ course.instructor.bio.get_profile_url }}'>
+        <p>Course instructor <a href='{{ course.instructor.bio.get_profile_url }}'>
             {{ course.instructor.get_full_name }}</a></p>
         <p class="abstract">{{ course.abstract }}</p>
         {% empty %}

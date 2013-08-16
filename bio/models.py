@@ -47,13 +47,13 @@ class Bio(models.Model):
         
     def __str__(self):
         """For debug mostly"""
-        return "Bio:" + str(self.id) + " " + self.user.username
-        
+        return "Bio: " + str(self.id) + " " + self.user.username
+
     @models.permalink
     def get_absolute_url(self):
         assert self.id
-        return ('bio.views.bio', [str(self.id)])
-        
+        return reverse('bio.views.bio', args=[str(self.id)])
+
     def get_profile_url(self):
         """Return url for publicly visible 'bio' or profile"""
 

@@ -64,14 +64,12 @@ def public(request, user_id):
     
     #pass only the required public user data, prevent extraction from context data
     fullname = user.get_full_name()
-    email = user.email
     motto = user.bio.signature_line
     timezone = user.bio.user_tz
     webpage = user.bio.webpage
     description = user.bio.description
     
     context_data = { 'fullname': fullname,
-                     'email': email,
                      'motto': motto,
                      'timezone': timezone,
                      'webpage': webpage,

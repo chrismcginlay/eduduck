@@ -21,8 +21,11 @@
         <h3>Course {{ course.code }}: {{ course.name }}</h3>
         <h4>About the Course</h4>
         <article class="abstract">
-            <p>Hi, and welcome to {{ course.name }}, 
-            with {{ course.instructor.get_full_name }} (instructor)</p>
+            <p>Hi, and welcome to {{ course.name }}</p>
+            <p>Course organiser <a href='{{ course.organiser.bio.get_profile_url }}'>
+            {{ course.organiser.get_full_name }}</a></p>
+            <p>Course instructor <a href='{{ course.instructor.bio.get_profile_url }}'>
+            {{ course.instructor.get_full_name }}</a></p>
 
             {% for v in course.video_set.all %}
             <iframe width="280" height="158" src='{{ v.url }}' 

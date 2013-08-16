@@ -52,10 +52,47 @@ class BioViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context for x in ['bio', 'form'])   
         
-        self.fail("#TODO test view redirects valid form.")
+        #Test form with missing data
+        response = self.client.post("/accounts/bio/edit/", kwargs={
+                'accepted_terms': "True",
+                'signature_line': "Test",
+                'description': "Test description",
+                'webpage': "www.eduduck.com",
+                })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['form']['user_tz'].errors, 
+                         [u'This field is required.'])
+
+        #Test form with no data
+        response = self.client.post("/accounts/bio/edit/", kwargs={})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['form']['user_tz'].errors, 
+                         [u'This field is required.'])
+
+        #Test form with complete data
+        response = self.client.post("/accounts/bio/edit/", kwargs={
+                'user_tz': "US/Pacific",
+                'accepted_terms': "True",
+                'signature_line': "Test",
+                'description': "Test description",
+                'webpage': "www.eduduck.com",
+                })
+        self.assertEqual(response.status_code, 200)
+
+        #Test form with junk data
+        response = self.client.post("/accounts/bio/edit/", kwargs={
+                'blast': "pants",
+                })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['form']['user_tz'].errors, 
+                         [u'This field is required.'])
 
     def test_bio_public(self):
         """Test response bio.public"""
         
-        self.fail("Implement this test")
-        
+        url = "/accounts/bio/public/{0}/".format(self.user1.bio.id)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(x in response.context for x in 
+                        ['timezone', 'webpage', 'description'])
+
