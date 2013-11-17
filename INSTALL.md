@@ -32,18 +32,18 @@ Revised installation instructions for development and testing.
   When wishing to work on the environment 'towel' in future sessions just issue:
 
   $ workon towel
-  
+
 4. Within the virtualenvironment, check the Python version which should be 2.7 at present, not 3.x
 
   $ python --version
   
-5. Install django version 1.4. WE ARE NOT READY FOR DJANGO 1.5 YET
+5. Install django version 1.4. Don't install with sudo as that would ignore the virtualenv
 
-  $ sudo pip install django==1.4
+  $ pip install django==1.4
   
-6. Install required packages
+6. Install required packages - refer to the requirements files
 
-  $ sudo pip install django-registration pytz django-haystack pyelasticsearch mysql-connector-python
+  $ pip install django-registration pytz django-haystack pyelasticsearch mysql-connector-python mysql-python
 
 
 7. Next, time to get the Eduduck code and pop it onto your homedir someplace. I keep mine under a directory titled coding, but, hey, fry your own bacon dude.

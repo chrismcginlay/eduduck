@@ -55,6 +55,7 @@ def edit(request):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 
+
 def public(request, user_id):
     """Display publicly visible bio data"""
 

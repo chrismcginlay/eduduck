@@ -12,7 +12,7 @@ urlpatterns = patterns('django.views.generic.simple',
 )
 
 urlpatterns += patterns('',
-    url(r'^search/', include('haystack.urls')),
+#    url(r'^search/', include('haystack.urls')),
     url(r'^support/', include('support.urls')),
     url(r'^lesson/(?P<lesson_id>\d+)/lint/', include('outcome.urls')),
     url(r'^interaction/', include('interaction.urls')),

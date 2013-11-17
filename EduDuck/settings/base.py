@@ -130,8 +130,10 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 
+    #Temporarily disabling haystack - 'six' package/bundled conflict?
     #django-haystack via elasticsearch backend
-    'haystack',
+    #'haystack',
+
     #following provides account activation via email via django-registration
     'registration',
 
