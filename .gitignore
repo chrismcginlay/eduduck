@@ -1,5 +1,8 @@
+*.txt~
 *.py~
+*.py#
 *.pyc
+*.html~
 .spyderproject
 .spyderworkspace
 .coverage
