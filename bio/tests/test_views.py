@@ -37,7 +37,10 @@ class BioViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context for x in ['bio', 'usercourses'])
         self.assertIn('Timezone', response.content, "Timezone not rendered")
-        
+
+        #check for existence of password change link
+        self.assertIn('<a href="/accounts/password/change/">Change Password</a>', response.content, "Password change link missing")
+
     def test_bio_edit(self):
         """Test response bio.views.edit"""
         
@@ -51,6 +54,9 @@ class BioViewTests(TestCase):
         response = self.client.get('/accounts/bio/edit/')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context for x in ['bio', 'form'])   
+
+        #check for existence of password change link
+        self.assertIn('<a href="/accounts/password/change/">Change Password</a>', response.content, "Password change link missing")
         
         #Test form with missing data
         response = self.client.post("/accounts/bio/edit/", kwargs={
