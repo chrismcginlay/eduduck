@@ -27,7 +27,7 @@ class BioViewTests(TestCase):
         
         #Not logged in, redirect.
         response = self.client.get('/accounts/bio/')
-        #self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/accounts/login/?next=/accounts/bio/')
 
         #log in and check bio is available      
