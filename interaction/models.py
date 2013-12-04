@@ -238,13 +238,12 @@ class UserCourse(models.Model):
         return u"UC:%s, User:%s, Course:%s" % \
             (self.pk, self.user.pk, self.course.pk)
     
-    @models.permalink
     def get_absolute_url(self):
         assert self.id
         assert self.course
         assert self.user
         
-        return ('interaction.views.usercourse_single', (), {
+        return reverse(u"interaction.views.usercourse_single", kwargs= {
             'user_id': self.user.pk,
             'course_id': self.course.pk })
                 
@@ -451,13 +450,12 @@ class UserLesson(models.Model):
         return u"UL:%s, User:%s, Lesson:%s" % \
             (self.pk, self.user.pk, self.lesson.pk)
     
-    @models.permalink
     def get_absolute_url(self):
         assert self.id
         assert self.lesson
         assert self.user
         
-        return ('interaction.views.userlesson_single', (), {
+        return reverse(u"interaction.views.userlesson_single", kwargs = {
             'user_id': self.user.pk,
             'lesson_id': self.lesson.pk })
 

@@ -1,7 +1,8 @@
+from django.core.urlresolvers import reverse
 from django.db import models
+
 from courses.models import Lesson
 
-import pdb
 
 class LearningIntention(models.Model):
     """Link Learning Intentions with individual lessons.
@@ -54,11 +55,10 @@ class LearningIntention(models.Model):
         """Human readable for debug mostly"""
         return "LI " + str(self.pk) + ": " + self.text
         
-    @models.permalink
     def get_absolute_url(self):
         assert self.lesson
         assert self.id
-        return ('outcome.views.learning_intention', (), {
+        return reverse(u"outcome.views.learning_intention", kwargs = {
                 'lesson_id': self.lesson.id,
                 'learning_intention_id': self.id })
               

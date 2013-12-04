@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from courses.models import Course, Lesson
 from ..models import LearningIntention, LearningIntentionDetail
 
-import pdb 
 
 class OutcomeModelTests(TestCase):
     """Test the models of the outcome app"""
@@ -53,6 +52,14 @@ class OutcomeModelTests(TestCase):
         self.assertEqual(self.learningintention1.lesson, self.lesson1)
         self.assertEqual(self.learningintention1.text, "Practise")
     
+    def test_learningIntention_get_absolute_url(self):
+        """Test that LI return correct absolute url"""
+
+        url = self.learningintention1.get_absolute_url()
+        target = u"/lesson/{0}/lint/{1}/".format(
+            self.lesson1.pk, self.learningintention1.pk)
+        self.assertEqual(target, url, "course URL error")
+
     def test_successCriterion_create(self):
         """SuccessCriterion instance attributes are created OK"""
         self.assertEqual(self.lid1.learning_intention, self.learningintention1)

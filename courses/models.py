@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.http import Http404
 from django.contrib.auth.models import User
@@ -55,10 +56,9 @@ class Course(models.Model):
     def __unicode__(self):
         return self.name
     
-    @models.permalink
     def get_absolute_url(self):
         assert self.id >=1
-        return ('courses.views.single', [str(self.id)])
+        return reverse(u"courses.views.single", kwargs= {'course_id': self.id})
         
         
 class Lesson(models.Model):
@@ -113,11 +113,10 @@ class Lesson(models.Model):
     def __unicode__(self):
         return self.name
     
-    @models.permalink
     def get_absolute_url(self):
         assert self.course
         assert self.id
-        return ('courses.views.lesson', (), {
+        return reverse(u"courses.views.lesson", kwargs = { 
                 'course_id': self.course.id,
                 'lesson_id': self.id })
         

@@ -49,16 +49,15 @@ class Bio(models.Model):
         """For debug mostly"""
         return "Bio: " + str(self.id) + " " + self.user.username
 
-    @models.permalink
     def get_absolute_url(self):
         assert self.id
-        return reverse('bio.views.bio', args=[str(self.id)])
+        return reverse(u"bio.views.bio", kwargs={str(self.id)})
 
     def get_profile_url(self):
         """Return url for publicly visible 'bio' or profile"""
 
         assert self.id
-        return reverse('bio.views.public', args=[str(self.id)])
+        return reverse(u"bio.views.public", kwargs=[str(self.id)])
 
 #########################################
 #   Signals Area
