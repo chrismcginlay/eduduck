@@ -15,7 +15,6 @@ from attachment.models import Attachment
 
 from ..models import Course, Lesson, Video
 
-import pdb
 
 class CourseModelTests(TestCase):
     """Test the models used to represent courses and constituent lessons etc"""

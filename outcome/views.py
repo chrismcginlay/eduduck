@@ -14,7 +14,6 @@ from .models import LearningIntention, LearningIntentionDetail
 import logging
 logger = logging.getLogger(__name__)
 
-import pdb
 
 def learning_intention(request, lesson_id, learning_intention_id):
     """Prepare variables for learning intention template"""

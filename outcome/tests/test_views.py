@@ -3,7 +3,6 @@ from courses.models import Course, Lesson
 from bio.models import User, Bio
 from interaction.models import UserCourse
 from ..models import LearningIntention, LearningIntentionDetail
-import pdb
 
 class OutcomeViewTests(TestCase):
     """Test the outcome specific views"""

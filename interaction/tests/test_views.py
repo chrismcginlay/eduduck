@@ -217,7 +217,7 @@ class UserLearningIntentionViewTests(TestCase):
     def test_userlearningintention_progress_bar(self):
         View returns correct data for AJAX call
 
-        pdb.set_trace()
+        import pdb; pdb.set_trace()
         #Not logged in
         response = self.client.get('/interaction/learningintentiondetail'\
                                     '/1/progress/')
@@ -288,4 +288,3 @@ class UserAttachmentViewTests(TestCase):
         response = self.client.get(url1)
         u_att1 = UserAttachment.objects.get(pk=1)
         self.assertEqual(len(u_att1.hist2list()),2)
-

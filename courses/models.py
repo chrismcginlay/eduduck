@@ -4,7 +4,6 @@ from django.http import Http404
 from django.contrib.auth.models import User
 from bio.models import Bio
 
-import pdb
 
 class Course(models.Model):
     """A self contained course of study.
