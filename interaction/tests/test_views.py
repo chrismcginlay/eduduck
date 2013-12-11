@@ -270,7 +270,6 @@ class UserAttachmentViewTests(TestCase):
 
     def test_attachment_download(self):
         #Not logged in, redirect, dont record
-
         a1 = self.att1.id
         a2 = self.att2.id
         url1 = "/interaction/attachment/{0}/download/".format(a1)
@@ -283,8 +282,10 @@ class UserAttachmentViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 302)      
-        u_att1 = UserAttachment.objects.get(pk=1)
+        u_att1 = UserAttachment.objects.get(user=self.user1.id,
+                                            attachment=self.att1.id)
         self.assertEqual(len(u_att1.hist2list()),1)
         response = self.client.get(url1)
-        u_att1 = UserAttachment.objects.get(pk=1)
+        u_att1 = UserAttachment.objects.get(user=self.user1.id,
+                                            attachment=self.att1.id)
         self.assertEqual(len(u_att1.hist2list()),2)

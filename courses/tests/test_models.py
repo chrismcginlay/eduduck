@@ -119,7 +119,6 @@ class CourseModelTests(TestCase):
     def test_lesson_get_absolute_url(self):
         """Lesson returns correct get_absolute_url"""
 
-        import pdb; pdb.set_trace()
         url = self.lesson1.get_absolute_url()
         target = u"/courses/{0}/lesson/{1}/".format(self.lesson1.course.pk,self.lesson1.pk)
         self.assertEqual(target, url, "lesson URL error")

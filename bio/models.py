@@ -51,13 +51,13 @@ class Bio(models.Model):
 
     def get_absolute_url(self):
         assert self.id
-        return reverse(u"bio.views.bio", kwargs={str(self.id)})
+        return reverse(u"bio.views.bio")
 
     def get_profile_url(self):
         """Return url for publicly visible 'bio' or profile"""
 
         assert self.id
-        return reverse(u"bio.views.public", kwargs=[str(self.id)])
+        return reverse(u"bio.views.public", kwargs={'user_id':str(self.id)})
 
 #########################################
 #   Signals Area

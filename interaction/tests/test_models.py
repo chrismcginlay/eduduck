@@ -656,7 +656,6 @@ class UserAttachmentModelTests(TestCase):
     course1_data = {'code': 'EDU02',
                    'name': 'A Course of Leeches',
                    'abstract': 'Learn practical benefits of leeches',
-                   'organiser': 'Van Gogh',
                    'level': 'Basic',
                    'credits': 30,
                    }
@@ -679,11 +678,13 @@ class UserAttachmentModelTests(TestCase):
         self.user1.is_active = True
         self.user1.save()    
         self.course1 = Course(**self.course1_data)
+        self.course1.instructor = self.user1
+        self.course1.organiser = self.user1
         self.course1.save() 
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
-        self.lesson1 = Lesson(lesson_code="L1", 
-                              lesson_name="Test Lesson 1",
+        self.lesson1 = Lesson(code="L1", 
+                              name="Test Lesson 1",
                               course = self.course1)
         self.lesson1.save()
         #att1 attached to course
@@ -723,10 +724,14 @@ class UserAttachmentModelTests(TestCase):
                          self.u_att1.__unicode__())        
        
     def test___str__(self):
-        self.assertEqual(u"User %s's data for attachment: ...%s" % \
-                        (self.user1.username, str(self.att1.attachment)[-10:]), self.u_att1.__str__())
+        t = u"User {0}'s data for attachment: ...{1}" \
+            .format(self.user1.username, str(self.att1.attachment)[-10:])
+        s = self.u_att1.__str__()
+        self.assertEqual(s, t)
    
     def test_get_absolute_url(self):
-        self.assertEqual(u"/interaction/attachment/1/download/", 
-                         self.u_att1.get_absolute_url())
+        t = u"/interaction/attachment/{0}/download/".format(self.att1.pk)
+        url = self.u_att1.get_absolute_url()
+        self.assertEqual(t,url) 
+                         
                         
