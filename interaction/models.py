@@ -349,7 +349,7 @@ class UserLesson(models.Model):
     
     def visit(self):
         """Mark lesson as visited"""
-        
+
         assert self._checkrep()
         try:
             course_record = self.user.usercourse_set.get(course=self.lesson.course)

@@ -40,6 +40,7 @@ class Course(models.Model):
 
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
+
         super (Course, self).__init__(*args, **kwargs)
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
@@ -48,7 +49,7 @@ class Course(models.Model):
             assert self.name
             assert self.organiser
             assert self.instructor
-            #NB course_level is a string (eg. 'Foundation', '2')
+            #NB level is a string (eg. 'Foundation', '2')
             assert self.level
             assert self.credits >= 0
         
