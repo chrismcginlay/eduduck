@@ -244,7 +244,7 @@ class UserLessonModelTests(TestCase):
     """Test models user interaction with lessons"""
 
     def setUp(self):
-        #set up one course, one user, register the user on the course.
+        #set up courses, one user, register the user on course1, but not course2
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
                                               'bertword')
         self.user1.is_active = True
@@ -277,6 +277,12 @@ class UserLessonModelTests(TestCase):
         self.lesson3.save()
         self.ul3 = UserLesson(user=self.user1, lesson=self.lesson3)
         self.ul3.save()
+
+        self.lesson4 = Lesson(code="L4", 
+                              name="Test Lesson 4, in course 2",
+                              course = self.course2)
+        self.lesson4.save()
+
 
     def test_checkrep(self):
         """Test the internal representation checker with lesson 1"""
@@ -311,19 +317,10 @@ class UserLessonModelTests(TestCase):
         self.assert_(self.ul2.pk, "Failed to create new db entry")
         self.assert_(self.ul2._checkrep(), "_checkrep failed")
 
-        #lesson 4 should fail, as not registered on course2
-        self.lesson4 = Lesson(code="L4", 
-                              name="Test Lesson 4, in course 2",
-                              course = self.course2)
-        self.lesson4.save()
-
+        #userlesson for lesson 4 should fail, as not registered on course2
         ul4 = UserLesson(user=self.user1, lesson=self.lesson4)
-        try:
-            ul4.save()
-            self.fail("Should not save lesson record when not"
-                        "registered on course!")
-        except ObjectDoesNotExist:
-            pass
+        ul4.save()
+        self.assertIsNone(ul4.pk)
 
     def test_hist2list(self):
         """Test conversion of JSON encoded history to tuple list with course 3"""
@@ -372,6 +369,21 @@ class UserLessonModelTests(TestCase):
         self.assertEqual(last[1], 'COMPLETING', "Wrong action in history")
         self.assertEqual(self.ul.visited, True, "Visited should be set")
         self.assertEqual(self.ul.completed, True, "Completed should be set")
+
+    def test_visit(self):
+        """Test visiting lessons"""
+
+        self.ul.visit()
+        h2l_output = self.ul.hist2list()
+        last = h2l_output.pop()
+        self.assertEqual(last[1], 'VISITING', "Wrong action in history")
+        self.assertEqual(self.ul.visited, True, "Visited should be set")
+
+        #The following should not produce a database record.
+        #The user is not registered on the corresponding course.
+        #ul4 = UserLesson(user=self.user1, lesson=self.lesson4)
+        #ul4.visit() #can't run test, visit() asserts on failed _checkrep (as it should)
+        #self.assertIsNone(ul4.pk)
 
     def test_get_status(self):
         """Test that the correct status is returned"""
@@ -529,19 +541,34 @@ class UserLearningIntentionDetailModelTests(TestCase):
         self.course1.instructor = self.user1
         self.course1.organiser = self.user1
         self.course1.save() 
+        self.course2 = Course(**course2_data)
+        self.course2.instructor = self.user1
+        self.course2.organiser = self.user1
+        self.course2.save()
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
         self.lesson = Lesson(code="L1", 
                              name="Test Lesson 1",
                              course = self.course1)
-        self.lesson.save() 
+        self.lesson.save()
+        self.lesson2 = Lesson(code="L2", 
+                              name="Test Lesson 2",
+                              course = self.course2)
+        self.lesson2.save()
         self.li = LearningIntention(lesson=self.lesson, text="Intend...")
+        self.li2 = LearningIntention(lesson=self.lesson2, text="Explore...")
         self.li.save()
+        self.li2.save()
         self.lid = LearningIntentionDetail(
             learning_intention=self.li, 
             text ="Criterion...",
             lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
+        self.lid2 = LearningIntentionDetail(
+            learning_intention=self.li2, 
+            text ="Criterion...",
+            lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
         self.lid.save()
+        self.lid2.save()
         self.ulid = UserLearningIntentionDetail(user=self.user1,
                                     learning_intention_detail=self.lid)
         self.ulid.save()
@@ -554,6 +581,17 @@ class UserLearningIntentionDetailModelTests(TestCase):
         self.ulid.condition = ULIDConditions.green #errored state
         self.assertFalse(self.ulid._checkrep(), 
                          "Checkrep didn't pick up error state")
+
+    def test_save(self):
+        """Test the save functionality
+
+        Principally, it should not save unless the user is registered
+        on the corresponding course"""
+        ulid2 = UserLearningIntentionDetail(user=self.user1,
+                                    learning_intention_detail=self.lid2)
+        ulid2.save()
+        self.assertIsNone(ulid2.pk)	#should fail, user not on corr. course
+
 
     def test_cycle(self):
         """Check that state cycling works"""
@@ -641,7 +679,6 @@ class UserLearningIntentionDetailModelTests(TestCase):
                       "The first 10 chars of the criterion_text "
                       "should be in the unicode")
 
-
     def test___unicode__(self):
         """Test that the desired info is in the unicode method"""
         unicod = self.ulid.__unicode__()
@@ -653,12 +690,6 @@ class UserLearningIntentionDetailModelTests(TestCase):
 class UserAttachmentModelTests(TestCase):
     """Test model behaviour of user interaction with attachments"""
     
-    course1_data = {'code': 'EDU02',
-                   'name': 'A Course of Leeches',
-                   'abstract': 'Learn practical benefits of leeches',
-                   'level': 'Basic',
-                   'credits': 30,
-                   }
     att1_data = {'code': 'DOC1',
                  'name': 'Reading List',
                  'desc': 'Useful stuff you might need',
@@ -677,23 +708,34 @@ class UserAttachmentModelTests(TestCase):
                                              'bertword')
         self.user1.is_active = True
         self.user1.save()    
-        self.course1 = Course(**self.course1_data)
+        self.course1 = Course(**course1_data)
         self.course1.instructor = self.user1
         self.course1.organiser = self.user1
         self.course1.save() 
+        self.course2 = Course(**course2_data)
+        self.course2.instructor = self.user1
+        self.course2.organiser = self.user1
+        self.course2.save()
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
         self.lesson1 = Lesson(code="L1", 
                               name="Test Lesson 1",
                               course = self.course1)
         self.lesson1.save()
+        self.lesson2 = Lesson(code="L2",
+                              name="Test Lesson 2",
+                              course = self.course2)
+        self.lesson2.save()
         #att1 attached to course
         self.att1 = Attachment(course=self.course1, **self.att1_data)
         self.att1.save()      
         #att2 attached to lesson
         self.att2 = Attachment(lesson=self.lesson1, **self.att1_data)
         self.att2.save()   
-       
+        #att3 attached to lesson in course2
+        self.att3 = Attachment(lesson=self.lesson2, **self.att1_data)
+        self.att3.save()
+
         self.u_att1 = UserAttachment(attachment=self.att1, user=self.user1)
         self.u_att2 = UserAttachment(attachment=self.att2, user=self.user1)
         self.u_att1.save()
@@ -734,4 +776,9 @@ class UserAttachmentModelTests(TestCase):
         url = self.u_att1.get_absolute_url()
         self.assertEqual(t,url) 
                          
-                        
+    def test_save(self):
+        """Test that save only saves when user is registered on course"""
+        
+        u_att3 = UserAttachment(attachment=self.att3, user=self.user1)
+        u_att3.save()
+        self.assertIsNone(u_att3.pk)

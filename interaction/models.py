@@ -31,7 +31,7 @@ UCActions = Enum([
 class UserCourse(models.Model):
     """Track users interactions with courses.
 
-    On signing up for a course and entry will be recorded here. The user may be 
+    On signing up for a course an entry will be recorded here. The user may be 
     active or not (ie. maybe not seen for a while). They may complete or 
     withdraw in which case they cannot be active.
     
@@ -351,10 +351,11 @@ class UserLesson(models.Model):
         """Mark lesson as visited"""
         
         assert self._checkrep()
-        course_record = self.user.usercourse_set.get(course=self.lesson.course)
-        #view should not try to record lesson unless registered on course
-        assert(course_record)
-
+        try:
+            course_record = self.user.usercourse_set.get(course=self.lesson.course)
+        except ObjectDoesNotExist:
+            return False	#don't trigger save, record nothing
+ 
         logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.lesson.pk)+" visiting")
         self.visited = True
         hist = json.loads(self.history)
@@ -365,7 +366,8 @@ class UserLesson(models.Model):
         self.history = json.dumps(hist)
         self.save()
         assert self._checkrep()
-        
+        return True
+       
     def complete(self):
         """If not already completed set complete"""
    
@@ -423,20 +425,25 @@ class UserLesson(models.Model):
         """Perform history save steps"""
         
         existing_row = self.pk
+        try:
+            course_record = self.user.usercourse_set.get(course=self.lesson.course)
+	#model should not try to record lesson unless registered on course
+        except ObjectDoesNotExist:
+            return False       #don't save anything.
+
         super(UserLesson, self).save(*args, **kwargs)
         if not existing_row:
-            course_record = self.user.usercourse_set.get(course=self.lesson.course)
-            #view should not try to record lesson unless registered on course
-            assert(course_record)
-            logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.lesson.pk)+" first visit")
+            logger.info("User:"+str(self.user.pk)+
+                        ",Lesson:"+str(self.lesson.pk)+" first visit")
             hist = []
             current_time = mktime(datetime.utcnow()
-                .replace(tzinfo=utc)
-                .utctimetuple())
+                                  .replace(tzinfo=utc)
+                                  .utctimetuple())
             hist.append((current_time, ULActions.VISITING))
             self.history = json.dumps(hist)
             self.visited = True
             self.save()
+        return True
 
     def __str__(self):
         """Human readable summary"""
@@ -470,8 +477,6 @@ class UserLearningIntention(models.Model):
         progress            return dictionary of tuples indexed via 'SC' or 'LO'
     """
 
-    #TODO: cache the progress status in the database as it will be cheaper
-    #when rendering course summaries.
     user = models.ForeignKey(User, help_text="User interacting with LI")
     learning_intention = models.ForeignKey(LearningIntention, 
         help_text=  "Learning intention user is interacting with")
@@ -599,13 +604,16 @@ class UserLearningIntentionDetail(models.Model):
         """Perform history save steps"""
         
         existing_row = self.pk
-        super(UserLearningIntentionDetail, self).save(*args, **kwargs)
-        if not existing_row:
+        try:
             #a long and winding ORM hop.
             usercourse = self.learning_intention_detail.learning_intention.lesson.course
             course_record = self.user.usercourse_set.get(course=usercourse)
-            #view should not try to record lesson unless registered on course
-            assert(course_record)
+            #model should not try to record lesson unless registered on course
+        except ObjectDoesNotExist:
+            return False	#don't save anything.
+
+        super(UserLearningIntentionDetail, self).save(*args, **kwargs)
+        if not existing_row:
             logger.info("User:"+str(self.user.pk)+",LID:"+\
                 str(self.learning_intention_detail.pk)+" first visit")
             hist = []
@@ -616,7 +624,7 @@ class UserLearningIntentionDetail(models.Model):
             self.history = json.dumps(hist)
             self.condition = ULIDConditions.red
             self.save()
-            
+        return True
             
     def hist2list(self):
         """Convert the JSON coded text in self.history to a list of tuples
@@ -784,32 +792,29 @@ class UserAttachment(models.Model):
         """Perform history save steps"""
         
         existing_row = self.pk
+        #Model should not try to record download unless user is 
+        #registered on relevant course. Attachment can be linked to course
+        #or to individual lesson, either way, we need to get to the course
+        try:
+            course_record = self.user.usercourse_set.get(course=self.attachment.course)
+        except ObjectDoesNotExist:
+            try:
+                course_record = self.user.usercourse_set.get(course=self.attachment.lesson.course)
+            except ObjectDoesNotExist:
+                return False
+
         super(UserAttachment, self).save(*args, **kwargs)
         if not existing_row:
-            #Model should not try to record download unless user is 
-            #registered on relevant course. Attachment can be linked to course
-            #or to individual lesson, either way, we need to get to the course
-            try:
-                course_record = self.user.usercourse_set.get(course=self.attachment.course)
-            except ObjectDoesNotExist:
-                try:
-                    course_record = self.user.usercourse_set.get(course=self.attachment.lesson.course)
-                except ObjectDoesNotExist:
-                    course_record = None
             logger.info("User:"+str(self.user.pk)+",Attachment:"+str(self.attachment.pk)+" download")
-            if course_record:
-                hist = []
-                current_time = mktime(datetime.utcnow()
-                    .replace(tzinfo=utc)
-                    .utctimetuple())
-                hist.append((current_time, UAActions.DOWNLOADING))
-                self.history = json.dumps(hist)
-                self.save()
-            else:
-                #Getting here implies no course_record. Should not be storing
-                #record of interaction if user not on course
-                assert(False)
-                
+            hist = []
+            current_time = mktime(datetime.utcnow()
+                                  .replace(tzinfo=utc)
+                                  .utctimetuple())
+            hist.append((current_time, UAActions.DOWNLOADING))
+            self.history = json.dumps(hist)
+            self.save()
+        return True
+
     def __str__(self):
         """Human readable summary"""
         
