@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load gravatar %}
 
 {%block extra_style %}
     <link href="{% static 'register.css' %}" rel="stylesheet" media="screen" />
 {% endblock extra_style %}
 
 {% block contentheading %}
+
 {% if user.is_authenticated %}
     Welcome {{ user.username|capfirst }}: "{{ user.bio.signature_line }}"
 {% else %}

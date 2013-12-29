@@ -1,8 +1,10 @@
 {% extends "bio/base_bio.html" %}
 {% load url from future %}
+{% load gravatar %}
 
 {% block contentheading %}
     Bio: {{ user.get_full_name }}
+    <img src="{% gravatar_url user.email %}">
 {% endblock contentheading %}
 
 {% block zone1 %}

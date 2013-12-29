@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load gravatar %}
 
 {% block contentheading %}
 {% if user.is_authenticated %}
     Welcome {{ user.username|capfirst }}: "{{ user.bio.signature_line }}"
+    <img src="{% gravatar_url user.email %}">
 {% else %}
     Join EduDuck
 {% endif %}
