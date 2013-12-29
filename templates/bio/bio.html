@@ -4,10 +4,14 @@
 
 {% block contentheading %}
     Bio: {{ user.get_full_name }}
-    <img src="{% gravatar_url user.email %}">
 {% endblock contentheading %}
 
 {% block zone1 %}
+    <h3>Gravatar</h3>
+    <img src="{% gravatar_url user.email 80%}">
+    <p>Your profile image is your Gravatar.com avatar, linked to {{ user.email }}</p>
+    <p><a href="{% gravatar_profile user.email %}">Visit your Gravatar.com profile.</a></p>
+
     <h3>Change Your Password</h3>
     <a href="/accounts/password/change/">Change Password</a>
 
@@ -28,7 +32,7 @@
             <th>Course Home</th><th>Status/History</th></tr>
 
             {% for uc in usercourses %}
-            <tr><td>{{ uc.course.course_name }}</td>
+            <tr><td>{{ uc.course.name }}</td>
             <td><a href='{{ uc.course.get_absolute_url }}'>visit</a></td>
             <td><a href='{{ uc.get_absolute_url }}'> 
                 {% if uc.active %}

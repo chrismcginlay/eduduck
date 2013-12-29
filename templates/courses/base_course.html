@@ -4,8 +4,8 @@
 
 {% block contentheading %}
 {% if user.is_authenticated %}
-    Welcome {{ user.username|capfirst }}: "{{ user.bio.signature_line }}"
-    <img src="{% gravatar_url user.email %}">
+    <img src="{% gravatar_url user.email 25 %}" alt="{{ user.username }}'s gravatar">
+    Welcome {{ user.username|capfirst }}
 {% else %}
     Join EduDuck
 {% endif %}

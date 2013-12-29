@@ -1,6 +1,7 @@
 {% load staticfiles %}
 {% load url from future %}
 {% load tz %}
+{% load gravatar %}
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" >
@@ -29,7 +30,7 @@
         <div id="userprof">
             {% block userprof %}
             {% if user.is_authenticated %}
-                <li><a href="{% url 'bio.views.bio' %}">{{ user.username }}</a></li>
+	    	<li title="{{ user.username }}: account settings"><a href="{% url 'bio.views.bio' %}"><img src="{% gravatar_url user.email 20 %}" alt="{{ user.username }}: account settings"></a></li>
                 <li><a href="{% url 'django.contrib.auth.views.logout' %}">
                     Logout</a></li>
             {% else %}
