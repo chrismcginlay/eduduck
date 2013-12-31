@@ -20,6 +20,7 @@ class GravatarUrlNode(template.Node):
         self.size = template.Variable(size)
  
     def render(self, context):
+ 
         try:
             email = self.email.resolve(context)
             size = self.size.resolve(context)

@@ -8,6 +8,7 @@ New User Registration
 {% block zone1 %}
 <h3>Sign Up for a Free Account</h3>
 <p>Join us - complete this form to receive a confirmation email:</p>
+<p>We use <a href="www.gravatar.com">Gravatar.com</a> for profile images: if you register with the same email address, your Gravatar will be linked automatically.</p>
 <form action="/accounts/register/" method="post">{% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Submit" />
