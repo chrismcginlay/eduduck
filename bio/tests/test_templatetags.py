@@ -1,4 +1,4 @@
-from django import template
+from django.template import Template, Context, TemplateSyntaxError
 
 from django.core.exceptions import ValidationError
 from django.test import TestCase
@@ -19,14 +19,13 @@ class BioTemplateTagTests(TestCase):
                  }
 
     def setUp(self):
-        self.user1 = User.objects.create_user('bertie', 'bert@bert.com', 'bertword')
+        self.user1 = User.objects.create_user("bertie", u"bert@bert.com", 'bertword')
         self.user1.is_active = True
         self.user1.save()    
         
     def test_gravatar_url(self):
         """Gravatar url produced correctly"""
 
-        register = template.Library()
         e, sz = self.user1.email, u'40'
         gun = GravatarUrlNode(e, sz)
         #gpn = GravatarProfileNode(e, sz)
@@ -34,11 +33,13 @@ class BioTemplateTagTests(TestCase):
         self.assertEqual(e, gun.email.var, 'Tag fails to parse email address')
         self.assertEqual(sz, gun.size.var, 'Tag fails to parse size')
 
-        login = self.client.login(username='bertie', password='bertword')
-        self.assertTrue(login)
-        response = self.client.get('/accounts/bio/')
-
-        import pdb; pdb.set_trace();
+        out = Template(
+            	"{% load gravatar %}" \
+                "{% gravatar_url 'bert@bert.com' 30 %}")
+        context = Context({"user": self.user1,
+                           "size": 30})
         
-        gun_render = gun.render(response.context)
-        self.assertEqual(gun_render, u'ddd')
+        #import pdb; pdb.set_trace();
+        
+        target = u"http://www.gravatar.com/avatar/3caa837c41ae74577aad7e307be4d028?s=30&d=wavatar"
+        self.assertEqual(out.render(context), target, "Gravatar tag failed")
