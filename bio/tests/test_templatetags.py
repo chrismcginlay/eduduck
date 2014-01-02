@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from ..models import Bio
-from ..templatetags.gravatar import GravatarUrlNode
+from ..templatetags.gravatar import GravatarUrlNode, GravatarProfileNode
 
 class BioTemplateTagTests(TestCase):
     """Test behaviour of user 'bio' custom template tags"""
@@ -39,7 +39,19 @@ class BioTemplateTagTests(TestCase):
         context = Context({"user": self.user1,
                            "size": 30})
         
-        #import pdb; pdb.set_trace();
-        
         target = u"http://www.gravatar.com/avatar/3caa837c41ae74577aad7e307be4d028?s=30&d=wavatar"
-        self.assertEqual(out.render(context), target, "Gravatar tag failed")
+        self.assertEqual(out.render(context), target, "Gravatar url tag failed")
+
+    def test_gravatar_profile(self):
+        """Gravatar profile link produced correctly"""
+
+        e = self.user1.email
+        gpn = GravatarProfileNode(e)
+
+        self.assertEqual(e, gpn.email.var, 'Tag fails to parse email address')
+
+        out = Template("{% load gravatar %}" \
+                       "{% gravatar_profile 'bert@bert.com' %}")
+        context = Context({"user": self.user1})
+        target = u"http://www.gravatar.com/3caa837c41ae74577aad7e307be4d028"
+        self.assertEqual(out.render(context), target, "Gravatar profile tag failed")
