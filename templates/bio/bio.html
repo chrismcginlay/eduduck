@@ -8,7 +8,7 @@
 
 {% block zone1 %}
     <h3>Gravatar</h3>
-    <img src="{% gravatar_url user.email 80%}">
+    <img src="{% gravatar_url user.email 80 %}">
     <p>Your profile image is your Gravatar.com avatar, linked to {{ user.email }}</p>
     <p><a href="{% gravatar_profile user.email %}">Visit your Gravatar.com profile.</a></p>
 

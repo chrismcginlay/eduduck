@@ -1,5 +1,6 @@
 {% extends "bio/base_bio.html" %}
 {% load url from future %}
+{% load gravatar %}
 
 {% block contentheading %}
     Bio: {{ user.get_full_name }}
@@ -7,6 +8,7 @@
 
 {% block zone1 %}
     <h3>Public Data for {{ fullname }}</h3>
+    {% gravatar_url user.email %}
     <table>
 <!--        <tr><td>Email</td><td><a href='mailto:{{ email }}'>{{ email }}</a></td></tr>-->
         <tr><td>Motto</td><td>

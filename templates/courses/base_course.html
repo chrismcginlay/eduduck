@@ -4,7 +4,7 @@
 
 {% block contentheading %}
 {% if user.is_authenticated %}
-    <img src="{% gravatar_url user.email 25 %}" alt="{{ user.username }}'s gravatar">
+    <img src="{% gravatar_url user.email %}" alt="{{ user.username }}'s gravatar">
     Welcome {{ user.username|capfirst }}
 {% else %}
     Join EduDuck

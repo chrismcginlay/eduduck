@@ -1,13 +1,15 @@
-### gravatar.py ###############
-# from https://secure.gravatar.com/site/implement/images/django/
+#gravatar.py
+""" based on https://secure.gravatar.com/site/implement/images/django/
 
-### at the top of your page template include this:
-### {% load gravatar %}
-### and to use the url do this:
-### <img src="{% gravatar_url 'someone@somewhere.com' %}">
-### or
-### <img src="{% gravatar_url sometemplatevariable %}">
-### just make sure to update the "default" image path below
+At the top of your page template include this:
+{% load gravatar %}
+and to use the url do this:
+<img src="{% gravatar_url user.email 20 %}">
+(pixel size is optional, default 30)
+
+To obtain the URI of the gravatar.com profile:
+{% gravatar_profile user.email %}
+"""
  
 from django import template
 import urllib, hashlib
@@ -15,15 +17,26 @@ import urllib, hashlib
 register = template.Library()
  
 class GravatarUrlNode(template.Node):
-    def __init__(self, email, size):
+
+    def __init__(self, *args):
+        """Caller must provide email address, size is optional"""
+
+        email = args[0]
         self.email = template.Variable(email)
-        self.size = template.Variable(size)
+        try:
+            size = args[1]
+        except IndexError:
+            self.size = 30	#default
  
     def render(self, context):
  
         try:
-            email = self.email.resolve(context)
             size = self.size.resolve(context)
+        except AttributeError:
+            size = 30
+            
+        try:
+            email = self.email.resolve(context)
         except template.VariableDoesNotExist:
             return ''
  
@@ -37,7 +50,8 @@ class GravatarUrlNode(template.Node):
 class GravatarProfileNode(template.Node):
     """Create object linking to profile"""
 
-    def __init__(self, email):
+    def __init__(self, *args):
+        email = args[0]
         self.email = template.Variable(email)
 
     def render(self, context):
@@ -52,11 +66,18 @@ class GravatarProfileNode(template.Node):
  
 @register.tag
 def gravatar_url(parser, token):
+    params = token.split_contents()
+    tag_name = params[0]
     try:
-        tag_name, email, size = token.split_contents()
- 
-    except ValueError:
-        raise template.TemplateSyntaxError, "%r tag requires exactly two arguments" % token.contents.split()[0]
+        email = params[1]
+    except IndexError:
+        raise template.TemplateSyntaxError, "{1} tag requires "\
+            		"an email address".format(tag_name)
+        
+    try:
+        size= params[2]
+    except IndexError:
+        size = 30 	#default
  
     return GravatarUrlNode(email, size)
 
