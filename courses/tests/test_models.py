@@ -8,7 +8,6 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from bio.models import Bio
-
 from interaction.models import UserCourse
 from outcome.models import LearningIntention, LearningIntentionDetail
 from attachment.models import Attachment
@@ -24,31 +23,51 @@ class CourseModelTests(TestCase):
 #become redundant, which would be a good thing)
 
     course1_data = {'code': 'EDU02',
-                   'name': 'A Course of Leeches',
-                   'abstract': 'Learn practical benefits of leeches',
-                   'level': 'Basic',
-                   'credits': 30,
+                    'name': 'A Course of Leeches',
+                    'abstract': 'Learn practical benefits of leeches',
+                    'level': 'Basic',
+                    'credits': 30,
+                    'att_codes': Course.NO_CODES
                    }
-    course2_data = {'code': 'FBR9',
-                   'name': 'Basic Knitting',
-                   'abstract': 'Casting on',
-                   'level': '5',
-                   'credits': 20,
-                   }
-    lesson1_data = {'code': 'B1',
-                    'name': 'Introduction to Music',
-                    'abstract': 'A summary of what we cover',
-                   }
-    video1_data = {'code': 'MV2',
-                   'url': 'http://youtu.be/LIM--jfnKeU',
-                   'name': 'Music introduction',
-                  }
-    attachment1_data = {'code': 'DOC1',
-                        'name': 'Reading List',
-                        'desc': 'Useful stuff you might need',
-                        'seq': 3,
-                        'attachment': 'empty_attachment_test.txt',
-                        }
+    course2_data = {
+        'code': 'FBR9',
+        'name': 'Basic Knitting',
+        'abstract': 'Casting on',
+        'level': '5',
+        'credits': 20,
+        'attachment_codes': Course.OPTIONAL_CODES,
+    }
+    course3_data = {
+        'code': 'PL1',
+        'name': 'Public Speaking',
+        'abstract': 'Talking in public',
+        'level': 5,
+        'credits': 15,
+        'attachment_codes': Course.MANDATORY_CODES,
+    }
+    lesson1_data = {
+        'code': 'B1',
+        'name': 'Introduction to Music',
+        'abstract': 'A summary of what we cover',
+    }
+    video1_data = {
+        'code': 'MV2',
+        'url': 'http://youtu.be/LIM--jfnKeU',
+        'name': 'Music introduction',
+    }
+    attachment1_data = {
+        'code': 'DOC1',
+        'name': 'Reading List',
+        'desc': 'Useful stuff you might need',
+        'seq': 3,
+        'attachment': 'empty_attachment_test.txt',
+    }
+    attachment2_data = {
+        'name': 'FAQ',
+        'desc': 'Frequently Asked Questions',
+        'seq': 3,
+        'attachment': 'empty_attachment_test.txt',
+    }
         
     def setUp(self):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
@@ -78,6 +97,11 @@ class CourseModelTests(TestCase):
         self.course2.instructor = self.user2
         self.course2.save()
 
+        self.course3 = Course(**self.course3_data)
+        self.course3.organiser = self.user1
+        self.course3.instructor = self.user2
+        self.course3.save()
+
         self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
         self.lesson1.save()
         self.video1 = Video(course=self.course1, **self.video1_data)
@@ -87,6 +111,9 @@ class CourseModelTests(TestCase):
         self.attachment1 = Attachment(course=self.course1, 
                                       **self.attachment1_data)
         self.attachment1.save()
+        self.attachment2 = Attachment(course=self.course3, 
+                                      **self.attachment2_data)
+        self.attachment2.save()
        
         self.learningintention1 = LearningIntention(lesson = self.lesson1, 
                                                     text = "Practise")

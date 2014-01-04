@@ -35,8 +35,8 @@
 
     <section id="zone1">
         <article>
-            <h4>Attachments</h4>
-            <ol>
+            <h4 class="attachments">Attachments</h4>
+            <ol class="attachments">
             {% for a in attachments %}
                 <li>{{ a.1.code}}
                     {% if a.0 %}
@@ -55,8 +55,8 @@
         </article>
 
         <article>
-            <h4>Videos</h4>
-            <ol>
+            <h4 class="videos">Videos</h4>
+            <ol class="videos">
             {% for v in lesson.video_set.all %}
                 <li>{{ v.code}} <a href="{{ v.url }}">{{v.name}}</a></li>
                 <iframe width="280" height="158" src='{{ v.url }}' 

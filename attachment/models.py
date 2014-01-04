@@ -31,10 +31,18 @@ class Attachment(models.Model):
         unique_together = (("lesson", "seq"), ("course", "seq"))   
 
     def _checkrep(self):
-        assert self.code
         assert self.name
         assert self.attachment
         assert (self.lesson or self.course, "Attach to lesson or course!")
+        #get to the parent course
+        if self.lesson:
+            parent = self.lesson.course
+        else:
+            parent = self.course
+        if parent.attachment_codes == Courses.MANDATORY_CODES:
+            assert self.code
+        elif parent.attachment_codes == Courses.NO_CODES:
+            assert not self.code
 
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
@@ -44,14 +52,23 @@ class Attachment(models.Model):
     
     def __str__(self):
         """Human readable summary"""
-        return u"Attachment %s %s, '%s...'" %\
-            (self.pk, self.code, self.name[:10])           
+
+        if self.code:
+            return u"Attachment {1} {2}, '{3}...'".format(
+                self.pk, self.code, self.name[:10])
+        else:
+            return u"Attachment {1}, '{2}...'".format(
+                self.pk, self.name[:10])
         
     def __unicode__(self):
         """Summary for internal use"""
-        return u"Att. ID:%s, code:%s, '%s...'" %\
-            (self.pk, self.code, self.name[:10])   
-            
+        if self.code:
+            return u"Att. ID:{1}, code:{2}, '{3}...'".format(
+                self.pk, self.code, self.name[:10])   
+        else:
+            return u"Att. ID:{1}, '{2}...'".format(
+                self.pk, self.name[:10])   
+
     def get_absolute_url(self):
         """Canonical URL. Returns url for download via webserver"""
         

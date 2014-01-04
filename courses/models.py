@@ -16,18 +16,18 @@ class Course(models.Model):
         instructor   Foreign key: user providing instruction 
         level        Level of difficulty of this course (eg SCQF)
         credits      Number of points awarded on completion
+        attachment_codes	Whether or not attachments attached 
+        			to the course are to have user specified codes
        
     """
 
-    code = models.CharField(max_length=10, 
-                                   help_text="arbitrary course code for "
-                                   "author's reference")
-    name = models.CharField(max_length=150, 
-                                   help_text="human readable name of "
-                                   "the course")
-    abstract = models.TextField(help_text="summary of the course "
-                                "in a couple of paragraphs")
-                                           
+    code = models.CharField(max_length=10,
+                            help_text="arbitrary course code for "\
+                            	      "author's reference")
+    name = models.CharField(max_length=150,
+                            help_text="human readable name of the course")
+    abstract = models.TextField(help_text="summary of the course "\
+                                	  "in a couple of paragraphs")
     organiser = models.ForeignKey(User,
                                   related_name="courses_organised_set",
                                   help_text="This user is organising the course")
@@ -37,6 +37,19 @@ class Course(models.Model):
     level = models.CharField(max_length=10, blank=True, null=True,
                              help_text="e.g. SCQF level")
     credits = models.IntegerField(blank=True, null=True,)
+
+    #Following constants apply to presence of attachment codes in lessons
+    (NO_CODES, OPTIONAL_CODES, MANDATORY_CODES) = (u'NO',u'OPT',u'MAND')
+    ATTACHMENT_CODE_CHOICES = (
+        (NO_CODES, u'No attachment codes used'),
+        (OPTIONAL_CODES, u'Attachment codes are optional'),
+        (MANDATORY_CODES, u'Each attachment must have a unique code')
+    )
+    attachment_codes = models.CharField(max_length=4,
+                                        choices = ATTACHMENT_CODE_CHOICES,
+                                        default = NO_CODES,
+                                        help_text = "should attachments have a user"\
+                                            	    "specified code or not?")
 
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
@@ -52,7 +65,8 @@ class Course(models.Model):
             #NB level is a string (eg. 'Foundation', '2')
             assert self.level
             assert self.credits >= 0
-        
+            assert self.attachment_codes in Courses.SHORT_CODES
+
     def __unicode__(self):
         return self.name
     

@@ -4,6 +4,8 @@
 
 from selenium import webdriver
 from django.test import TestCase
+from django.core.urlresolvers import resolve
+from courses.views import lesson
 
 class AuthorAddsAttachmentToLessonTests(TestCase):
     """Course author wants to add an attachment to an existing lesson"""
@@ -15,14 +17,32 @@ class AuthorAddsAttachmentToLessonTests(TestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def test_can_visit_lesson_and_be_offered_attachment_addition(self):
-        """The author/instructor can add attachments to a lesson"""
+    def test_from_lesson_author_can_add_attachment(self):
 
-        #The author or instructor visits a lesson they are responsible for
-        #They are presented with a list of existing attachments in that lesson
-        #They are given the facility to add more attachment(s)
+        #The author or instructor, Clare, visits a lesson she is responsible for
+        found = resolve('/courses/1/lesson/2/')
+        self.assertEqual(found.func, lesson)
 
-        self.browser.get('http://localhost:8000')
+        self.browser.get('http://localhost:8000/courses/1/lesson/2/')
+
+        #She is presented with a list of existing attachments in that lesson
+        att_header = self.browser.find_element_by_css_selector(
+            'H4.attachments').text()
+        self.assertIn('Attachments', att_header)
+        att_list = self.browser.find_element_by_css_selector('ol.attachments')
+        self.assertNotEqual(0, len(att_list))
+
+        #Next to the list, is the facility to add more attachment(s)
+        file_selector_box = self.browser.find_element_by_id('id_new_att')
+#        @TestCase.skip
+#        self.assertEqual(
+#                file_selector_box.get_attribute('placeholder'),
+#                'Select a file to upload'
+#        )
+        #On selecting this, Clare is shown a form to upload an attachment
+        #The form has appropriate fields, with attachment code being optional 
+        #not depending on settings on course page
+        #After uploading an attachment and submitting the form, Clare can see the new attachment in the list
 
         self.fail('Write this test')
 
