@@ -29,7 +29,7 @@ class LessonIndex(indexes.SearchIndex, indexes.Indexable):
 
 class VideoIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    video_code = indexes.CharField(model_attr='video_code')
+    video_pk = indexes.CharField(model_attr='pk')
     
     def get_model(self):
         return Video

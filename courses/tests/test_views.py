@@ -18,42 +18,48 @@ from ..models import Course, Lesson, Video
 class CourseViewTests(TestCase):
     """Test the course views"""
     
-    course1_data = {'code': 'EDU02',
-                   'name': 'A Course of Leeches',
-                   'abstract': 'Learn practical benefits of leeches',
-                   'level': 'basic',
-                   'credits': 30,
-                   }
-    course2_data = {'code': 'FBR9',
-                   'name': 'Basic Knitting',
-                   'abstract': 'Casting on',
-                   'level': '5',
-                   'credits': 20,
-                   }  
-    course3_data = {'code': 'G3',
-                   'name': 'Nut Bagging',
-                   'abstract': 'Put the nuts in the bag',
-                   'level': '4',
-                   'credits': 42,
-                   }
-    lesson1_data = {'code': 'B1',
-                    'name': 'Introduction to Music',
-                    'abstract': 'A summary of what we cover',
-                   }
-    lesson2_data = {'code': 'B2',
-                    'name': 'Stuff',
-                    'abstract': 'Not a lot',
-                   }
-    video1_data = {'code': 'MV2',
-                   'url': 'http://youtu.be/LIM--jfnKeU',
-                   'name': 'Music introduction',
-                  }
+    course1_data = {
+        'code': 'EDU02',
+        'name': 'A Course of Leeches',
+        'abstract': 'Learn practical benefits of leeches',
+        'level': 'basic',
+        'credits': 30,
+    }
+    course2_data = {
+        'code': 'FBR9',
+        'name': 'Basic Knitting',
+        'abstract': 'Casting on',
+        'level': '5',
+        'credits': 20,
+    }  
+    course3_data = {
+        'code': 'G3',
+        'name': 'Nut Bagging',
+        'abstract': 'Put the nuts in the bag',
+        'level': '4',
+        'credits': 42,
+    }
+    lesson1_data = {
+        'code': 'B1',
+        'name': 'Introduction to Music',
+        'abstract': 'A summary of what we cover',
+    }
+    lesson2_data = {
+        'code': 'B2',
+        'name': 'Stuff',
+        'abstract': 'Not a lot',
+    }
+    video1_data = {
+        'url': 'http://youtu.be/LIM--jfnKeU',
+        'name': 'Music introduction',
+    }
     attachment1_data = {
-                        'name': 'Reading List',
-                        'desc': 'Useful stuff you might need',
-                        'seq': 3,
-                        'attachment': 'empty_attachment_test.txt',
-                        }                   
+        'name': 'Reading List',
+        'desc': 'Useful stuff you might need',
+        'seq': 3,
+        'attachment': 'empty_attachment_test.txt',
+    }                   
+
     def setUp(self):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True

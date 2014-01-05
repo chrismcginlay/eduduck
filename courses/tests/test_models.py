@@ -22,12 +22,13 @@ class CourseModelTests(TestCase):
 #(in which case some of the assertions outwith loops over dicts 
 #become redundant, which would be a good thing)
 
-    course1_data = {'code': 'EDU02',
-                    'name': 'A Course of Leeches',
-                    'abstract': 'Learn practical benefits of leeches',
-                    'level': 'Basic',
-                    'credits': 30,
-                   }
+    course1_data = {
+        'code': 'EDU02',
+        'name': 'A Course of Leeches',
+        'abstract': 'Learn practical benefits of leeches',
+        'level': 'Basic',
+        'credits': 30,
+    }
     course2_data = {
         'code': 'FBR9',
         'name': 'Basic Knitting',
@@ -48,7 +49,6 @@ class CourseModelTests(TestCase):
         'abstract': 'A summary of what we cover',
     }
     video1_data = {
-        'code': 'MV2',
         'url': 'http://youtu.be/LIM--jfnKeU',
         'name': 'Music introduction',
     }

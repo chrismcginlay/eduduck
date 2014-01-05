@@ -58,7 +58,7 @@
             <h4 class="videos">Videos</h4>
             <ol class="videos">
             {% for v in lesson.video_set.all %}
-                <li>{{ v.code}} <a href="{{ v.url }}">{{v.name}}</a></li>
+                <li>{{ v.pk }} <a href="{{ v.url }}">{{ v.name }}</a></li>
                 <iframe width="280" height="158" src='{{ v.url }}' 
                 frameborder="0" allowfullscreen></iframe>
             {% empty %}
@@ -101,7 +101,7 @@
         <h3>Learning Intentions</h3>
         <article class="abstract">
             {% for li in learning_intentions %}
-            <p>[<a href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.li_text }}</p>
+            <p>[<a href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.text }}</p>
             {% empty %}
             <p>Bizarrely, no learning intentions given for this lesson</p>
             {% endfor %}

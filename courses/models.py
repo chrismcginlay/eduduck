@@ -125,7 +125,6 @@ class Video(models.Model):
     to lessons. This allows for introductory videos to belong to whole course
         
     Attributes:
-        code  Video code for human consumption
         name  Full human readable name of video
         url         url of the video resource
         lesson      ForeignKey - if the video is embedded in a lesson
@@ -133,7 +132,6 @@ class Video(models.Model):
     """
     
     #TODO: use YouTube / Vimeo APIs to pull video meta data such as title, tags    
-    code = models.CharField(max_length=10, blank=True, null=True)
     name = models.CharField(max_length=200)
     url = models.URLField()
     #TODO override __init__ to ensure precisely one of these is not null
@@ -146,7 +144,6 @@ class Video(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.code
             assert self.url
             assert self.name
 

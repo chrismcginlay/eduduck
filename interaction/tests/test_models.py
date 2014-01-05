@@ -690,18 +690,18 @@ class UserLearningIntentionDetailModelTests(TestCase):
 class UserAttachmentModelTests(TestCase):
     """Test model behaviour of user interaction with attachments"""
     
-    att1_data = {'code': 'DOC1',
-                 'name': 'Reading List',
-                 'desc': 'Useful stuff you might need',
-                 'seq': 3,
-                 'attachment': 'empty_attachment_test.txt',
-                }
-    att2_data = {'code': 'DOC2',
-                'name': 'Grammer Guide',
-                'desc': 'How do you even spell grammer?',
-                'seq': 2,
-                'attachment': 'empty_attachment_test.txt',
-                 }
+    att1_data = {
+        'name': 'Reading List',
+        'desc': 'Useful stuff you might need',
+        'seq': 3,
+        'attachment': 'empty_attachment_test.txt',
+    }
+    att2_data = {
+        'name': 'Grammer Guide',
+        'desc': 'How do you even spell grammer?',
+        'seq': 2,
+        'attachment': 'empty_attachment_test.txt',
+    }
 
     def setUp(self):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
