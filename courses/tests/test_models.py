@@ -27,7 +27,6 @@ class CourseModelTests(TestCase):
                     'abstract': 'Learn practical benefits of leeches',
                     'level': 'Basic',
                     'credits': 30,
-                    'att_codes': Course.NO_CODES
                    }
     course2_data = {
         'code': 'FBR9',
@@ -35,7 +34,6 @@ class CourseModelTests(TestCase):
         'abstract': 'Casting on',
         'level': '5',
         'credits': 20,
-        'attachment_codes': Course.OPTIONAL_CODES,
     }
     course3_data = {
         'code': 'PL1',
@@ -43,7 +41,6 @@ class CourseModelTests(TestCase):
         'abstract': 'Talking in public',
         'level': 5,
         'credits': 15,
-        'attachment_codes': Course.MANDATORY_CODES,
     }
     lesson1_data = {
         'code': 'B1',
@@ -56,7 +53,6 @@ class CourseModelTests(TestCase):
         'name': 'Music introduction',
     }
     attachment1_data = {
-        'code': 'DOC1',
         'name': 'Reading List',
         'desc': 'Useful stuff you might need',
         'seq': 3,

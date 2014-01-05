@@ -9,28 +9,30 @@ from ..models import Attachment
 class AttachmentModelTests(TestCase):
     """Test models user interaction with courses"""
 
-    course1_data = {'code': 'EDU02',
-                   'name': 'A Course of Leeches',
-                   'abstract': 'Learn practical benefits of leeches',
-                   'level': 'Basic',
-                   'credits': 30,
-                   }
-    lesson1_data = {'code': 'B1',
-                    'name': 'Introduction to Music',
-                    'abstract': 'A summary of what we cover',
-                   }
-    att1_data = {'code': 'DOC1',
-                 'name': 'Reading List',
-                 'desc': 'Useful stuff you might need',
-                 'seq': 3,
-                 'attachment': 'empty_attachment_test.txt',
-                }
-    att2_data = {'code': 'DOC2',
-                 'name': 'Grammer Guide',
-                 'desc': 'How do you even spell grammer?',
-                 'seq': 2,
-                 'attachment': 'empty_attachment_test.txt',
-                }
+    course1_data = {
+        'code': 'EDU01',
+        'name': 'A Course of Leeches',
+        'abstract': 'Learn practical benefits of leeches',
+        'level': 'Basic',
+        'credits': 30,
+    }
+    lesson1_data = {
+        'code': 'B1',
+        'name': 'Introduction to Music',
+        'abstract': 'A summary of what we cover',
+    }
+    att1_data = {
+        'name': 'Reading List',
+        'desc': 'Useful stuff you might need',
+        'seq': 3,
+        'attachment': 'empty_attachment_test.txt',
+    }
+    att2_data = {
+        'name': 'Grammar Guide',
+        'desc': 'How do you even spell grammer?',
+        'seq': 2,
+        'attachment': 'empty_attachment_test.txt',
+    }
 
     def setUp(self):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
@@ -60,15 +62,13 @@ class AttachmentModelTests(TestCase):
         """Test that the desired info is in the __str__ method"""
         
         s = self.att1.__str__()
-        target = u"Attachment %s %s, '%s...'" %\
-            (self.att1.pk, self.att1.code, self.att1.name[:10]) 
+        target = u"Attachment %s, '%s...'" % (self.att1.pk, self.att1.name[:10]) 
         self.assertEqual(s, target, "Incorrect __str__ return")
 
     def test___unicode__(self):
         """Test that the desired info is in the unicode method"""
         unicod = self.att1.__unicode__()
-        target = u"Att. ID:%s, code:%s, '%s...'" %\
-            (self.att1.pk, self.att1.code, self.att1.name[:10])  
+        target = u"Att. ID:%s, '%s...'" % (self.att1.pk, self.att1.name[:10])  
         self.assertEqual(unicod, target, "Incorrect __unicode__ return")
 
     def test_get_absolute_url(self):

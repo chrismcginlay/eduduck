@@ -9,7 +9,6 @@ class Attachment(models.Model):
     """Handle all forms of attachment except video.
     
     Attributes:
-        code        Attachment code for human consumption
         name        Human readable name of the attachment
         lesson      ForeignKey - if attachment embedded in lesson
         course      ForeignKey - if attachment embedded in course
@@ -19,7 +18,6 @@ class Attachment(models.Model):
 
     """
     
-    code = models.CharField(max_length=10, blank=True, null=True)
     name = models.CharField(max_length=200)
     lesson = models.ForeignKey(Lesson, blank=True, null=True)
     course = models.ForeignKey(Course, blank=True, null=True)
@@ -34,15 +32,6 @@ class Attachment(models.Model):
         assert self.name
         assert self.attachment
         assert (self.lesson or self.course, "Attach to lesson or course!")
-        #get to the parent course
-        if self.lesson:
-            parent = self.lesson.course
-        else:
-            parent = self.course
-        if parent.attachment_codes == Courses.MANDATORY_CODES:
-            assert self.code
-        elif parent.attachment_codes == Courses.NO_CODES:
-            assert not self.code
 
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
@@ -53,21 +42,12 @@ class Attachment(models.Model):
     def __str__(self):
         """Human readable summary"""
 
-        if self.code:
-            return u"Attachment {1} {2}, '{3}...'".format(
-                self.pk, self.code, self.name[:10])
-        else:
-            return u"Attachment {1}, '{2}...'".format(
-                self.pk, self.name[:10])
+        return u"Attachment %s, '%s...'" % (self.pk, self.name[:10])
         
     def __unicode__(self):
         """Summary for internal use"""
-        if self.code:
-            return u"Att. ID:{1}, code:{2}, '{3}...'".format(
-                self.pk, self.code, self.name[:10])   
-        else:
-            return u"Att. ID:{1}, '{2}...'".format(
-                self.pk, self.name[:10])   
+
+        return u"Att. ID:%s, '%s...'" % (self.pk, self.name[:10])   
 
     def get_absolute_url(self):
         """Canonical URL. Returns url for download via webserver"""
@@ -92,4 +72,3 @@ class Attachment(models.Model):
         
         assert self.id
         return reverse('attachment.views.metadata', kwargs={'att_id': self.id}) 
-        

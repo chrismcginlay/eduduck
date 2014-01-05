@@ -48,7 +48,7 @@ class CourseViewTests(TestCase):
                    'url': 'http://youtu.be/LIM--jfnKeU',
                    'name': 'Music introduction',
                   }
-    attachment1_data = {'code': 'DOC1',
+    attachment1_data = {
                         'name': 'Reading List',
                         'desc': 'Useful stuff you might need',
                         'seq': 3,

@@ -9,28 +9,30 @@ from ..models import Attachment
 class AttachmentViewTests(TestCase):
     """Test views for user interaction with attachments"""
 
-    course1_data = {'code': 'EDU02',
-                   'name': 'A Course of Leeches',
-                   'abstract': 'Learn practical benefits of leeches',
-                   'level': 'Basic',
-                   'credits': 30,
-                   }
-    lesson1_data = {'code': 'B1',
-                    'name': 'Introduction to Music',
-                    'abstract': 'A summary of what we cover',
-                   }
-    att1_data = {'code': 'DOC1',
-                 'name': 'Reading List',
-                 'desc': 'Useful stuff you might need',
-                 'seq': 3,
-                 'attachment': 'empty_attachment_test.txt',
-                }
-    att2_data = {'code': 'DOC2',
-                 'name': 'Grammer Guide',
-                 'desc': 'How do you even spell grammer?',
-                 'seq': 2,
-                 'attachment': 'empty_attachment_test.txt',
-                }
+    course1_data = {
+        'code': 'EDU02',
+        'name': 'A Course of Leeches',
+        'abstract': 'Learn practical benefits of leeches',
+        'level': 'Basic',
+        'credits': 30,
+    }
+    lesson1_data = {
+        'code': 'B1',
+        'name': 'Introduction to Music',
+        'abstract': 'A summary of what we cover',
+    }
+    att1_data = {
+        'name': 'Reading List',
+        'desc': 'Useful stuff you might need',
+        'seq': 3,
+        'attachment': 'empty_attachment_test.txt',
+    }
+    att2_data = {
+        'name': 'Grammar Guide',
+        'desc': 'How do you even spell grammer?',
+        'seq': 2,
+        'attachment': 'empty_attachment_test.txt',
+    }
 
     def setUp(self):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
@@ -62,5 +64,4 @@ class AttachmentViewTests(TestCase):
             for x in ['attachment'])
         self.assertIn("Reading List", response.content, 
                       u"detail missing from response")
-        self.assertIn(u"DOC1", response.content, 
-                      u"detail missing from response")
+
