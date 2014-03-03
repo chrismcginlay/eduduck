@@ -29,7 +29,7 @@ class Bio(models.Model):
     user = models.OneToOneField(User)
     user_tz = models.CharField(max_length=255, choices=TIMEZONE_CHOICES, 
                                 blank=False, null=False)
-    accepted_terms = models.BooleanField(null=False, blank=False)
+    accepted_terms = models.BooleanField(null=False, blank=False, default=True)
     signature_line = models.CharField(max_length=200)
     description = models.TextField(max_length=10000,blank = True)
     webpage = models.URLField(blank = True)
