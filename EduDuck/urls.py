@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
+from django.views.generic import TemplateView
 
 from django.contrib import admin
 admin.autodiscover()
@@ -7,12 +8,9 @@ admin.autodiscover()
 #TODO decouple quiz app URLs from eduduck platform #9
 #TODO decouple courses app URLs from eduduck platform #9
 
-urlpatterns = patterns('django.views.generic.simple',
-    (r'^about/$', 'direct_to_template', {'template': 'about.html'}),
-)
-
-urlpatterns += patterns('',
+urlpatterns = patterns('',
 #    url(r'^search/', include('haystack.urls')),
+    url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
     url(r'^support/', include('support.urls')),
     url(r'^lesson/(?P<lesson_id>\d+)/lint/', include('outcome.urls')),
     url(r'^interaction/', include('interaction.urls')),

@@ -10,8 +10,6 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 from .forms import BioEditForm
 
-if settings.DEBUG: import pdb
-
 import logging
 logger = logging.getLogger(__name__)
 

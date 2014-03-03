@@ -9,7 +9,7 @@ from ..forms import BioEditForm
 
 class BioViewTests(TestCase):
     """Test behaviour of user 'bio' views"""
-    
+
     bio1_data = {'user_tz':         "Europe/Paris",
                  'accepted_terms':  True,
                  'signature_line':  'Some catchy signature.',
@@ -96,7 +96,7 @@ class BioViewTests(TestCase):
 
     def test_bio_public(self):
         """Test response bio.public"""
-        
+
         url = "/accounts/bio/public/{0}/".format(self.user1.bio.id)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)

@@ -8,3 +8,4 @@
 .coverage
 .rope*
 .js~
+*.kate-swp
