@@ -19,7 +19,7 @@ def bio(request):
     
     logger.info('Bio id=' + str(request.user.id) + ' view')
     template = 'bio/bio.html'
-    bio = request.user.get_profile()
+    bio = request.user.bio
     assert(bio)
 
     usercourses = request.user.usercourse_set.all()
@@ -34,7 +34,7 @@ def edit(request):
     
     logger.info('Bio id=' + str(request.user.id) + ' edit')    
     template = 'bio/bio_edit.html'
-    bio = request.user.get_profile()
+    bio = request.user.bio
     assert(bio)
     if request.method == 'POST':
         form = BioEditForm(request.POST, instance=bio)

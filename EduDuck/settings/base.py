@@ -20,8 +20,6 @@ SITE_ROOT = os.path.join(os.path.dirname(__file__),
                                          os.path.pardir, 
                                          os.path.pardir)
 
-# User Profile model 
-AUTH_PROFILE_MODULE = 'bio.Bio'
 LOGIN_REDIRECT_URL = '/courses/'
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
