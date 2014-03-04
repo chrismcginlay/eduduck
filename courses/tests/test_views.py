@@ -121,14 +121,26 @@ class CourseViewTests(TestCase):
         )
         self.learningintentiondetail2.save()
         
-    def test_course_index(self):
+    def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
         response = self.client.get('/courses/')
         self.assertEqual(response.status_code, 200)
         #Next check template variables are present
         self.assertTrue(x in response.context for x in ['course_list', 
                                                         'course_count'])
-            
+    def test_course_index_logged_in(self):
+        """Check course index loads for logged in user"""
+
+        url1 = '/'
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get(url1)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('course_list', response.context, \
+            "Missing template var: course_list")
+        self.assertIn('course_count', response.context, \
+            "Missing template var: course_count")
+        
+        
     def test_course_single_auth(self):
         """Check course page loads for authorised user"""
 

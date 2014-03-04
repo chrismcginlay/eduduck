@@ -21,25 +21,22 @@ def index(request):
     logger.info('Course index view')
     course_list = Course.objects.all()
     course_count = Course.objects.count
-    if request.user.is_authenticated():
-        profile = request.user.get_profile()
-    else:
-        profile = None
     template = 'courses/course_index.html'
+
     context_data = {'course_list':  course_list,
                     'course_count': course_count,
                    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
-    
+
 def iterNone(): 
     """Make None type iterable for zip function used below"""
-    
+
     yield None
-    
+
 def single(request, course_id):
     """Prepare variables for detail of a single course
-    
+
     There are 3 distinct pathways through this view as regards 'Progress' area:
     1. User is not authenticated. (Not logged in). Simplest case, present 
         'login to register' type message in course area.
