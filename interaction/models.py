@@ -118,7 +118,7 @@ class UserCourse(models.Model):
         """Convert the JSON coded text in self.history to a list of tuples
         of the form (datetime, action)"""
         
-        assert(self.history)
+        assert self.history
         logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" load history")
         history = json.loads(self.history)
         list_tuple_hist = []
@@ -152,10 +152,10 @@ class UserCourse(models.Model):
 
     def complete(self):
         """If not already completed set complete, deactivate"""
-   
+
         assert self._checkrep()
         logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" completion")
-       
+
         if self.completed:
             raise ValidationError(u'Already marked this course as complete')
         if self.withdrawn:
@@ -173,7 +173,7 @@ class UserCourse(models.Model):
 
     def reopen(self):
         """Re-open a course if already withdrawn or completed"""
-   
+
         assert self._checkrep()
         logger.info("User:"+str(self.user.pk)+",Course:"+str(self.course.pk)+" reopening")
 
@@ -192,14 +192,14 @@ class UserCourse(models.Model):
         self.history = json.dumps(hist)
         self.save()
         assert self._checkrep()
-        
+
     def get_status(self):
         """Return status string for human consumption"""
         
         if self.active: return 'active'
         if self.withdrawn: return 'withdrawn'
         if self.completed: return 'completed'
-        assert(False, "Invalid status")
+        assert False #Invalid status
 
     def __init__(self, *args, **kwargs):
         """Run _checkrep on instantiation"""
@@ -212,7 +212,7 @@ class UserCourse(models.Model):
  
     def save(self, *args, **kwargs):
         """Perform history save steps"""
-        
+
         existing_row = self.pk
         super(UserCourse, self).save(*args, **kwargs)
         if not existing_row:
@@ -228,25 +228,25 @@ class UserCourse(models.Model):
 
     def __str__(self):
         """Human readable summary"""
-        
+
         return u"User " + self.user.username + \
             u"'s data for course:" + self.course.name
-            
+
     def __unicode__(self):
         """Summary for internal use"""
-        
+
         return u"UC:%s, User:%s, Course:%s" % \
             (self.pk, self.user.pk, self.course.pk)
-    
+
     def get_absolute_url(self):
         assert self.id
         assert self.course
         assert self.user
-        
+
         return reverse(u"interaction.views.usercourse_single", kwargs= {
             'user_id': self.user.pk,
             'course_id': self.course.pk })
-                
+
 #Actions for UserLesson
 ULActions = Enum([
     'VISITING',
@@ -256,10 +256,10 @@ ULActions = Enum([
 
 class UserLesson(models.Model):
     """Track users interactions with lessons.
-    
+
     Visits to lesson pages will be recorded here. A lesson may be marked as
     having been completed
-    
+
     Attributes:
         lesson
         user
@@ -275,11 +275,11 @@ class UserLesson(models.Model):
         visit       User visits lesson page
         complete    User completes lesson page
         reopen      User decides they need more work on this lesson
-        
+
     Helper Methods:
         hist2list  Convert the JSON history to a list of (date, action) tuples
     """
-    
+
     lesson = models.ForeignKey(Lesson, 
         help_text="Lesson user is interacting with")
     user = models.ForeignKey(User, 
@@ -288,10 +288,10 @@ class UserLesson(models.Model):
     completed = models.BooleanField(default=False)
     history = models.TextField(null=True, blank=True)
     note = models.TextField(null=True, blank=True)
-    
+
     class Meta:
         unique_together = ('lesson', 'user')
-       
+
     def _checkrep(self):
         """Verify consistency of attributes and history"""
 
@@ -332,12 +332,12 @@ class UserLesson(models.Model):
                 logger.warning("UL _checkrep() detected naive timezone (could be a test)")
                 return False   
         return True
-             
+
     def hist2list(self):
         """Convert the JSON coded text in self.history to a list of tuples
         of the form (datetime, action)"""
-        
-        assert(self.history)
+
+        assert self.history
         logger.info("User:"+str(self.user.pk)+",Lesson:"+str(self.lesson.pk)+" load history")
         history = json.loads(self.history)
         list_tuple_hist = []
@@ -753,7 +753,7 @@ class UserAttachment(models.Model):
         """Convert the JSON coded text in self.history to a list of tuples
         of the form (datetime, action)"""
         
-        assert(self.history)
+        assert self.history
         logger.info("UA: %s, User: %s, Attachment: %s loading history" %\
             (self.pk, self.user.pk, self.attachment.pk))
         history = json.loads(self.history)
