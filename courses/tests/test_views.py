@@ -248,6 +248,32 @@ class CourseViewTests(TestCase):
         self.assertEqual(response.context['course'].pk, c1)   
         
 
+    def test_86_organiser_instructor_name(self):
+        """Course template shows either full name or username of instructor"""
+
+        # Load up a course page
+        c1 = self.course1.pk
+        url1 = '/courses/{0}/'.format(c1)
+        self.course1.instructor.first_name="Bob"
+        self.course1.instructor.second_name="Smith"
+        self.course1.instructor.save()
+        response = self.client.get(url1)
+        
+        # Check username appears for organiser
+        import pdb; pdb.set_trace()
+        org = self.course1.organiser
+        target = ('<p>Course organiser <a ' 
+                  'href="/accounts/bio/public/{1}/">{0}</a>')
+        target = target.format(org.username, org.pk)
+        self.assertIn(target, response.content)
+        
+        # Check full name appears for instructor
+        inst = self.course1.instructor
+        target = ('<p>Course instructor <a '
+                  'href="/accounts/bio/public/{1}/">{0}</a>')
+        target = target.format(inst.get_full_name(), inst.pk)
+        self.assertIn(target, response.content)
+       
     def test_course_lesson_unauth(self):
         """Test view of single lesson for unauthenticated user"""
         

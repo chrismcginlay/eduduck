@@ -17,9 +17,9 @@
         Level {{ course.level }}, {{ course.credits }}
         point{{course.credits|pluralize:",s"}}.
         <p>Course organiser <a href='{{ course.organiser.bio.get_profile_url }}'>
-            {{ course.organiser.get_full_name }}</a></p>
+{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
         <p>Course instructor <a href='{{ course.instructor.bio.get_profile_url }}'>
-            {{ course.instructor.get_full_name }}</a></p>
+{% firstof course.instructor.get_full_name course.instructor.username %}</a></p>
         <p class="abstract">{{ course.abstract }}</p>
         {% empty %}
         <h4>You aren't enrolled in any courses yet.</h4>
