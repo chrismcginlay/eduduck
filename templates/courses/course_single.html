@@ -22,10 +22,10 @@
         <h4>About the Course</h4>
         <article class="abstract">
             <p>Hi, and welcome to {{ course.name }}</p>
-            <p>Course organiser <a href='{{ course.organiser.bio.get_profile_url }}'>
-            {{ course.organiser.get_full_name }}</a></p>
-            <p>Course instructor <a href='{{ course.instructor.bio.get_profile_url }}'>
-            {{ course.instructor.get_full_name }}</a></p>
+<p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">
+{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
+<p>Course instructor <a href="{{course.instructor.bio.get_profile_url}}">
+{% firstof course.instructor.get_full_name course.instructor %}</a></p>
 
             {% for v in course.video_set.all %}
             <iframe width="280" height="158" src='{{ v.url }}' 

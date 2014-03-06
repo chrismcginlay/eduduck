@@ -275,7 +275,7 @@ instructor"""
         
         # Load up a course single page
         c2 = self.course2
-        url2 = '/courses/{0}'.format(c2.pk)
+        url2 = '/courses/{0}/'.format(c2.pk)
         c2.instructor.first_name="Hank"
         c2.instructor.second_name="Rancho"
         c2.instructor.save()
