@@ -70,8 +70,7 @@
         {% empty %}
         <h4>No Lessons</h4>
         <article class="abstract">
-            <p>{{ course.oraganiser }} 
-            hasn't added any lessons yet!</p>
+        <p>{% firstof course.organiser.get_full_name course.organiser.username %} hasn&#39;t added any lessons yet!</p>
         </article>
         {% endfor %}
     </section>

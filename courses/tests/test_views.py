@@ -4,8 +4,9 @@ Unit tests for courses views
 
 import json
 from datetime import datetime
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
+from django.utils.html import escape
 
 from bio.models import Bio
 
@@ -256,7 +257,7 @@ instructor"""
         c2 = self.course2
         url1 = '/courses/'
         c2.instructor.first_name="Hank"
-        c2.instructor.second_name="Rancho"
+        c2.instructor.last_name="Rancho"
         c2.instructor.save()
         response = self.client.get(url1)
         
@@ -277,7 +278,7 @@ instructor"""
         c2 = self.course2
         url2 = '/courses/{0}/'.format(c2.pk)
         c2.instructor.first_name="Hank"
-        c2.instructor.second_name="Rancho"
+        c2.instructor.last_name="Rancho"
         c2.instructor.save()
         response = self.client.get(url2)
 
@@ -294,9 +295,26 @@ instructor"""
         target = t.format(inst.get_full_name(), inst.pk)
         self.assertIn(target, resp)
         
+    def test_87_course_with_no_lessons_shows_template_error(self):
+        """Should show 'course organiser hasn't added any lessons yet"""
+
+        # Load up a course 2 single page (has no lessons)
+        c2 = self.course2
+        url2 = '/courses/{0}/'.format(c2.pk)
+        c2.organiser.first_name="Bertrand"
+        c2.organiser.last_name="Bouffant"
+        c2.organiser.save()
+        response = self.client.get(url2)
+        resp = response.content.replace("\n", "").replace("\t", "")
+
+        # See organiser named properly in message
+        organiser = c2.organiser.get_full_name()
+        t = escape("{0} hasn't added any lessons yet!".format(organiser))
+        self.assertIn(t, resp)
+
     def test_course_lesson_unauth(self):
         """Test view of single lesson for unauthenticated user"""
-        
+
         c1 = self.course1.pk
         l1 = self.lesson1.pk
         url1 = '/courses/{0}/lesson/{1}/'.format(c1,l1)
