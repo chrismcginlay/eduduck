@@ -249,31 +249,51 @@ class CourseViewTests(TestCase):
         
 
     def test_86_organiser_instructor_name(self):
-        """Course index template shows either full name or username of 
+        """Course templates show either full name or username of 
 instructor"""
 
         # Load up the course index page
-        c1 = self.course2.pk
-        url1 = '/courses/'.format(c1)
-        self.course2.instructor.first_name="Hank"
-        self.course2.instructor.second_name="Rancho"
-        self.course2.instructor.save()
+        c2 = self.course2
+        url1 = '/courses/'
+        c2.instructor.first_name="Hank"
+        c2.instructor.second_name="Rancho"
+        c2.instructor.save()
         response = self.client.get(url1)
         
         # Check username appears for organiser
-        import pdb; pdb.set_trace()
-        org = self.course2.organiser
+        org = c2.organiser
         t = '<p>Course organiser <a href="/accounts/bio/public/{1}/">{0}</a>'
         target = t.format(org.username, org.pk)
         resp = response.content.replace("\n", "").replace("\t", "")
         self.assertIn(target, resp)
         
         # Check full name appears for instructor
-        inst = self.course2.instructor
+        inst = c2.instructor
         t = '<p>Course instructor <a href="/accounts/bio/public/{1}/">{0}</a>'
         target = t.format(inst.get_full_name(), inst.pk)
         self.assertIn(target, resp)
-       
+        
+        # Load up a course single page
+        c2 = self.course2
+        url2 = '/courses/{0}'.format(c2.pk)
+        c2.instructor.first_name="Hank"
+        c2.instructor.second_name="Rancho"
+        c2.instructor.save()
+        response = self.client.get(url2)
+
+        # Check username appears for organiser
+        org = c2.organiser
+        t = '<p>Course organiser <a href="/accounts/bio/public/{1}/">{0}</a>'
+        target = t.format(org.username, org.pk)
+        resp = response.content.replace("\n", "").replace("\t", "")
+        self.assertIn(target, resp)
+        
+        # Check full name appears for instructor
+        inst = c2.instructor
+        t = '<p>Course instructor <a href="/accounts/bio/public/{1}/">{0}</a>'
+        target = t.format(inst.get_full_name(), inst.pk)
+        self.assertIn(target, resp)
+        
     def test_course_lesson_unauth(self):
         """Test view of single lesson for unauthenticated user"""
         
