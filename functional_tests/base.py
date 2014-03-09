@@ -12,17 +12,17 @@ class FunctionalTest(LiveServerTestCase):
             if 'liveserver' in arg:
                 cls.server_url = 'http://' + arg.split('=')[1]
                 return
-            LiveServerTestCase.setUpClass()
-            cls.server_url = cls.live_server_url
+        LiveServerTestCase.setUpClass()
+        cls.server_url = cls.live_server_url
 
-            @classmethod
-            def tearDownClass(cls):
-                if cls.server_url == cls.live_server_url:
-                    LiveServerTestCase.tearDownClass()
+    @classmethod
+    def tearDownClass(cls):
+        if cls.server_url == cls.live_server_url:
+            LiveServerTestCase.tearDownClass()
 
-                    def setUp(self):
-                        self.browser = webdriver.Firefox()
-                        self.browser.implicitly_wait(3)
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(3)
 
-                        def tearDown(self):
-                            self.browser.quit()
+    def tearDown(self):
+        self.browser.quit()
