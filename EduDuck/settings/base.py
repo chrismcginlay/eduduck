@@ -196,7 +196,7 @@ LOGGING = {
         'log_file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/tmp/eduduck.log',
+            'filename': '/var/log/eduduck.log',
             'maxBytes': 10*2**20, #10 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -204,7 +204,7 @@ LOGGING = {
         'log_filedb': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/tmp/eduduck_db.log',
+            'filename': '/var/log/eduduck_db.log',
             'maxBytes': 10*2**20, #10 MB
             'backupCount': 5,
             'formatter': 'standard',
