@@ -31,11 +31,31 @@ def _get_source():
     run("cd {0}; git reset --hard {1}".format(SOURCE_DIR, current_commit))
      
 def _update_settings(site_name):
-    #compare with how this is already done!
-    secret_key_file = #wherever it is to be
+    settings_file = SOURCE_DIR + "Eduduck/settings/base.py"
+    secret_key_file = "/etc/nginx/sites-available/" + SOURCE_DIR + "/secret_key.py"
+    nginx_config = "/etc/nginx/sites-enabled/" + site_name
         if not exists(secret_key_file):
-            charset = #see issue queue for key gen method used
-            key = #generate
-            append(secret_key_file, "SECRET_KEY={0}".format(key))
-        append??
+            random.seed()
+            charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
+            key = "".join(random.choice(charset) for i in range(69))
+            append(secret_key_file, "env SECRET_KEY={0};".format(key))
+        append(nginx_config, secret_key_file)
         
+def _prepare_database():
+    # if database does not exist create it
+    # otherwise just syncdb
+    
+def _update_virtualenv():
+    virtualenv_dir = SOURCE_DIR + "/../virtualenv"
+    if not exists(virtualenv_dir + "/bin/pip"): #
+        run("virtualenv --python=python2.7 {0}".format(virtualenv_dir))
+    run("{0}/bin/pip install -r {1}/requirements/base.txt".format(
+        virtualenv_dir, source_dir))
+    
+def _update_static_files():
+    run("cd {0}; ../virtualenv/bin/python3 manage.py collectstatic --noinput".format(SOURCE_DIR))
+    
+
+def _update_media():
+    # not sure where these would be deployed from - some backup service?
+    pass
