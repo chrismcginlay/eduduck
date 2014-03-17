@@ -7,6 +7,16 @@ REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
 SITES_DIR = "/home/chris/sites"
 env.key_file = "/home/chris/.ssh/id_rsa.pub"
 
+def provision():
+    #TODO combine to single command for efficiency
+    sudo("apt-get install -y python-virtualenv")
+    sudo("apt-get install -y python-pip")
+    sudo("apt-get install -y mysql-server")
+    sudo("apt-get install -y libmysqlclient-dev")
+    sudo("apt-get install -y python-mysqldb")
+    sudo("pip install virtualenvwrapper")
+    sudo("apt-get install -y nginx")
+
 def deploy():
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
@@ -59,7 +69,7 @@ def _update_settings(site_name, sdir):
         charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
         key = "".join(random.choice(charset) for i in range(69))
         append(secret_key_file, "env SECRET_KEY={0};".format(key), use_sudo=True)
-    append(nginx_config, secret_key_file, use_sudo)
+    append(nginx_config, secret_key_file, use_sudo=True)
         
 def _prepare_database():
     # if database does not exist create it
