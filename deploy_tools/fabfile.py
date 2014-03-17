@@ -42,6 +42,9 @@ def _get_source(sdir):
         run("git clone {0} {1}".format(REPO_URL, sdir))
     current_commit = local("git log -n 1 --format=%H", capture = True)
     run("cd {0}; git reset --hard {1}".format(sdir, current_commit))
+    
+    #TODO delete the following on issue 83 close
+    run("cd {0}; git checkout 83-auto_deploy".format(sdir))
      
 def _config_nginx(site_name, sdir):
     sudo("mkdir -p /etc/nginx/conf.d/{0}".format(site_name))
