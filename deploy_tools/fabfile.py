@@ -2,6 +2,7 @@
 from fabric.contrib.files import append, exists, sed
 from fabric.api import env, local, run, sudo
 import random
+import os, sys
 
 REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
 SITES_DIR = "/home/chris/sites"
@@ -13,21 +14,24 @@ def provision():
     sudo("apt-get install -y python-pip")
     sudo("apt-get install -y mysql-server")
     sudo("apt-get install -y libmysqlclient-dev")
+    sudo("apt-get install -y python-dev")
     sudo("apt-get install -y python-mysqldb")
     sudo("pip install virtualenvwrapper")
     sudo("apt-get install -y nginx")
 
-def deploy():
+def deploy(settings):
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
-    _create_dir_tree_if_not_exists(env.host)
-    _get_source(SOURCE_DIR)
-    _config_nginx(env.host, SOURCE_DIR)
-    _update_settings(env.host, SOURCE_DIR)
-    _prepare_database()
+    sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
+
+    #_create_dir_tree_if_not_exists(env.host)
+    #_get_source(SOURCE_DIR)
+    #_config_nginx(env.host, SOURCE_DIR)
+    #_update_settings(env.host, SOURCE_DIR)
     _update_virtualenv(SOURCE_DIR)
-    _update_static(SOURCE_DIR)
-    _update_media(SOURCE_DIR)
+    _prepare_database(SOURCE_DIR, settings)
+    _update_static_files(SOURCE_DIR)
+    _update_media_files(SOURCE_DIR)
     
 def _create_dir_tree_if_not_exists(site_name):
     for subdir in ("static", "media", "source", "virtualenv"):
@@ -63,8 +67,7 @@ def _config_nginx(site_name, sdir):
         ))
 
 def _update_settings(site_name, sdir):
-    import pdb; pdb.set_trace()
-    settings_file = sdir + "/Eduduck/settings/base.py"
+    settings_file = sdir + "/EduDuck/settings/base.py"
     secret_key_file = "/etc/nginx/conf.d/" + site_name + "/secret_key.py"
     nginx_config = "/etc/nginx/sites-enabled/" + site_name
     if not exists(secret_key_file):
@@ -73,23 +76,47 @@ def _update_settings(site_name, sdir):
         key = "".join(random.choice(charset) for i in range(69))
         append(secret_key_file, "env SECRET_KEY={0};".format(key), use_sudo=True)
     append(nginx_config, secret_key_file, use_sudo=True)
-        
-def _prepare_database():
-    # if database does not exist create it
-    # otherwise just syncdb
-    pass
-    
+
 def _update_virtualenv(sdir):
     virtualenv_dir = sdir + "/../virtualenv"
     if not exists(virtualenv_dir + "/bin/pip"): #
         run("virtualenv --python=python2.7 {0}".format(virtualenv_dir))
-    run("{0}/bin/pip install -r {1}/requirements/base.txt".format(
-        virtualenv_dir, sdir))
+        run("{0}/bin/pip install -r {1}/requirements/base.txt".format(
+            virtualenv_dir, sdir))
+        
+def _prepare_database(sdir, settings):
+    # if database does not exist create it
+    #TODO utilise same environment vars setup as for production and staging
+    dbname = "eduduck"
+    dbuser = "duckinator"
+    dbpass = "AB0XAt5BgDJh"
+    try:
+        out = sudo("mysqlshow {0}".format(dbname))
+    except:
+        sudo("mysqladmin create {0}".format(dbname))
+        perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
+        sql = "\"mysql GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';\"".format(
+            perms,
+            dbname,
+            dbuser,
+            dbpass,
+        )
+        run("mysql -u root -p -e " + sql)
+    import pdb; pdb.set_trace()
+    run("cd {0}/{1}/virtualenv/bin/; source activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
+        SITES_DIR,
+        env.host,
+        settings
+    ))
     
 def _update_static_files(sdir):
-    run("cd {0}; ../virtualenv/bin/python3 manage.py collectstatic --noinput".format(sdir))
+    run("cd {0}/{1}/virtualenv/bin/; django-admin.py collectstatic --setttings=EduDuck.settings.{2} --noinput".format(
+        SITES_DIR,
+        env.host,
+        settings
+    ))
     
 
-def _update_media():
+def _update_media_files():
     # not sure where these would be deployed from - some backup service?
     pass

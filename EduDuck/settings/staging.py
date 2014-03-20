@@ -51,10 +51,10 @@ assert 'DATABASE_PORT' in os.environ, 'DATABASE_PORT missing from environment'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-	'USER': os.environ['DATABASE_USER'],
-   	'PASSWORD': os.environ['DATABASE_PASSWORD'],
-	'NAME': os.environ['DATABASE_NAME'],
-	'PORT': os.environ['DATABASE_PORT'],
+        'USER': os.environ['DATABASE_USER'],
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'NAME': os.environ['DATABASE_NAME'],
+        'PORT': os.environ['DATABASE_PORT'],
         'HOST': '',
         'OPTIONS': {
 #            'read_default_file': '/etc/mysql/conf.d/eduduck_my.cnf',
