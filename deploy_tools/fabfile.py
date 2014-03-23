@@ -9,25 +9,38 @@ SITES_DIR = "/home/chris/sites"
 env.key_file = "/home/chris/.ssh/id_rsa.pub"
 
 def provision():
-    #TODO combine to single command for efficiency
-    sudo("apt-get install -y python-virtualenv")
-    sudo("apt-get install -y python-pip")
-    sudo("apt-get install -y mysql-server")
-    sudo("apt-get install -y libmysqlclient-dev")
-    sudo("apt-get install -y python-dev")
-    sudo("apt-get install -y python-mysqldb")
-    sudo("pip install virtualenvwrapper")
-    sudo("apt-get install -y nginx")
+    """ Install required software for EduDuck """
+    
+    apt_packages = [
+        'python-virtualenv',
+        'python-pip',
+        'mysql-server',
+        'libmysqlclient-dev',
+        'python-dev',
+        'python-mysqldb',
+        'nginx',
+        'git'
+    ]
 
+    pip_packages = [
+        'virtualenvwrapper'
+    ]
+    
+    apt_cmd = "apt-get install -y " + " ".join([pkg for pkg in apt_packages])
+    sudo(apt_cmd)
+
+    pip_cmd = "pip install " + " ".join([pkg for pkg in pip_packages])
+    sudo(pip_cmd)
+    
 def deploy(settings):
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
-    #_create_dir_tree_if_not_exists(env.host)
-    #_get_source(SOURCE_DIR)
-    #_config_nginx(env.host, SOURCE_DIR)
-    #_update_settings(env.host, SOURCE_DIR)
+    _create_dir_tree_if_not_exists(env.host)
+    _get_source(SOURCE_DIR)
+    _config_nginx(env.host, SOURCE_DIR)
+    _update_settings(env.host, SOURCE_DIR)
     _update_virtualenv(SOURCE_DIR)
     _prepare_database(SOURCE_DIR, settings)
     _update_static_files(SOURCE_DIR)
@@ -91,11 +104,11 @@ def _prepare_database(sdir, settings):
     dbuser = "duckinator"
     dbpass = "AB0XAt5BgDJh"
     try:
-        out = sudo("mysqlshow {0}".format(dbname))
+        out = run("mysqlshow -u root -p {0}".format(dbname))
     except:
-        sudo("mysqladmin create {0}".format(dbname))
+        run("mysqladmin -u root -p create {0}".format(dbname))
         perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
-        sql = "\"mysql GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';\"".format(
+        sql = "\"GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';\"".format(
             perms,
             dbname,
             dbuser,
@@ -103,11 +116,13 @@ def _prepare_database(sdir, settings):
         )
         run("mysql -u root -p -e " + sql)
     import pdb; pdb.set_trace()
-    run("cd {0}/{1}/virtualenv/bin/; source activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
+    sync_cmd = "import sys; sys.path.append({0}/{1};".format(SITES_DIR, env.host)
+    sync_cmd += "cd {0}/{1}/virtualenv/bin/; source activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
         env.host,
         settings
-    ))
+    )
+    run(sync_cmd)
     
 def _update_static_files(sdir):
     run("cd {0}/{1}/virtualenv/bin/; django-admin.py collectstatic --setttings=EduDuck.settings.{2} --noinput".format(
