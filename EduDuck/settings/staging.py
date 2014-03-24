@@ -7,7 +7,13 @@ TEMPLATE_DEBUG = DEBUG
 #TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
 TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
 
-ALLOWED_HOSTS = ['eduduck.com', 'www.eduduck.com', 'static.eduduck.com', 'media.eduduck.com']
+ALLOWED_HOSTS = [
+    'staging.eduduck.com',
+    'eduduck.com', 
+    'www.eduduck.com', 
+    'static.eduduck.com', 
+    'media.eduduck.com'
+]
 
 # Make SECRET_KEY unique, and don't share it with anybody.
 # see issue #43 for key generation method and location of Env Vars
