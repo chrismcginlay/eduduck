@@ -6,7 +6,10 @@ import os, sys
 
 REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
 SITES_DIR = "/home/chris/sites"
-env.key_file = "/home/chris/.ssh/id_rsa.pub"
+
+env.user = 'chris'
+# local public key
+env.key_filename = "/home/chris/.ssh/id_rsa.pub"
 
 def provision():
     """ Install required software for EduDuck """
@@ -37,11 +40,13 @@ def deploy(settings):
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
-    _create_dir_tree_if_not_exists(env.host)
-    _get_source(SOURCE_DIR)
-    _config_nginx(env.host, SOURCE_DIR)
+    #_create_dir_tree_if_not_exists(env.host)
+    #_get_source(SOURCE_DIR)
+    #_config_nginx(env.host, SOURCE_DIR)
+    _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
     _update_settings(env.host, SOURCE_DIR)
-    _update_virtualenv(SOURCE_DIR)
+    #_update_virtualenv(SOURCE_DIR)
+    #_ready_logfiles()
     _prepare_database(SOURCE_DIR, settings)
     _update_static_files(SOURCE_DIR)
     _update_media_files(SOURCE_DIR)
@@ -79,6 +84,13 @@ def _config_nginx(site_name, sdir):
             site_name
         ))
 
+def _write_gunicorn_upstart_script(site_name, sdir):
+    import pdb; pdb.set_trace()
+    gunicorn_template_path = sdir + "/deploy_tools/gunicorn_upstart.template"
+    sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee /etc/init/gunicorn-{0}"
+    sed_cmd = sed_cmd.format(site_name, gunicorn_template_path)
+    sudo(sed_cmd)
+
 def _update_settings(site_name, sdir):
     settings_file = sdir + "/EduDuck/settings/base.py"
     secret_key_file = "/etc/nginx/conf.d/" + site_name + "/secret_key.py"
@@ -89,7 +101,7 @@ def _update_settings(site_name, sdir):
         key = "".join(random.choice(charset) for i in range(69))
         append(secret_key_file, "env SECRET_KEY={0};".format(key), use_sudo=True)
     append(nginx_config, secret_key_file, use_sudo=True)
-
+    
 def _update_virtualenv(sdir):
     virtualenv_dir = sdir + "/../virtualenv"
     if not exists(virtualenv_dir + "/bin/pip"): #
@@ -97,6 +109,14 @@ def _update_virtualenv(sdir):
         run("{0}/bin/pip install -r {1}/requirements/base.txt".format(
             virtualenv_dir, sdir))
         
+def _ready_logfiles():
+    sudo("touch /var/log/eduduck.log")
+    sudo("touch /var/log/eduduck_db.log")
+    sudo("chown "+env.user+" /var/log/eduduck.log")
+    sudo("chown "+env.user+" /var/log/eduduck_db.log")
+    sudo("chmod 700 /var/log/eduduck.log")
+    sudo("chmod 700 /var/log/eduduck_db.log")
+    
 def _prepare_database(sdir, settings):
     # if database does not exist create it
     #TODO utilise same environment vars setup as for production and staging
@@ -115,9 +135,8 @@ def _prepare_database(sdir, settings):
             dbpass,
         )
         run("mysql -u root -p -e " + sql)
-    import pdb; pdb.set_trace()
-    sync_cmd = "import sys; sys.path.append({0}/{1};".format(SITES_DIR, env.host)
-    sync_cmd += "cd {0}/{1}/virtualenv/bin/; source activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
+
+    sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
         env.host,
         settings
