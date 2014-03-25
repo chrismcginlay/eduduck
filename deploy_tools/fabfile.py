@@ -44,8 +44,8 @@ def deploy(settings):
     #_get_source(SOURCE_DIR)
     #_config_nginx(env.host, SOURCE_DIR)
     _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
-    _update_settings(env.host, SOURCE_DIR)
     #_update_virtualenv(SOURCE_DIR)
+    _prepare_environment_variables(SITES_DIR, env.host)
     #_ready_logfiles()
     _prepare_database(SOURCE_DIR, settings)
     _update_static_files(SOURCE_DIR)
@@ -90,17 +90,6 @@ def _write_gunicorn_upstart_script(site_name, sdir):
     sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee /etc/init/gunicorn-{0}"
     sed_cmd = sed_cmd.format(site_name, gunicorn_template_path)
     sudo(sed_cmd)
-
-def _update_settings(site_name, sdir):
-    settings_file = sdir + "/EduDuck/settings/base.py"
-    secret_key_file = "/etc/nginx/conf.d/" + site_name + "/secret_key.py"
-    nginx_config = "/etc/nginx/sites-enabled/" + site_name
-    if not exists(secret_key_file):
-        random.seed()
-        charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
-        key = "".join(random.choice(charset) for i in range(69))
-        append(secret_key_file, "env SECRET_KEY={0};".format(key), use_sudo=True)
-    append(nginx_config, secret_key_file, use_sudo=True)
     
 def _update_virtualenv(sdir):
     virtualenv_dir = sdir + "/../virtualenv"
@@ -109,6 +98,30 @@ def _update_virtualenv(sdir):
         run("{0}/bin/pip install -r {1}/requirements/base.txt".format(
             virtualenv_dir, sdir))
         
+def _prepare_environment_variables(SITES_DIR, hostname):
+    """ Prepare activate to export required env vars into the virtualenv """
+
+    virtenv_dir = "{0}/{1}/virtualenv/bin".format(SITES_DIR, hostname)
+    virtenv_activate = virtenv_dir + 'activate'
+    
+    # First the SECRET_KEY
+    env_config = virtenv_dir + "/virtualenv_envvars.txt"
+    if not contains(env_config, SECRET_KEY):
+        random.seed()
+        charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
+        key = "".join(random.choice(charset) for i in range(69))
+        append(env_config, "SECRET_KEY={0};".format(key))
+        
+    # DB PARAMS
+    append(env_config, "DB_NAME=tobespecified")
+    append(env_config, "DB_USER=tobespecified")
+    append(env_config, "DB_PASS=tobespecified")
+    
+    # EMAIL PARAMS
+    append(env_config, "EMAIL=tobespecified")
+    
+    append(virtenv_activate, "export ($cat 'env_config')")
+    
 def _ready_logfiles():
     sudo("touch /var/log/eduduck.log")
     sudo("touch /var/log/eduduck_db.log")
@@ -136,7 +149,7 @@ def _prepare_database(sdir, settings):
         )
         run("mysql -u root -p -e " + sql)
 
-    sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
+    sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py --pythonpath='/home/chris/sites/staging.eduduck.com/source' syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
         env.host,
         settings
