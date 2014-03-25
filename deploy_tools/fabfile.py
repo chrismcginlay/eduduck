@@ -1,5 +1,5 @@
 # Fabfile.py based on "Test Driven Web Development with Python, H. Percival, pp 144"
-from fabric.contrib.files import append, exists, sed
+from fabric.contrib.files import append, exists, sed, contains
 from fabric.api import env, local, run, sudo
 import random
 import os, sys
@@ -85,7 +85,6 @@ def _config_nginx(site_name, sdir):
         ))
 
 def _write_gunicorn_upstart_script(site_name, sdir):
-    import pdb; pdb.set_trace()
     gunicorn_template_path = sdir + "/deploy_tools/gunicorn_upstart.template"
     sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee /etc/init/gunicorn-{0}"
     sed_cmd = sed_cmd.format(site_name, gunicorn_template_path)
@@ -102,25 +101,30 @@ def _prepare_environment_variables(SITES_DIR, hostname):
     """ Prepare activate to export required env vars into the virtualenv """
 
     virtenv_dir = "{0}/{1}/virtualenv/bin".format(SITES_DIR, hostname)
-    virtenv_activate = virtenv_dir + 'activate'
+    virtenv_activate = virtenv_dir + '/activate'
+    env_config = virtenv_dir + "/virtualenv_envvars.txt"
     
     # First the SECRET_KEY
-    env_config = virtenv_dir + "/virtualenv_envvars.txt"
-    if not contains(env_config, SECRET_KEY):
+    if not contains(env_config, 'SECRET_KEY'):
         random.seed()
         charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
         key = "".join(random.choice(charset) for i in range(69))
         append(env_config, "SECRET_KEY={0};".format(key))
         
     # DB PARAMS
-    append(env_config, "DB_NAME=tobespecified")
-    append(env_config, "DB_USER=tobespecified")
-    append(env_config, "DB_PASS=tobespecified")
+    append(env_config, "DATABASE_NAME=tobespecified")
+    append(env_config, "DATABASE_USER=tobespecified")
+    append(env_config, "DATABASE_PASSWORD=tobespecified")
+    append(env_config, "DATABASE_PORT=tobespecified")
     
     # EMAIL PARAMS
-    append(env_config, "EMAIL=tobespecified")
+    append(env_config, "EMAIL_USER=tobespecified")
+    append(env_config, "EMAIL_PASSWORD=tobespecified")
     
-    append(virtenv_activate, "export ($cat 'env_config')")
+    if not contains(virtenv_activate, '# Pull in environment variables'):
+        append(virtenv_activate, "# Pull in environment variables")
+        export_cmd = "export $(cat {0})".format(env_config)
+        append(virtenv_activate, export_cmd)
     
 def _ready_logfiles():
     sudo("touch /var/log/eduduck.log")
