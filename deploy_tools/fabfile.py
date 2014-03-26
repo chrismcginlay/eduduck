@@ -6,6 +6,7 @@ import os, sys
 
 REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
 SITES_DIR = "/home/chris/sites"
+#TODO SITES_DIR is available within functions. No need to have as parameter.
 
 env.user = 'chris'
 # local public key
@@ -47,7 +48,7 @@ def deploy(settings):
     #_update_virtualenv(SOURCE_DIR)
     _prepare_environment_variables(SITES_DIR, env.host)
     #_ready_logfiles()
-    _prepare_database(SOURCE_DIR, settings)
+    _prepare_database(SOURCE_DIR, settings, env.host)
     _update_static_files(SOURCE_DIR)
     _update_media_files(SOURCE_DIR)
     
@@ -112,15 +113,20 @@ def _prepare_environment_variables(SITES_DIR, hostname):
         append(env_config, "SECRET_KEY={0};".format(key))
         
     # DB PARAMS
-    append(env_config, "DATABASE_NAME=tobespecified")
-    append(env_config, "DATABASE_USER=tobespecified")
-    append(env_config, "DATABASE_PASSWORD=tobespecified")
+    append(env_config, "DATABASE_NAME=eduduck")
+    append(env_config, "DATABASE_USER=duckinator")
+    append(env_config, "DATABASE_PASSWORD=AB0XAt5BgDJh")
     append(env_config, "DATABASE_PORT=tobespecified")
     
     # EMAIL PARAMS
     append(env_config, "EMAIL_USER=tobespecified")
     append(env_config, "EMAIL_PASSWORD=tobespecified")
     
+    # PYTHONPATH
+    append(env_config, "PYTHONPATH={0}/{1}/source".format(SITES_DIR, hostname))
+    
+    # Modify the virtualenv activate script, by adding an export command at the
+    # end. (If the export already exists, do nothing.
     if not contains(virtenv_activate, '# Pull in environment variables'):
         append(virtenv_activate, "# Pull in environment variables")
         export_cmd = "export $(cat {0})".format(env_config)
@@ -134,12 +140,19 @@ def _ready_logfiles():
     sudo("chmod 700 /var/log/eduduck.log")
     sudo("chmod 700 /var/log/eduduck_db.log")
     
-def _prepare_database(sdir, settings):
+def _prepare_database(sdir, settings, hostname):
     # if database does not exist create it
-    #TODO utilise same environment vars setup as for production and staging
-    dbname = "eduduck"
-    dbuser = "duckinator"
-    dbpass = "AB0XAt5BgDJh"
+    import pdb; pdb.set_trace()
+    
+    path_to_activate = "{0}/{1}/virtualenv/bin/activate".format(SITES_DIR, hostname)
+    dbname = "eduluck"
+    get_var = "source {0}; echo $DATABASE_PASSWORD;".format(path_to_activate)
+    dbpass = run(get_var)
+    get_var = "source {0}; echo $DATABASE_USER;".format(path_to_activate)
+    dbuser = run(get_var)
+    get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
+    dbname = run(get_var)
+    
     try:
         out = run("mysqlshow -u root -p {0}".format(dbname))
     except:
@@ -153,7 +166,7 @@ def _prepare_database(sdir, settings):
         )
         run("mysql -u root -p -e " + sql)
 
-    sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py --pythonpath='/home/chris/sites/staging.eduduck.com/source' syncdb --settings=EduDuck.settings.{2} --noinput".format(
+    sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
         env.host,
         settings
@@ -161,7 +174,7 @@ def _prepare_database(sdir, settings):
     run(sync_cmd)
     
 def _update_static_files(sdir):
-    run("cd {0}/{1}/virtualenv/bin/; django-admin.py collectstatic --setttings=EduDuck.settings.{2} --noinput".format(
+    run("cd {0}/{1}/virtualenv/bin/; django-admin.py collectstatic  --pythonpath='/home/chris/sites/staging.eduduck.com/source' --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
         env.host,
         settings
