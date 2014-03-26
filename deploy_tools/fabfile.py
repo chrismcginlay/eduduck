@@ -21,13 +21,12 @@ def provision():
         'mysql-server',
         'libmysqlclient-dev',
         'python-dev',
-        'python-mysqldb',
         'nginx',
-        'git'
+        'git',
     ]
 
     pip_packages = [
-        'virtualenvwrapper'
+        'virtualenvwrapper',
     ]
     
     apt_cmd = "apt-get install -y " + " ".join([pkg for pkg in apt_packages])
@@ -141,9 +140,8 @@ def _ready_logfiles():
     sudo("chmod 700 /var/log/eduduck_db.log")
     
 def _prepare_database(sdir, settings, hostname):
-    # if database does not exist create it
-    import pdb; pdb.set_trace()
-    
+
+    # load environment variables
     path_to_activate = "{0}/{1}/virtualenv/bin/activate".format(SITES_DIR, hostname)
     dbname = "eduluck"
     get_var = "source {0}; echo $DATABASE_PASSWORD;".format(path_to_activate)
@@ -152,7 +150,8 @@ def _prepare_database(sdir, settings, hostname):
     dbuser = run(get_var)
     get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
     dbname = run(get_var)
-    
+
+    # if database does not exist create it
     try:
         out = run("mysqlshow -u root -p {0}".format(dbname))
     except:
