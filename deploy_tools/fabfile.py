@@ -57,13 +57,13 @@ def deploy(settings):
     sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
     #_create_dir_tree_if_not_exists(env.host)
-    _get_source(SOURCE_DIR)
+    #_get_source(SOURCE_DIR)
     #_config_nginx(env.host, SOURCE_DIR)
-    _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
+    #_write_gunicorn_upstart_script(env.host, SOURCE_DIR)
     #_update_virtualenv(SOURCE_DIR)
-    _prepare_environment_variables(SITES_DIR, env.host)
+    #_prepare_environment_variables(SITES_DIR, env.host)
     #_ready_logfiles()
-    _prepare_database(SOURCE_DIR, settings, env.host)
+    #_prepare_database(SOURCE_DIR, settings, env.host)
     _update_static_files(SOURCE_DIR, settings)
     _restart_services()
     
