@@ -57,7 +57,7 @@ def deploy(settings):
     sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
     #_create_dir_tree_if_not_exists(env.host)
-    #_get_source(SOURCE_DIR)
+    _get_source(SOURCE_DIR)
     #_config_nginx(env.host, SOURCE_DIR)
     #_write_gunicorn_upstart_script(env.host, SOURCE_DIR)
     #_update_virtualenv(SOURCE_DIR)
