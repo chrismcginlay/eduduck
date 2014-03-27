@@ -13,7 +13,12 @@ env.user = 'chris'
 env.key_filename = "/home/chris/.ssh/id_rsa.pub"
 
 def provision():
-    """ Install required software for EduDuck """
+    """ Install required software for EduDuck.
+    
+    This will install global package requirements using apt and pip.
+    Note that vhost specific python packages will be installed via deploy().
+    Run provision(), then deploy(), then possibly restore().
+    """
     
     apt_packages = [
         'python-virtualenv',
@@ -36,12 +41,23 @@ def provision():
     sudo(pip_cmd)
     
 def deploy(settings):
+    """ Deploy a standard configuration of EduDuck with an empty database.
+    
+    Run this after completing provision() to install an instance 
+    of the EduDuck framework.  There will be no users, courses etc. 
+    
+    The tool requires that you specify the settings file to use. This will
+    be one of [dev, staging, production].
+    
+    Consider running restore() next.
+    """
+    
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
     #_create_dir_tree_if_not_exists(env.host)
-    #_get_source(SOURCE_DIR)
+    _get_source(SOURCE_DIR)
     #_config_nginx(env.host, SOURCE_DIR)
     _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
     #_update_virtualenv(SOURCE_DIR)
@@ -51,6 +67,14 @@ def deploy(settings):
     _update_static_files(SOURCE_DIR)
     _update_media_files(SOURCE_DIR)
     
+def restore():
+    """ Repopulate a deployed instance of EduDuck from backup.
+    
+    Use this to repopulate a userbase into your EduDuck deployment. It will 
+    repopulate the database, re-instate media files such as videos etc.
+    """
+    
+
 def _create_dir_tree_if_not_exists(site_name):
     for subdir in ("static", "media", "source", "virtualenv"):
         run("mkdir -p {0}/{1}/{2}".format(SITES_DIR, site_name, subdir))
@@ -115,7 +139,7 @@ def _prepare_environment_variables(SITES_DIR, hostname):
     append(env_config, "DATABASE_NAME=eduduck")
     append(env_config, "DATABASE_USER=duckinator")
     append(env_config, "DATABASE_PASSWORD=AB0XAt5BgDJh")
-    append(env_config, "DATABASE_PORT=tobespecified")
+    append(env_config, "DATABASE_PORT=")
     
     # EMAIL PARAMS
     append(env_config, "EMAIL_USER=tobespecified")
