@@ -64,8 +64,8 @@ def deploy(settings):
     _prepare_environment_variables(SITES_DIR, env.host)
     #_ready_logfiles()
     _prepare_database(SOURCE_DIR, settings, env.host)
-    _update_static_files(SOURCE_DIR)
-    _update_media_files(SOURCE_DIR)
+    _update_static_files(SOURCE_DIR, settings)
+    _restart_services()
     
 def restore():
     """ Repopulate a deployed instance of EduDuck from backup.
@@ -74,7 +74,12 @@ def restore():
     repopulate the database, re-instate media files such as videos etc.
     """
     
+    _restore_database()
+    _restore_media_files(SOURCE_DIR)
 
+
+
+# Private helper functions, don't call directly.
 def _create_dir_tree_if_not_exists(site_name):
     for subdir in ("static", "media", "source", "virtualenv"):
         run("mkdir -p {0}/{1}/{2}".format(SITES_DIR, site_name, subdir))
@@ -167,7 +172,7 @@ def _prepare_database(sdir, settings, hostname):
 
     # load environment variables
     path_to_activate = "{0}/{1}/virtualenv/bin/activate".format(SITES_DIR, hostname)
-    dbname = "eduluck"
+    dbname = "eduduck"
     get_var = "source {0}; echo $DATABASE_PASSWORD;".format(path_to_activate)
     dbpass = run(get_var)
     get_var = "source {0}; echo $DATABASE_USER;".format(path_to_activate)
@@ -196,14 +201,27 @@ def _prepare_database(sdir, settings, hostname):
     )
     run(sync_cmd)
     
-def _update_static_files(sdir):
-    run("cd {0}/{1}/virtualenv/bin/; django-admin.py collectstatic  --pythonpath='/home/chris/sites/staging.eduduck.com/source' --settings=EduDuck.settings.{2} --noinput".format(
+def _update_static_files(sdir, settings):
+    run("source {0}/{1}/virtualenv/bin/activate; django-admin.py collectstatic  --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
         env.host,
         settings
     ))
     
 
-def _update_media_files():
+def _restore_database():
+    """ Repopulate an existing userbase into a freshly deployed EduDuck"""
+
+    pass
+
+def _restore_media_files():
+    """ Restore backups of user uploaded files to media server"""
+    
     # not sure where these would be deployed from - some backup service?
     pass
+
+def _restart_services():
+    """ Restart nginx and gunicorn etc"""
+    
+    sudo("service nginx reload")
+    sudo("start gunicorn-{0}".format(site_name))
