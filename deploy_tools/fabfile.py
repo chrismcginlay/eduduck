@@ -56,14 +56,14 @@ def deploy(settings):
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
-    #_create_dir_tree_if_not_exists(env.host)
+    _create_dir_tree_if_not_exists(env.host)
     _get_source(SOURCE_DIR)
-    #_config_nginx(env.host, SOURCE_DIR)
-    #_write_gunicorn_upstart_script(env.host, SOURCE_DIR)
-    #_update_virtualenv(SOURCE_DIR)
-    #_prepare_environment_variables(SITES_DIR, env.host)
-    #_ready_logfiles()
-    #_prepare_database(SOURCE_DIR, settings, env.host)
+    _config_nginx(env.host, SOURCE_DIR)
+    _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
+    _update_virtualenv(SOURCE_DIR)
+    _prepare_environment_variables(SITES_DIR, env.host)
+    _ready_logfiles()
+    _prepare_database(SOURCE_DIR, settings, env.host)
     _update_static_files(SOURCE_DIR, settings)
     _restart_services()
     
@@ -115,7 +115,7 @@ def _config_nginx(site_name, sdir):
 
 def _write_gunicorn_upstart_script(site_name, sdir):
     gunicorn_template_path = sdir + "/deploy_tools/gunicorn_upstart.template"
-    sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee /etc/init/gunicorn-{0}"
+    sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee /etc/init/gunicorn-{0}.conf"
     sed_cmd = sed_cmd.format(site_name, gunicorn_template_path)
     sudo(sed_cmd)
     
@@ -224,4 +224,5 @@ def _restart_services():
     """ Restart nginx and gunicorn etc"""
     
     sudo("service nginx reload")
-    sudo("start gunicorn-{0}".format(site_name))
+    sudo("start gunicorn --bind unix:/tmp/{0}.socket EduDuck.wsgi:application".format(
+        site_name))

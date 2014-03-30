@@ -8,4 +8,4 @@ respawn
 chdir /home/chris/sites/SITENAME/source
 exec ../virtualenv/bin/gunicorn \
     --bind unix:/tmp/SITENAME.socket \
-    Eduduck.wsgi:application
+    EduDuck.wsgi:application
