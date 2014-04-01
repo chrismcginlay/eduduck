@@ -56,16 +56,16 @@ def deploy(settings):
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
-    _create_dir_tree_if_not_exists(env.host)
-    _get_source(SOURCE_DIR)
-    _config_nginx(env.host, SOURCE_DIR)
+    #_create_dir_tree_if_not_exists(env.host)
+    #_get_source(SOURCE_DIR)
+    #_config_nginx(env.host, SOURCE_DIR)
+    #_update_virtualenv(SOURCE_DIR)
+    #_prepare_environment_variables(SITES_DIR, env.host)
     _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
-    _update_virtualenv(SOURCE_DIR)
-    _prepare_environment_variables(SITES_DIR, env.host)
-    _ready_logfiles()
-    _prepare_database(SOURCE_DIR, settings, env.host)
-    _update_static_files(SOURCE_DIR, settings)
-    _restart_services()
+    #_ready_logfiles()
+    #_prepare_database(SOURCE_DIR, settings, env.host)
+    #_update_static_files(SOURCE_DIR, settings)
+    _restart_services(env.host)
     
 def restore():
     """ Repopulate a deployed instance of EduDuck from backup.
@@ -114,9 +114,27 @@ def _config_nginx(site_name, sdir):
         ))
 
 def _write_gunicorn_upstart_script(site_name, sdir):
-    gunicorn_template_path = sdir + "/deploy_tools/gunicorn_upstart.template"
+    import pdb; pdb.set_trace()
+    gunicorn_template_head = sdir + "/deploy_tools/gunicorn_upstart.head.template"
+    gunicorn_template_tail = sdir + "/deploy_tools/gunicorn_upstart.tail.template"
+    gunicorn_template_mid  = sdir + "/deploy_tools/gunicorn_upstart.mid.template"
+    gunicorn_config_path = "/etc/init/gunicorn-{0}.conf".format(site_name)
+    env_var_path = sdir + "/virtualenv/bin/env_vars.txt"
+
+    #prepend env to each line of env_var_path > gunicorn_template_mid
+    sed_cmd = "awk '$0=\"env \"$0' {0} > {1}".format(
+        env_var_path, 
+        gunicorn_template_mid))
+    run(sed_cmd)
+    
+    #join the head, mid and tail
+    run("cat {0} > {1}".format(gunicorn_template_head, gunicorn_config_path))
+    run("cat {0} > {1}".format(gunicorn_template_mid, gunicorn_config_path))
+    run("cat {0} > {1}".format(gunicorn_template_tail, gunicorn_config_path))
+    
+    #NB this sed sources the freshly written config, not the template
     sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee /etc/init/gunicorn-{0}.conf"
-    sed_cmd = sed_cmd.format(site_name, gunicorn_template_path)
+    sed_cmd = sed_cmd.format(site_name, gunicorn_config_path)
     sudo(sed_cmd)
     
 def _update_virtualenv(sdir):
@@ -220,9 +238,8 @@ def _restore_media_files():
     # not sure where these would be deployed from - some backup service?
     pass
 
-def _restart_services():
+def _restart_services(site_name):
     """ Restart nginx and gunicorn etc"""
     
     sudo("service nginx reload")
-    sudo("start gunicorn --bind unix:/tmp/{0}.socket EduDuck.wsgi:application".format(
-        site_name))
+    sudo("start gunicorn-{0}".format(site_name))

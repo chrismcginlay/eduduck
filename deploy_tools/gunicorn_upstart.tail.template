@@ -1,0 +1,3 @@
+exec ../virtualenv/bin/gunicorn \
+    --bind unix:/tmp/SITENAME.socket \
+    EduDuck.wsgi:application
