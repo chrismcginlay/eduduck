@@ -128,7 +128,6 @@ def _write_gunicorn_upstart_script(site_name, sdir):
         gunicorn_template_mid)
     run(sed_cmd)
 
-    import pdb; pdb.set_trace()    
     #join the head, mid and tail
     sudo("cat {0} > {1}".format(gunicorn_template_head, gunicorn_template_done))
     sudo("cat {0} >> {1}".format(gunicorn_template_mid, gunicorn_template_done))
@@ -244,4 +243,7 @@ def _restart_services(site_name):
     """ Restart nginx and gunicorn etc"""
     
     sudo("service nginx reload")
-    sudo("start gunicorn-{0}".format(site_name))
+    cmd = "status gunicorn-{0}".format(site_name)
+    check_nginx = sudo(cmd)
+    if not check_nginx.find("start/running"):
+        sudo("start gunicorn-{0}".format(site_name))
