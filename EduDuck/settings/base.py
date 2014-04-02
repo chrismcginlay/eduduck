@@ -16,9 +16,8 @@ MANAGERS = ADMINS
 #get the path name to prepend to other settings
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 
-SITE_ROOT = os.path.normpath(os.path.join(os.path.realpath(__file__), 
-                                         os.path.pardir, 
-                                         os.path.pardir))
+SITE_ROOT = os.path.normpath(
+    os.path.join(os.path.realpath(__file__), "../../../"))
 
 LOGIN_REDIRECT_URL = '/courses/'
 
@@ -62,7 +61,7 @@ STATIC_ROOT = os.path.normpath(os.path.join(SITE_ROOT, '../static/'))
 STATIC_URL ='/static/'
 
 # Additional locations of static files
-#STATICFILES_DIRS = ()
+STATICFILES_DIRS = (os.path.join(SITE_ROOT, 'static'),)
 
 # List of finder classes that know how to find static files in
 # various locations.
