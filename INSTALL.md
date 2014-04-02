@@ -1,62 +1,76 @@
-Revised installation instructions for development and testing.
+Revised Installation Instructions for EduDuck Instances
+=======================================================
 
-1. Install virtualenv =>1.9. To check the version in Ubuntu:
+Most of the work required to get EduDuck up and running is now handled by an
+automated provisioning and deployment tool, via fabric. http://docs.fabfile.org
 
-  $ sudo apt-get -s install python-virtualenv
-  
-  On Ubuntu at least, if not in general, this will also install pip. If you are satisfied with the version number for virtualenv:
+This is the preferred method to set up a development or testing environment,
+or for staging or production servers.
 
-  $ sudo apt-get install python-virtualenv
-  
-2. Check the version of pip
+## Requirements:
 
-  $ pip --version
+    * Ubuntu 13.04. Other versions and OSs can most likely be made to work.
+    * Staging and production deploys are assumed to be going on to freshly 
+    installed iron or a new virtual server.
+    * Root access or at least a user in sudoers group on target server.
+    * SSH access to the server
 
-  It should be version =>1.3 for SSL support.
+1. Software on local machine
 
-3. Install virtualenvwrapper to facilitate creation and activation of virtualenvironments.
+$local: pip-2.7 install fabric
+$local: sudo apt-get install openssh-client
+You just need to get a copy of deploy_tools/fabfile.py in your home directory.
 
-  $ sudo pip install virtualenvwrapper
+2. Preparations of target machine
 
-  From http://virtualenvwrapper.readthedocs.org/en/latest/:
+Tested on a fresh installation of Ubuntu 13.04.
+Everything will be set up via the useraccount for user 'roberta' etc.
 
-  $ export WORKON_HOME=~/Envs
-  $ mkdir -p $WORKON_HOME
-  $ source /usr/local/bin/virtualenvwrapper.sh
-  $ mkvirtualenv towel
- 
-  Append source command to .bashrc:
+$server: sudo adduser roberta
+$server: sudo usermod -a -G sudo roberta
 
-  $ echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
-  
-  When wishing to work on the environment 'towel' in future sessions just issue:
+Likely that server will already have ssh provision:
+$server: sudo apt-get install openssh-server
 
-  $ workon towel
+Copy your local public SSH key from $local ~/.ssh/id_rsa.pub up to 
+$server's /home/roberta/.ssh/authorized_keys
 
-4. Within the virtualenvironment, check the Python version which should be 2.7 at present, not 3.x
+3. Server provisioning
 
-  $ python --version
-  
-5. Install django version 1.4. Don't install with sudo as that would ignore the virtualenv
+The fabfile provision() function will install the requisite system-wide 
+applications. NB: other packages will be installed into virtualenvs later.
 
-  $ pip install django==1.4
-  
-6. Install required packages - refer to the requirements files
+From the deploy_tools directory, on your local machine (ssh on 7822):
 
-  $ pip install django-registration pytz django-haystack pyelasticsearch mysql-connector-python mysql-python
+$local:~/deploy_tools fab provision:host=roberta@example.com:7822
+
+or, if this is a development box you are preparing
+
+$local:~/deploy_tools fab provision:host=sue@localhost
+
+If everything installed OK, proceed to deployment.
+
+4. Instance deployment
+
+It's super-easy to use the deploy() function now to put development, staging
+and production instances of EduDuck onto the target machine. Be ready to give
+github credentials, server sudo password, MySQL root as the script runs.
+
+$local:~/deploy_tools fab deploy:host=sue@localhost, settings=dev
+
+or 
+
+$local:~/deploy_tools fab deploy:host=roberta@staging.example.com, settings=staging
+
+or 
+
+$local:~/deploy_tools fab deploy:host=roberta@example.com, settings=production
+
+MySQL, nginx and gunicorn should be configured and services started at the end.
+To test, simply visit the URL.
 
 
-7. Next, time to get the Eduduck code and pop it onto your homedir someplace. I keep mine under a directory titled coding, but, hey, fry your own bacon dude.
-
-  $ cd coding
-  $ git clone git@github.com:mrintegrity/eduduck.git ~/coding/eduduck
-  (You may of course need to add an ssh key to your github if its a new OS install)
-
-
-8. Install and set up MySQL
-
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX ON ED_DEV.* TO ED_DEV@LOCALHOST IDENTIFIED BY 'whatever';
-
+## Things not taken care of yet.
 9. Build the search index for django-haystack
 
 If this is a staging or production install then we are using the elasticsearch backend for django-haystack, so on installation, you need to build the search index one time:
@@ -82,13 +96,3 @@ sudo apt-get install openjdk-7-jre-headless -y
 wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.0.deb
 sudo dpkg -i elasticsearch-0.90.0.deb
 sudo service elasticsearch start
-
-11. Run the development server and happy hacking
-
-  $ cd ~/coding/eduduck
-  $ python manage.py runserver
-
-
-
-  
-  
