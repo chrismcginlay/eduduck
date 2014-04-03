@@ -168,11 +168,11 @@ def _prepare_environment_variables(hostname):
     
     # EMAIL PARAMS
     if not contains(env_config, 'EMAIL_HOST_USER'):
-    append(env_config, "EMAIL_HOST_USER=educk@unpossible.info")
+        append(env_config, "EMAIL_HOST_USER=educk@unpossible.info")
     if not contains(env_config, 'EMAIL_PASSWORD'):
-    append(env_config, "EMAIL_PASSWORD=tobespecified")
+        append(env_config, "EMAIL_PASSWORD=tobespecified")
     if not contains(env_config, 'EMAIL_PORT'):
-    append(env_config, "EMAIL_PORT=25")
+        append(env_config, "EMAIL_PORT=25")
     
     # PYTHONPATH
     append(env_config, "PYTHONPATH={0}/{1}/source".format(SITES_DIR, hostname))
