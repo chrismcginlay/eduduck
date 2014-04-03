@@ -50,7 +50,7 @@ def deploy(settings):
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     #TODO verify following is redundant
-    sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
+    #sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
     _create_dir_tree_if_not_exists(env.host)
     _get_source(SOURCE_DIR)
@@ -157,14 +157,22 @@ def _prepare_environment_variables(hostname):
         append(env_config, "SECRET_KEY={0};".format(key))
         
     # DB PARAMS
-    append(env_config, "DATABASE_NAME=eduduck")
-    append(env_config, "DATABASE_USER=duckinator")
-    append(env_config, "DATABASE_PASSWORD=AB0XAt5BgDJh")
-    append(env_config, "DATABASE_PORT=")
+    if not contains(env_config, 'DATABASE_NAME'):
+        append(env_config, "DATABASE_NAME=eduduck")
+    if not contains(env_config, 'DATABASE_USER'):
+        append(env_config, "DATABASE_USER=duckinator")
+    if not contains(env_config, 'DATABASE_PASSWORD'):
+        append(env_config, "DATABASE_PASSWORD=AB0XAt5BgDJh")
+    if not contains(env_config, 'DATABASE_PORT'):
+        append(env_config, "DATABASE_PORT=")
     
     # EMAIL PARAMS
-    append(env_config, "EMAIL_USER=tobespecified")
+    if not contains(env_config, 'EMAIL_HOST_USER'):
+    append(env_config, "EMAIL_HOST_USER=educk@unpossible.info")
+    if not contains(env_config, 'EMAIL_PASSWORD'):
     append(env_config, "EMAIL_PASSWORD=tobespecified")
+    if not contains(env_config, 'EMAIL_PORT'):
+    append(env_config, "EMAIL_PORT=25")
     
     # PYTHONPATH
     append(env_config, "PYTHONPATH={0}/{1}/source".format(SITES_DIR, hostname))
