@@ -6,11 +6,6 @@ import os, sys
 
 REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
 SITES_DIR = "/home/chris/sites"
-#TODO SITES_DIR is available within functions. No need to have as parameter.
-
-env.user = 'chris'
-# local public key
-env.key_filename = "/home/chris/.ssh/id_rsa.pub"
 
 def provision():
     """ Install required software for EduDuck.
@@ -54,13 +49,14 @@ def deploy(settings):
     
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
+    #TODO verify following is redundant
     sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
     _create_dir_tree_if_not_exists(env.host)
     _get_source(SOURCE_DIR)
     _config_nginx(env.host, SOURCE_DIR)
     _update_virtualenv(SOURCE_DIR)
-    _prepare_environment_variables(SITES_DIR, env.host)
+    _prepare_environment_variables(env.host)
     _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
     _ready_logfiles()
     _prepare_database(SOURCE_DIR, settings, env.host)
@@ -80,6 +76,7 @@ def restore():
 
 
 # Private helper functions, don't call directly.
+
 def _create_dir_tree_if_not_exists(site_name):
     for subdir in ("static", "media", "source", "virtualenv"):
         run("mkdir -p {0}/{1}/{2}".format(SITES_DIR, site_name, subdir))
@@ -145,7 +142,7 @@ def _update_virtualenv(sdir):
         run("{0}/bin/pip install -r {1}/requirements/base.txt".format(
             virtualenv_dir, sdir))
         
-def _prepare_environment_variables(SITES_DIR, hostname):
+def _prepare_environment_variables(hostname):
     """ Prepare activate to export required env vars into the virtualenv """
 
     virtenv_dir = "{0}/{1}/virtualenv/bin".format(SITES_DIR, hostname)
