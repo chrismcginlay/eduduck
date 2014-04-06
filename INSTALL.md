@@ -60,21 +60,26 @@ It's super-easy to use the deploy() function now to put development, staging
 and production instances of EduDuck onto the target machine. Be ready to give
 github credentials, server sudo password, MySQL root as the script runs.
 
-$local:~/deploy_tools fab deploy:host=sue@localhost, settings=dev
+$local:~/deploy_tools fab deploy:host=sue@localhost,settings=dev
 
 or 
 
-$local:~/deploy_tools fab deploy:host=roberta@staging.example.com, settings=staging
+$local:~/deploy_tools fab deploy:host=roberta@staging.example.com,settings=staging
 
 or 
 
-$local:~/deploy_tools fab deploy:host=roberta@example.com, settings=production
+$local:~/deploy_tools fab deploy:host=roberta@example.com,settings=production
 
 MySQL, nginx and gunicorn should be configured and services started at the end.
 To test, simply visit the URL.
 
 
 ## Things not taken care of yet.
+*The real database is not migrated (South)
+*Search index is not rebuilt
+*Media files are not copied from backup for production
+
+
 9. Build the search index for django-haystack
 
 If this is a staging or production install then we are using the elasticsearch backend for django-haystack, so on installation, you need to build the search index one time:
