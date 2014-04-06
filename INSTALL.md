@@ -48,6 +48,10 @@ or, if this is a development box you are preparing
 
 $local:~/deploy_tools fab provision:host=sue@localhost
 
+If mysql-server has not previously been installed, you will be asked to provide
+a root mysql password (which should be secure). If you just hit enter a password 
+will be generated for you (which you should note down).
+
 If everything installed OK, proceed to deployment.
 
 4. Instance deployment

@@ -1,10 +1,13 @@
 # Fabfile.py based on "Test Driven Web Development with Python, H. Percival, pp 144"
 from fabric.contrib.files import append, exists, sed, contains
-from fabric.api import env, local, run, sudo
+from fabric.api import env, local, run, sudo, warn
+from fabric.colors import yellow, green
 import random
 import os, sys
 
 REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
+
+# One may wish to alter the following, yah?
 SITES_DIR = "/home/chris/sites"
 
 def provision():
@@ -14,7 +17,21 @@ def provision():
     Note that vhost specific python packages will be installed via deploy().
     Run provision(), then deploy(), then possibly restore().
     """
-    
+
+    # If MySQL is already installed, skip.
+    try:
+        run("dpkg -s mysql-server")
+    except:
+        passwd = prompt('Please enter MySQL root password, leave blank for auto generated password:')
+        if not passwd:
+            random.seed()
+            charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
+            passwd = "".join(random.choice(charset) for i in range(20))
+        debconf_cmd = "debconf-set-selections <<< 'mysql-server mysql-server/root_password password {0}'".format(passwd)
+        sudo(debconf_cmd)
+        debconf_cmd = "debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password {0}'".format(passwd)
+        sudo(debconf_cmd)
+        
     apt_packages = [
         'python-virtualenv',
         'python-pip',
@@ -34,7 +51,13 @@ def provision():
 
     pip_cmd = "pip install " + " ".join([pkg for pkg in pip_packages])
     sudo(pip_cmd)
-    
+
+    try:
+        warn(yellow("NB MySQL root pw {0}".format(passwd)))
+    except:
+        print(green("Condition: Emerald"))
+
+
 def deploy(settings):
     """ Deploy a standard configuration of EduDuck with an empty database.
     
@@ -49,8 +72,6 @@ def deploy(settings):
     
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
-    #TODO verify following is redundant
-    #sys.path.append("{0}/{1}/".format(SITES_DIR, env.host))
 
     _create_dir_tree_if_not_exists(env.host)
     _get_source(SOURCE_DIR)
@@ -143,8 +164,18 @@ def _update_virtualenv(sdir):
             virtualenv_dir, sdir))
         
 def _prepare_environment_variables(hostname):
-    """ Prepare activate to export required env vars into the virtualenv """
-
+    """ Prepare activate to export required env vars into the virtualenv 
+    
+    Ideally, you will provide secrets and other environment variables in 
+    the virtualenv/bin/virtualenv_envvars.txt file.
+    
+    However, that directory doesn't exist until you run this command. Solution
+    might be to split this deploy command into two parts, allowing the user to
+    create the virtualenv_envvars file.
+    
+    If not, we'll make it up as we go and you can clear up the mess later
+    """
+    
     virtenv_dir = "{0}/{1}/virtualenv/bin".format(SITES_DIR, hostname)
     virtenv_activate = virtenv_dir + '/activate'
     env_config = virtenv_dir + "/virtualenv_envvars.txt"
@@ -162,7 +193,10 @@ def _prepare_environment_variables(hostname):
     if not contains(env_config, 'DATABASE_USER'):
         append(env_config, "DATABASE_USER=duckinator")
     if not contains(env_config, 'DATABASE_PASSWORD'):
-        append(env_config, "DATABASE_PASSWORD=AB0XAt5BgDJh")
+        random.seed()
+        charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
+        pw = "".join(random.choice(charset) for i in range(69))
+        append(env_config, "DATABASE_PASSWORD={0}".format(pw))
     if not contains(env_config, 'DATABASE_PORT'):
         append(env_config, "DATABASE_PORT=")
     
@@ -178,12 +212,15 @@ def _prepare_environment_variables(hostname):
     append(env_config, "PYTHONPATH={0}/{1}/source".format(SITES_DIR, hostname))
     
     # Modify the virtualenv activate script, by adding an export command at the
-    # end. (If the export already exists, do nothing.
+    # end. (If the export already exists, do nothing other than warn
     if not contains(virtenv_activate, '# Pull in environment variables'):
         append(virtenv_activate, "# Pull in environment variables")
         export_cmd = "export $(cat {0})".format(env_config)
         append(virtenv_activate, export_cmd)
-    
+    else:
+        warn(yellow(
+            "Just note that the virtualenv/bin/activate already had some exports"))
+        
 def _ready_logfiles():
     sudo("touch /var/log/eduduck.log")
     sudo("touch /var/log/eduduck_db.log")
@@ -204,10 +241,11 @@ def _prepare_database(sdir, settings, hostname):
     get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
     dbname = run(get_var)
 
+
     # if database does not exist create it
     try:
         out = run("mysqlshow -u root -p {0}".format(dbname))
-    except:
+    except:        
         run("mysqladmin -u root -p create {0}".format(dbname))
         perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
         sql = "\"GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';\"".format(
