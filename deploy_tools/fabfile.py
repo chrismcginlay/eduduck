@@ -112,8 +112,8 @@ def _get_source(sdir):
     current_commit = local("git log -n 1 --format=%H", capture = True)
     run("cd {0}; git reset --hard {1}".format(sdir, current_commit))
     
-    #TODO delete the following on issue 83 close
-    run("cd {0}; git checkout 83-auto_deploy".format(sdir))
+    #Uncomment the following if you need to checkout and test a branch in staging.
+    #run("cd {0}; git checkout NN-your_branch".format(sdir))
      
 def _config_nginx(site_name, sdir):
     sudo("mkdir -p /etc/nginx/conf.d/{0}".format(site_name))
