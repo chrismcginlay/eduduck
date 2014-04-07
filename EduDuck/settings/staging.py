@@ -16,7 +16,6 @@ ALLOWED_HOSTS = [
 ]
 
 # Make SECRET_KEY unique, and don't share it with anybody.
-# see issue #43 for key generation method and location of Env Vars
 assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
 SECRET_KEY = os.environ['SECRET_KEY']
 

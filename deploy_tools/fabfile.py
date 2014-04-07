@@ -241,20 +241,32 @@ def _prepare_database(sdir, settings, hostname):
     get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
     dbname = run(get_var)
 
-
+    # TODO
+    # There is an odd thing going on here with passwords sometimes.
+    # Sometimes password is not set (SHOW GRANTS FOR duckinator@localhost;) 
+    # SET PASSWORD FOR 'duckinator'@'localhost' = PASSWORD('pw'); seems to work
+    # but the IDENTIFIED BY bit doesn't work on my local machine.
+    
+    # if the database user does not exist, create it
+    out = run("mysql -u root -p -e 'select distinct User from mysql.user;'")
+    if out.find(dbuser)==-1: # -1 on fail to find
+        create_user_cmd = "create user {0}@localhost identified by '{1}';".format(
+            dbuser, dbpass)
+        run("mysql -u root -p -e \"" + create_user_cmd + "\"")
+        
     # if database does not exist create it
     try:
         out = run("mysqlshow -u root -p {0}".format(dbname))
     except:        
         run("mysqladmin -u root -p create {0}".format(dbname))
         perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
-        sql = "\"GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';\"".format(
+        sql = "GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';".format(
             perms,
             dbname,
             dbuser,
             dbpass,
         )
-        run("mysql -u root -p -e " + sql)
+        run("mysql -u root -p -e \"" + sql + "\"")
 
     sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
