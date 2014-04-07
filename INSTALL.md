@@ -44,7 +44,8 @@ From the deploy_tools directory, on your local machine (ssh on 7822):
 
 $local:~/deploy_tools fab provision:host=roberta@example.com:7822
 
-or, if this is a development box you are preparing
+or, if this is a development box you are preparing 
+(but note, this script installs stuff not needed for dev such as nginx)
 
 $local:~/deploy_tools fab provision:host=sue@localhost
 
@@ -79,8 +80,7 @@ To test, simply visit the URL.
 *Search index is not rebuilt
 *Media files are not copied from backup for production
 
-
-9. Build the search index for django-haystack
+99. Build the search index for django-haystack
 
 If this is a staging or production install then we are using the elasticsearch backend for django-haystack, so on installation, you need to build the search index one time:
    
@@ -92,7 +92,7 @@ Then add python manage.py update_index to the crontab, something like this (not 
 
 If it's just development install then django-haystack uses a simple backend and this is not required.
 
-10. Maybe install elasticsearch if you want to test that locally
+100. Maybe install elasticsearch if you want to test that locally
 
 cd ~
 sudo apt-get update

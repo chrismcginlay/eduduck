@@ -9,21 +9,16 @@ TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
 #smtp is the default, so in prod.py, EMAIL_BACKEND is commented out or missing
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# The fabric deploy tool should not deploy a secret key for development.
-assert 'SECRET_KEY' not in os.environ, 'SECRET_KEY missing from environment'
+#Not very secret SECRET_KEY. Just for dev. Staging and prod. use env var.
+SECRET_KEY = '$9(8c0@dl9^0m@jautyrv&amp;y92!-ae6ymo+sl=&amp;^3ptfiw*ot7j'
 
-assert 'DATABASE_NAME' in os.environ, 'DATABASE_NAME missing from environment'
-assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
-assert 'DATABASE_PASSWORD' in os.environ, 'DATABASE_PASSWORD missing from environment'
-assert 'DATABASE_PORT' in os.environ, 'DATABASE_PORT missing from environment'
+# Again, staging and production use more secure environment variables
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD'],
-        'NAME': os.environ['DATABASE_NAME'],
-        'PORT': os.environ['DATABASE_PORT'],
-        'HOST': '',
+        'USER': 'ed_dev',
+        'PASSWORD': 'quickquackquock',
+        'NAME': 'ed_dev',
     }
 }
 
