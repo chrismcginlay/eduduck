@@ -4,6 +4,16 @@ from selenium.webdriver.common.keys import Keys
 
 from .base import FunctionalTest
 
+class GeneralLayoutAndStyle(FunctionalTest):
+
+    def test_basic_style(self):
+        """The correct stylesheet is loaded"""
+
+        import pdb; pdb.set_trace()
+        self.browser.get(self.server_url)
+        style = """<link href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css" rel="stylesheet" />"""
+        self.assertIn(style, self.browser.page_source)
+
 class CasualVisitorArrives(FunctionalTest):
 
     def test_casual_visitor_arrives_on_site(self):
