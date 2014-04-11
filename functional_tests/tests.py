@@ -7,13 +7,25 @@ from .base import FunctionalTest
 class GeneralLayoutAndStyle(FunctionalTest):
 
     def test_basic_style(self):
-        """The correct stylesheet is loaded"""
+        """The correct stylesheets and scripts are requested"""
 
-        import pdb; pdb.set_trace()
         self.browser.get(self.server_url)
         style = """<link href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css" rel="stylesheet" />"""
         self.assertIn(style, self.browser.page_source)
-
+        
+        style ="<link href=\"{0}/static/layouts/side-menu.css\">".format(
+            self.server_url)
+        self.assertIn(style, self.browser.page_souce)
+        
+        script = "<script src=\"{0}/static/js/ui.js\">".format(self.server_url)
+        self.assertIn(script, self.browser.page_source)
+        
+        script = "<script src=\"http://code.jquery.com/ui/1.10.0/jquery-ui.js\">"
+        self.assertEqual(script, self.browser.page_source)
+        
+        script = "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js\">"
+        self.assertEqual(script, self.browser.page_source)
+        
 class CasualVisitorArrives(FunctionalTest):
 
     def test_casual_visitor_arrives_on_site(self):
@@ -26,14 +38,13 @@ class CasualVisitorArrives(FunctionalTest):
         # He sees the page title
         self.assertIn('EduDuck.com', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('EduDuck.com', header_text)
+        self.assertIn('EduDuck', header_text)
 
         # He sees the strapline
         strapline = self.browser.find_element_by_id('strapline').text
         strapline.htmlstrip()
-        self.assertIn('Courses & Lessons free to take, or create your own',
-                      strapline
-                      )
+        self.assertIn('Courses are free to take <br>or create your own.',
+                      strapline)
 
         # He sees facilities to register (but doesn't, yet)
         registerbox = self.get_register_box()
@@ -46,13 +57,13 @@ class CasualVisitorArrives(FunctionalTest):
         inputbox = self.get_course_input_box()
         self.assertEqual(
             inputbox.get_item('placeholder'),
-            "Create a New Course"
+            "Choose a simple name for your course"
             )
 
         # ...and an option to list all courses
         self.fail("Write me")
 
-        # He sees a list of existing courses
+        # He sees a list of selected existing courses
         self.fail("Write me")
 
         # Finally, he notices the paypal button
