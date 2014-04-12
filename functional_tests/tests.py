@@ -52,25 +52,31 @@ class CasualVisitorArrives(FunctionalTest):
         self.assertTrue(self.browser.find_element_by_id('id_password2'))
         self.assertTrue(self.browser.find_element_by_id('id_submit_reg'))
 
-        import pdb; pdb.set_trace()
         # He sees facilities to create a course
         self.assertTrue(self.browser.find_element_by_id('id_create_course'))
-        self.assertEqual(
-            inputbox.get_item('placeholder'),
-            "Choose a simple name for your course"
-            )
 
         # ...and an option to list all courses
-        self.fail("Write me")
+        self.assertTrue(self.browser.find_element_by_id('id_course_index'))
 
         # He sees a list of selected existing courses
-        self.fail("Write me")
+        courses_area = self.browser.find_element_by_id('id_course_selection') 
+        self.assertTrue(courses_area)
+        #check for 4 courses
+        courses = courses_area.find_elements_by_class_name('random_course')
+        self.assertEqual(len(courses), 4)
 
+        #check element has minimum width 
+        for course in courses:
+            self.assertGreaterEqual(course.size['width'], 50)
+
+        import pdb; pdb.set_trace()
         # Finally, he notices the paypal button
-        payarea = self.browser.find_element_by_id('paypal_button')
+        payarea = self.browser.find_element_by_id('id_paypal_button')
         target = 'https://www.paypal.com/cgi-bin/webscr'
         self.assertEqual(target, payarea.get_attribute('action'))
 
+class NewVisitorDecidesToRegister(FunctionalTest):
+    pass
 
 class AuthorCreatesMaterials(FunctionalTest):
 
