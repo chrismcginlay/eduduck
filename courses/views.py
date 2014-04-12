@@ -10,6 +10,7 @@ from django.shortcuts import (
 from django.template import RequestContext
 from django.utils import timezone
 
+from registration.forms import RegistrationForm
 
 from interaction.models import UserCourse, UserLesson
 from .models import Course, Lesson
@@ -24,10 +25,12 @@ def index(request):
     logger.info('Course index view')
     course_list = Course.objects.all()
     course_count = Course.objects.count
+    register_form = RegistrationForm()
     template = 'courses/course_index.html'
 
     context_data = {'course_list':  course_list,
                     'course_count': course_count,
+                    'register_form': register_form,
                    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)

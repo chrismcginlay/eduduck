@@ -1,4 +1,5 @@
 from unittest import skip
+from registration.forms import RegistrationForm
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -13,11 +14,10 @@ class GeneralLayoutAndStyle(FunctionalTest):
         style = """<link href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css" rel="stylesheet" />"""
         self.assertIn(style, self.browser.page_source)
         
-        style ="<link href=\"{0}/static/layouts/side-menu.css\">".format(
-            self.server_url)
-        self.assertIn(style, self.browser.page_souce)
+        style ="<link href=\"static/layouts/side-menu.css\">"
+        self.assertIn(style, self.browser.page_source)
         
-        script = "<script src=\"{0}/static/js/ui.js\">".format(self.server_url)
+        script = "<script src=\"static/js/ui.js\">"
         self.assertIn(script, self.browser.page_source)
         
         script = "<script src=\"http://code.jquery.com/ui/1.10.0/jquery-ui.js\">"
@@ -42,19 +42,19 @@ class CasualVisitorArrives(FunctionalTest):
 
         # He sees the strapline
         strapline = self.browser.find_element_by_id('strapline').text
-        strapline.htmlstrip()
-        self.assertIn('Courses are free to take <br>or create your own.',
+        self.assertIn('Courses are free to take\nor create your own.',
                       strapline)
 
         # He sees facilities to register (but doesn't, yet)
-        registerbox = self.get_register_box()
-        self.assertEqual(
-            registerbox.get_item('placeholder'),
-            "Sign Up"
-            )
+        self.assertTrue(self.browser.find_element_by_id('id_username'))
+        self.assertTrue(self.browser.find_element_by_id('id_email'))
+        self.assertTrue(self.browser.find_element_by_id('id_password1'))
+        self.assertTrue(self.browser.find_element_by_id('id_password2'))
+        self.assertTrue(self.browser.find_element_by_id('id_submit_reg'))
 
+        import pdb; pdb.set_trace()
         # He sees facilities to create a course
-        inputbox = self.get_course_input_box()
+        self.assertTrue(self.browser.find_element_by_id('id_create_course'))
         self.assertEqual(
             inputbox.get_item('placeholder'),
             "Choose a simple name for your course"
