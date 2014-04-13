@@ -11,20 +11,23 @@ class GeneralLayoutAndStyle(FunctionalTest):
         """The correct stylesheets and scripts are requested"""
 
         self.browser.get(self.server_url)
+        style = """<link href="/static/index.css" rel="stylesheet" />"""
+        self.assertIn(style, self.browser.page_source)
+        
         style = """<link href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css" rel="stylesheet" />"""
         self.assertIn(style, self.browser.page_source)
         
-        style ="<link href=\"static/layouts/side-menu.css\">"
+        style ="""<link href="/static/layouts/side-menu.css" rel="stylesheet" />"""
         self.assertIn(style, self.browser.page_source)
         
-        script = "<script src=\"static/js/ui.js\">"
+        script = """<script src="/static/js/ui.js">"""
         self.assertIn(script, self.browser.page_source)
         
-        script = "<script src=\"http://code.jquery.com/ui/1.10.0/jquery-ui.js\">"
-        self.assertEqual(script, self.browser.page_source)
+        script = """<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js">"""
+        self.assertIn(script, self.browser.page_source)
         
         script = "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js\">"
-        self.assertEqual(script, self.browser.page_source)
+        self.assertIn(script, self.browser.page_source)
         
 class CasualVisitorArrives(FunctionalTest):
 
@@ -61,13 +64,16 @@ class CasualVisitorArrives(FunctionalTest):
         # He sees a list of selected existing courses
         courses_area = self.browser.find_element_by_id('id_course_selection') 
         self.assertTrue(courses_area)
-        #check for 4 courses
+        # noticing there are 4 courses...
         courses = courses_area.find_elements_by_class_name('random_course')
         self.assertEqual(len(courses), 4)
 
-        #check element has minimum width 
+        import pdb; pdb.set_trace()
+        #check element has minimum width and a colourful background
         for course in courses:
             self.assertGreaterEqual(course.size['width'], 50)
+            back_color = course.value_of_css_property('background-color')
+            self.assertEqual(back_color, 'rgba(200, 0, 0, 1)')
 
         # Finally, he notices the paypal button
         payarea = self.browser.find_element_by_id('id_paypal_button')
