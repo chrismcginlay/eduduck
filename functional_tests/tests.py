@@ -69,7 +69,6 @@ class CasualVisitorArrives(FunctionalTest):
         for course in courses:
             self.assertGreaterEqual(course.size['width'], 50)
 
-        import pdb; pdb.set_trace()
         # Finally, he notices the paypal button
         payarea = self.browser.find_element_by_id('id_paypal_button')
         target = 'https://www.paypal.com/cgi-bin/webscr'
