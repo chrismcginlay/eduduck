@@ -68,12 +68,11 @@ class CasualVisitorArrives(FunctionalTest):
         courses = courses_area.find_elements_by_class_name('random_course')
         self.assertEqual(len(courses), 4)
 
-        import pdb; pdb.set_trace()
         #check element has minimum width and a colourful background
         for course in courses:
             self.assertGreaterEqual(course.size['width'], 50)
             back_color = course.value_of_css_property('background-color')
-            self.assertEqual(back_color, 'rgba(200, 0, 0, 1)')
+            self.assertNotEqual(back_color, 'transparent')
 
         # Finally, he notices the paypal button
         payarea = self.browser.find_element_by_id('id_paypal_button')

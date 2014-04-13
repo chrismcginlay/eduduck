@@ -1,0 +1,28 @@
+/* static/index.css
+ * 
+ * Manage colour scheme etc for index (landing page)
+ */
+
+/* http://designmodo.com/flat-design-colors/ */
+
+div.random_course {
+    color: rgba(0,0,0,1);
+    text-align: center;
+    font-weight: bold;
+}
+
+div.random_course:nth-child(1) {
+    background-color: rgba(0,82,156,1);
+}
+
+div.random_course:nth-child(2) {
+    background-color: rgba(0,177,106,1);
+}
+
+div.random_course:nth-child(3) {
+    background-color: rgba(0,82,156,0.5);
+}
+
+div.random_course:nth-child(4) {
+    background-color: rgba(0,177,106,0.5);
+}
