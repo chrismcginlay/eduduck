@@ -131,6 +131,11 @@ class CasualVisitorBrowsesMainMenu(FunctionalTest):
 class NewVisitorDecidesToRegister(FunctionalTest):
     pass
 
+class ExistingUserLogsIn(FunctionalTest):
+    ## Should cover features which change with login/logout
+    ## i.e. available menu options
+    pass
+
 class AuthorCreatesMaterials(FunctionalTest):
 
     def test_can_create_course_and_retrieve_it_later(self):
