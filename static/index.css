@@ -5,6 +5,16 @@
 
 /* http://designmodo.com/flat-design-colors/ */
 
+p#id_branch {
+    position: absolute;
+    top: 0.1em;
+    left: auto;
+    right: 0.1em;
+    margin: 0;
+    padding: 0;
+    color: lightgrey;
+}
+
 div#course_create_see_all a{
     text-align: center;
     width: 100%

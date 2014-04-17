@@ -1,0 +1,114 @@
+{% load staticfiles %}
+{% load url from future %}
+{% load tz %}
+{% load gravatar %}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" >
+<head>
+    <meta name="keywords" content="education" />
+    <meta name="description" content="Massive online education" />
+    <meta charset="utf-8" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' />
+    <link href="{% static 'normalize.css' %}" rel="stylesheet" media="screen" />    
+    <link href="{% static 'common.css' %}" rel="stylesheet" media="screen" />
+{% block extra_style %}{% endblock extra_style %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+    <script src="{% static 'jQplugins/carhartl-jquery-cookie-fedc4cb/jquery.cookie.js' %}">
+    </script>
+    <script src="{% static 'common.js' %}"></script>
+    <script src="{% static 'search.js' %}"></script>
+{% block extra_script %}{% endblock extra_script %}
+
+    <title>{% block title %}EduDuck{% endblock title %}</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div class="fix_container">
+        <div id="userprof">
+            {% block userprof %}
+            {% if user.is_authenticated %}
+	    	<li title="{{ user.username }}: account settings"><a href="{% url 'bio.views.bio' %}"><img src="{% gravatar_url user.email 20 %}" alt="{{ user.username }}: account settings"></a></li>
+                <li><a href="{% url 'django.contrib.auth.views.logout' %}">
+                    Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'registration_register' %}">
+                    Register!</a></li>
+                <li><a href="{% url 'django.contrib.auth.views.login' %}">
+                    Login</a></li>
+            {% endif %}
+                <li><a href="/about/">About</a></li>
+                <li><a href="/search/">Search</a></li>
+            {% endblock userprof %}
+        </div> <!-- #userprof-->
+        </div> <!-- .fix_container --> 
+
+        <header id="branding" title="Home">
+          	{% if COMPLETION_RATIO > 50 %}
+          		<a href='https://docs.google.com/forms/d/1VrUfHZ3oVFByCeZf19CNl_OY0po9gTuMlKIT20rKY48/viewform'>
+                   <img id="survey" width='195' height='250' 
+                        title='Complete our Survey!' alt='Complete our Survey!'
+                        src="{% static 'images/SurveyIcon_195.png' %}">
+                </a>
+            {% endif %}
+            <p id="branch">Running Branch: {{ ACTIVE_GIT_BRANCH }}</p>
+            <a href="/">
+<!--               <img src="{% static 'images/sutrannu_Duck100.png' %}" width="100px" height="48px"/>-->
+                <h1>Edu Duck</h1>
+                <p id="strapline">Quackers About Learning</p>
+            </a>
+            {% if user.is_authenticated %}
+                <p id="timezone">{{ TIME_ZONE }}</p>
+            {% endif %}
+            <div id="search">
+            {% block search %}
+                <form method="get" action="/search/">
+                  <input type="search" name="q" id="id_q" value="Search with Elasticsearch" />
+                  <input value="search" type="submit" id="search"/>
+                </form>
+            {% endblock search %}
+            </div>
+        </header>
+
+        <nav id="primary">
+            {% block pagenav %}
+                <a href='/'>Home</a>
+            {% endblock pagenav %}
+        </nav>
+
+        <div id="devmenu">
+            <span>Temp. Links for Dev Purposes:</span>
+            <ul id="dev">
+                {% if user.is_authenticated %}
+                <li><a href="/admin/">Admin</a></li>
+                {% else %}
+                {% endif %}
+                <li><a href="/quizzes/">Quizzes</a></li>
+                <li><a href="/answers/">Answers</a></li>
+                <li><a href="/questions/">Questions</a></li>
+            </ul>
+        </div><!-- end devmenu -->
+
+        <div id="content">
+            <h2>
+            {% block contentheading %}
+            A Page With No Title. Override Me
+            {% endblock contentheading %}
+            </h2>
+
+            {% block content %}{% endblock content %}
+        </div>
+
+        <footer id="pagefoot">
+            {% block footer %}
+            <p>Copyright (c) 2013 EduDuck.com. All rights reserved.
+            <a href="{% url 'support.views.support' %}">Contact Us</a></p>
+            {% endblock footer %}
+        </footer>
+
+    </div><!-- end div wrapper-->
+</body>
+</html>
+

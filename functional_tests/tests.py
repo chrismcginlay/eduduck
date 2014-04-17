@@ -33,7 +33,7 @@ class CasualVisitorArrives(FunctionalTest):
 
     def test_casual_visitor_arrives_on_site(self):
         """They should see the site title, list of existing courses,
-        invitation to register, invitation to add courses"""
+        invitation to register/login, invitation to add courses"""
 
         # Nomski arrives on the site
         self.browser.get(self.server_url)
@@ -47,14 +47,21 @@ class CasualVisitorArrives(FunctionalTest):
         strapline = self.browser.find_element_by_id('strapline').text
         self.assertIn('Courses are free to take\nor create your own.',
                       strapline)
+        
+        # Whilst the site is in development, he sees the current branch
+        branch = self.browser.find_element_by_id('id_branch').text
+        self.assertIn('Code Branch:', branch)
 
-        # He sees facilities to register (but doesn't, yet)
+        # He sees facilities to register... (but doesn't, yet)
         self.assertTrue(self.browser.find_element_by_id('id_username'))
         self.assertTrue(self.browser.find_element_by_id('id_email'))
         self.assertTrue(self.browser.find_element_by_id('id_password1'))
         self.assertTrue(self.browser.find_element_by_id('id_password2'))
         self.assertTrue(self.browser.find_element_by_id('id_submit_reg'))
 
+        # ...and the option to login, (but doesn't login)
+        self.assertTrue(self.browser.find_element_by_id('id_login'))
+        
         # He sees facilities to create a course
         self.assertTrue(self.browser.find_element_by_id('id_create_course'))
 
