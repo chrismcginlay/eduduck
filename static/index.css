@@ -5,6 +5,12 @@
 
 /* http://designmodo.com/flat-design-colors/ */
 
+div#course_create_see_all a{
+    text-align: center;
+    width: 100%
+}
+    
+
 div.random_course {
     color: rgba(0,0,0,1);
     text-align: center;
