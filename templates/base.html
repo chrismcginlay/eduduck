@@ -52,37 +52,40 @@
 <div class="header">
     <p id='id_branch'>Code Branch: {{ ACTIVE_GIT_BRANCH }}</p>
     <div class="pure-g-r">
-        <div class="pure-u-1-2"><h1>EduDuck</h1></div>
-        <div class="pure-u-1-2"><p id="strapline">
+        <div class="pure-u-1-3"><h1>EduDuck</h1></div>
+        <div class="pure-u-2-3"><p id="strapline">
             Courses are free to take <br>or create your own.</p></div>
     </div>
 </div><!-- header -->
 
 <div class="content">
-    <div id="id_course_create_see_all" class="pure-g-r">
-    <div class="pure-u-1-2">
-        <a href="/" class="pure-button" id="id_course_index">See all Courses</a>
-    </div><div class="pure-u-1-2">
-        <a href="/" class="pure-button" id="id_create_course">Create a Course</a>
-    </div>
-
     <div id="id_course_selection" class="pure-g-r">
         <div class="random_course pure-u-8-24"><p>Astronomy</p></div>
-        <div class="random_course pure-u-6-24"><p>ISS</p></div>
-        <div class="random_course pure-u-9-24"><p>Personal Development</p></div>
-        <div class="random_course pure-u-3-24"><p>Fishing</p></div>
+        <div class="random_course pure-u-4-24"><p>ISS</p></div>
+        <div class="random_course pure-u-12-24"><p>Personal Development</p></div>
+        <div class="random_course pure-u-6-24"><p>Fishing</p></div>
+        <div class="random_course pure-u-18-24" id="id_course_index"><p><a href="{% url 'courses.views.index' %}">See all Courses</a></p></div>
     </div>
 
+    <div id="id_create_course" class="pure-g-r">
+        <form class="pure-form" action="{% url 'courses.views.create' %}">
+            <fieldset>
+                <legend>Do It! Create a course right now</legend>
+                <input type="text" placeholder="a simple name for the course">
+                <button type="submit" class="pure-button pure-button-primary">Create a Course</button>
+            </fieldset>
+        </form>
+    </div>
+    
     <div class="pure-g-r">
-        <div class="pure-u-1-3"><p>A Platform to Learn and to Teach</p></div>
-        <div class="pure-u-1-3">
+        <div class="pure-u-1-2">
             <p>We use <a href="www.gravatar.com">Gravatar.com</a> for profile images: if you use the same email address here, your Gravatar will be linked automatically.</p>
             <form id="id_sign_up_form" action="/accounts/register/" method="post">{% csrf_token %}
             {{ register_form.as_p }}
             <input id="id_submit_reg" class="pure-button" type="submit" value="Sign Up" />
             </form>
         </div>
-        <div class="pure-u-1-3">
+        <div class="pure-u-1-2">
             <form id="id_paypal_button" action="https://www.paypal.com/cgi-bin/webscr"
             method="post" target="_top">
             <input type="hidden" name="cmd" value="_s-xclick">

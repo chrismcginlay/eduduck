@@ -61,25 +61,27 @@ class CasualVisitorArrives(FunctionalTest):
 
         # ...and the option to login, (but doesn't login)
         self.assertTrue(self.browser.find_element_by_id('id_login'))
-        
+
         # He sees facilities to create a course
         self.assertTrue(self.browser.find_element_by_id('id_create_course'))
-
-        # ...and an option to list all courses
-        self.assertTrue(self.browser.find_element_by_id('id_course_index'))
-
+        
         # He sees a list of selected existing courses
         courses_area = self.browser.find_element_by_id('id_course_selection') 
         self.assertTrue(courses_area)
-        # noticing there are 4 courses...
+        # noticing there are 4 courses, and 'see all courses' too.
         courses = courses_area.find_elements_by_class_name('random_course')
-        self.assertEqual(len(courses), 4)
+        self.assertEqual(len(courses), 5)
+        # ...with the specific option to list all courses
+        self.assertTrue(self.browser.find_element_by_id('id_course_index'))
 
         #check element has minimum width and a colourful background
         for course in courses:
             self.assertGreaterEqual(course.size['width'], 50)
             back_color = course.value_of_css_property('background-color')
             self.assertNotEqual(back_color, 'transparent')
+
+        see_all = self.browser.find_element_by_id('id_course_index')
+        self.assertEqual(see_all.value_of_css_property('background-color'), u'rgba(192, 0, 0, 1)')
 
         # Finally, he notices the paypal button
         payarea = self.browser.find_element_by_id('id_paypal_button')
