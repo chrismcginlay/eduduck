@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^attachment/', include('attachment.urls')),
+    url(r'^course/add/', 'courses.views.create')
 )
         
 urlpatterns += patterns('courses.views',

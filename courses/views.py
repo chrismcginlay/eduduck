@@ -18,6 +18,10 @@ from .models import Course, Lesson
 import logging
 logger = logging.getLogger(__name__)
 
+def create(request):
+    """View to allow users to create a course"""
+    
+    pass
 
 def index(request):
     """Prepare variables for list of all courses"""
