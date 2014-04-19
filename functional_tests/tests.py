@@ -129,12 +129,62 @@ class CasualVisitorBrowsesMainMenu(FunctionalTest):
                 self.browser.close()  #close extra windows
 
 class NewVisitorDecidesToRegister(FunctionalTest):
-    pass
+    """Covers registration, bio page, logout and login"""
+    
+    def test_registration_bio_edit_logout_login(self):
+        # Roland arrives on the site. He has not registered yet.
+        # He sees the login option in the menu and the regsitration area on the 
+        # main page.
+        self.fail("write me")
+                
+        # Roland now fills in a username and clicks 'Sign Up' button
+        pass
+        
+        # Since he didn't fill in an email address or password, the form is 
+        # re-presented with the same username, but the error fields highlighted.
+        self.fail("write me")
+        
+        # He enters email and password details, the error messages disappear as he
+        # begins to type.
+        self.fail("write me")
+        
+        # He re-submits the form, which passes validation. A new user is created and
+        # Roland is taken to his user profile ('bio') page. Here he sees the basic
+        # details for his account...
+        self.fail("write me")
+        
+        # ...including his gravatar...
+        self.fail("write me")
+        
+        # ...and with the possibility to change the default timezone, tagline etc.
+        self.fail("write me")
+        
+        # Since he is logged in, the menu now shows 'logout' and 'account' links in
+        # place of login.
+        self.fail("write me")
+        
+        # The main page no longer shows the registration area
+        self.fail("write me")
+        
+        # After spending some time on the site, he decides revisit the account page
+        pass
 
-class ExistingUserLogsIn(FunctionalTest):
-    ## Should cover features which change with login/logout
-    ## i.e. available menu options
-    pass
+        # ...which shows up just fine
+        self.fail("write me")
+
+        # After spending some more time on the site, he then logs out.
+        pass
+
+        # The menu entry reverts to 'login' and the register area appears again.
+        self.fail("write me")
+        
+        # Roland decides to login again. Pressing the login button, he is taken to
+        # the login page
+        self.fail("write me")
+        
+        # He logs in successfully and is taken to the home page.
+        self.fail("write me")
+
 
 class AuthorCreatesMaterials(FunctionalTest):
 
