@@ -50,3 +50,8 @@ div#id_course_index {
 div#id_course_index a {
     color: white;
 }
+
+div#id_create_course {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}

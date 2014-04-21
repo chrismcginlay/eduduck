@@ -135,13 +135,16 @@ class NewVisitorDecidesToRegister(FunctionalTest):
     
     def test_registration_bio_edit_logout_login(self):
         # Roland arrives on the site. He has not registered yet.
-        # He sees the login option in the menu and the regsitration area on the 
+        # He sees the login option in the menu and the registration area on the 
         # main page.
-        self.fail("write me")
-                
+        self.browser.get(self.server_url)
+        import pdb; pdb.set_trace()
+        self.assertTrue(self.browser.find_element_by_id('id_login'))
+        self.assertTrue(self.browser.find_element_by_id('id_sign_up_form'))
+
         # Roland now fills in a username and clicks 'Sign Up' button
         pass
-        
+
         # Since he didn't fill in an email address or password, the form is 
         # re-presented with the same username, but the error fields highlighted.
         self.fail("write me")
@@ -161,8 +164,10 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         # ...and with the possibility to change the default timezone, tagline etc.
         self.fail("write me")
         
-        # Since he is logged in, the menu now shows 'logout' and 'account' links in
-        # place of login.
+        # Since he is logged in, the menu now shows 'logout' in place of login. 
+        self.fail("write me")
+        
+        # Also, a link to his 'account', including a small gravatar image
         self.fail("write me")
         
         # The main page no longer shows the registration area

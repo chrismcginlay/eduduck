@@ -2,13 +2,5 @@
 {% load staticfiles %}
 {% load gravatar %}
 
-{% block contentheading %}
-{% if user.is_authenticated %}
-    <img src="{% gravatar_url user.email %}" alt="{{ user.username }}'s gravatar">
-    Welcome {{ user.username|capfirst }}
-{% else %}
-    Join EduDuck
-{% endif %}
-{% endblock contentheading %}
 
 

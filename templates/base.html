@@ -38,10 +38,19 @@
     <div id="menu"><div class="pure-menu pure-menu-open">
     <a class="pure-menu-heading pure-menu-selected" href="/">EduDuck</a>
     <ul>
-    <li><a href="courses/">Courses</a></li>
+    <li><a href="{% url 'courses.views.index' %}">Courses</a></li>
+    
+    <!-- login/account/logout area -->
+    {% if user.is_authenticated %}
+    <li id="id_account"><a href="{% url 'bio.views.bio' %}"><img src="{% gravatar_url user.email %}" alt="{{ user.username }}'s gravatar">
+    {{ user.username|capfirst }}</a></li>
+    <li id="id_logout"><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a>
+    {% else %}
     <li id='id_login'><a href="{% url 'django.contrib.auth.views.login' %}">Login</a></li>
+    {% endif %}
+    <!-- end login area -->
+
     <li class="menu-item-divided"><a href="{% url 'support.views.support' %}">Support</a></li>
-    <li><a href="contact/">Contact</a></li>
     <li><a href="about/">About</a></li>
     </ul>
     </div></div><!-- menu -->
@@ -67,7 +76,7 @@
         <div class="random_course pure-u-18-24" id="id_course_index"><p><a href="{% url 'courses.views.index' %}">See all Courses</a></p></div>
     </div>
 
-    <div id="id_create_course" class="pure-g-r">
+    <div id="id_create_course">
         <form class="pure-form" action="{% url 'courses.views.create' %}">
             <fieldset>
                 <legend>Do It! Create a course right now</legend>
@@ -77,10 +86,12 @@
         </form>
     </div>
     
+    <hr>
+    
     <div class="pure-g-r">
         <div class="pure-u-1-2">
             <p>We use <a href="www.gravatar.com">Gravatar.com</a> for profile images: if you use the same email address here, your Gravatar will be linked automatically.</p>
-            <form id="id_sign_up_form" action="/accounts/register/" method="post">{% csrf_token %}
+            <form id="id_sign_up_form" action="{% url 'registration_register' %}" method="post">{% csrf_token %}
             {{ register_form.as_p }}
             <input id="id_submit_reg" class="pure-button" type="submit" value="Sign Up" />
             </form>
@@ -98,10 +109,19 @@
             welcome. We're planning a freemium model.</p>            
         </div>
     </div>
+    
+<hr>
+    <h2>
+    {% block contentheading %}
+    A Page With No Title. Override Me
+    {% endblock contentheading %}
+    </h2>
+{% block content %}
+{% endblock content %}
 
     <footer id="pagefoot">
         <p>Copyright (c) 2013 EduDuck.com. All rights reserved.
-        <a href="/support/">Contact Us</a></p>
+        <a href="{% url 'support.views.support' %}">Contact Us</a></p>
     </footer>
 
 </div><!-- content -->
