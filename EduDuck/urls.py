@@ -22,7 +22,7 @@ urlpatterns = patterns('',
 )
         
 urlpatterns += patterns('courses.views',
-    url(r'^$', 'index'),
+    url(r'^$', 'temphome'),
     url(r'^courses/$', 'index'),
     url(r'^courses/(?P<course_id>\d+)/$', 'single'),
     url(r'^courses/(?P<course_id>\d+)/lesson/(?P<lesson_id>\d+)/$',

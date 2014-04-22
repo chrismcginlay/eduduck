@@ -23,6 +23,19 @@ def create(request):
     
     pass
 
+def temphome(request):
+    """Temporary view to support homepage index until 
+    TODO: separate homepage app is created
+    """
+    
+    logger.info("Temporary homepage view")
+    template = 'courses/temphome.html'
+    register_form = RegistrationForm()
+    context_data = { 'register_form': register_form }
+    context_instance = RequestContext(request)
+    
+    return render_to_response(template, context_data, context_instance)
+    
 def index(request):
     """Prepare variables for list of all courses"""
 

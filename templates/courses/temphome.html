@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load gravatar %}
+
+{% block content %}
+<div class="content">
+    <div id="id_course_selection" class="pure-g-r">
+        <div class="random_course pure-u-8-24"><p>Astronomy</p></div>
+        <div class="random_course pure-u-4-24"><p>ISS</p></div>
+        <div class="random_course pure-u-12-24"><p>Personal Development</p></div>
+        <div class="random_course pure-u-6-24"><p>Fishing</p></div>
+        <div class="random_course pure-u-18-24" id="id_course_index"><p><a href="{% url 'courses.views.index' %}">See all Courses</a></p></div>
+    </div>
+
+    <div id="id_create_course">
+        <form class="pure-form" action="{% url 'courses.views.create' %}">
+            <fieldset>
+                <legend>Do It! Create a course right now</legend>
+                <input type="text" placeholder="a simple name for the course">
+                <button type="submit" class="pure-button pure-button-primary">Create a Course</button>
+            </fieldset>
+        </form>
+    </div>
+    
+    <hr>
+    
+    <div class="pure-g-r">
+        <div class="pure-u-1-2">
+            <p>We use <a href="www.gravatar.com">Gravatar.com</a> for profile images: if you use the same email address here, your Gravatar will be linked automatically.</p>
+            <form id="id_sign_up_form" action="{% url 'registration_register' %}" method="post">{% csrf_token %}
+            {{ register_form.as_p }}
+            <input id="id_submit_reg" class="pure-button" type="submit" value="Sign Up" />
+            </form>
+        </div>
+        <div class="pure-u-1-2">
+            <form id="id_paypal_button" action="https://www.paypal.com/cgi-bin/webscr"
+            method="post" target="_top">
+            <input type="hidden" name="cmd" value="_s-xclick">
+            <input type="hidden" name="hosted_button_id" value="YA33KVGTV6ECJ">
+            <input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
+            <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+            </form>
+            <p>It's early days for EduDuck. If you have found the platform 
+            useful, any financial contribution, modest or major, would be most 
+            welcome. We're planning a freemium model.</p>            
+        </div>
+    </div>
+{% endblock content %}
