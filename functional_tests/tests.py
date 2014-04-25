@@ -199,17 +199,6 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         detail_edit_form = self.browser.find_element_by_id('id_edit_account')
         self.assertTrue(detail_edit_form)
         
-        # Since he is logged in, the menu now shows 'logout' in place of login. 
-        self.assertFalse(self.browser.find_element_by_id('id_login'))
-        self.assertTrue(self.browser.find_element_by_id('id_logout'))        
-        
-        # Also, a link to his 'account', including a small gravatar image
-        account_link = self.broswer.find_element_by_id('id_account')
-        self.assertTrue(account_link)
-        account_alttext = account_link.get_attribute('alt')
-        self.assertEqual(account_alttext, "Roland\'s Gravatar")
-        self.assertTrue(self.broswer.find_element_by_id('id_gravatar'))
-        
         # The main page no longer shows the registration area
         self.fail("write me")
         
@@ -232,6 +221,47 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         # He logs in successfully and is taken to the home page.
         self.fail("write me")
 """
+
+class RegisteredUserLogsIn(FunctionalTest):
+    """ Covers the login/logout process """
+
+    def test_login_logout(self):
+        # Chris visits the site (cue music)
+        self.browser.get(self.server_url)
+        
+        # He is not logged in, so sees the login option in the menu
+        login_link = self.browser.find_element_by_id('id_login')
+        self.assertTrue(login_link)
+        
+        import pdb; pdb.set_trace()
+        # On clicking the login link, he is taken to the login page
+        login_link.find_element_by_tag_name('a').click()
+        self.assertEqual(
+            self.browser.current_url, 
+            self.server_url + '/accounts/login/')
+
+        # Entering his username and password, he hits login
+        username_textarea = self.browser.find_element_by_id('id_username')
+        password_textarea = self.browser.find_element_by_id('id_password')
+        form = self.browser.find_element_by_tag_name('form')
+        username_textarea.send_keys('chris')
+        password_textarea.send_keys('chris')
+        form.submit()
+        
+        #This takes him to his account area
+        self.assertEqual(self.browser.current_url,
+                        self.server_url + '/bio/views/edit')
+        
+        # Since he is logged in, the menu now shows 'logout' in place of login. 
+        self.assertFalse(self.browser.find_element_by_id('id_login'))
+        self.assertTrue(self.browser.find_element_by_id('id_logout'))        
+        
+        # Also, a link to his 'account', including a small gravatar image
+        account_link = self.broswer.find_element_by_id('id_account')
+        self.assertTrue(account_link)
+        account_alttext = account_link.get_attribute('alt')
+        self.assertEqual(account_alttext, "Roland\'s Gravatar")
+        self.assertTrue(self.broswer.find_element_by_id('id_gravatar'))
 
 class AuthorCreatesMaterials(FunctionalTest):
 
