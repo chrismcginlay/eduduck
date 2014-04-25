@@ -138,37 +138,77 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         # He sees the login option in the menu and the registration area on the 
         # main page.
         self.browser.get(self.server_url)
-        import pdb; pdb.set_trace()
         self.assertTrue(self.browser.find_element_by_id('id_login'))
         self.assertTrue(self.browser.find_element_by_id('id_sign_up_form'))
 
+        # Roland is so keen to register, he accidentally hits 'sign up'
+        # without first entering a username
+        signup_form = self.browser.find_element_by_id('id_sign_up_form')
+        signup_form.submit()
+        
+        # He is taken to the accounts/register page & an error message appears:
+        error = self.browser.find_element_by_css_selector('.errorlist')
+        self.assertEqual(error.text, "This field is required.")
+
         # Roland now fills in a username and clicks 'Sign Up' button
-        pass
+        signup_form = self.browser.find_element_by_tag_name('form')
+        username_textarea = signup_form.find_element_by_id('id_username')
+        username_textarea.send_keys("Roland")
+        ## Seems to be necessary to refind form (goes out of cache?)
+        signup_form = self.browser.find_element_by_tag_name('form')
+        signup_form.submit()
 
         # Since he didn't fill in an email address or password, the form is 
         # re-presented with the same username, but the error fields highlighted.
-        self.fail("write me")
+        username_textarea = self.browser.find_element_by_id('id_username')
+        self.assertEqual(username_textarea.get_attribute('value'), "Roland")
+        errors = self.browser.find_elements_by_css_selector('.errorlist')
+        self.assertEqual(len(errors), 3) #There are 3 blank fields so far
+
+        for error in errors:
+            self.assertEqual(error.text, "This field is required.")
         
-        # He enters email and password details, the error messages disappear as he
-        # begins to type.
-        self.fail("write me")
+        # He enters email and password details, 
+        email_textarea = self.browser.find_element_by_id('id_email')
+        password1_textarea = self.browser.find_element_by_id('id_password1')
+        password2_textarea = self.browser.find_element_by_id('id_password2')
+        email_textarea.send_keys('roland@example.com')
+        password1_textarea.send_keys('wibble')
+        password2_textarea.send_keys('wibble')
         
-        # He re-submits the form, which passes validation. A new user is created and
-        # Roland is taken to his user profile ('bio') page. Here he sees the basic
-        # details for his account...
-        self.fail("write me")
+        # He re-submits the form, which passes validation. 
+        # He is taken to the pending activation holding page_source
+        signup_form = self.browser.find_element_by_tag_name('form')
+        signup_form.submit()
+        self.assertEqual(
+            self.browser.current_url, 
+            self.server_url + '/accounts/register/complete/')
         
+        ## TODO The following would be nice to test. Need to figure out how to
+        ## mock the confirmation email activation code.
+        
+"""
+        # Roland is taken to his new user profile ('bio') page. 
+        # Here he sees the basic and extra details for his account...
+        self.assertEqual(self.browser.current_url, '/bio/views/edit')
+
         # ...including his gravatar...
         self.fail("write me")
         
         # ...and with the possibility to change the default timezone, tagline etc.
-        self.fail("write me")
+        detail_edit_form = self.browser.find_element_by_id('id_edit_account')
+        self.assertTrue(detail_edit_form)
         
         # Since he is logged in, the menu now shows 'logout' in place of login. 
-        self.fail("write me")
+        self.assertFalse(self.browser.find_element_by_id('id_login'))
+        self.assertTrue(self.browser.find_element_by_id('id_logout'))        
         
         # Also, a link to his 'account', including a small gravatar image
-        self.fail("write me")
+        account_link = self.broswer.find_element_by_id('id_account')
+        self.assertTrue(account_link)
+        account_alttext = account_link.get_attribute('alt')
+        self.assertEqual(account_alttext, "Roland\'s Gravatar")
+        self.assertTrue(self.broswer.find_element_by_id('id_gravatar'))
         
         # The main page no longer shows the registration area
         self.fail("write me")
@@ -191,7 +231,7 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         
         # He logs in successfully and is taken to the home page.
         self.fail("write me")
-
+"""
 
 class AuthorCreatesMaterials(FunctionalTest):
 
