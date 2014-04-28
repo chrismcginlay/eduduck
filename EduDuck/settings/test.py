@@ -1,9 +1,12 @@
-#setttings/test.py
+#settings/test.py
 from base import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 TEMPLATE_STRING_IF_INVALID = "INVALID_EXPRESSION: %s"
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/tmp/eduduck-messages'
 
 DATABASES = {
     'default': {

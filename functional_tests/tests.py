@@ -172,7 +172,8 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         email_textarea = self.browser.find_element_by_id('id_email')
         password1_textarea = self.browser.find_element_by_id('id_password1')
         password2_textarea = self.browser.find_element_by_id('id_password2')
-        email_textarea.send_keys('roland@example.com')
+        # Use a public mailinator address to get the activation code
+        email_textarea.send_keys('rolandtheeduducker@mailinator.com')
         password1_textarea.send_keys('wibble')
         password2_textarea.send_keys('wibble')
         
@@ -183,9 +184,10 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         self.assertEqual(
             self.browser.current_url, 
             self.server_url + '/accounts/register/complete/')
-        
+
         ## TODO The following would be nice to test. Need to figure out how to
         ## mock the confirmation email activation code.
+        ## Could use mailinator or filebased backend for email.
         
 """
         # Roland is taken to his new user profile ('bio') page. 
@@ -233,7 +235,6 @@ class RegisteredUserLogsIn(FunctionalTest):
         login_link = self.browser.find_element_by_id('id_login')
         self.assertTrue(login_link)
         
-        import pdb; pdb.set_trace()
         # On clicking the login link, he is taken to the login page
         login_link.find_element_by_tag_name('a').click()
         self.assertEqual(
