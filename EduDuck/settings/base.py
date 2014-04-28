@@ -19,7 +19,7 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.normpath(
     os.path.join(os.path.realpath(__file__), "../../../"))
 
-LOGIN_REDIRECT_URL = '/courses/'
+LOGIN_REDIRECT_URL = '/accounts/bio/'
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = 'UTC'
