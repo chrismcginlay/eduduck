@@ -1,5 +1,11 @@
 #Testing#
 
+##There are functional tests. Run using the test settings. Run them against 
+##your development environment and against staging:
+    
+`python manage.py test functional_tests --settings=EduDuck.settings.test`
+`python manage.py test functional_tests --liveserver=staging.eduduck.com --settings=EduDuck.settings.test`
+
 ##There are unittests which should be...##
 
 1. added to if adding new code or changing functionality
@@ -8,15 +14,15 @@
 4. executed before merging to master
 
 ##Unit tests at present, and how to run them:##
-`python manage.py test courses`
-`python manage.py test interaction`
-`python manage.py test bio`
-`python manage.py test outcome`
-`python manage.py test support`
-`python manage.py test attachment`
+`python manage.py test courses --settings=EduDuck.settings.test`
+`python manage.py test interaction --settings=EduDuck.settings.test`
+`python manage.py test bio --settings=EduDuck.settings.test`
+`python manage.py test outcome --settings=EduDuck.settings.test`
+`python manage.py test support --settings=EduDuck.settings.test`
+`python manage.py test attachment --settings=EduDuck.settings.test`
 
 Or just run them all:
-`python manage.py test courses interaction bio outcome support attachment`
+    `python manage.py test courses interaction bio outcome support attachment --settings=EduDuck.settings.test`
 
 ##WARNING status in logs after running tests##
 Because the tests intentionally subject the models to failure cases, the tests 

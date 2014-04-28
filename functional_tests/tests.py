@@ -250,8 +250,9 @@ class RegisteredUserLogsIn(FunctionalTest):
         form.submit()
         
         #This takes him to his account area
-        self.assertEqual(self.browser.current_url,
-                        self.server_url + '/bio/views/edit')
+        self.assertEqual(
+            self.browser.current_url,
+            self.server_url + '/bio/views/edit')
         
         # Since he is logged in, the menu now shows 'logout' in place of login. 
         self.assertFalse(self.browser.find_element_by_id('id_login'))
