@@ -54,6 +54,7 @@ class CasualVisitorArrives(FunctionalTest):
         self.assertIn('Code Branch:', branch)
 
         # He sees facilities to register... (but doesn't, yet)
+        self.assertTrue(self.browser.find_element_by_id('id_register'))
         self.assertTrue(self.browser.find_element_by_id('id_username'))
         self.assertTrue(self.browser.find_element_by_id('id_email'))
         self.assertTrue(self.browser.find_element_by_id('id_password1'))
@@ -268,7 +269,56 @@ class RegisteredUserLogsIn(FunctionalTest):
         gravatar = self.browser.find_element_by_id('id_gravatar')
         self.assertEqual(gravatar.get_attribute('alt'), "Chris\'s gravatar")
 
-        # ...we're good.
+
+class RegisteredUserInteractsWithCourse(FunctionalTest):
+
+    def test_user_enrols_on_course(self):
+        # User Chris logs in.
+        self.browser.get(self.server_url)
+        import pdb; pdb.set_trace()
+        login_link = self.browser.find_element_by_id('id_login')
+        login_link.find_element_by_tag_name('a').click()
+        username_textarea = self.browser.find_element_by_id('id_username')
+        password_textarea = self.browser.find_element_by_id('id_password')
+        form = self.browser.find_element_by_tag_name('form')
+        username_textarea.send_keys('chris')
+        password_textarea.send_keys('chris')
+        form.submit()
+        
+        # he goes back to the homepage
+        self.browser.find_element_by_id('id_homelink').click()
+        
+        # Given that he has not registered on any courses, the homepage shows
+        # a selection of courses.
+        courses_area = self.browser.find_element_by_id('id_course_selection') 
+
+        
+        # He selects the Fishing course and is taken to that course's homepage
+        # where he can view an intro video and is invited to enrol.
+        fishing_course = self.browser.find_element_by_id('id_fishing_course')
+        fishing_course.click()
+        self.assertTrue(self.browser.find_element_by_tag('video'))
+        enrol = self.browser.find_element_by_id('id_enrol')
+        
+        # Doing so, the page reloads and a welcome message appears along with
+        # a list of lessons, assessments and resources in the main content area
+        enrol.click()
+        self.fail("write me")
+        
+        # Also, on investigating the site menu, he notices that new options
+        # are there for the fishing home, lessons, assessments
+        self.fail("write me")
+        
+        # On the course homepage, Chris also sees buttons to withdraw from the 
+        # course or to mark it as 'complete'.
+        self.fail("write me")
+
+    def test_user_accesses_course_materials(self):
+        self.fail("Write me")
+        
+    def test_user_can_complete_or_withdraw_from_course(self):
+        self.fail("Write test")
+
 
 class AuthorCreatesMaterials(FunctionalTest):
 
@@ -342,10 +392,3 @@ class AuthorCreatesMaterials(FunctionalTest):
 
         self.fail("Write test")
 
-class PunterInteractsWithCourse(FunctionalTest):
-
-    def test_punter_can_register_and_have_progress_logged(self):
-        self.fail("Write test")
-
-    def test_punter_can_complete_or_withdraw_from_course(self):
-        self.fail("Write test")
