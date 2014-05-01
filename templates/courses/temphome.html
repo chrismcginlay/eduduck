@@ -5,11 +5,10 @@
 {% block content %}
 <div class="content">
     <div id="id_course_selection" class="pure-g-r">
-        <div class="random_course pure-u-8-24"><p>Astronomy</p></div>
-        <div class="random_course pure-u-4-24"><p>ISS</p></div>
-        <div class="random_course pure-u-12-24"><p>Personal Development</p></div>
-        <div class="random_course pure-u-6-24"><p>Fishing</p></div>
-        <div class="random_course pure-u-18-24" id="id_course_index"><p><a href="{% url 'courses.views.index' %}">See all Courses</a></p></div>
+    {% for course in course_list %}
+        <div class="random_course pure-u-{{ course.1 }}-24"><p>{{ course.0 }}</p></div>
+    {% endfor %}
+        <div class="random_course pure-u-24-24" id="id_course_index"><p><a href="{% url 'courses.views.index' %}">See all Courses</a></p></div>
     </div>
 
     <div id="id_create_course">
@@ -26,6 +25,7 @@
     
     <div class="pure-g-r">
         <div class="pure-u-1-2">
+            <h2>Register Here</h2>
             <p>We use <a href="www.gravatar.com">Gravatar.com</a> for profile images: if you use the same email address here, your Gravatar will be linked automatically.</p>
             <form id="id_sign_up_form" action="{% url 'registration_register' %}" method="post">{% csrf_token %}
             {{ register_form.as_p }}

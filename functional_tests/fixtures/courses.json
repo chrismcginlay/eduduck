@@ -1,0 +1,54 @@
+[
+{
+  "pk": 1, 
+  "model": "courses.course", 
+  "fields": {
+    "code": "F1", 
+    "name": "Fishing", 
+    "level": "4", 
+    "abstract": "How to fish", 
+    "organiser": 1, 
+    "credits": 45, 
+    "instructor": 2
+  }
+},
+{
+  "pk": 2, 
+  "model": "courses.course", 
+  "fields": {
+    "code": "c4", 
+    "name": "ISS", 
+    "level": "4", 
+    "abstract": "blah", 
+    "organiser": 1, 
+    "credits": 3, 
+    "instructor": 1
+  }
+},
+{
+  "pk": 3, 
+  "model": "courses.course", 
+  "fields": {
+    "code": "Per", 
+    "name": "Personal Development", 
+    "level": "2", 
+    "abstract": "Tulip", 
+    "organiser": 2, 
+    "credits": 2, 
+    "instructor": 2
+  }
+},
+{
+  "pk": 4, 
+  "model": "courses.course", 
+  "fields": {
+    "code": "Ast", 
+    "name": "Astronomy", 
+    "level": "6", 
+    "abstract": "Stellar", 
+    "organiser": 1, 
+    "credits": 6, 
+    "instructor": 1
+  }
+}
+]

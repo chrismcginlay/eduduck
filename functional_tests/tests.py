@@ -54,7 +54,7 @@ class CasualVisitorArrives(FunctionalTest):
         self.assertIn('Code Branch:', branch)
 
         # He sees facilities to register... (but doesn't, yet)
-        self.assertTrue(self.browser.find_element_by_id('id_register'))
+        self.assertTrue(self.browser.find_element_by_id('id_sign_up_form'))
         self.assertTrue(self.browser.find_element_by_id('id_username'))
         self.assertTrue(self.browser.find_element_by_id('id_email'))
         self.assertTrue(self.browser.find_element_by_id('id_password1'))
@@ -69,19 +69,41 @@ class CasualVisitorArrives(FunctionalTest):
         
         # He sees a list of selected existing courses
         courses_area = self.browser.find_element_by_id('id_course_selection') 
+        courses_area_pixel_width = courses_area.size['width']
+        
         self.assertTrue(courses_area)
-        # noticing there are 4 courses, and 'see all courses' too.
+        # noticing there are up to 6 courses, and 'see all courses' too.
         courses = courses_area.find_elements_by_class_name('random_course')
-        self.assertEqual(len(courses), 5)
+        self.assertLessEqual(len(courses), 7)
         # ...with the specific option to list all courses
         self.assertTrue(self.browser.find_element_by_id('id_course_index'))
 
-        #check element has minimum width and a colourful background
+        # checking element has appropriate width and a colourful background
         for course in courses:
-            self.assertGreaterEqual(course.size['width'], 50)
             back_color = course.value_of_css_property('background-color')
             self.assertNotEqual(back_color, 'transparent')
-
+    
+        ## Group courses in 3s, divide widths into w 24ths proportional to 
+        ## length of course name.
+        for i in [3*j for j in range(1+len(max(courses,6))/3)]: #[0,3,6...]
+            c0,c1,c2 = (0,0,0)
+            try:
+                c0 = len(courses[i+0].text)
+                c1 = len(courses[i+1].text)
+                c2 = len(courses[i+2].text)
+            except IndexError:
+                pass
+            c_total = c0+c1+c2
+            w0 = int(24*c0/c_total)
+            w1 = int(24*c1/c_total)
+            w2 = 24-w0-w1
+            capw = courses_area_pixel_width
+            try:
+                self.assertAlmostEqual(24*courses[i+0].size['width']/capw, w0)
+                self.assertAlmostEqual(24*courses[i+1].size['width']/capw, w1)
+                self.assertAlmostEqual(24*courses[i+2].size['width']/capw, w2)
+            except:
+                pass
         see_all = self.browser.find_element_by_id('id_course_index')
         self.assertEqual(see_all.value_of_css_property('background-color'), u'rgba(192, 0, 0, 1)')
 
@@ -275,7 +297,7 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
     def test_user_enrols_on_course(self):
         # User Chris logs in.
         self.browser.get(self.server_url)
-        import pdb; pdb.set_trace()
+
         login_link = self.browser.find_element_by_id('id_login')
         login_link.find_element_by_tag_name('a').click()
         username_textarea = self.browser.find_element_by_id('id_username')

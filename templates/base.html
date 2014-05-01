@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static 'layouts/side-menu.css' %}">
     <!--<![endif]-->
     <link rel="stylesheet" href="{% static 'index.css' %}">
+    {% block extra_style %}{% endblock extra_style %}
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
@@ -36,7 +37,7 @@
     <!-- Hamburger icon -->
     <span></span></a>
     <div id="menu"><div class="pure-menu pure-menu-open">
-    <a id="homelink" class="pure-menu-heading pure-menu-selected" href="/">EduDuck</a>
+    <a id="id_homelink" class="pure-menu-heading pure-menu-selected" href="/">EduDuck</a>
     <ul>
     <li><a href="{% url 'courses.views.index' %}">Courses</a></li>
     
