@@ -2,11 +2,12 @@
 {% load staticfiles %}
 {% load gravatar %}
 
+{% block contentheading %}{% endblock contentheading %}
 {% block content %}
 <div class="content">
     <div id="id_course_selection" class="pure-g-r">
     {% for course in course_list %}
-        <div class="random_course pure-u-{{ course.1 }}-24"><p>{{ course.0 }}</p></div>
+    <div class="random_course pure-u-{{ course.1 }}-24"><a href='{{ course.0.get_absolute_url }}' id='id_{{course.0.name}}_course'>{{ course.0.name }}</a></div>
     {% endfor %}
         <div class="random_course pure-u-24-24" id="id_course_index"><p><a href="{% url 'courses.views.index' %}">See all Courses</a></p></div>
     </div>

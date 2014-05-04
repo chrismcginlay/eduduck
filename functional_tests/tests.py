@@ -316,14 +316,23 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
 
         
         # He selects the Fishing course and is taken to that course's homepage
-        # where he can view an intro video and is invited to enrol.
-        fishing_course = self.browser.find_element_by_id('id_fishing_course')
+        # where he can view an intro video, see an invitation to enrol
+        # see a list of lessons, assessments and resources in the main course
+        # resource area
+
+        fishing_course = self.browser.find_element_by_id('id_Fishing_course')
         fishing_course.click()
-        self.assertTrue(self.browser.find_element_by_tag('video'))
+        self.assertTrue(self.browser.find_element_by_id('id_course_title'))
         enrol = self.browser.find_element_by_id('id_enrol')
+        course_intro = self.browser.find_element_by_id('id_course_intro_area')
+        self.assertTrue(course_intro.find_element_by_id('id_abstract'))
+        self.assertTrue(course_intro.find_element_by_tag_name('iframe'))
+        resource_area = self.browser.find_element_by_id('id_resource_area')
+        self.assertTrue(resource_area.find_element_by_id('id_resource_lessons'))
+        self.assertTrue(resource_area.find_element_by_id('id_resource_assessments'))
+        self.assertTrue(resource_area.find_element_by_id('id_resource_study'))
         
-        # Doing so, the page reloads and a welcome message appears along with
-        # a list of lessons, assessments and resources in the main content area
+        # On enrolling the page reloads and a welcome message appears along with
         enrol.click()
         self.fail("write me")
         
@@ -335,9 +344,11 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         # course or to mark it as 'complete'.
         self.fail("write me")
 
+    @skip("not testing this")
     def test_user_accesses_course_materials(self):
         self.fail("Write me")
         
+    @skip("not testing this")
     def test_user_can_complete_or_withdraw_from_course(self):
         self.fail("Write test")
 

@@ -39,7 +39,9 @@
     <div id="menu"><div class="pure-menu pure-menu-open">
     <a id="id_homelink" class="pure-menu-heading pure-menu-selected" href="/">EduDuck</a>
     <ul>
+    {% block menu_override %}
     <li><a href="{% url 'courses.views.index' %}">Courses</a></li>
+    {% endblock menu_override %}
     
     <!-- login/account/logout area -->
     {% if user.is_authenticated %}
@@ -68,16 +70,17 @@
     </div>
 </div><!-- header -->
 
+{% block breadcrumb %}{% endblock breadcrumb %}
+
+{% block contentheading %}
+<h2>A Page With No Title. Override Me</h2>
+{% endblock contentheading %}
+
+
 {% block content %}
 {% endblock content %}
     
 <hr>
-    <h2>
-    {% block contentheading %}
-    A Page With No Title. Override Me
-    {% endblock contentheading %}
-    </h2>
-
     <footer id="pagefoot">
         <p>Copyright (c) 2013 EduDuck.com. All rights reserved.
         <a href="{% url 'support.views.support' %}">Contact Us</a></p>
