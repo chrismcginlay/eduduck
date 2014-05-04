@@ -95,6 +95,18 @@ def restore():
     _restore_media_files(SOURCE_DIR)
 
 
+def git_update(settings):
+    """ Git pull the latest code from github, then run collectstatic,  
+    and restart services just in case 
+    """
+
+    # env.host is not set at global scope, only within a task
+    SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
+    _get_source(SOURCE_DIR)
+    _update_static_files(SOURCE_DIR, settings)
+    _restart_services(env.host)
+
+
 
 # Private helper functions, don't call directly.
 

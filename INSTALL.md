@@ -74,6 +74,14 @@ $local:~/deploy_tools fab deploy:host=roberta@example.com,settings=production
 MySQL, nginx and gunicorn should be configured and services started at the end.
 To test, simply visit the URL.
 
+5. Updating source code to latest git code.
+
+If all that is required is to pull the latest code from github, the use the 
+git_update() command. This will pull the latest code, collectstatic files and
+restart services.
+
+$local:~/deploy_tools fab git_update:host=roberta@staging.example.com,settings=staging
+
 
 ## Things not taken care of yet.
 *The real database is not migrated (South)
