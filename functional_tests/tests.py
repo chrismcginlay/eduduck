@@ -331,18 +331,41 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         self.assertTrue(resource_area.find_element_by_id('id_resource_lessons'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_assessments'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_study'))
+
+        # He notices further down the page, that the 'Progress' area offers 
+        # yet another opportunity to enrol on the course.
+        progress = resource_area.find_element_by_id('id_resource_progress')
+        progress.find_element_by_id('id_enrol_x2')
         
-        # On enrolling the page reloads and a welcome message appears along with
+        # On enrolling the page reloads and a welcome message appears in the 
+        # progress area, instead of the enrol button
         enrol.click()
-        self.fail("write me")
+        resource_area = self.browser.find_element_by_id('id_resource_area')
+        progress = resource_area.find_element_by_id('id_resource_progress')
+        try:
+            progress.find_element_by_id('id_enrol_x2')
+        except:
+            pass
+        self.assertEqual(progress.find_element_by_tag_name('h3').text, "Your Progress")
         
         # Also, on investigating the site menu, he notices that new options
         # are there for the fishing home, lessons, assessments
-        self.fail("write me")
+        menu = self.browser.find_element_by_id('menu')
+        items_expected = ['Fishing Home', 'Lessons', 'Assessments', 'Forum',
+                          'Study Group', 'Logout', 'Support', 'Contact', 'About']
+        anchors = menu.find_elements_by_tag_name('a')
+        a_list = [a.text for a in anchors]
+        for item in items_expected:
+            try:
+                self.assertTrue(item in a_list)
+            except:
+                print "{0} not in menu".format(item)
+                raise
         
         # On the course homepage, Chris also sees buttons to withdraw from the 
         # course or to mark it as 'complete'.
-        self.fail("write me")
+        progress.find_element_by_id('id_withdraw')
+        progress.find_element_by_id('id_complete')
 
     @skip("not testing this")
     def test_user_accesses_course_materials(self):

@@ -144,13 +144,13 @@
             </tbody>
             </table>
             {% elif status == "auth_noreg" %}
-            <h3>Enroll Here</h3>
-            <form action='' method='post'>{% csrf_token %}
+            <h3>Enrol Here</h3>
+            <form id='id_enrol_x2' action='' method='post'>{% csrf_token %}
             <input type="submit" name="course_register" value="Register">
             </form>
             {% else %}
             <h3>Join Eduduck</h3>
-            <p>Join Eduduck and enroll on this course</p>
+            <p>Join Eduduck and enrol on this course</p>
             {% endif %}
     </div>
     </div><!-- id_resource_area -->
