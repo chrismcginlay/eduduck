@@ -22,6 +22,7 @@ div#course_create_see_all a{
     
 
 div.random_course {
+    height: 3em;
     color: rgba(0,0,0,1);
     text-align: center;
     font-weight: bold;
@@ -41,6 +42,13 @@ div.random_course:nth-child(3) {
 
 div.random_course:nth-child(4) {
     background-color: rgba(0,177,106,0.5);
+}
+
+div.random_course a {
+    position: relative;
+    top: 1em;
+    text-decoration: none;
+    color: black;
 }
 
 div#id_course_index {
