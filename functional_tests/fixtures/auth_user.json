@@ -34,5 +34,23 @@
     "email": "norm@norm.com", 
     "date_joined": "2014-03-02T08:47:50Z"
   }
-}
+},
+{
+  "pk": 3, 
+  "model": "auth.user", 
+  "fields": {
+    "username": "gaby", 
+    "first_name": "Gaby", 
+    "last_name": "Gobshite", 
+    "is_active": true, 
+    "is_superuser": false, 
+    "is_staff": false, 
+    "last_login": "2014-03-02T08:49:25Z", 
+    "groups": [], 
+    "user_permissions": [], 
+    "password": "pbkdf2_sha256$12000$LRhgtLrTG4YB$tjjXTnIikxWCq+25YL9H+FGpw4ibWXmUVqmrwhbgGio=", 
+    "email": "gaby@example.com", 
+    "date_joined": "2014-03-02T08:47:50Z"
+    }
+  }
 ]

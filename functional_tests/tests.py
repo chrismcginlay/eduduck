@@ -242,7 +242,7 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         
         # Roland decides to login again. Pressing the login button, he is taken to
         # the login page
-        self.fail("write me")
+        self.loguserin('Roland', 'wibble')
         
         # He logs in successfully and is taken to the home page.
         self.fail("write me")
@@ -256,22 +256,7 @@ class RegisteredUserLogsIn(FunctionalTest):
         self.browser.get(self.server_url)
 
         # He is not logged in, so sees the login option in the menu
-        login_link = self.browser.find_element_by_id('id_login')
-        self.assertTrue(login_link)
-
-        # On clicking the login link, he is taken to the login page
-        login_link.find_element_by_tag_name('a').click()
-        self.assertEqual(
-            self.browser.current_url, 
-            self.server_url + '/accounts/login/')
-
-        # Entering his username and password, he hits login
-        username_textarea = self.browser.find_element_by_id('id_username')
-        password_textarea = self.browser.find_element_by_id('id_password')
-        form = self.browser.find_element_by_tag_name('form')
-        username_textarea.send_keys('chris')
-        password_textarea.send_keys('chris')
-        form.submit()
+        self.loguserin('chris', 'chris')
 
         #This takes him to his account area
         self.assertEqual(
@@ -297,15 +282,7 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
     def test_user_enrols_on_course(self):
         # User Chris logs in.
         self.browser.get(self.server_url)
-
-        login_link = self.browser.find_element_by_id('id_login')
-        login_link.find_element_by_tag_name('a').click()
-        username_textarea = self.browser.find_element_by_id('id_username')
-        password_textarea = self.browser.find_element_by_id('id_password')
-        form = self.browser.find_element_by_tag_name('form')
-        username_textarea.send_keys('chris')
-        password_textarea.send_keys('chris')
-        form.submit()
+        self.loguserin('chris', 'chris')
         
         # he goes back to the homepage
         self.browser.find_element_by_id('id_homelink').click()
@@ -367,7 +344,6 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         progress.find_element_by_id('id_withdraw')
         progress.find_element_by_id('id_complete')
         
-    @skip("not testing this yet")
     def test_user_can_complete_or_withdraw_from_course(self):
         self.fail("Write test")
 
@@ -375,8 +351,9 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
 class RegisteredUserInteractsWithLesson(FunctionalTest):
     
     def test_can_reach_lesson_from_course_page_and_see_resources(self):
-        # Gabbie logs in to the site.
-        self.loguserin('gabbie','gabbie5')
+        # Gaby visits and logs in to the site.
+        self.browser.get(self.server_url)
+        self.loguserin('gaby','gaby5')
         
         # She returns to the homepage
         self.browser.find_element_by_id('id_homelink').click()

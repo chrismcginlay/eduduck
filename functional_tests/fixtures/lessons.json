@@ -5,8 +5,8 @@
     "fields": {
         "course": 1,
         "abstract": "Be clear what Blender is, where to download it, what it can achieve, sources of community support.\r\n",
-        "lesson_code": "BL1",
-        "lesson_name": "What is Blender for?"
+        "code": "BL1",
+        "name": "What is Blender for?"
     }
 },
 {
@@ -15,8 +15,8 @@
     "fields": {
         "course": 1,
         "abstract": "Develop basic familiarity with the main parts of the default user interface.",
-        "lesson_code": "BL2",
-        "lesson_name": "Basics of the User Interface"
+        "code": "BL2",
+        "name": "Basics of the User Interface"
     }
 },
 {
@@ -25,8 +25,8 @@
     "fields": {
         "course": 1,
         "abstract": "Learn how to use the number pad to control your point of view in the 3D viewport.\r\nWatch the video that accompanies this lesson, then load the faceviewcube.blend file into blender and try it out for yourself.",
-        "lesson_code": "BL3",
-        "lesson_name": "Orientation in 3D Space"
+        "code": "BL3",
+        "name": "Orientation in 3D Space"
     }
 },
 {
@@ -35,8 +35,8 @@
     "fields": {
         "course": 2,
         "abstract": "Features of the 7 continents of Earth.",
-        "lesson_code": "CC1",
-        "lesson_name": "The Continents"
+        "code": "CC1",
+        "name": "The Continents"
     }
 },
 {
@@ -45,8 +45,8 @@
     "fields": {
         "course": 1,
         "abstract": "Blank lesson to debug next/prev links",
-        "lesson_code": "BL4",
-        "lesson_name": "Some Other Blender Thing"
+        "code": "BL4",
+        "name": "Some Other Blender Thing"
     }
-},
+}
 ]
