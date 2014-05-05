@@ -3,10 +3,10 @@
   "pk": 1, 
   "model": "courses.course", 
   "fields": {
-    "code": "F1", 
-    "name": "Fishing", 
+    "code": "GR1", 
+    "name": "Blender", 
     "level": "4", 
-    "abstract": "How to fish", 
+    "abstract": "An introduction to Blender", 
     "organiser": 1, 
     "credits": 45, 
     "instructor": 2
@@ -46,6 +46,19 @@
     "name": "Astronomy", 
     "level": "6", 
     "abstract": "Stellar", 
+    "organiser": 1, 
+    "credits": 6, 
+    "instructor": 1
+  }
+},
+{
+  "pk": 5, 
+  "model": "courses.course", 
+  "fields": {
+    "code": "OUT1", 
+    "name": "Fishing", 
+    "level": "6", 
+    "abstract": "How and where to catch", 
     "organiser": 1, 
     "credits": 6, 
     "instructor": 1

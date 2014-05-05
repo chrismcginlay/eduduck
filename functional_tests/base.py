@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 
 class FunctionalTest(LiveServerTestCase):
     
-    fixtures = ['auth_user.json', 'courses.json',]
+    fixtures = ['auth_user.json', 'courses.json', 'lesson.json', ]
 
     @classmethod
     def setUpClass(cls):
