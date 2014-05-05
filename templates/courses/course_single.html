@@ -11,7 +11,7 @@
 {% endblock menu_override %}
 
 {% block breadcrumb %}
-<p>Breadcrumb menu: All Courses > Fishing</p>
+<p id='id_breadcrumb'>Breadcrumb menu: All Courses > Fishing</p>
 {% endblock breadcrumb %}
     
 {% block contentheading %}
@@ -54,7 +54,7 @@
         {{course.lesson_set.count|pluralize:"is,are"}} {{course.lesson_set.count}} 
         lesson{{course.lesson_set.count|pluralize:",s"}} in this course.</p>
         {% for lesson in course.lesson_set.all %}
-        <a href='{{ lesson.get_absolute_url }}'
+        <a class="paginator" href='{{ lesson.get_absolute_url }}'
         title='{{ lesson.name}}'>{{ forloop.counter }} |</a>
         {% endfor %}
 

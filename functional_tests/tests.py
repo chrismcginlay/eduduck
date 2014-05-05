@@ -366,15 +366,48 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         # course or to mark it as 'complete'.
         progress.find_element_by_id('id_withdraw')
         progress.find_element_by_id('id_complete')
-
-    @skip("not testing this")
-    def test_user_accesses_course_materials(self):
-        self.fail("Write me")
         
-    @skip("not testing this")
+    @skip("not testing this yet")
     def test_user_can_complete_or_withdraw_from_course(self):
         self.fail("Write test")
 
+
+class RegisteredUserInteractsWithLesson(FunctionalTest):
+    
+    def test_can_reach_lesson_from_course_page_and_see_resources(self):
+        # Gabbie logs in to the site.
+        self.loguserin('gabbie','gabbie5')
+        
+        # She returns to the homepage
+        self.browser.find_element_by_id('id_homelink').click()
+        
+        # Navigates to the fishing course home page
+        fishing_course = self.browser.find_element_by_id('id_Fishing_course')
+        fishing_course.click()
+        
+        # She enrols on the course
+        enrol = self.browser.find_element_by_id('id_enrol')
+        enrol.click()
+        
+        # There are some lessons in the resource area
+        lessons = self.browser.find_element_by_id('id_resource_lessons')
+        self.assertGreaterEqual(
+            len(lessons.find_elements_by_class_name('paginator')),1)
+        
+        # Gaby selects the first lesson and is taken to the lesson page
+        lessons.find_element_by_class_name('paginator').click()
+        lesson_page_title = self.find_element_by_id('id_lesson_title')
+        self.assertEqual(lesson_page_title, "Rods")
+        
+        # The breadcrumb trail updates to show her position on the first lesson 
+        # of the course
+        breadcrumb = self.find_element_by_id('id_breadcrumb')
+        self.fail("write test")
+    
+        # The main body of the lesson page shows the video, attachment and 
+        # learning outcome resources
+        self.fail("write test")
+        
 
 class AuthorCreatesMaterials(FunctionalTest):
 
