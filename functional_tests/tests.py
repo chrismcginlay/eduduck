@@ -358,8 +358,8 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # She returns to the homepage
         self.browser.find_element_by_id('id_homelink').click()
         
-        # Navigates to the fishing course home page
-        fishing_course = self.browser.find_element_by_id('id_Fishing_course')
+        # Navigates to the blender course home page
+        fishing_course = self.browser.find_element_by_id('id_Blender_course')
         fishing_course.click()
         
         # She enrols on the course
@@ -371,10 +371,11 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.assertGreaterEqual(
             len(lessons.find_elements_by_class_name('paginator')),1)
         
+        import pdb; pdb.set_trace()
         # Gaby selects the first lesson and is taken to the lesson page
         lessons.find_element_by_class_name('paginator').click()
-        lesson_page_title = self.find_element_by_id('id_lesson_title')
-        self.assertEqual(lesson_page_title, "Rods")
+        lesson_page_title = self.browser.find_element_by_id('id_lesson_title')
+        self.assertEqual(lesson_page_title, "What is Blender")
         
         # The breadcrumb trail updates to show her position on the first lesson 
         # of the course
