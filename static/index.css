@@ -44,6 +44,14 @@ div.random_course:nth-child(4) {
     background-color: rgba(0,177,106,0.5);
 }
 
+div.random_course:nth-child(5) {
+    background-color: rgba(0,82,156,1);
+}
+
+div.random_course:nth-child(6) {
+    background-color: rgba(0,177,106,1);
+}
+
 div.random_course a {
     position: relative;
     top: 1em;

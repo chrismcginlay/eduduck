@@ -36,7 +36,7 @@ def temphome(request):
 
     ## Group courses in 3s, divide widths into w 24ths proportional to 
     ## length of course name.
-    for i in [3*j for j in range(1+count_courses_used/3)]:  # [0,3,6,..]
+    for i in [3*j for j in range(1+(count_courses_used-1)/3)]:  # [0,3,6,..]
         c0,c1,c2 = (0,0,0)
         try:
             c0 = len(course_list[i+0].name)
@@ -48,6 +48,9 @@ def temphome(request):
         w0 = int(24*c0/c_total)
         w1 = int(24*c1/c_total)
         w2 = 24-w0-w1
+        #Adjust w0,w1 to ensure total 24 if only 1 or 2 courses in row:
+        if c1==0: (w0,w1,w2)=(24,0,0)
+        if c2==0: (w1,w2)=(24-w0,0)
         try:
             courses_n_24ths.append((course_list[i+0], w0))
             courses_n_24ths.append((course_list[i+1], w1))

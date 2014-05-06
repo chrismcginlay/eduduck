@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest import skip
 from registration.forms import RegistrationForm
 from selenium import webdriver
@@ -84,29 +85,37 @@ class CasualVisitorArrives(FunctionalTest):
             self.assertNotEqual(back_color, 'transparent')
     
         ## Group courses in 3s, divide widths into w 24ths proportional to 
-        ## length of course name.
-        for i in [3*j for j in range(1+len(max(courses,6))/3)]: #[0,3,6...]
+        ## length of course name. NB that the 'see all courses' entry doesn't 
+        ## get counted as it gets a row on its own (the last 'course')
+        real_courses = courses[:-1]
+        for i in [3*j for j in range(1+min(len(real_courses)-1,6)/3)]: #[0,3,6...]
             c0,c1,c2 = (0,0,0)
             try:
-                c0 = len(courses[i+0].text)
-                c1 = len(courses[i+1].text)
-                c2 = len(courses[i+2].text)
+                c0 = len(real_courses[i+0].text)
+                c1 = len(real_courses[i+1].text)
+                c2 = len(real_courses[i+2].text)
             except IndexError:
                 pass
             c_total = c0+c1+c2
             w0 = int(24*c0/c_total)
             w1 = int(24*c1/c_total)
             w2 = 24-w0-w1
+            #Adjust w0,w1 to ensure total 24 if only 1 or 2 courses in row:
+            if c1==0: (w0,w1,w2)=(24,0,0)
+            if c2==0: (w1,w2)=(24-w0,0)
             capw = courses_area_pixel_width
-            try:
-                self.assertAlmostEqual(24*courses[i+0].size['width']/capw, w0)
-                self.assertAlmostEqual(24*courses[i+1].size['width']/capw, w1)
-                self.assertAlmostEqual(24*courses[i+2].size['width']/capw, w2)
-            except:
-                pass
+            if w0: self.assertEqual(round(24*float(real_courses[i+0].size['width'])/capw), w0)
+            if w1: self.assertEqual(round(24*float(real_courses[i+1].size['width'])/capw), w1)
+            if w2: self.assertEqual(round(24*float(real_courses[i+2].size['width'])/capw), w2)
+
         see_all = self.browser.find_element_by_id('id_course_index')
         self.assertEqual(see_all.value_of_css_property('background-color'), u'rgba(192, 0, 0, 1)')
 
+        # The footer area shows the current year in the copyright notice
+        thisyear = datetime.now().year
+        footeryear = self.browser.find_element_by_id('id_pagefoot').text.split(' ')[2]
+        self.assertEqual(int(footeryear), thisyear)
+        
         # Finally, he notices the paypal button
         payarea = self.browser.find_element_by_id('id_paypal_button')
         target = 'https://www.paypal.com/cgi-bin/webscr'
