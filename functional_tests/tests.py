@@ -307,6 +307,7 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         resource_area = self.browser.find_element_by_id('id_resource_area')
         self.assertTrue(resource_area.find_element_by_id('id_resource_lessons'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_assessments'))
+        self.assertTrue(resource_area.find_element_by_id('id_resource_attachments'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_study'))
 
         # He notices further down the page, that the 'Progress' area offers 
@@ -369,22 +370,35 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # There are some lessons in the resource area
         lessons = self.browser.find_element_by_id('id_resource_lessons')
         self.assertGreaterEqual(
-            len(lessons.find_elements_by_class_name('paginator')),1)
-        
-        import pdb; pdb.set_trace()
+            len(lessons.find_elements_by_class_name('paginator')),1)        
+
         # Gaby selects the first lesson and is taken to the lesson page
         lessons.find_element_by_class_name('paginator').click()
         lesson_page_title = self.browser.find_element_by_id('id_lesson_title')
-        self.assertEqual(lesson_page_title, "What is Blender")
+        self.assertEqual(
+            lesson_page_title.text, "Lesson BL1: What is Blender for?")
         
         # The breadcrumb trail updates to show her position on the first lesson 
         # of the course
-        breadcrumb = self.find_element_by_id('id_breadcrumb')
-        self.fail("write test")
+        breadcrumb = self.browser.find_element_by_id('id_breadcrumb')
+        self.assertEqual(breadcrumb.text, "All Courses > Blender > What is Blender?")
+        
+        # Just under the breadcrumb, there is a lesson paginator
+        self.assertTrue(breadcrumb.find_element_by_class_name('paginator'))
     
         # The main body of the lesson page shows the video, attachment and 
-        # learning outcome resources
-        self.fail("write test")
+        # learning outcomes in the main lesson resource area
+        self.assertTrue(self.browser.find_element_by_id('id_lesson_title'))
+        lesson_intro = self.browser.find_element_by_id('id_lesson_intro_area')
+        self.assertTrue(course_intro.find_element_by_id('id_abstract'))
+        ##videos are iframes for YouTube
+        self.assertTrue(course_intro.find_element_by_tag_name('iframe'))
+        resource_area = self.browser.find_element_by_id('id_resource_area')
+        self.assertTrue(resource_area.find_element_by_id('id_resource_lessons'))
+        self.assertTrue(resource_area.find_element_by_id('id_resource_survey'))
+        self.assertTrue(resource_area.find_element_by_id('id_resource_progress'))
+        self.assertTrue(resource_area.find_element_by_id('id_resource_learning_intentions'))
+        self.assertTrue(resource_area.find_element_by_id('id_resource_attachments'))
         
 
 class AuthorCreatesMaterials(FunctionalTest):

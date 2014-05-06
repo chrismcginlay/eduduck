@@ -18,121 +18,109 @@
 
 {% block contentheading %}
 <h2 id='id_lesson_title'>Lesson {{lesson.code}}: {{lesson.name}}</h2>
-{% endblock contentheading %}
-
-<hr>
-<hr>
-    <span class='prevnext'>
+<span class='paginator'>
     {% if lesson.get_prev %}
-        &lt;<a href='{{ lesson.get_prev.get_absolute_url }}'
-		title='{{ lesson.get_prev }}'>{{ lesson.get_prev|truncatechars:10 }}</a> 
+    &lt;<a href='{{ lesson.get_prev.get_absolute_url }}'
+                title='{{ lesson.get_prev }}'>{{ lesson.get_prev|truncatechars:10 }}</a> 
     {% else %}
-        ---
+    ---
     {% endif %}
     | <span title='{{ lesson.code }}:{{ lesson }}'>
-          {{ lesson|truncatechars:10 }}</span> | 
-    {% if lesson.get_next %}
-        <a href='{{ lesson.get_next.get_absolute_url }}'
-		title='{{ lesson.get_next }}'>{{ lesson.get_next|truncatechars:10 }}</a>&gt;
+                    {{ lesson|truncatechars:10 }}</span> | 
+                    {% if lesson.get_next %}
+                    <a href='{{ lesson.get_next.get_absolute_url }}'
+    title='{{ lesson.get_next }}'>{{ lesson.get_next|truncatechars:10 }}</a>&gt;
     {% else %}
-        ---
+    ---
     {% endif %} 
-	</span>
-
+</span>
+{% endblock contentheading %}
 
 {% block content %}
-    <h3>Abstract</h3>
-    <article class="abstract">
+<div id='id_lesson_intro_area' class='pure-g-r'>
+    <div class='pure-u-1-1'>
+        <h3>{{ lesson.code }}: {{ lesson.name }} Lesson Homepage</h3>
+    </div>
+    <div id='id_abstract' class='pure-u-1-1'>
         <p>{{ lesson.abstract }}</p>
-    </article>
+    </div>
+</div>
 
-    <section id="zone1">
-        <article>
-            <h4 class="attachments">Attachments</h4>
-            <ol class="attachments">
-            {% for a in attachments %}
-                <li>{{ a.1.pk}}
-                    {% if a.0 %}
-                    Downloaded
-                    {% else %}
-                    Not Downloaded
-                    {% endif %} 
-                    <a href='{{ a.1.get_loggable_url }}'>{{ a.1.name }}</a>
-                    : {{ a.1.attachment.size }} bytes, {{ a.1.desc }}
-                    <a href='{{ a.1.get_metadata_url }}'>(View MetaData here)</a>
-                </li>
-            {% empty %}
-                <li>No attachments in this lesson</li>
-            {% endfor %}
-            </ol>  
-        </article>
-
-        <article>
-            <h4 class="videos">Videos</h4>
-            <ol class="videos">
-            {% for v in lesson.video_set.all %}
-                <li>{{ v.pk }} <a href="{{ v.url }}">{{ v.name }}</a></li>
-                <iframe width="280" height="158" src='{{ v.url }}' 
-                frameborder="0" allowfullscreen></iframe>
-            {% empty %}
-                <li>No videos for this lesson</li>
-            {% endfor %}
-            </ol>
-        </article>  
-    </section>
-
-    <section id="zone2">
-    {% if user.is_authenticated and history %}
-		{% if not lesson.get_next %}
-    	<h3>Nearly Finished! Well done</h3>
-       		<a href='https://docs.google.com/forms/d/1VrUfHZ3oVFByCeZf19CNl_OY0po9gTuMlKIT20rKY48/viewform'>
-            <img width='156' height='200' 
-                 title='Complete our Survey!' alt='Complete our Survey!'
-                 src="{% static 'images/SurveyIcon_156.png' %}">
-            </a>
-        {% endif %}
-        <h3>Your Progress</h3>
-        <ol class="abstract">{% for event in history %}
-            <li>{{ event.1 }} lesson on {{ event.0|localtime }}</li>
-        {% endfor %}</ol>
-        {% if not ul.completed %}
-        <form action='' method='post'>{% csrf_token %}
-            <input type="submit" name="lesson_complete" 
-            value="Mark Complete" title="You can manually mark this lesson as being complete">
-        </form>
+<div id='id_resource_area' class='pure-g-r'>
+    <div id='id_resource_videos' class='pure-u-1-2'>
+        <h3>Videos</h3>
+        <ol>
+        {% for v in lesson.video_set.all %}
+        <li>{{ v.pk }} <a href="{{ v.url }}">{{ v.name }}</a></li>
+        <iframe width="280" height="158" src='{{ v.url }}' 
+        frameborder="0" allowfullscreen></iframe>
+        {% empty %}
+        <li>No videos for this lesson</li>
+        {% endfor %}
+        </ol>
+    </div>
+    <div id='id_resource_attachments' class='pure-u-1-2'>
+        <h4 class="attachments">Attachments</h4>
+        <ol>
+        {% for a in attachments %}
+        <li>{{ a.1.pk}}
+        {% if a.0 %}
+        Downloaded
         {% else %}
-        <form action='' method='post'>{% csrf_token %}
-            <input type="submit" name="lesson_reopen" 
-            value="Un-mark/Re-open" title="This lesson is marked as complete, this will un-mark it (your data will not be lost)">
-        </form>
-        {% endif %}
-    {% else %}
-        <h3>Progress Record</h3>
-        <p>Log in and/or register for this course, then you get to build up
-        a detailed log of your awesomeness here.</p>
-    {% endif %}
-        <h3>Learning Intentions</h3>
-        <article class="abstract">
-            {% for li in learning_intentions %}
-            <p>[<a href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.text }}</p>
-            {% empty %}
-            <p>Bizarrely, no learning intentions given for this lesson</p>
-            {% endfor %}
-        </article>
-		<h3>Change Lesson</h3>
-        {% if lesson.get_prev %}
-        <a href='{{ lesson.get_prev.get_absolute_url }}'
-		title='{{ lesson.get_prev }}'>Previous Lesson</a> 
-        {% else %}
-        	(On first lesson)
-        {% endif %}
-        &nbsp;|&nbsp; 
-        {% if lesson.get_next %}
-        <a href='{{ lesson.get_next.get_absolute_url }}'
-		title='{{ lesson.get_next }}'>Next Lesson</a>
-        {% else %}
-        	(On last lesson)
+        Not Downloaded
         {% endif %} 
-    </section>    
-
+        <a href='{{ a.1.get_loggable_url }}'>{{ a.1.name }}</a>
+        : {{ a.1.attachment.size }} bytes, {{ a.1.desc }}
+        <a href='{{ a.1.get_metadata_url }}'>(View MetaData here)</a>
+        </li>
+        {% empty %}
+        <li>No attachments in this lesson</li>
+        {% endfor %}
+        </ol>          
+    </div>
+    <div id='id_resource_learning_intentions' class='pure-u-1-2'>
+        <h3>Learning Intentions</h3>
+        {% for li in learning_intentions %}
+        <p>[<a href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.text }}</p>
+        {% empty %}
+        <p>Bizarrely, no learning intentions given for this lesson</p>
+        {% endfor %}
+    </div>
+    <div id='id_resource_progress' class='pure-u-1-2'>
+        <h3>Your Progress</h3>
+        {% if user.is_authenticated and history %}
+            <ol>{% for event in history %}
+                <li>{{ event.1 }} lesson on {{ event.0|localtime }}</li>
+            {% endfor %}</ol>
+        
+            {% if not ul.completed %}
+                <form action='' method='post'>{% csrf_token %}
+                <input type="submit" name="lesson_complete" 
+                value="Mark Complete" title="You can manually mark this lesson as being complete">
+                </form>
+            {% else %}
+                <form action='' method='post'>{% csrf_token %}
+                <input type="submit" name="lesson_reopen" 
+                value="Un-mark/Re-open" title="This lesson is marked as complete, this will un-mark it (your data will not be lost)">
+                </form>
+            {% endif %}
+        {% else %}
+            <h3>Progress Record</h3>
+            <p>Log in and/or register for this course, then you get to build up
+            a detailed log of your awesomeness here.</p>
+        {% endif %}
+    </div>
+    <div id='id_resource_survey' class='pure-u-1-2'>
+    {% if user.is_authenticated and history %}
+        {% if not lesson.get_next %}
+        <h3>Nearly Finished! Well done</h3>
+        <a href='https://docs.google.com/forms/d/1VrUfHZ3oVFByCeZf19CNl_OY0po9gTuMlKIT20rKY48/viewform'>
+        <img width='156' height='200' 
+        title='Complete our Survey!' alt='Complete our Survey!'
+        src="{% static 'images/SurveyIcon_156.png' %}">
+        </a>
+        {% endif %}
+    {% endif %}
+    </div>
+</div>
 {% endblock content %}
