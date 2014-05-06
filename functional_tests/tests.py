@@ -384,23 +384,34 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.assertEqual(breadcrumb.text, "All Courses > Blender > What is Blender?")
         
         # Just under the breadcrumb, there is a lesson paginator
-        self.assertTrue(breadcrumb.find_element_by_class_name('paginator'))
+        self.assertTrue(self.browser.find_element_by_class_name('prev_next'))
     
         # The main body of the lesson page shows the video, attachment and 
         # learning outcomes in the main lesson resource area
         self.assertTrue(self.browser.find_element_by_id('id_lesson_title'))
         lesson_intro = self.browser.find_element_by_id('id_lesson_intro_area')
-        self.assertTrue(course_intro.find_element_by_id('id_abstract'))
-        ##videos are iframes for YouTube
-        self.assertTrue(course_intro.find_element_by_tag_name('iframe'))
+        self.assertTrue(lesson_intro.find_element_by_id('id_abstract'))
+
         resource_area = self.browser.find_element_by_id('id_resource_area')
-        self.assertTrue(resource_area.find_element_by_id('id_resource_lessons'))
+        ##videos are iframes for YouTube, if videos are present:
+        resource_videos = resource_area.find_element_by_id('id_resource_videos')
+        try:
+            self.assertTrue(resource_videos.find_element_by_tag_name('iframe'))
+        except:
+            self.assertEqual(
+                resource_videos.find_element_by_tag_name('li').text,
+            'No videos for this lesson')
         self.assertTrue(resource_area.find_element_by_id('id_resource_survey'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_progress'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_learning_intentions'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_attachments'))
         
-
+    def test_can_reach_learning_intentions_and_browse_the_detail(self):
+        """ From a lesson page, user can view the learning intentions and see
+        the various success criteria etc."""
+        
+        pass
+    
 class AuthorCreatesMaterials(FunctionalTest):
 
     def test_can_create_course_and_retrieve_it_later(self):

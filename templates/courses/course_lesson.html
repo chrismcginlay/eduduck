@@ -13,12 +13,12 @@
 {% endblock menu_override %}
 
 {% block breadcrumb %}
-<p id='id_breadcrumb'>Breadcrumb menu: All Courses > <a href='{{ lesson.course.get_absolute_url }}'>Blender</a> > What is Blender?</p>
+<p id='id_breadcrumb'>All Courses > <a href='{{ lesson.course.get_absolute_url }}'>Blender</a> > What is Blender?</p>
 {% endblock breadcrumb %}
 
 {% block contentheading %}
 <h2 id='id_lesson_title'>Lesson {{lesson.code}}: {{lesson.name}}</h2>
-<span class='paginator'>
+<span class='prev_next'>
     {% if lesson.get_prev %}
     &lt;<a href='{{ lesson.get_prev.get_absolute_url }}'
                 title='{{ lesson.get_prev }}'>{{ lesson.get_prev|truncatechars:10 }}</a> 

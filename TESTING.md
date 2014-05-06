@@ -6,6 +6,14 @@
 `python manage.py test functional_tests --settings=EduDuck.settings.test`
 `python manage.py test functional_tests --liveserver=staging.eduduck.com --settings=EduDuck.settings.test`
 
+If you would like to add or edit the fixtures for functional_tests, you will 
+find them in JSON format in functional_tests/fixtures. Note that if adding new
+users to the auth_user.json, you'll need to generate a hashed password:
+    >>> from django.contrib.auth.models import User
+    >>> u = User()
+    >>> u.set_password('newpass')
+    >>> u.password
+    
 ##There are unittests which should be...##
 
 1. added to if adding new code or changing functionality
