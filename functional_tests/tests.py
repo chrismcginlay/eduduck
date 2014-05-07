@@ -415,6 +415,11 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.assertTrue(resource_area.find_element_by_id('id_resource_learning_intentions'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_attachments'))
         
+        # Gaby sees a number of learning intentions for the lesson
+        self.assertGreaterEqual(
+            len(resource_area.find_element_by_id('id_resource_learning_intentions').
+            find_elements_by_tag_name('a')), 1)
+        
     def test_can_reach_learning_intentions_and_browse_the_detail(self):
         """ From a lesson page, user can view the learning intentions and see
         the various success criteria etc."""
