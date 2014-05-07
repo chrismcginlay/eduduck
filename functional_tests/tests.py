@@ -415,16 +415,46 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.assertTrue(resource_area.find_element_by_id('id_resource_learning_intentions'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_attachments'))
         
-        # Gaby sees a number of learning intentions for the lesson
+        # Gaby sees a number of learning intentions for the lesson 
         self.assertGreaterEqual(
             len(resource_area.find_element_by_id('id_resource_learning_intentions').
             find_elements_by_tag_name('a')), 1)
+            
         
     def test_can_reach_learning_intentions_and_browse_the_detail(self):
         """ From a lesson page, user can view the learning intentions and see
         the various success criteria etc."""
         
-        pass
+        # Gaby logs in, goes to the Blender course, lesson 1.
+        # From there she selects the first learning intention link in them
+        # learning intentions area.
+        self.fail("write me")
+        
+        # This takes her to a new page with the title 'Learning Intentions'
+        
+        # She notices that the menu entries update 
+        
+        # ...and that the breadcrumb now shows the course > lesson > intention
+        
+        # The main resource area is split into 3 areas, consisting of 
+        # 2 columns, where the second column has two rows, like: OB
+        
+        # Gaby sees that the larger area on the left has a list of learning 
+        # intentions, with a clickable icon next to each.
+        
+        # On clicking the first icon, some detail of the learning intention 
+        # expands vertically and...
+        
+        # the top right content area shows the related outcomes...
+        
+        # whilst the bottom right area shows the related success criteria.
+        
+        # Gaby clicks on another intention, which expands as the old one 
+        # collapses...
+        
+        # ...and the right hand areas show the relevant outcomes/criteria.
+        
+        
     
 class AuthorCreatesMaterials(FunctionalTest):
 

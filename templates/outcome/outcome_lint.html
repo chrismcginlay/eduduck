@@ -1,4 +1,4 @@
-{% extends "courses/base_course.html" %}
+{% extends "courses/base.html" %}
 {% load staticfiles %}
 {% load tz %}
 
@@ -11,6 +11,28 @@
     <script src="{% static 'traffic.js' %}"></script> 
 {% endblock extra_script %}
 
+{% block menu_override %}
+    <li>{{ course.name }} Home</li>
+    <li>{{ lesson.name }} Home</li>
+    <li>Forum</li>
+    <li>Study Group</li>
+{% endblock menu_override %}
+
+{% block breadcrumb %}
+<p id='id_breadcrumb'>
+    All Courses > 
+    <a href='{{ lesson.course.get_absolute_url }}'>{{ lesson.course.name }}</a> >
+    <a href='{{ lesson.get_absolute_url }}'>{{ lesson.name }} ></a> > 
+    Learning Intentions
+    </p>
+{% endblock breadcrumb %}
+
+{% block contentheading %}
+<h2 id='id_lesson_title'>Learning Intentions for Lesson {{lesson.name}}</h2>
+{% endblock contentheading %}
+
+<hr>
+<hr>
 {% block pagenav %}
 {{ block.super }}
 	| <a href='{{ lesson.course.get_absolute_url }}'
