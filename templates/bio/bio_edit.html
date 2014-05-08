@@ -1,10 +1,10 @@
 {% extends "bio/base_bio.html" %}
 
 {% block contentheading %}
-    Edit Bio: {{ user.get_full_name }}
+    <h2>Edit Bio: {{ user.get_full_name }}</h2>
 {% endblock contentheading %}
 
-{% block zone1 %}
+{% block content %}
     <h3>Change Your Password</h3>
     <a href="/accounts/password/change/">Change Password</a>
 
@@ -13,4 +13,4 @@
     {{ form.as_p }}
     <input type='submit' value='Submit' />
     </form>
-{% endblock zone1 %}
+{% endblock content %}

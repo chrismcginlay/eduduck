@@ -3,10 +3,10 @@
 {% load gravatar %}
 
 {% block contentheading %}
-    Bio: {{ user.get_full_name }}
+    <h2>Bio: {{ user.get_full_name }}</h2>
 {% endblock contentheading %}
 
-{% block zone1 %}
+{% block content %}
     <h3>Public Data for {{ fullname }}</h3>
     {% gravatar_url user.email %}
     <table>
@@ -22,4 +22,4 @@
         </tr>
         <tr><td>Description</td><td>{{ description }}</td></tr>
     </table>
-{% endblock zone1 %}
+{% endblock content %}

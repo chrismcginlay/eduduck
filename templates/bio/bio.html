@@ -3,10 +3,10 @@
 {% load gravatar %}
 
 {% block contentheading %}
-    Bio: {{ user.get_full_name }}
+    <h2>Bio: {{ user.get_full_name }}</h2>
 {% endblock contentheading %}
 
-{% block zone1 %}
+{% block content %}
     <h3>Gravatar</h3>
     <img src="{% gravatar_url user.email 80 %}">
     <p>Your profile image is your Gravatar.com avatar, linked to {{ user.email }}</p>
@@ -57,4 +57,4 @@
         </tr>
         <tr><td>Description</td><td>{{ bio.description }}</td></tr>
     </table>
-{% endblock zone1 %}
+{% endblock content %}
