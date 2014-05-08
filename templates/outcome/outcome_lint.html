@@ -1,4 +1,4 @@
-{% extends "courses/base.html" %}
+{% extends "courses/base_course.html" %}
 {% load staticfiles %}
 {% load tz %}
 
@@ -12,8 +12,10 @@
 {% endblock extra_script %}
 
 {% block menu_override %}
-    <li>{{ course.name }} Home</li>
-    <li>{{ lesson.name }} Home</li>
+    <li><a href='{{ lesson.course.get_absolute_url }}'
+title='{{ lesson.course }}'>{{ lesson.course.name }} Home</a></li>
+    <li><a href='{{ lesson.get_absolute_url }}'
+title='{{ lesson }}'>{{ lesson.name }} Home</a></li>
     <li>Forum</li>
     <li>Study Group</li>
 {% endblock menu_override %}
@@ -22,23 +24,14 @@
 <p id='id_breadcrumb'>
     All Courses > 
     <a href='{{ lesson.course.get_absolute_url }}'>{{ lesson.course.name }}</a> >
-    <a href='{{ lesson.get_absolute_url }}'>{{ lesson.name }} ></a> > 
+    <a href='{{ lesson.get_absolute_url }}'>{{ lesson.name }}</a> > 
     Learning Intentions
     </p>
 {% endblock breadcrumb %}
 
 {% block contentheading %}
-<h2 id='id_lesson_title'>Learning Intentions for Lesson {{lesson.name}}</h2>
-{% endblock contentheading %}
+    <h2 id='id_title'>Learning Intentions for Lesson {{lesson.name}}</h2>
 
-<hr>
-<hr>
-{% block pagenav %}
-{{ block.super }}
-	| <a href='{{ lesson.course.get_absolute_url }}'
-         title='{{ lesson.course }}'>Course Home</a>
-    | <a href='{{ lesson.get_absolute_url }}'
-         title='{{ lesson }}'>Lesson Home</a>
     <span class='prevnext'>
     {% if learning_intention.get_prev %}
         &lt;<a href='{{ learning_intention.get_prev.get_absolute_url }}'
@@ -56,23 +49,19 @@
     {% else %}
         ---
     {% endif %} 
-</span>
-{% endblock %}
-
-{% block contentheading %}
-    Learning Intentions for {{lesson.code}}: {{lesson.name}}
+    </span>
 {% endblock contentheading %}
 
 {% block content %}
-    <article class="abstract">
+<div id='id_detail_area' class='pure-g-r'>
+    <div id='id_lint' class='pure-u-1-2'>
         <h3>Learning Intention {{ learning_intention.id }}</h3>
         <p>{{ learning_intention.text }}</p>
-    </article>
-
-    <section id="zone1">
-        <article>
-        <h4>Success Criteri{{ usc_list|length|pluralize:"on,a"}}
-        </h4>
+    </div>
+    
+    <div id='id_lo_sc' class='pure-u-1-2'>
+    <div id='id_sc'>
+        <h3>Success Criteri{{ usc_list|length|pluralize:"on,a"}}</h3>
         <p class="FYI">A success criterion is an activity you 
         would do that would demonstrate mastery of 
         (part of) a learning outcome.</p>
@@ -92,7 +81,7 @@
             </span>
         </progress>
         <div class="prog_status" id="progSC_status">
-            <!--progress status or complete information-->
+            <!--jQuery progress status or complete information-->
         </div>
 
         {% endif %}   
@@ -112,13 +101,10 @@ title="Cycle status R->A->G->R">
         {% endfor %}
         </ol>  
 </form> 
-        </article>
-    </section>
+    </div> <!-- id_sc -->
 
-    <section id="zone2">
-        <article>
-        <h4>Learning Outcome{{ ulo_list|length|pluralize:",s"}}
-        </h4>
+    <div id='id_lo'>
+        <h3>Learning Outcome{{ ulo_list|length|pluralize:",s"}}</h3>
         <p class="FYI">A learning outcome is a particular capacity 
         or skill acquired or enhanced. Think of an 'I can...' statement.</p>
         {% if progressLO %}
@@ -156,6 +142,5 @@ title="Cycle status R->A->G->R">
         {% endfor %}
         </ol>
 </form>
-        </article>
-    </section>
+    </div> <!-- id_lo -->
 {% endblock content %}
