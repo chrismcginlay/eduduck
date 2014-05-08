@@ -392,7 +392,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         breadcrumb = self.browser.find_element_by_id('id_breadcrumb')
         self.assertEqual(breadcrumb.text, "All Courses > Blender > What is Blender?")
         
-        # Just under the breadcrumb, there is a lesson paginator
+        # Just under the breadcrumb, there is a tool to navigate between lessons
         self.assertTrue(self.browser.find_element_by_class_name('prev_next'))
     
         # The main body of the lesson page shows the video, attachment and 
@@ -428,16 +428,35 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # Gaby logs in, goes to the Blender course, lesson 1.
         # From there she selects the first learning intention link in them
         # learning intentions area.
-        self.fail("write me")
+        self.browser.get(self.server_url)
+        self.loguserin('gaby', 'gaby5')
+        self.browser.find_element_by_id('id_homelink').click()
+        self.browser.find_element_by_id('id_Blender_course').click()
+        self.browser.find_element_by_id('id_enrol').click()
+        self.browser.find_element_by_class_name('paginator').click()
+        self.browser.find_element_by_id('id_resource_learning_intentions').
+        find_element_by_tag_name('a').click()
         
         # This takes her to a new page with the title 'Learning Intentions'
+        self.assertEqual(self.browser.find_element_by_id('id_title'), 
+                         'Learning Intention for Lesson ...')
         
         # She notices that the menu entries update 
+        self.assertIn(self.browser.find_element_by_id('id_menu').text, 'Blender')
+        self.assertIn(self.browser.find_element_by_id('id_menu').text, 'Lesson 1')
         
         # ...and that the breadcrumb now shows the course > lesson > intention
+        self.assertEqual(self.browser.find_element_by_id('id_breadcrumb'),
+                         'All Courses > Blender > Rods > Learning Intentions')
         
         # The main resource area is split into 3 areas, consisting of 
         # 2 columns, where the second column has two rows, like: OB
+        resource_area = self.browser.find_element_by_id('id_resource_area')
+        LI_area = resource_area.find_element_by_id('id_resource_LIs')
+        LO_area = resource_area.find_element_by_id('id_resource_LO')
+        SC_area = resource_area.find_element_by_id('id_resource_SC')
+        self.assertEqual(LI_area.size['width'], LO_area.size['width'])
+        self.assertEqual(LO_area.size['height'], SC_area.size['height'])
         
         # Gaby sees that the larger area on the left has a list of learning 
         # intentions, with a clickable icon next to each.
@@ -453,9 +472,8 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # collapses...
         
         # ...and the right hand areas show the relevant outcomes/criteria.
+        self.fail("write me")
         
-        
-    
 class AuthorCreatesMaterials(FunctionalTest):
 
     def test_can_create_course_and_retrieve_it_later(self):
