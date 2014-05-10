@@ -3,7 +3,7 @@ from base import *
 import os
  
 DEBUG = False
-TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = False
 #TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
 TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
 
