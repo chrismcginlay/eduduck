@@ -78,16 +78,16 @@
   }
 },
 {
-    "pk": 7, 
-    "model": "courses.course", 
-    "fields": {
-        "code": "PSHE02", 
-        "name": "Field First Aid", 
-        "level": "4", 
-        "abstract": "Practical first aid for challenging outdoor situations", 
-        "organiser": 1, 
-        "credits": 50, 
-        "instructor": 1
-    }
+  "pk": 7, 
+  "model": "courses.course", 
+  "fields": {
+    "code": "PSHE02", 
+    "name": "Field First Aid", 
+    "level": "4", 
+    "abstract": "Practical first aid for challenging outdoor situations", 
+    "organiser": 1, 
+    "credits": 50, 
+    "instructor": 1
+  }
 }
 ]

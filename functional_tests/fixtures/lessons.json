@@ -244,9 +244,9 @@
     "model": "courses.lesson",
     "fields": {
         "course": 6,
-        "abstract": "",
-        "code": "",
-        "name": ""
+        "abstract": "History and specialities of the top UK dance conservatoires",
+        "code": "DANCE05",
+        "name": "UK Conservatoires"
     }
 },
 {
