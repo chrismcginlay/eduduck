@@ -39,9 +39,9 @@
   "pk": 3, 
   "model": "auth.user", 
   "fields": {
-    "username": "gaby", 
+    "username": "gaby", #gaby5
     "first_name": "Gaby", 
-    "last_name": "Gobshite", 
+    "last_name": "Green", 
     "is_active": true, 
     "is_superuser": false, 
     "is_staff": false, 
@@ -52,5 +52,42 @@
     "email": "gaby@example.com", 
     "date_joined": "2014-03-02T08:47:50Z"
     }
-  }
+},
+{
+    "pk": 4, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "urvasi", #hotel23
+        "first_name": "Urvasi", 
+        "last_name": "Smith", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-03-02T08:49:25Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$IifUYpsDZOhW$DVYLf8HIGhcmsQ7WNocjYQZf9WBc7HY+En/0vt96MlU=", 
+        "email": "urvasi@example.com", 
+        "date_joined": "2014-03-02T08:47:50Z"
+    }
+},
+{
+    "pk": 4, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "helmi", #plate509
+        "first_name": "Helmi", 
+        "last_name": "Lahti", 
+        "is_active": true, 
+        "is_superuser": false, 
+        "is_staff": false, 
+        "last_login": "2014-03-02T08:49:25Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$12000$kS5030ibGuJW$Lbqk1WRkWInGTnm0Jdhyb83P5jWULmO+RjQiR0QJA9s=", 
+        "email": "helmi@example.com", 
+        "date_joined": "2014-03-02T08:47:50Z"
+        }
+    },
+    
 ]

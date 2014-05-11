@@ -3,7 +3,7 @@
   "pk": 1, 
   "model": "courses.course", 
   "fields": {
-    "code": "GR1", 
+    "code": "DES01", 
     "name": "Blender", 
     "level": "4", 
     "abstract": "An introduction to Blender", 
@@ -16,12 +16,12 @@
   "pk": 2, 
   "model": "courses.course", 
   "fields": {
-    "code": "c4", 
+    "code": "ENG01", 
     "name": "ISS", 
     "level": "4", 
-    "abstract": "blah", 
+    "abstract": "Systems overview of the International Space Station", 
     "organiser": 1, 
-    "credits": 3, 
+    "credits": 30, 
     "instructor": 1
   }
 },
@@ -29,12 +29,12 @@
   "pk": 3, 
   "model": "courses.course", 
   "fields": {
-    "code": "Per", 
+    "code": "PSHE01", 
     "name": "Personal Development", 
     "level": "2", 
-    "abstract": "Tulip", 
+    "abstract": "Fostering the 'Growth Mindset' within a student cohort", 
     "organiser": 2, 
-    "credits": 2, 
+    "credits": 20, 
     "instructor": 2
   }
 },
@@ -42,12 +42,12 @@
   "pk": 4, 
   "model": "courses.course", 
   "fields": {
-    "code": "Ast", 
-    "name": "Astronomy", 
+    "code": "ENGSCI02", 
+    "name": "Stellar Structure", 
     "level": "6", 
-    "abstract": "Stellar", 
+    "abstract": "Structure of main sequence stars, inluding discussion of the relevant fundamental physics", 
     "organiser": 1, 
-    "credits": 6, 
+    "credits": 60, 
     "instructor": 1
   }
 },
@@ -56,12 +56,38 @@
   "model": "courses.course", 
   "fields": {
     "code": "OUT1", 
-    "name": "Fishing", 
+    "name": "Line Fishing", 
     "level": "6", 
-    "abstract": "How and where to catch", 
+    "abstract": "Learn about the different rods, lures, line, reels and techniques for sea, loch, and river.", 
     "organiser": 1, 
-    "credits": 6, 
+    "credits": 15, 
     "instructor": 1
   }
+},
+{
+  "pk": 6, 
+  "model": "courses.course", 
+  "fields": {
+    "code": "PERF01", 
+    "name": "Contemporary Dance", 
+    "level": "6", 
+    "abstract": "Overview of the main styles and development of modern dance.", 
+    "organiser": 1, 
+    "credits": 20, 
+    "instructor": 1
+  }
+},
+{
+    "pk": 7, 
+    "model": "courses.course", 
+    "fields": {
+        "code": "PSHE02", 
+        "name": "Field First Aid", 
+        "level": "4", 
+        "abstract": "Practical first aid for challenging outdoor situations", 
+        "organiser": 1, 
+        "credits": 50, 
+        "instructor": 1
+    }
 }
 ]
