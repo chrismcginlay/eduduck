@@ -121,21 +121,18 @@ class CasualVisitorArrives(FunctionalTest):
         target = 'https://www.paypal.com/cgi-bin/webscr'
         self.assertEqual(target, payarea.get_attribute('action'))
 
-class CasualVisitorBrowsesMainMenu(FunctionalTest):
+class VisitorBrowsesMainMenu(FunctionalTest):
     
-    def test_main_menu_items_present(self):
-        # Heiko is visiting the site for the first time;
-        # he checks out the main menu
+    def test_main_menu_items_not_logged_in(self):
+        # Urvasi is visiting the site for the first time;
+        # She checks out the main menu
         self.browser.get(self.server_url)
         items_expected = ['Courses', 'Login', 'Register', 
                           'Support', 'About']
         self._checkMenuItemsPresent(items_expected, 'menu')
-                
-    def test_main_menu_redirections(self):
-        # Heiko is quite methodical and so works his way through each of the
-        # main options in turn.
 
-        self.browser.get(self.server_url)
+        # Urvasi is quite methodical and so works her way through each of the
+        # main options in turn.
         self._checkMenuLinksWork('menu')
 
 
