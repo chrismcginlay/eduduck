@@ -104,6 +104,7 @@ def git_update(settings):
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     _get_source(SOURCE_DIR)
     _update_static_files(SOURCE_DIR, settings)
+    _update_static_files(SOURCE_DIR, settings)
     _restart_services(env.host)
 
 
