@@ -127,41 +127,17 @@ class CasualVisitorBrowsesMainMenu(FunctionalTest):
         # Heiko is visiting the site for the first time;
         # he checks out the main menu
         self.browser.get(self.server_url)
-        menu = self.browser.find_element_by_id('menu')
-        items_expected = ['Courses', 'Login', 
-                          'Support', 'Contact', 'About']
-        anchors = menu.find_elements_by_tag_name('a')
-        a_list = [a.text for a in anchors]
-        for item in items_expected:
-            try:
-                self.assertTrue(item in a_list)
-            except:
-                print "{0} not in menu".format(item)
-                raise
+        items_expected = ['Courses', 'Login', 'Register', 
+                          'Support', 'About']
+        self._checkMenuItemsPresent(items_expected, 'menu')
                 
     def test_main_menu_redirections(self):
         # Heiko is quite methodical and so works his way through each of the
         # main options in turn.
-        
+
         self.browser.get(self.server_url)
-        ##initially, I obtained the anchors outside the loop, however they go
-        ##stale after browser back button. Hence the clunky loop index approach.
-        number_of_anchors = len(self.browser.find_element_by_id('menu').find_elements_by_tag_name('a'))
-        for i in range(number_of_anchors):
-            start_window = self.browser.current_window_handle
-            anchor = self.browser.find_element_by_id('menu').find_elements_by_tag_name('a')[i]
-            url = anchor.get_attribute('href')
-            anchor.click()
-            ##Next get handle to opened window and switch to it
-            open_windows = self.browser.window_handles
-            self.browser.switch_to_window(open_windows[-1])
-            self.assertEqual(url, self.browser.current_url)
-            self.assertNotIn('Page Not Found', self.browser.title)
-            self.assertNotIn('Page not found', self.browser.title)
-            self.browser.back()
-            self.browser.switch_to_window(start_window)
-            if len(open_windows)>1:
-                self.browser.close()  #close extra windows
+        self._checkMenuLinksWork('menu')
+
 
 class NewVisitorDecidesToRegister(FunctionalTest):
     """Covers registration, bio page, logout and login"""
@@ -434,8 +410,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.browser.find_element_by_id('id_Blender_course').click()
         self.browser.find_element_by_id('id_enrol').click()
         self.browser.find_element_by_class_name('paginator').click()
-        self.browser.find_element_by_id('id_resource_learning_intentions').
-        find_element_by_tag_name('a').click()
+        self.browser.find_element_by_id('id_resource_learning_intentions').find_element_by_tag_name('a').click()
         
         # This takes her to a new page with the title 'Learning Intentions'
         self.assertEqual(self.browser.find_element_by_id('id_title'), 
