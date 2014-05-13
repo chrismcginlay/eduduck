@@ -64,8 +64,8 @@ class FunctionalTest(LiveServerTestCase):
         for item in items_expected:
             try:
                 self.assertTrue(item in a_list)
-            except:
-                print "{0} not in menu".format(item)
+            except AssertionError:
+                print "*** {0} not in menu ***".format(item)
                 raise
 
     def _checkMenuLinksWork(self, menu_id):

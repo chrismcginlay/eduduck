@@ -3,13 +3,14 @@
 {% load tz %}
 
 {% block menu_override %}
-<li>{{ course.name }}</li>
-<li>Lessons</li>
-<li>Videos</li>
-<li>Attachments</li>
-<li>Assessment</li>
-<li>Forum</li>
-<li>Study Group</li>
+<li class='menu-item-divided'><a href='{{ course.get_absolute_url }}'>{{ course.name }} Home</a></li>
+<li class='menu_subsection'><a href='#'>Lesson Home</a></li>
+<li class='menu_subsection'><a href="#id_resource_videos">Videos</a></li>
+<li class='menu_subsection'><a href="#id_resource_LIs">Learning Intentions</a></li>
+<li class='menu_subsection'><a href="#id_resource_attachments">Assessment</a></li>
+<li class='menu_subsection'><a href="#id_resource_study">Study Group</a></li>
+<li class='menu_subsection'><a href="#id_resource_attachments">Attachments</a></li>
+<li class='menu_subsection'><a href="#id_resource_progress">Progress</a></li>
 {% endblock menu_override %}
 
 {% block breadcrumb %}
@@ -78,7 +79,7 @@
         {% endfor %}
         </ol>          
     </div>
-    <div id='id_resource_learning_intentions' class='pure-u-1-2'>
+    <div id='id_resource_LIs' class='pure-u-1-2'>
         <h3>Learning Intentions</h3>
         {% for li in learning_intentions %}
         <p>[<a href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.text }}</p>
@@ -121,6 +122,16 @@
         </a>
         {% endif %}
     {% endif %}
+    </div>
+    <div class='pure-u-1-2' id='id_resource_study'>
+        <h3>Study Group & Course News</h3>
+        <p>Combined news feed, possibly user configurable forum RSS, 
+        twitter, G+, Facebook etc. (Students often set up own groups</p>
+    </div>
+    <div class='pure-u-1-2' id='id_resource_assessments'>
+        <h3>Study Group & Course News</h3>
+        <p>Combined news feed, possibly user configurable forum RSS, 
+        twitter, G+, Facebook etc. (Students often set up own groups</p>
     </div>
 </div>
 {% endblock content %}

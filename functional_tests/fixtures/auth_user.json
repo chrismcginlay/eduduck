@@ -66,13 +66,13 @@
     "last_login": "2014-03-02T08:49:25Z", 
     "groups": [], 
     "user_permissions": [], 
-    "password": "pbkdf2_sha256$12000$IifUYpsDZOhW$DVYLf8HIGhcmsQ7WNocjYQZf9WBc7HY+En/0vt96MlU=", 
+    "password": "pbkdf2_sha256$12000$66Ozs03pvPrw$v5UsTZfgmBuuv+YQ6BIG72eCAuaIaGWFKOgOawDbEtQ=", 
     "email": "urvasi@example.com", 
     "date_joined": "2014-03-02T08:47:50Z"
   }
 },
 {
-  "pk": 4, 
+  "pk": 5, 
   "model": "auth.user", 
   "fields": {
     "username": "helmi",

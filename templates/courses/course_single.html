@@ -3,11 +3,13 @@
 {% load tz %}
 
 {% block menu_override %}
-<li>{{ course.name }}</li>
-<li>Lessons</li>
-<li>Assessment</li>
-<li>Forum</li>
-<li>Study Group</li>
+<li class='menu-item-divided'><a href="#">{{ course.name }}</a></li>
+<li class='menu_subsection'><a href="#id_resource_videos">Intro Videos</a></li>
+<li class='menu_subsection'><a href="#id_resource_lessons">Lessons</a></li>
+<li class='menu_subsection'><a href="#id_resource_assessments">Assessments</a></li>
+<li class='menu_subsection'><a href="#id_resource_study">Study Group</a></li>
+<li class='menu_subsection'><a href="#id_resource_attachments">Course Attachments</a></li>
+<li class='menu_subsection'><a href="#id_resource_progress">Progress</a></li>
 {% endblock menu_override %}
 
 {% block breadcrumb %}
@@ -53,10 +55,15 @@
         <p>There 
         {{course.lesson_set.count|pluralize:"is,are"}} {{course.lesson_set.count}} 
         lesson{{course.lesson_set.count|pluralize:",s"}} in this course.</p>
-        {% for lesson in course.lesson_set.all %}
-        <a class="paginator" href='{{ lesson.get_absolute_url }}'
-        title='{{ lesson.name}}'>{{ forloop.counter }} |</a>
-        {% endfor %}
+        <ul class='pure-paginator'>
+            {% for lesson in course.lesson_set.all %}
+            <li><a class='pure-button' 
+                href='{{ lesson.get_absolute_url }}'
+                title='{{ lesson.name}}'
+                id='id_lesson{{ forloop.counter }}'>{{ forloop.counter }}
+            </a></li>
+            {% endfor %}
+        </ul>
 
         {% regroup course.lesson_set.all by lesson.code as lesson_list %}
         {% for lesson in course.lesson_set.all %}
