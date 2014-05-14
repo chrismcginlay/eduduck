@@ -129,11 +129,11 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.get(self.server_url)
         items_expected = ['Courses', 'Login', 'Register', 
                           'Support', 'About']
-        self._checkMenuItemsPresent(items_expected, 'menu')
+        self._checkChildItemsPresent(items_expected, 'menu')
 
         # Urvasi is quite methodical and so works her way through each of the
         # main options in turn.
-        self._checkMenuLinksWork('menu')
+        self._checkChildLinksWork('menu')
         
     def test_main_menu_items_logged_in(self):
         # Urvasi decides to login, whereupon she notices that the menu options
@@ -142,8 +142,8 @@ class VisitorBrowsesMenus(FunctionalTest):
         self._logUserIn('urvasi', 'hotel23')
         ##check logout last as clicking it has a side-effect.
         items_expected = ['Courses', 'Urvasi', 'Support', 'About', 'Logout']
-        self._checkMenuItemsPresent(items_expected, 'menu')
-        self._checkMenuLinksWork('menu')
+        self._checkChildItemsPresent(items_expected, 'menu')
+        self._checkChildLinksWork('menu')
         
     def test_course_menu_items_logged_in(self):
         # She then goes to one of the course pages
@@ -156,8 +156,8 @@ class VisitorBrowsesMenus(FunctionalTest):
         items_expected = ['Urvasi', 'ISS', 'Lessons', 
             'Assessments', 'Study Group', 'Course Attachments', 'Progress',
             'Intro Videos']
-        self._checkMenuItemsPresent(items_expected, 'menu')
-        self._checkMenuLinksWork('menu')
+        self._checkChildItemsPresent(items_expected, 'menu')
+        self._checkChildLinksWork('menu')
         
     def test_lesson_menu_items_logged_in(self):
         # Urvasi now visits a lesson within one of the courses and sees menu
@@ -169,8 +169,8 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.find_element_by_id('id_lesson1').click()
         items_expected = ['Urvasi', 'ISS Home', 'Videos', 'Attachments',
             'Learning Intentions']
-        self._checkMenuItemsPresent(items_expected, 'menu')
-        self._checkMenuLinksWork('menu')
+        self._checkChildItemsPresent(items_expected, 'menu')
+        self._checkChildLinksWork('menu')
 
     def test_LI_menu_items_logged_in(self):
         # Next, Urvasi drills into the learning intentions page and again
@@ -182,10 +182,45 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.find_element_by_id('id_lesson1').click()
         self.browser.find_element_by_id('id_LI1').click()
         items_expected = ['Blender Home', 'Lesson Home']
-        self._checkMenuItemsPresent(items_expected, 'menu')
-        self._checkMenuLinksWork('menu')
+        self._checkChildItemsPresent(items_expected, 'menu')
+        self._checkChildLinksWork('menu')
         
+class VisitorBrowsesBreadcrumbs(FunctionalTest):
+    
+    def test_breadcrumb_trail_for_course_lesson_lint(self):
+        # Helmi navigates to a course page_source
+        # She sees a breadcrumb trail beginning near the top of the content
+        # At this stage, it can only take her back to the course index
+        self.browser.get(self.server_url)
+        self._logUserIn('helmi', 'plate509')
+        self.browser.find_element_by_id('id_homelink').click()
+        self.browser.find_element_by_id('id_Blender_course').click()
+        items_expected = ['All Courses']
+        self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
+        self._checkChildLinksWork('id_breadcrumb')
+                
+        # Back on a course page, Helmi navigates to a lesson
+        self.browser.find_element_by_id('id_lesson1').click()
+
+        # Now, the breadcrumb trail extends, with an additional link back to 
+        # the selected course.
+        items_expected = ['All Courses', 'Blender']
         
+        # She tests this link, which works, then returns to the lesson page.
+        self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
+        self._checkChildLinksWork('id_breadcrumb')
+        
+        # Further down the lesson page, Helmi sees the learning intentions area.
+        # On selecting one of the LIs, she finds that the LI page's breadcrumb
+        # extends yet again, this time adding a link to the lesson page.
+        self.browser.find_element_by_id('id_LI1').click()
+        items_expected = ['All Courses', 'Blender Home', 'Lesson Home']
+        self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
+        
+        # This link also works.
+        self._checkChildLinksWork('id_breadcrumb')
+        
+            
 class NewVisitorDecidesToRegister(FunctionalTest):
     """Covers registration, bio page, logout and login"""
     
