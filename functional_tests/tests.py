@@ -171,6 +171,20 @@ class VisitorBrowsesMenus(FunctionalTest):
             'Learning Intentions']
         self._checkMenuItemsPresent(items_expected, 'menu')
         self._checkMenuLinksWork('menu')
+
+    def test_LI_menu_items_logged_in(self):
+        # Next, Urvasi drills into the learning intentions page and again
+        # sees the menu options change slightly.
+        self.browser.get(self.server_url)
+        self._logUserIn('urvasi', 'hotel23')
+        self.browser.find_element_by_id('id_homelink').click()
+        self.browser.find_element_by_id('id_Blender_course').click()
+        self.browser.find_element_by_id('id_lesson1').click()
+        self.browser.find_element_by_id('id_LI1').click()
+        items_expected = ['Blender Home', 'Lesson Home']
+        self._checkMenuItemsPresent(items_expected, 'menu')
+        self._checkMenuLinksWork('menu')
+        
         
 class NewVisitorDecidesToRegister(FunctionalTest):
     """Covers registration, bio page, logout and login"""

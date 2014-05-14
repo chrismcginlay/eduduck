@@ -82,7 +82,7 @@
     <div id='id_resource_LIs' class='pure-u-1-2'>
         <h3>Learning Intentions</h3>
         {% for li in learning_intentions %}
-        <p>[<a href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.text }}</p>
+        <p>[<a id='id_LI{{ forloop.counter }}'href="{{ li.get_absolute_url }} " title="detail">-> {{ forloop.counter}}</a>] {{ li.text }}</p>
         {% empty %}
         <p>Bizarrely, no learning intentions given for this lesson</p>
         {% endfor %}
