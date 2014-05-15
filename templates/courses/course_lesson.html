@@ -14,7 +14,11 @@
 {% endblock menu_override %}
 
 {% block breadcrumb %}
-<p id='id_breadcrumb'>All Courses > <a href='{{ lesson.course.get_absolute_url }}'>Blender</a> > What is Blender?</p>
+<p id='id_breadcrumb'>
+    <a href="{% url 'courses.views.index' %}">All Courses</a> &gt; 
+    <a href='{{ lesson.course.get_absolute_url }}'>{{ course.name }} Home</a> &gt; 
+    <a href='#'>Lesson Home</a>
+</p>
 {% endblock breadcrumb %}
 
 {% block contentheading %}

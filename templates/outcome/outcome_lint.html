@@ -20,11 +20,11 @@ title='{{ lesson }}'>Lesson Home</a></li>
 
 {% block breadcrumb %}
 <p id='id_breadcrumb'>
-    All Courses > 
-    <a href='{{ lesson.course.get_absolute_url }}'>{{ lesson.course.name }}</a> >
-    <a href='{{ lesson.get_absolute_url }}'>{{ lesson.name }}</a> > 
-    Learning Intentions
-    </p>
+    <a href="{% url 'courses.views.index' %}">All Courses</a> &gt;
+    <a href='{{ lesson.course.get_absolute_url }}'>{{ lesson.course.name }} Home</a> &gt;
+    <a href='{{ lesson.get_absolute_url }}'>Lesson Home</a> &gt; 
+    <a href='#'>Learning Intention</a>
+</p>
 {% endblock breadcrumb %}
 
 {% block contentheading %}

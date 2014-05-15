@@ -13,7 +13,10 @@
 {% endblock menu_override %}
 
 {% block breadcrumb %}
-<p id='id_breadcrumb'>Breadcrumb menu: All Courses > Fishing</p>
+<p id='id_breadcrumb'>
+    <a href="{% url 'courses.views.index' %}">All Courses</a> &gt; 
+    <a href="#">{{ course.name }} Home</a>
+</p>
 {% endblock breadcrumb %}
     
 {% block contentheading %}

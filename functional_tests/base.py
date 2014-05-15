@@ -65,7 +65,7 @@ class FunctionalTest(LiveServerTestCase):
             try:
                 self.assertTrue(item in a_list)
             except AssertionError:
-                print "*** {0} not in {1} ***".format(item, element_id)
+                print "*** {0} not in {1} ***".format(item, parent_element_id)
                 raise
 
     def _checkChildLinksWork(self, element_id):

@@ -190,12 +190,12 @@ class VisitorBrowsesBreadcrumbs(FunctionalTest):
     def test_breadcrumb_trail_for_course_lesson_lint(self):
         # Helmi navigates to a course page_source
         # She sees a breadcrumb trail beginning near the top of the content
-        # At this stage, it can only take her back to the course index
+        # At this stage, it can only take her back to the index or course page
         self.browser.get(self.server_url)
         self._logUserIn('helmi', 'plate509')
         self.browser.find_element_by_id('id_homelink').click()
         self.browser.find_element_by_id('id_Blender_course').click()
-        items_expected = ['All Courses']
+        items_expected = ['All Courses', 'Blender Home']
         self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
         self._checkChildLinksWork('id_breadcrumb')
                 
@@ -203,8 +203,8 @@ class VisitorBrowsesBreadcrumbs(FunctionalTest):
         self.browser.find_element_by_id('id_lesson1').click()
 
         # Now, the breadcrumb trail extends, with an additional link back to 
-        # the selected course.
-        items_expected = ['All Courses', 'Blender']
+        # the selected course and to the top of the lesson
+        items_expected = ['All Courses', 'Blender Home', 'Lesson Home']
         
         # She tests this link, which works, then returns to the lesson page.
         self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
@@ -214,7 +214,12 @@ class VisitorBrowsesBreadcrumbs(FunctionalTest):
         # On selecting one of the LIs, she finds that the LI page's breadcrumb
         # extends yet again, this time adding a link to the lesson page.
         self.browser.find_element_by_id('id_LI1').click()
-        items_expected = ['All Courses', 'Blender Home', 'Lesson Home']
+        items_expected = [
+            'All Courses', 
+            'Blender Home', 
+            'Lesson Home', 
+            'Learning Intention'
+        ]
         self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
         
         # This link also works.
