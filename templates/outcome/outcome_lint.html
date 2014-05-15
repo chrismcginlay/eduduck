@@ -12,7 +12,7 @@
 {% endblock extra_script %}
 
 {% block menu_override %}
-    <li><a href='{{ lesson.course.get_absolute_url }}'
+    <li class='menu-item-divided'><a href='{{ lesson.course.get_absolute_url }}'
 title='{{ lesson.course }}'>{{ lesson.course.name }} Home</a></li>
     <li><a href='{{ lesson.get_absolute_url }}'
 title='{{ lesson }}'>Lesson Home</a></li>
