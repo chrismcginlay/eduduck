@@ -31,12 +31,12 @@
 <body>
 <div id="layout">
 
-<!-- Menu start -->
+    <!-- Menu start -->
     <!-- Menu toggle -->
     <a href="#menu" id="menuLink" class="menu-link">
     <!-- Hamburger icon -->
     <span></span></a>
-    <div id="menu"><div class="pure-menu pure-menu-open">
+    <div id="menu" class="pure-menu pure-menu-open">
     <a id="id_homelink" class="pure-menu-heading pure-menu-selected" href="/">EduDuck</a>
 
     <ul>
@@ -59,39 +59,36 @@
     <li class="menu-item-divided"><a href="{% url 'support.views.support' %}">Support</a></li>
     <li><a href="/about/">About</a></li>
     </ul>
-    </div></div><!-- menu -->
-<!-- Menu end -->
+    </div><!-- menu -->
+    <!-- Menu end -->
 
-<div id="main">
+    <!-- content start -->
+    <div id="main" class="content">
+        <div class="header">
+            <p id='id_branch'>Code Branch: {{ ACTIVE_GIT_BRANCH }}</p>
+            <div class="pure-g-r">
+                <div class="pure-u-1-3"><h1>EduDuck</h1></div>
+                <div class="pure-u-2-3"><p id="strapline">
+                    Courses are free to take <br>or create your own.</p></div>
+            </div>
+        </div><!-- header -->
 
-<div class="header">
-    <p id='id_branch'>Code Branch: {{ ACTIVE_GIT_BRANCH }}</p>
-    <div class="pure-g-r">
-        <div class="pure-u-1-3"><h1>EduDuck</h1></div>
-        <div class="pure-u-2-3"><p id="strapline">
-            Courses are free to take <br>or create your own.</p></div>
-    </div>
-</div><!-- header -->
+        {% block breadcrumb %}{% endblock breadcrumb %}
 
-{% block breadcrumb %}{% endblock breadcrumb %}
+        {% block contentheading %}
+        <h2>A Page With No Title. Override Me</h2>
+        {% endblock contentheading %}
 
-{% block contentheading %}
-<h2>A Page With No Title. Override Me</h2>
-{% endblock contentheading %}
+        {% block content %}
+        {% endblock content %}
+            
+        <hr>
+            <footer id="id_pagefoot">
+                <p>Copyright (c) 2014 EduDuck.com. All rights reserved.
+                <a href="{% url 'support.views.support' %}">Contact Us</a></p>
+            </footer>
 
-
-{% block content %}
-{% endblock content %}
-    
-<hr>
-    <footer id="id_pagefoot">
-        <p>Copyright (c) 2014 EduDuck.com. All rights reserved.
-        <a href="{% url 'support.views.support' %}">Contact Us</a></p>
-    </footer>
-
-</div><!-- content -->
-
-</div><!-- main -->
+    </div><!-- main content -->
 </div><!-- layout -->
 
 <script src="{% static 'js/ui.js' %}"></script>
