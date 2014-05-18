@@ -1,0 +1,110 @@
+[
+    {
+        "pk": 1,
+        "model": "attachment.attachment",
+        "fields": {
+            "course": 1,
+            "attachment": "attachments/course_overview.odt",
+            "seq": null,
+            "lesson": null,
+            "name": "Blender Course Overview",
+            "desc": "Outline of the course content..."
+        }
+    },
+    {
+        "pk": 2,
+        "model": "attachment.attachment",
+        "fields": {
+            "course": 1,
+            "attachment": "attachments/advice.txt",
+            "seq": null,
+            "lesson": null,
+            "name": "Course Advice",
+            "desc": "Just some advice, dude."
+        }
+    },
+    {
+        "pk": 3,
+        "model": "attachment.attachment",
+        "fields": {
+            "course": 1,
+            "attachment": "attachments/dummy_file.txt",
+            "seq": null,
+            "lesson": null,
+            "name": "Dummy File",
+            "desc": "Dummy attachment test"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "attachment.attachment",
+        "fields": {
+            "course": null,
+            "attachment": "attachments/lesson_notes1.odt",
+            "seq": null,
+            "lesson": 1,
+            "name": "Lesson 1 Notes",
+            "desc": "The background reading for Lesson 1"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "attachment.attachment",
+        "fields": {
+            "course": null,
+            "attachment": "attachments/lesson_notes2.odt",
+            "seq": null,
+            "lesson": 2,
+            "name": "Lesson 2 Notes",
+            "desc": "Study notes for lesson 2"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "attachment.attachment",
+        "fields": {
+            "course": null,
+            "attachment": "attachments/blender_ui.png",
+            "seq": null,
+            "lesson": 2,
+            "name": "Blender UI",
+            "desc": "The Blender User Interface"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "attachment.attachment",
+        "fields": {
+            "course": null,
+            "attachment": "attachments/blender_ui_annotated.png",
+            "seq": null,
+            "lesson": 2,
+            "name": "Blender UI annotated",
+            "desc": "Annotated graphic of the UI"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "attachment.attachment",
+        "fields": {
+            "course": null,
+            "attachment": "attachments/faceviewcube.blend",
+            "seq": null,
+            "lesson": 3,
+            "name": "FaceViewCube Blendfile",
+            "desc": "The blender file for this lesson."
+        }
+    },
+    {
+        "pk": 9,
+        "model": "attachment.attachment",
+        "fields": {
+            "course": null,
+            "attachment": "attachments/lesson_notes3.odt",
+            "seq": null,
+            "lesson": 3,
+            "name": "Lesson 3 Notes",
+            "desc": "Course notes for lesson 3"
+        }
+    }
+]

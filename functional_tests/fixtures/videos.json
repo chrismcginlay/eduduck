@@ -1,0 +1,42 @@
+[
+    {
+        "pk": 1,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/A6TgJXpPDr8?rel=0",
+            "lesson": null,
+            "course": 1,
+            "name": "TEST Blender Course Intro"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/tXyh_lvvQBU?rel=0",
+            "lesson": 1,
+            "course": null,
+            "name": "What is Blender?"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/1uKZmb1O-os?rel=0",
+            "lesson": 3,
+            "course": null,
+            "name": "Controlling Orientation"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "courses.video",
+        "fields": {
+            "url": "http://youtube.com/embed/LXrA6Fz0Nxc?rel=0",
+            "lesson": 2,
+            "course": null,
+            "name": "Basics of the User Interface"
+        }
+    }
+]
