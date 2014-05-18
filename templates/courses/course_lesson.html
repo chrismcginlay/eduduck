@@ -6,10 +6,10 @@
 <li class='menu-item-divided'><a href='{{ course.get_absolute_url }}'>{{ course.name }} Home</a></li>
 <li class='menu_subsection'><a href='#'>Lesson Home</a></li>
 <li class='menu_subsection'><a href="#id_resource_videos">Videos</a></li>
-<li class='menu_subsection'><a href="#id_resource_LIs">Learning Intentions</a></li>
+<li class='menu_subsection'><a href="#id_resource_LIs">Learn.. Int..</a></li>
 <li class='menu_subsection'><a href="#id_resource_attachments">Assessment</a></li>
 <li class='menu_subsection'><a href="#id_resource_study">Study Group</a></li>
-<li class='menu_subsection'><a href="#id_resource_attachments">Attachments</a></li>
+<li class='menu_subsection'><a href="#id_resource_attachments">Docs</a></li>
 <li class='menu_subsection'><a href="#id_resource_progress">Progress</a></li>
 {% endblock menu_override %}
 
@@ -65,7 +65,7 @@
         </ol>
     </div>
     <div id='id_resource_attachments' class='pure-u-1-2'>
-        <h4 class="attachments">Attachments</h4>
+        <h4 class="attachments">Documents Attached</h4>
         <ol>
         {% for a in attachments %}
         <li>{{ a.1.pk}}
@@ -133,9 +133,8 @@
         twitter, G+, Facebook etc. (Students often set up own groups</p>
     </div>
     <div class='pure-u-1-2' id='id_resource_assessments'>
-        <h3>Study Group & Course News</h3>
-        <p>Combined news feed, possibly user configurable forum RSS, 
-        twitter, G+, Facebook etc. (Students often set up own groups</p>
+        <h3>Assessment</h3>
+        <p>Assessment info</p>
     </div>
 </div>
 {% endblock content %}

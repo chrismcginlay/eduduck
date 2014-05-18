@@ -153,9 +153,9 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.find_element_by_id('id_ISS_course').click()
 
         # and notes that the menu changes slightly in the course context
-        items_expected = ['Urvasi', 'ISS', 'Lessons', 
-            'Assessments', 'Study Group', 'Course Attachments', 'Progress',
-            'Intro Videos']
+        items_expected = ['Urvasi', 'ISS', 'Intro Videos', 'Lessons', 
+            'Assessments', 'Study Group', 'Course Docs', 'Progress'
+        ]
         self._checkChildItemsPresent(items_expected, 'menu')
         self._checkChildLinksWork('menu')
         
@@ -167,8 +167,9 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.find_element_by_id('id_homelink').click()
         self.browser.find_element_by_id('id_ISS_course').click()
         self.browser.find_element_by_id('id_lesson1').click()
-        items_expected = ['Urvasi', 'ISS Home', 'Videos', 'Attachments',
-            'Learning Intentions']
+        items_expected = ['Urvasi', 'ISS Home', 'Lesson Home', 'Learn.. Int..',
+                          'Assessment', 'Study Group', 'Docs', 'Progress'
+        ]
         self._checkChildItemsPresent(items_expected, 'menu')
         self._checkChildLinksWork('menu')
 
@@ -181,7 +182,7 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.find_element_by_id('id_Blender_course').click()
         self.browser.find_element_by_id('id_lesson1').click()
         self.browser.find_element_by_id('id_LI1').click()
-        items_expected = ['Blender Home', 'Lesson Home']
+        items_expected = ['Blender Home', 'Lesson Home', ]
         self._checkChildItemsPresent(items_expected, 'menu')
         self._checkChildLinksWork('menu')
         
