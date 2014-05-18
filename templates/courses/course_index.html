@@ -16,10 +16,8 @@
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 
         Level {{ course.level }}, {{ course.credits }}
         point{{course.credits|pluralize:",s"}}.
-<p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">
-{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
-<p>Course instructor <a href="{{ course.instructor.bio.get_profile_url}}">
-{% firstof course.instructor.get_full_name course.instructor.username %}</a></p>
+<p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
+<p>Course instructor <a href="{{ course.instructor.bio.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor.username %}</a></p>
 
         <p class="abstract">{{ course.abstract }}</p>
         {% empty %}
@@ -44,10 +42,8 @@ wish to register for in future</p>
         Level {{ course.level }}, {{ course.credits }}
         point{{course.credits|pluralize:",s"}}.
 
-<p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">
-{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
-<p>Course instructor <a href="{{course.instructor.bio.get_profile_url}}">
-{% firstof course.instructor.get_full_name course.instructor %}</a></p>
+<p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
+<p>Course instructor <a href="{{course.instructor.bio.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor %}</a></p>
 
         <p class="abstract">{{ course.abstract }}</p>
         {% endfor %}

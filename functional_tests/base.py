@@ -1,5 +1,4 @@
 import sys
-from unittest import skip
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys

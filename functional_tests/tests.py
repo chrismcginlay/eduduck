@@ -1,5 +1,5 @@
-from datetime import datetime
 from unittest import skip
+from datetime import datetime
 from registration.forms import RegistrationForm
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -329,7 +329,7 @@ class RegisteredUserLogsIn(FunctionalTest):
         self.browser.get(self.server_url)
 
         # He is not logged in, so sees the login option in the menu
-        self.loguserin('chris', 'chris')
+        self._logUserIn('chris', 'chris')
 
         #This takes him to his account area
         self.assertEqual(
@@ -355,7 +355,7 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
     def test_user_enrols_on_course(self):
         # User Chris logs in.
         self.browser.get(self.server_url)
-        self.loguserin('chris', 'chris')
+        self._logUserIn('chris', 'chris')
         
         # he goes back to the homepage
         self.browser.find_element_by_id('id_homelink').click()
@@ -370,7 +370,7 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         # see a list of lessons, assessments and resources in the main course
         # resource area
 
-        fishing_course = self.browser.find_element_by_id('id_Fishing_course')
+        fishing_course = self.browser.find_element_by_id('id_Line Fishing_course')
         fishing_course.click()
         self.assertTrue(self.browser.find_element_by_id('id_course_title'))
         enrol = self.browser.find_element_by_id('id_enrol')
@@ -418,6 +418,7 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         progress.find_element_by_id('id_withdraw')
         progress.find_element_by_id('id_complete')
         
+    @skip("")
     def test_user_can_complete_or_withdraw_from_course(self):
         self.fail("Write test")
 
@@ -427,7 +428,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
     def test_can_reach_lesson_from_course_page_and_see_resources(self):
         # Gaby visits and logs in to the site.
         self.browser.get(self.server_url)
-        self.loguserin('gaby','gaby5')
+        self._logUserIn('gaby','gaby5')
         
         # She returns to the homepage
         self.browser.find_element_by_id('id_homelink').click()
@@ -443,10 +444,10 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # There are some lessons in the resource area
         lessons = self.browser.find_element_by_id('id_resource_lessons')
         self.assertGreaterEqual(
-            len(lessons.find_elements_by_class_name('paginator')),1)        
+            len(lessons.find_elements_by_class_name('pure-paginator')),1)        
 
         # Gaby selects the first lesson and is taken to the lesson page
-        lessons.find_element_by_class_name('paginator').click()
+        lessons.find_element_by_id('id_lesson1').click()
         lesson_page_title = self.browser.find_element_by_id('id_lesson_title')
         self.assertEqual(
             lesson_page_title.text, "Lesson BL1: What is Blender for?")
@@ -454,7 +455,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # The breadcrumb trail updates to show her position on the first lesson 
         # of the course
         breadcrumb = self.browser.find_element_by_id('id_breadcrumb')
-        self.assertEqual(breadcrumb.text, "All Courses > Blender > What is Blender?")
+        self.assertEqual(breadcrumb.text, "All Courses > Blender Home > Lesson Home")
         
         # Just under the breadcrumb, there is a tool to navigate between lessons
         self.assertTrue(self.browser.find_element_by_class_name('prev_next'))
@@ -476,12 +477,12 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
             'No videos for this lesson')
         self.assertTrue(resource_area.find_element_by_id('id_resource_survey'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_progress'))
-        self.assertTrue(resource_area.find_element_by_id('id_resource_learning_intentions'))
+        self.assertTrue(resource_area.find_element_by_id('id_resource_LIs'))
         self.assertTrue(resource_area.find_element_by_id('id_resource_attachments'))
         
         # Gaby sees a number of learning intentions for the lesson 
         self.assertGreaterEqual(
-            len(resource_area.find_element_by_id('id_resource_learning_intentions').
+            len(resource_area.find_element_by_id('id_resource_LIs').
             find_elements_by_tag_name('a')), 1)
             
         
@@ -490,19 +491,18 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         the various success criteria etc."""
         
         # Gaby logs in, goes to the Blender course, lesson 1.
-        # From there she selects the first learning intention link in them
+        # From there she selects the first learning intention link in the
         # learning intentions area.
         self.browser.get(self.server_url)
-        self.loguserin('gaby', 'gaby5')
+        self._logUserIn('gaby', 'gaby5')
         self.browser.find_element_by_id('id_homelink').click()
         self.browser.find_element_by_id('id_Blender_course').click()
-        self.browser.find_element_by_id('id_enrol').click()
-        self.browser.find_element_by_class_name('paginator').click()
-        self.browser.find_element_by_id('id_resource_learning_intentions').find_element_by_tag_name('a').click()
+        self.browser.find_element_by_id('id_lesson1').click()
+        self.browser.find_element_by_id('id_resource_LIs').find_element_by_tag_name('a').click()
         
         # This takes her to a new page with the title 'Learning Intentions'
-        self.assertEqual(self.browser.find_element_by_id('id_title'), 
-                         'Learning Intention for Lesson ...')
+        self.assertContains(self.browser.find_element_by_id('id_title').text, 
+                         'Learning Intention for Lesson')
         
         # She notices that the menu entries update 
         self.assertIn(self.browser.find_element_by_id('id_menu').text, 'Blender')
@@ -539,6 +539,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         
 class AuthorCreatesMaterials(FunctionalTest):
 
+    @skip("")
     def test_can_create_course_and_retrieve_it_later(self):
         # Jules visits eduduck.com
         self.browser.get(self.server_url)
@@ -596,16 +597,18 @@ class AuthorCreatesMaterials(FunctionalTest):
 
         # Even though he is logged in, no edit facility is presented to Albert.
 
+    @skip("")
     def test_can_create_and_retrieve_lessons_associated_with_course(self):
         self.fail("Write test")
 
+    @skip("")
     def test_can_edit_course_populating_with_resources(self):
         """Author is able to create attachments, videos, LOs etc for course"""
 
         self.fail("Write test")
 
+    @skip("")
     def test_can_edit_lesson_populating_with_resources(self):
         """Author can create attachments, videos, LOs etc for lesson"""
 
         self.fail("Write test")
-

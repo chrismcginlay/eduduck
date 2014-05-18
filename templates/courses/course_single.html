@@ -29,18 +29,16 @@
         <h3>{{ course.code }}: {{ course.name }} Course Homepage</h3>
     </div>
     <div class='pure-u-1-5'>
-        <form class='pure-form' action='' method='post'>{% csrf_token %}
-        <button id='id_enrol' class='pure-button pure-button-primary' type='submit' name='course_enrol'>Enrol</button>
+        <form id='id_enrol' class='pure-form' action='' method='post'>{% csrf_token %}
+        <button id='id_enrol' class='pure-button pure-button-primary' type='submit' name='course_register'>Enrol</button>
         </form>
     </div>
     
     <div id='id_abstract' class='pure-u-1-2'>
         <p>Hi, and welcome to {{ course.name }}</p>
         <p>{{ course.abstract }}</p>
-        <p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">
-        {% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
-        <p>Course instructor <a href="{{course.instructor.bio.get_profile_url}}">
-        {% firstof course.instructor.get_full_name course.instructor %}</a></p>
+        <p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
+        <p>Course instructor <a href="{{course.instructor.bio.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor %}</a></p>
     </div>
     <div id='id_intro_video' class='pure-u-1-2'>
         {% with v=course.video_set.0 %}
