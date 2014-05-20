@@ -269,7 +269,7 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         email_textarea = self.browser.find_element_by_id('id_email')
         password1_textarea = self.browser.find_element_by_id('id_password1')
         password2_textarea = self.browser.find_element_by_id('id_password2')
-        # Use a public mailinator address to get the activation code
+        ## Use a public mailinator address to get the activation code
         email_textarea.send_keys('rolandtheeduducker@mailinator.com')
         password1_textarea.send_keys('wibble')
         password2_textarea.send_keys('wibble')
@@ -501,25 +501,26 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.browser.find_element_by_id('id_resource_LIs').find_element_by_tag_name('a').click()
         
         # This takes her to a new page with the title 'Learning Intentions'
-        self.assertContains(self.browser.find_element_by_id('id_title').text, 
-                         'Learning Intention for Lesson')
+        self.assertIn(
+            'Learning Intentions for Lesson',
+            self.browser.find_element_by_id('id_title').text
+        )
         
         # She notices that the menu entries update 
-        self.assertIn(self.browser.find_element_by_id('id_menu').text, 'Blender')
-        self.assertIn(self.browser.find_element_by_id('id_menu').text, 'Lesson 1')
+        self.assertIn('Blender Home', self.browser.find_element_by_id('menu').text)
+        self.assertIn('Lesson Home', self.browser.find_element_by_id('menu').text)
         
         # ...and that the breadcrumb now shows the course > lesson > intention
-        self.assertEqual(self.browser.find_element_by_id('id_breadcrumb'),
-                         'All Courses > Blender > Rods > Learning Intentions')
+        self.assertEqual(self.browser.find_element_by_id('id_breadcrumb').text,
+                         'All Courses > Blender Home > Lesson Home > Learning Intention')
         
         # The main resource area is split into 3 areas, consisting of 
         # 2 columns, where the second column has two rows, like: OB
         resource_area = self.browser.find_element_by_id('id_resource_area')
-        LI_area = resource_area.find_element_by_id('id_resource_LIs')
+        LI_area = resource_area.find_element_by_id('id_resource_lint')
         LO_area = resource_area.find_element_by_id('id_resource_LO')
         SC_area = resource_area.find_element_by_id('id_resource_SC')
         self.assertEqual(LI_area.size['width'], LO_area.size['width'])
-        self.assertEqual(LO_area.size['height'], SC_area.size['height'])
         
         # Gaby sees that the larger area on the left has a list of learning 
         # intentions, with a clickable icon next to each.

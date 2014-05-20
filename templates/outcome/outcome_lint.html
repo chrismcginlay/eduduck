@@ -51,14 +51,14 @@ title='{{ lesson }}'>Lesson Home</a></li>
 {% endblock contentheading %}
 
 {% block content %}
-<div id='id_detail_area' class='pure-g-r'>
-    <div id='id_lint' class='pure-u-1-2'>
+<div id='id_resource_area' class='pure-g-r'>
+    <div id='id_resource_lint' class='pure-u-1-2'>
         <h3>Learning Intention {{ learning_intention.id }}</h3>
         <p>{{ learning_intention.text }}</p>
     </div>
     
-    <div id='id_lo_sc' class='pure-u-1-2'>
-    <div id='id_sc'>
+    <div id='id_resource_LO_SC' class='pure-u-1-2'>
+    <div id='id_resource_SC'>
         <h3>Success Criteri{{ usc_list|length|pluralize:"on,a"}}</h3>
         <p class="FYI">A success criterion is an activity you 
         would do that would demonstrate mastery of 
@@ -101,7 +101,7 @@ title="Cycle status R->A->G->R">
 </form> 
     </div> <!-- id_sc -->
 
-    <div id='id_lo'>
+    <div id='id_resource_LO'>
         <h3>Learning Outcome{{ ulo_list|length|pluralize:",s"}}</h3>
         <p class="FYI">A learning outcome is a particular capacity 
         or skill acquired or enhanced. Think of an 'I can...' statement.</p>
