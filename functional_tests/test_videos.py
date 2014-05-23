@@ -1,3 +1,4 @@
+from os import join
 from unittest import skip
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -28,10 +29,22 @@ class VideoIntegration(FunctionalTest):
         self.assertEqual(video_area.find_element_by_tag_name('h3').text, "Videos")
         video_area.find_element_by_tag_name("iframe")
         
+    @skip("Not implemented yet")
     def test_user_can_see_information_on_video_page(self):
-        self.fail("write me")
+        # Marek visits the page for the first video
+        self.fail("Navigate to the video"
 
-@skip("")
-class AttachmentIntegration(FunctionalTest):
-    
-    pass
+        ##Temporarily jump right in
+        self.browser.get(join(self.server_url, '/video/1')
+
+        # Marek sees the title of the video, along with the video itself
+        self.fail("write me")
+        
+        # Beneath that (since he is logged in) he sees a record of the number
+        # of viewings of the video he has made.
+        
+        # Lastly, there is an area for him to enter his own notes on the video
+        
+        # When he navigates away from the page, and returns to the video page,
+        # he is pleased to see that his notes are still there.
+
