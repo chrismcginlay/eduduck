@@ -10,6 +10,8 @@ class FunctionalTest(LiveServerTestCase):
         'courses.json', 
         'lessons.json', 
         'outcome_lints.json', 
+        'videos.json',
+        'attachments.json'
     ]
 
     @classmethod
