@@ -133,13 +133,14 @@ INSTALLED_APPS = (
     'registration',
 
     #eduduck apps
-    'courses',
-    'quiz',
-    'support',
+    'attachment',
     'bio',
+    'courses',
     'interaction',
     'outcome',
-    'attachment',
+    'quiz',
+    'support',
+    'video'
 )
 
 # See http://django-haystack.readthedocs.org/en/latest/tutorial.html#simple
