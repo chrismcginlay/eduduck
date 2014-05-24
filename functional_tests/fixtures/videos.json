@@ -1,7 +1,7 @@
 [
 {
     "pk": 1, 
-    "model": "courses.video", 
+    "model": "video.video", 
     "fields": {
         "url": "http://www.youtube.com/embed/ffoBhqpsVPw", 
         "course": 1, 
@@ -11,7 +11,7 @@
 },
 {
     "pk": 2, 
-    "model": "courses.video", 
+    "model": "video.video", 
     "fields": {
         "url": "http://www.youtube.com/embed/b5qZnK_7f6U", 
         "course": null, 
@@ -21,7 +21,7 @@
 },
 {
     "pk": 3, 
-    "model": "courses.video", 
+    "model": "video.video", 
     "fields": {
         "url": "http://youtube.com/embed/1uKZmb1O-os?rel=0", 
         "course": null, 
@@ -31,7 +31,7 @@
 },
 {
     "pk": 4, 
-    "model": "courses.video", 
+    "model": "video.video", 
     "fields": {
         "url": "http://youtube.com/embed/8sJi9-1Hq_c", 
         "course": null, 
@@ -41,7 +41,7 @@
 },
 {
     "pk": 5, 
-    "model": "courses.video", 
+    "model": "video.video", 
     "fields": {
         "url": "http://www.youtube.com/embed/00wabfcXKE0", 
         "course": null, 
