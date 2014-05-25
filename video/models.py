@@ -21,17 +21,20 @@ class Video(models.Model):
     lesson = models.ForeignKey(Lesson, blank=True, null=True)
     course = models.ForeignKey(Course, blank=True, null=True)
     
-    def __init__(self, *args, **kwargs):
-        """checkrep on instantiation"""
-        super (Video, self).__init__(*args, **kwargs)
-        #When adding a new instance (e.g. in admin), their will be no 
-        #datamembers, so only check existing instances eg. from db load.
-        if self.pk != None:
-            assert self.url
-            assert self.name
-            
-    def __unicode__(self):
-        return self.name
+    class Meta:
+        unique_together= ("lesson", "course")
     
-    def get_absolute_url(self):
-        return self.url
+    #def __init__(self, *args, **kwargs):
+        #"""checkrep on instantiation"""
+        #super (Video, self).__init__(*args, **kwargs)
+        ##When adding a new instance (e.g. in admin), their will be no 
+        ##datamembers, so only check existing instances eg. from db load.
+        #if self.pk != None:
+            #assert self.url
+            #assert self.name
+            
+    #def __unicode__(self):
+        #return self.name
+    
+    #def get_absolute_url(self):
+        #return self.url

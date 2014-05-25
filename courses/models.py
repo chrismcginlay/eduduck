@@ -117,39 +117,3 @@ class Lesson(models.Model):
                 'course_id': self.course.id,
                 'lesson_id': self.id })
         
-        
-#class Video(models.Model):
-    #"""Details of video resources used in lessons.
-    
-    #Note that videos may have foreign keys directly to a course, not just 
-    #to lessons. This allows for introductory videos to belong to whole course
-        
-    #Attributes:
-        #name  Full human readable name of video
-        #url         url of the video resource
-        #lesson      ForeignKey - if the video is embedded in a lesson
-        #course      ForeignKey - if the video is embedded directly in course    
-    #"""
-    
-    ##TODO: use YouTube / Vimeo APIs to pull video meta data such as title, tags    
-    #name = models.CharField(max_length=200)
-    #url = models.URLField()
-    ##TODO override __init__ to ensure precisely one of these is not null
-    #lesson = models.ForeignKey(Lesson, blank=True, null=True)
-    #course = models.ForeignKey(Course, blank=True, null=True)
-
-    #def __init__(self, *args, **kwargs):
-        #"""checkrep on instantiation"""
-        #super (Video, self).__init__(*args, **kwargs)
-        ##When adding a new instance (e.g. in admin), their will be no 
-        ##datamembers, so only check existing instances eg. from db load.
-        #if self.pk != None:
-            #assert self.url
-            #assert self.name
-
-    #def __unicode__(self):
-        #return self.name
-    
-    #def get_absolute_url(self):
-        #return self.url
-        
