@@ -33,8 +33,11 @@ class Video(models.Model):
             #assert self.url
             #assert self.name
             
-    #def __unicode__(self):
-        #return self.name
+    def __str__(self):
+        return "Video: {0}".format(self.name)
+
+    def __unicode__(self):
+        return self.name
     
-    #def get_absolute_url(self):
-        #return self.url
+    def get_absolute_url(self):
+        return self.url

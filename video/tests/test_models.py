@@ -1,4 +1,4 @@
-#from django.core.exceptions import IntegrityError
+from django.core.validators import URLValidator
 from django.test import TestCase
 
 from courses.models import Course, Lesson
@@ -60,5 +60,22 @@ class VideoTests(TestCase):
     def test_video_must_have_one_FK(self):
         self.assertRaises(Video(name='Test', url=self.yt_test_url, lesson=None, course=None))
 
-    def test_video_url_must_resolve(self):
-        self.fail("write me")
+    def test___unicode__(self):
+        v = Video.objects.get(pk=1)
+        self.assertEqual(v.__unicode__(), "Blender Course Intro")
+        
+    def test___str__(self):
+        v = Video.objects.get(pk=1)
+        self.assertEqual(v.__str__(), "Video: Blender Course Intro")
+        
+    def test_video_link_url_must_resolve(self):
+        v = Video.objects.get(pk=1)
+        URLValidator(v.url)
+
+    def test_get_absolute_url(self):
+        #For now, this should just return the youtube link
+        v = Video.objects.get(pk=1)
+        URLValidator(v.get_absolute_url)
+        self.assertTrue("youtube" in v.get_absolute_url())
+        self.assertEqual(v.url, v.get_absolute_url())
+        
