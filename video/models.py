@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.db import models
 from courses.models import Course, Lesson
@@ -22,18 +23,6 @@ class Video(models.Model):
     lesson = models.ForeignKey(Lesson, blank=True, null=True)
     course = models.ForeignKey(Course, blank=True, null=True)
     
-    class Meta:
-        unique_together= ("lesson", "course")
-    
-    #def __init__(self, *args, **kwargs):
-        #"""checkrep on instantiation"""
-        #super (Video, self).__init__(*args, **kwargs)
-        ##When adding a new instance (e.g. in admin), their will be no 
-        ##datamembers, so only check existing instances eg. from db load.
-        #if self.pk != None:
-            #assert self.url
-            #assert self.name
-            
     def __str__(self):
         return "Video: {0}".format(self.name)
 
@@ -44,8 +33,24 @@ class Video(models.Model):
         return self.url
     
     def _checkrep(self):
-        # Unique_together(lesson, course) covered by django internally
         if self.name == "": return False
         if self.url == "": return False
-        if not URLValidator(self.url): return False
+        # At least one of these should not be zero:
+        if not (self.course or self.lesson): return False
         return True
+    
+    def __init__(self, *args, **kwargs):
+        """Run _checkrep on instantiation"""
+        super(Video, self).__init__(*args, **kwargs)
+        
+        #When adding a new instance (e.g. in admin), their will be no 
+        #datamembers, so only check existing instances eg. from db load.
+        if self.pk != None:
+            self._checkrep()
+        
+    def save(self, *args, **kwargs):
+        if (self.lesson == None and self.course == None): raise ValidationError
+        if (self.name == '' or self.url == ''): raise ValidationError
+        
+        super(Video, self).save(*args, **kwargs)
+        
