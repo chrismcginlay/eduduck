@@ -79,3 +79,15 @@ class VideoTests(TestCase):
         self.assertTrue("youtube" in v.get_absolute_url())
         self.assertEqual(v.url, v.get_absolute_url())
         
+    def test__checkrep(self):
+        # Video should have a name and url
+        v1 = Video.objects.get(pk=1)
+        v2 = Video.objects.get(pk=2)
+        self.assertTrue(v1._checkrep())
+        self.assertTrue(v2._checkrep())
+        v1.name = ""
+        v1.save()
+        v2.url = ""
+        v2.save()
+        self.assertFalse(v1._checkrep())
+        self.assertFalse(v2._checkrep())

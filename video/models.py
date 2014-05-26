@@ -1,3 +1,4 @@
+from django.core.validators import URLValidator
 from django.db import models
 from courses.models import Course, Lesson
 
@@ -41,3 +42,10 @@ class Video(models.Model):
     
     def get_absolute_url(self):
         return self.url
+    
+    def _checkrep(self):
+        # Unique_together(lesson, course) covered by django internally
+        if self.name == "": return False
+        if self.url == "": return False
+        if not URLValidator(self.url): return False
+        return True

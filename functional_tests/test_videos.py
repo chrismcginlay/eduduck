@@ -1,7 +1,6 @@
 from os import join
 from unittest import skip
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 
 from .base import FunctionalTest
 
@@ -32,10 +31,10 @@ class VideoIntegration(FunctionalTest):
     @skip("Not implemented yet")
     def test_user_can_see_information_on_video_page(self):
         # Marek visits the page for the first video
-        self.fail("Navigate to the video"
+        self.fail("Navigate to the video")
 
         ##Temporarily jump right in
-        self.browser.get(join(self.server_url, '/video/1')
+        self.browser.get(join(self.server_url, '/video/1'))
 
         # Marek sees the title of the video, along with the video itself
         self.fail("write me")
