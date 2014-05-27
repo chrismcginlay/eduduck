@@ -9,6 +9,7 @@ class VideoIntegration(FunctionalTest):
     def test_course_and_lesson_page_can_show_videos(self):
         # A user, let's call him Marek, hits the homepage and navigates to the
         # first course
+        
         self.browser.get(self.server_url)
         self.browser.find_element_by_xpath("//div[@id='id_course_selection']/div[1]/a").click()
 
