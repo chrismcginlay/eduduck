@@ -8,7 +8,6 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from bio.models import Bio
-from interaction.models import UserCourse
 
 from ..models import Course, Lesson
 
@@ -44,19 +43,6 @@ class CourseModelTests(TestCase):
         'code': 'B1',
         'name': 'Introduction to Music',
         'abstract': 'A summary of what we cover',
-    }
-
-    attachment1_data = {
-        'name': 'Reading List',
-        'desc': 'Useful stuff you might need',
-        'seq': 3,
-        'attachment': 'empty_attachment_test.txt',
-    }
-    attachment2_data = {
-        'name': 'FAQ',
-        'desc': 'Frequently Asked Questions',
-        'seq': 3,
-        'attachment': 'empty_attachment_test.txt',
     }
         
     def setUp(self):
