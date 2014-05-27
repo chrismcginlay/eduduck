@@ -11,3 +11,6 @@ class LessonTests(TestCase):
         'courses.json', 
         'lessons.json', 
     ]
+    
+    def test_smoke(self):
+        self.fail("smoke test unit")
