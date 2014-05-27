@@ -9,11 +9,8 @@ from django.contrib.auth.models import User
 
 from bio.models import Bio
 from interaction.models import UserCourse
-from outcome.models import LearningIntention, LearningIntentionDetail
-from attachment.models import Attachment
 
-from ..models import Course, Lesson, Video
-
+from ..models import Course, Lesson
 
 class CourseModelTests(TestCase):
     """Test the models used to represent courses and constituent lessons etc"""
@@ -48,10 +45,7 @@ class CourseModelTests(TestCase):
         'name': 'Introduction to Music',
         'abstract': 'A summary of what we cover',
     }
-    video1_data = {
-        'url': 'http://youtu.be/LIM--jfnKeU',
-        'name': 'Music introduction',
-    }
+
     attachment1_data = {
         'name': 'Reading List',
         'desc': 'Useful stuff you might need',
@@ -100,33 +94,7 @@ class CourseModelTests(TestCase):
 
         self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
         self.lesson1.save()
-        self.video1 = Video(course=self.course1, **self.video1_data)
-        self.video1.save()
-        self.video2 = Video(lesson=self.lesson1, **self.video1_data)
-        self.video2.save()
-        self.attachment1 = Attachment(course=self.course1, 
-                                      **self.attachment1_data)
-        self.attachment1.save()
-        self.attachment2 = Attachment(course=self.course3, 
-                                      **self.attachment2_data)
-        self.attachment2.save()
-       
-        self.learningintention1 = LearningIntention(lesson = self.lesson1, 
-                                                    text = "Practise")
-        self.learningintention1.save()                                            
-        self.learningintentiondetail1 = LearningIntentionDetail(
-            learning_intention = self.learningintention1, 
-            text = "Choose",
-            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
-        )
-        self.learningintentiondetail1.save()                                          
-        self.learningintentiondetail2 = LearningIntentionDetail(
-            learning_intention = self.learningintention1, 
-            text = "Calculate",
-            lid_type = LearningIntentionDetail.LEARNING_OUTCOME
-        )
-        self.learningintentiondetail2.save()                                        
-        
+
     def test_course_create(self):
         """Course instance attributes are created OK"""
         for key,val in self.course1_data.items():
@@ -152,21 +120,3 @@ class CourseModelTests(TestCase):
             self.assertEqual(self.lesson1.__dict__[key], val)
         self.assertEqual(self.lesson1.course, self.course1)
             
-    def test_video_create(self):
-        """Video instance attributes are created OK"""
-        #Associated with course
-        for key,val in self.video1_data.items():
-            self.assertEqual(self.video1.__dict__[key], val)
-        self.assertEqual(self.video1.course, self.course1)
-            
-        #Associated with lesson
-        for key,val in self.video1_data.items():
-            self.assertEqual(self.video2.__dict__[key], val)
-        self.assertEqual(self.video2.lesson, self.lesson1)
-            
-    def test_attachment_create(self):
-        """Attachment instance attributes are created OK"""
-        for key,val in self.attachment1_data.items():
-            self.assertEqual(self.attachment1.__dict__[key], val)   
-        self.assertEqual(self.attachment1.course, self.course1)
-          

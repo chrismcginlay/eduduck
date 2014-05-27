@@ -11,10 +11,8 @@ from django.utils.html import escape
 from bio.models import Bio
 
 from interaction.models import UserCourse
-from outcome.models import LearningIntention, LearningIntentionDetail
-from attachment.models import Attachment
 
-from ..models import Course, Lesson, Video
+from ..models import Course, Lesson
 
 class CourseViewTests(TestCase):
     """Test the course views"""
@@ -50,16 +48,6 @@ class CourseViewTests(TestCase):
         'name': 'Stuff',
         'abstract': 'Not a lot',
     }
-    video1_data = {
-        'url': 'http://youtu.be/LIM--jfnKeU',
-        'name': 'Music introduction',
-    }
-    attachment1_data = {
-        'name': 'Reading List',
-        'desc': 'Useful stuff you might need',
-        'seq': 3,
-        'attachment': 'empty_attachment_test.txt',
-    }                   
 
     def setUp(self):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
@@ -68,16 +56,6 @@ class CourseViewTests(TestCase):
         self.user2 = User.objects.create_user('hank', 'hank@example.com', 'hankdo')
         self.user2.is_active = True
         self.user2.save()
-#        self.bio1 = self.user1.bio
-#        self.bio1.accepted_terms = True
-#        self.bio1.signature_line = 'Learning stuff'
-#        self.bio1.user_tz = "Europe/Rome"
-#        self.bio1.save()s
-#        self.bio2 = self.user2.bio
-#        self.bio2.accepted_terms = True
-#        self.bio2.signature_line = 'Tieing knots'
-#        self.bio2.user_tz = 'Atlantic/St_Helena'
-#        self.bio2.save()
 
         self.course1 = Course(**self.course1_data)
         self.course1.organiser = self.user1
@@ -98,29 +76,6 @@ class CourseViewTests(TestCase):
         self.lesson1.save()
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
         self.lesson2.save()
-        self.video1 = Video(course=self.course1, **self.video1_data)
-        self.video1.save()
-        self.video2 = Video(lesson=self.lesson1, **self.video1_data)
-        self.video2.save()
-        self.attachment1 = Attachment(course=self.course1, 
-                                      **self.attachment1_data)
-        self.attachment1.save()
-        
-        self.learningintention1 = LearningIntention(lesson = self.lesson1, 
-                                                    text = "Practise")
-        self.learningintention1.save()
-        self.learningintentiondetail1 = LearningIntentionDetail(
-            learning_intention = self.learningintention1, 
-            text = "Choose",
-            lid_type = LearningIntentionDetail.SUCCESS_CRITERION
-        )
-        self.learningintentiondetail1.save()
-        self.learningintentiondetail2 = LearningIntentionDetail(
-            learning_intention = self.learningintention1, 
-            text = "Calculate",
-            lid_type = LearningIntentionDetail.LEARNING_OUTCOME
-        )
-        self.learningintentiondetail2.save()
         
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
