@@ -1,4 +1,4 @@
-from os import join
+from os.path import join
 from unittest import skip
 from selenium import webdriver
 

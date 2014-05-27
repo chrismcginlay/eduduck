@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from courses.models import Course, Lesson, Video
+from courses.models import Course, Lesson
+from video.models import Video
 
 from bio.models import Bio
 from quiz.models import Quiz, Question, Answer, QuizAttempt, QuestionAttempt

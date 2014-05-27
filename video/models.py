@@ -1,5 +1,4 @@
 from django.core.exceptions import ValidationError
-from django.core.validators import URLValidator
 from django.db import models
 from courses.models import Course, Lesson
 
@@ -19,7 +18,6 @@ class Video(models.Model):
     #TODO: use YouTube / Vimeo APIs to pull video meta data such as title, tags    
     name = models.CharField(max_length=200)
     url = models.URLField()
-    #TODO override __init__ to ensure precisely one of these is not null
     lesson = models.ForeignKey(Lesson, blank=True, null=True)
     course = models.ForeignKey(Course, blank=True, null=True)
     
