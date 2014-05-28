@@ -25,16 +25,18 @@
 <h2 id='id_lesson_title'>Lesson {{lesson.code}}: {{lesson.name}}</h2>
 <span class='prev_next'>
     {% if lesson.get_prev %}
-    &lt;<a href='{{ lesson.get_prev.get_absolute_url }}'
+    &lt;<a id='id_nav_prev' href='{{ lesson.get_prev.get_absolute_url }}'
                 title='{{ lesson.get_prev }}'>{{ lesson.get_prev|truncatechars:10 }}</a> 
     {% else %}
     ---
     {% endif %}
     | <span title='{{ lesson.code }}:{{ lesson }}'>
-                    {{ lesson|truncatechars:10 }}</span> | 
-                    {% if lesson.get_next %}
-                    <a href='{{ lesson.get_next.get_absolute_url }}'
-    title='{{ lesson.get_next }}'>{{ lesson.get_next|truncatechars:10 }}</a>&gt;
+        {{ lesson|truncatechars:10 }}</span> | 
+    {% if lesson.get_next %}
+        <a id='id_nav_next' 
+            href='{{ lesson.get_next.get_absolute_url }}'
+            title='{{ lesson.get_next }}'>{{ lesson.get_next|truncatechars:10 }}
+        </a>&gt;
     {% else %}
     ---
     {% endif %} 
@@ -113,6 +115,9 @@
             <h3>Progress Record</h3>
             <p>Log in and/or register for this course, then you get to build up
             a detailed log of your awesomeness here.</p>
+            <form id='id_enrol' class='pure-form' action='' method='post'>{% csrf_token %}
+                <button id='id_enrol_button' class='pure-button pure-button-primary' type='submit' name='course_register'>Enrol</button>
+            </form>
         {% endif %}
     </div>
     <div id='id_resource_survey' class='pure-u-1-2'>

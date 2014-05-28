@@ -271,7 +271,7 @@ def lesson(request, course_id, lesson_id):
     else:
         userattachments_attachments_tuple = zip(iterNone(), attachments)
     
-    template = 'courses/course_lesson.html'
+    template = 'lesson/lesson_single.html'
     context_data =  {'course':  course,
                      'lesson':  lesson,
                      'ul':      ul,
