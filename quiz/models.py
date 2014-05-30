@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy
-from courses.models import Lesson
+from lesson.models import Lesson
 from django.shortcuts import get_list_or_404
 import datetime
 

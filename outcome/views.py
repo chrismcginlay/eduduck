@@ -3,7 +3,7 @@ from django.shortcuts import (render_to_response,
                               get_object_or_404)
                               
 from django.template import RequestContext
-from courses.models import Lesson
+from lesson.models import Lesson
 from interaction.models import (
     UserLearningIntention,
     UserLearningIntentionDetail, 

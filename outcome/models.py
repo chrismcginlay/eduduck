@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.db import models
 
-from courses.models import Lesson
+from lesson.models import Lesson
 
 
 class LearningIntention(models.Model):

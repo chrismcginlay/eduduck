@@ -7,7 +7,7 @@ from lesson.models import Lesson
 
 class LessonViewTests(TestCase):
     
-    def test_course_lesson_unauth(self):
+    def test_lesson_unauth(self):
         """Test view of single lesson for unauthenticated user"""
         
         c1 = self.course1.pk

@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from courses.models import Course, Lesson
+from courses.models import Course
+from lesson.models import Lesson
 
 # Create your models here.
 

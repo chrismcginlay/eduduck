@@ -2,7 +2,7 @@ import subprocess
 from django.conf import settings
 from django.shortcuts import get_object_or_404, get_list_or_404
 from interaction.models import UserCourse, UserLesson
-from courses.models import Lesson
+from lesson.models import Lesson
 
 def git_branch_render(request):
     """Obtain the active git branch and ensure it is present in template vars"""

@@ -8,7 +8,8 @@ from django.utils.timezone import utc, is_naive
 from django.db import models
 from django.contrib.auth.models import User
 
-from courses.models import Course, Lesson
+from courses.models import Course
+from lesson.models import Lesson
 from outcome.models import LearningIntention, LearningIntentionDetail
 from attachment.models import Attachment
 

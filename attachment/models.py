@@ -1,7 +1,8 @@
 #Attachment/models.py
 from django.db import models
 from django.core.urlresolvers import reverse
-from courses.models import Course, Lesson
+from courses.models import Course
+from lesson.models import Lesson
 
 #TODO important to validate uploaded files
 #see PDF p796.

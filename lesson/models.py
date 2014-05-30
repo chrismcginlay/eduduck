@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from courses.models import Course
 
@@ -58,7 +59,7 @@ class Lesson(models.Model):
     def get_absolute_url(self):
         assert self.course
         assert self.id
-        return reverse(u"courses.views.lesson", kwargs = { 
+        return reverse(u"lesson.views.lesson", kwargs = { 
             'course_id': self.course.id,
             'lesson_id': self.id })
             

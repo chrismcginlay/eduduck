@@ -71,7 +71,6 @@ class CourseViewTests(TestCase):
         self.course3.organiser = self.user2
         self.course3.instructor = self.user2
         self.course3.save()
-        import pdb; pdb.set_trace()
         self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
         self.lesson1.save()
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)

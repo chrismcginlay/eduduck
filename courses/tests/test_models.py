@@ -9,7 +9,9 @@ from django.contrib.auth.models import User
 
 from bio.models import Bio
 
-from ..models import Course, Lesson
+from lesson.models import Lesson
+from ..models import Course
+
 
 class CourseModelTests(TestCase):
     """Test the models used to represent courses and constituent lessons etc"""
