@@ -7,14 +7,19 @@ from lesson.models import Lesson
 
 class LessonViewTests(TestCase):
     
+    fixtures = [
+        'auth_user.json', 
+        'courses.json', 
+        'lessons.json', 
+        ]
+    
     def test_lesson_unauth(self):
         """Test view of single lesson for unauthenticated user"""
         
-        c1 = self.course1.pk
-        l1 = self.lesson1.pk
-        url1 = '/courses/{0}/lesson/{1}/'.format(c1,l1)
+        l1 = Lesson.objects.get(pk=1)
+        url1 = '/courses/{0}/lesson/{1}/'.format(l1.course.pk,l1.pk)
         
-        self.client.logout()        
+        self.client.logout()
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
@@ -25,16 +30,14 @@ class LessonViewTests(TestCase):
         self.assertEqual(response.context['ul'], None, 
                          "There should be no userlesson - unauthenticated")                 
         
-        def test_course_lesson_auth(self):
-            """Test view of single lesson for authenticated user"""
-            
-            self.client.login(username='bertie', password='bertword')        
-            c1 = self.course1.pk
-            l1 = self.lesson1.pk
-            url1 = '/courses/{0}/lesson/{1}/'.format(c1, l1)
-        c3 = self.course3.pk
-        l2 = self.lesson2.pk
-        url3 = '/courses/{0}/lesson/{1}/'.format(c3, l2)
+    def test_lesson_loggedin_but_not_enrolled_on_course(self):
+        """Test view of single lesson for logged-in user, is enrolled"""
+        
+        self.client.login(username='gaby', password='gaby5')        
+        l1 = Lesson.objects.get(pk=1)
+        url1 = '/courses/{0}/lesson/{1}/'.format(l1.course.pk, l1.pk)
+        l2 = Lesson.objects.get(pk=8)
+        url3 = '/courses/{0}/lesson/{1}/'.format(l2.course.pk, l2.pk)
         
         #First for user who is registered on course
         uc = UserCourse(course=self.course1, user=self.user1)
@@ -62,7 +65,9 @@ class LessonViewTests(TestCase):
         self.assertIn('lesson_complete', response.content)
         self.assertEqual(response.context['ul'].completed, False)        
         
-        #then check context for user not registered on course
+    def test_lesson_loggedin_and_enrolled_on_course(self):
+        """Test view of single lesson for logged-in user not enrolled"""
+        
         response = self.client.get(url3)
         self.assertEqual(response.status_code, 200)
         self.assertIn('attachments', response.context, \

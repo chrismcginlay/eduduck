@@ -1,14 +1,25 @@
-from django.shortcuts import render
+# Views for lesson app
 
-# Create your views here.
+from django.shortcuts import render, get_object_or_404, render_to_response
+from django.template import RequestContext
+
+import logging; logger = logging.getLogger(__name__)
+from .models import Lesson
+
+
+def iterNone(): 
+    """Make None type iterable for zip function used below"""
+    
+    yield None
+    
 
 def lesson(request, course_id, lesson_id):
     """Prepare variables for detail of individual lesson"""
     
     logger.info('Course id=' + str(course_id) + \
         ', Lesson id=' + str(lesson_id) + ' view')
-    course = get_object_or_404(Course, id=course_id)
     lesson = get_object_or_404(Lesson, id=lesson_id)
+    course = lesson.course
 
     #data on user interaction with lesson
     ul = None
