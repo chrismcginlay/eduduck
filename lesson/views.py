@@ -3,9 +3,12 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
+from interaction.models import UserLesson
+from .models import Lesson
+
 
 import logging; logger = logging.getLogger(__name__)
-from .models import Lesson
+
 
 
 def iterNone(): 

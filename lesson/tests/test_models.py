@@ -12,5 +12,17 @@ class LessonTests(TestCase):
         'lessons.json', 
     ]
     
-    def test_smoke(self):
-        self.fail("smoke test unit")
+    def test_get_next(self):
+        """ Should return the next lesson in the sequence of a course """
+
+        first = Lesson.objects.get(pk=1)
+        second = Lesson.objects.get(pk=2)
+        self.assertEqual(first.get_next(), second)
+
+    def test_get_next(self):
+        """ Should return the previous lesson in the sequence of a course """
+        
+        first = Lesson.objects.get(pk=1)
+        second = Lesson.objects.get(pk=2)
+        self.assertEqual(first, second.get_prev())
+        
