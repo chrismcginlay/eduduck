@@ -1,5 +1,6 @@
 # Views for lesson app
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
 
@@ -15,13 +16,14 @@ def iterNone():
 
 def lesson(request, course_id, lesson_id):
     """Prepare variables for detail of individual lesson"""
-    
+
     logger.info('Course id=' + str(course_id) + \
         ', Lesson id=' + str(lesson_id) + ' view')
     lesson = get_object_or_404(Lesson, id=lesson_id)
     course = lesson.course
 
     #data on user interaction with lesson
+
     ul = None
     if request.user.is_authenticated():
         ul_set = request.user.userlesson_set.filter(lesson=lesson)
@@ -59,7 +61,7 @@ def lesson(request, course_id, lesson_id):
                 ul = UserLesson(user=request.user, lesson=lesson)
                 ul.save()
                 history = ul.hist2list()
-            except:
+            except ObjectDoesNotExist:
                 #not registered on course, do nothing quietly, no need to log
                 history = None
     else:
