@@ -6,7 +6,8 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
-from courses.models import Course, Lesson
+from courses.models import Course
+from lesson.models import Lesson
 from outcome.models import LearningIntention, LearningIntentionDetail
 from attachment.models import Attachment
 from ..models import (UserCourse, 

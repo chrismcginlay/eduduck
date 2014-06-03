@@ -2,7 +2,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.test import TestCase
 
-from courses.models import Course, Lesson
+from courses.models import Course
+from lesson.models import Lesson
 from ..models import Video
 
 

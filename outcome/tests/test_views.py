@@ -1,5 +1,6 @@
 from django.test import TestCase
-from courses.models import Course, Lesson
+from courses.models import Course
+from lesson.models import Lesson
 from bio.models import User, Bio
 from interaction.models import UserCourse
 from ..models import LearningIntention, LearningIntentionDetail

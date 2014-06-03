@@ -6,7 +6,8 @@ from unittest import skip
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from courses.models import Course, Lesson
+from courses.models import Course
+from lesson.models import Lesson
 from .models import (Answer, Quiz, Question,  QuizAttempt, QuestionAttempt)
 
 @skip("")

@@ -11,7 +11,8 @@ from django.utils.timezone import is_aware
 from django.contrib.auth.models import User
 
 from outcome.models import LearningIntention, LearningIntentionDetail
-from courses.models import Course, Lesson
+from courses.models import Course
+from lesson.models import Lesson
 from attachment.models import Attachment
 from ..models import (UserCourse, 
                       UserLesson,
