@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'bio',
     'courses',
     'interaction',
+    'homepage',
     'lesson',
     'outcome',
     'quiz',
