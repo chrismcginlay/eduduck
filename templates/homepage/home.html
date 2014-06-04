@@ -7,7 +7,14 @@
 <div class="content">
     <div id="id_course_selection" class="pure-g-r">
     {% for course in course_list %}
-    <div class="random_course pure-u-{{ course.1 }}-24"><a href='{{ course.0.get_absolute_url }}' id='id_{{course.0.name}}_course'>{{ course.0.name }}</a></div>
+        <div class="random_course pure-u-{{ course.1 }}-24">
+            <a href='{{ course.0.get_absolute_url }}' 
+            id='id_{{course.0.name}}_course'>{{ course.0.name }}</a>
+        </div>
+    {% empty %}
+        <div class="random_course pure-u-24-24">
+            <p>No courses?</p>
+        </div>
     {% endfor %}
         <div class="random_course pure-u-24-24" id="id_course_index"><a href="{% url 'courses.views.index' %}">See all Courses</a></div>
     </div>

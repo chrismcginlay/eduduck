@@ -9,6 +9,7 @@ admin.autodiscover()
 #TODO decouple courses app URLs from eduduck platform #9
 
 urlpatterns = patterns('',
+    url(r'^$', 'homepage.views.home'),
 #    url(r'^search/', include('haystack.urls')),
     url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
     url(r'^support/', include('support.urls')),
@@ -24,12 +25,11 @@ urlpatterns = patterns('',
 )
         
 urlpatterns += patterns('courses.views',
-    url(r'^$', 'temphome'),
     url(r'^courses/$', 'index'),
     url(r'^courses/(?P<course_id>\d+)/$', 'single'),
 )
  
-    #temporary question handler
+#temporary question handler
 urlpatterns += patterns('quiz.views',
     url(r'^questions/$', 'questions'),
     url(r'^question_add/$', 'question_add'),    

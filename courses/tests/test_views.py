@@ -86,7 +86,7 @@ class CourseViewTests(TestCase):
     def test_course_index_logged_in(self):
         """Check course index loads for logged in user"""
 
-        url1 = '/'
+        url1 = '/courses/'
         self.client.login(username='bertie', password='bertword')
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
