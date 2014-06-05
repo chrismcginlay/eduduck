@@ -45,4 +45,13 @@ class HomepageViewTests(TestCase):
         [c.delete() for c in Course.objects.all()[2:]]
         response = self.client.get('/')
         self.assertIn('div class="random_course pure-u-', 
-                      response.content)       
+                      response.content)
+        
+    def test_handle_three_courses(self):
+        # Renders template with three courses
+        
+        ##three courses case
+        [c.delete() for c in Course.objects.all()[3:]]
+        response = self.client.get('/')
+        self.assertIn('div class="random_course pure-u-', 
+        response.content)   
