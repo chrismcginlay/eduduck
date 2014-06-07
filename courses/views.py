@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 def create(request):
     """View to allow users to create a course"""
+    logger.info("Course create view")
     return HttpResponse()
     
 def index(request):

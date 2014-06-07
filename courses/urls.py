@@ -1,6 +1,6 @@
 # urls for courses app
 from django.conf.urls import patterns, url
-from .views import index, single
+#from .views import index, single
 
 urlpatterns = patterns('courses.views', 
     url(r'^$', 'index', name='course_index'),
