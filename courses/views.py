@@ -5,7 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import (
     render_to_response, 
     get_object_or_404, 
-    get_list_or_404
+    get_list_or_404,
+    HttpResponse,   #TODO delete once create implemented
 )
 from django.template import RequestContext
 from django.utils import timezone
@@ -21,8 +22,7 @@ logger = logging.getLogger(__name__)
 
 def create(request):
     """View to allow users to create a course"""
-    
-    pass
+    return HttpResponse()
     
 def index(request):
     """Prepare variables for list of all courses"""

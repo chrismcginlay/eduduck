@@ -76,6 +76,10 @@ class CourseViewTests(TestCase):
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
         self.lesson2.save()
         
+    def test_course_create(self):
+        response = self.client.get('/courses/create/')
+        self.assertEqual(response.status_code, 200)
+        
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
         response = self.client.get('/courses/')
@@ -83,6 +87,7 @@ class CourseViewTests(TestCase):
         #Next check template variables are present
         self.assertTrue(x in response.context for x in ['course_list', 
                                                         'course_count'])
+
     def test_course_index_logged_in(self):
         """Check course index loads for logged in user"""
 
