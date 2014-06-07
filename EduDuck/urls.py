@@ -5,8 +5,6 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
-#TODO decouple quiz app URLs from eduduck platform #9
-
 urlpatterns = patterns('',
     url(r'^$', 'homepage.views.home'),
 #    url(r'^search/', include('haystack.urls')),
@@ -21,27 +19,27 @@ urlpatterns = patterns('',
     url(r'^attachment/', include('attachment.urls')),
 )
  
-#temporary question handler
-urlpatterns += patterns('quiz.views',
-    url(r'^questions/$', 'questions'),
-    url(r'^question_add/$', 'question_add'),    
-    url(r'^question_edit/(?P<question_id>\d+)/$', 'question_edit'),
-    url(r'^question_delete/(?P<question_id>\d+)/$', 'question_delete'),
+##temporary question handler
+#urlpatterns += patterns('quiz.views',
+    #url(r'^questions/$', 'questions'),
+    #url(r'^question_add/$', 'question_add'),    
+    #url(r'^question_edit/(?P<question_id>\d+)/$', 'question_edit'),
+    #url(r'^question_delete/(?P<question_id>\d+)/$', 'question_delete'),
 
-    #temporary answer handler
-    url(r'^answers/$', 'answers'),
-    url(r'^answer_add/$', 'answer_add'),    
-    url(r'^answer_edit/(?P<answer_id>\d+)/$', 'answer_edit'),
-    url(r'^answer_delete/(?P<answer_id>\d+)/$', 'answer_delete'),
+    ##temporary answer handler
+    #url(r'^answers/$', 'answers'),
+    #url(r'^answer_add/$', 'answer_add'),    
+    #url(r'^answer_edit/(?P<answer_id>\d+)/$', 'answer_edit'),
+    #url(r'^answer_delete/(?P<answer_id>\d+)/$', 'answer_delete'),
 
-    #temporary quiz handler
-    url(r'^quizzes/$', 'quizzes'),
-    url(r'^quiz_add/$', 'quiz_add'),    
-    url(r'^quiz_edit/(?P<quiz_id>\d+)/$', 'quiz_edit'),
-    url(r'^quiz_delete/(?P<quiz_id>\d+)/$', 'quiz_delete'),
-    url(r'^quiz_take/(?P<quiz_id>\d+)/$', 'quiz_take'),
-    url(r'^quiz_results/(?P<quiz_id>\d+)/$', 'quiz_results'),
-)
+    ##temporary quiz handler
+    #url(r'^quizzes/$', 'quizzes'),
+    #url(r'^quiz_add/$', 'quiz_add'),    
+    #url(r'^quiz_edit/(?P<quiz_id>\d+)/$', 'quiz_edit'),
+    #url(r'^quiz_delete/(?P<quiz_id>\d+)/$', 'quiz_delete'),
+    #url(r'^quiz_take/(?P<quiz_id>\d+)/$', 'quiz_take'),
+    #url(r'^quiz_results/(?P<quiz_id>\d+)/$', 'quiz_results'),
+#)
 
 if settings.DEBUG:
     urlpatterns += patterns('',
