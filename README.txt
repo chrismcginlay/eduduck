@@ -2,6 +2,30 @@ EduDuck experimental course delivery platform.
 Coded with Django
 by Chris McGinlay
 
+#Dev Database Deletion and ReSync#
+If, in the course of development work, you alter the database structure, 
+you will of course want to bring the development database back into sync:
+
+1. mysql -u root -p 
+Log in on the dev box. 
+
+2. drop database ed_dev; 
+*CAUTION*
+
+3. create database ed_dev;
+
+4. used ed_dev;
+
+5. GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX on ed_dev to ed_dev@localhost identified by 'quickquackquock';
+
+6. quit
+
+7. ~/.virtualenvs/blanket/bin/activate
+
+8. python manage.py loaddata functional_tests/fixtures/auth_user.json
+	Repeat the above for each json model required
+	
+	
 #Create Fixtures with DumpData#
 
 Do it thusly:
