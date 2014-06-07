@@ -6,7 +6,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 #TODO decouple quiz app URLs from eduduck platform #9
-#TODO decouple courses app URLs from eduduck platform #9
 
 urlpatterns = patterns('',
     url(r'^$', 'homepage.views.home'),
@@ -14,19 +13,12 @@ urlpatterns = patterns('',
     url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
     url(r'^support/', include('support.urls')),
     url(r'^lesson/(?P<lesson_id>\d+)/lint/', include('outcome.urls')),
-    url(r'^courses/(?P<course_id>\d+)/lesson/(?P<lesson_id>\d+)/$',
-        'lesson.views.lesson'),
-        url(r'^interaction/', include('interaction.urls')),
+    url(r'^courses/', include('courses.urls')),
+    url(r'^interaction/', include('interaction.urls')),
     url(r'^accounts/bio/', include('bio.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^attachment/', include('attachment.urls')),
-    url(r'^course/add/', 'courses.views.create')
-)
-        
-urlpatterns += patterns('courses.views',
-    url(r'^courses/$', 'index'),
-    url(r'^courses/(?P<course_id>\d+)/$', 'single'),
 )
  
 #temporary question handler
