@@ -18,7 +18,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         fishing_course.click()
         
         # She enrols on the course
-        enrol = self.browser.find_element_by_id('id_enrol')
+        enrol = self.browser.find_element_by_id('id_enrol_button')
         enrol.click()
         
         # There are some lessons in the resource area

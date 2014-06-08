@@ -29,9 +29,33 @@
         <h3>{{ course.code }}: {{ course.name }} Course Homepage</h3>
     </div>
     <div class='pure-u-1-5'>
-        <form id='id_enrol_button' class='pure-form' action='' method='post'>{% csrf_token %}
-        <button id='id_enrol_button' class='pure-button pure-button-primary' type='submit' name='course_register'>Enrol</button>
-        </form>
+        {% if status == "auth_noreg" %}
+            <form   class='pure-form' 
+                    action='' 
+                    method='post'>
+                {% csrf_token %}
+                <button id='id_enrol_button' 
+                        class='pure-button pure-button-primary' 
+                        type='submit' 
+                        name='course_register'>
+                    Enrol
+                </button>
+            </form>
+        {% elif status == "auth_reg" %}
+            <p>You're enrolled on this course</p>
+        {% else %}
+            <form   class='pure-form' 
+                    action='/accounts/register/' 
+                    method='post'>
+                {% csrf_token %}
+                <button id='id_signup_button' 
+                        class='pure-button pure-button-primary' 
+                        type='submit' 
+                        name='signup'>
+                    Sign Up!
+                </button>
+            </form>
+        {% endif %}
     </div>
     
     <div id='id_abstract' class='pure-u-1-2'>
@@ -155,15 +179,35 @@
             {% endfor %}
             </tbody>
             </table>
-            {% elif status == "auth_noreg" %}
-            <h3>Enrol Here</h3>
-            <form id='id_enrol_x2' action='' method='post'>{% csrf_token %}
-            <input type="submit" name="course_register" value="Register">
-            </form>
-            {% else %}
-            <h3>Join Eduduck</h3>
-            <p>Join Eduduck and enrol on this course</p>
-            {% endif %}
+        {% elif status == "auth_noreg" %}
+            <div id='id_enrol_area'>
+                <form   class='pure-form' 
+                action='' 
+                method='post'>
+                {% csrf_token %}
+                <button id='id_enrol_button2' 
+                class='pure-button pure-button-primary' 
+                type='submit' 
+                name='course_register'>
+                Enrol
+                </button>
+                </form>
+            </div>
+        {% else %}
+            <div id="id_signup_area">
+            <h3>Sign Up Here</h3>
+                <form   class='pure-form' 
+                action='/accounts/register/' 
+                method='post'>
+                {% csrf_token %}
+                <button id='id_signup_button2' 
+                class='pure-button pure-button-primary' 
+                type='submit' 
+                name='signup'>
+                Sign Up!
+                </button>
+            </div>
+        {% endif %}
     </div>
 </div><!-- id_resource_area -->
 {% endblock content %}

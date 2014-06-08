@@ -69,7 +69,7 @@ class HomepageViewTests(TestCase):
         
     def test_90_register_area_present_when_not_logged_in(self):
         response= self.client.get('/')
-        needle = '<div class="pure-u-1-2" id="id_sign_up_form">'
+        needle = '<form id="id_sign_up_form"'
         self.assertIn(needle, response.content)
         
         
