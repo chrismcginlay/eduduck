@@ -271,3 +271,27 @@ instructor"""
         t = escape("{0} hasn't added any lessons yet!".format(organiser))
         self.assertIn(t, resp)
                
+    def test_90_not_logged_in_shows_sign_up_button_and_form(self):
+        """ If not logged in, invite to sign up """
+        
+        response = self.client.get('/courses/')
+        self.assertIn('id_signup_button', response.content)
+        self.assertIn('id_signup_area', response.content)
+        
+    def test_90_logged_in_but_not_enrolled(self):
+        """ User not enrolled, invite to enrol x2 areas """
+        
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/')
+        self.assertIn('id_enrol_button', response.content)
+        self.assertIn('id_enrol_area', response.content)
+        
+    def test_90_logged_in_and_enrolled(self):
+        """ User is enrolled, hide both enrol areas """
+
+        self.client.login(username='bertie', password='bertword')
+        uc = UserCourse(user=self.user1, course=self.course1)
+        uc.save()
+        response = self.client.get('/courses/')
+        self.assertNotIn('id_enrol_button', response.content)
+        self.assertNotIn('id_enrol_area', response.content)
