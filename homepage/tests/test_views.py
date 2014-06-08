@@ -55,3 +55,18 @@ class HomepageViewTests(TestCase):
         response = self.client.get('/')
         self.assertIn('div class="random_course pure-u-', 
         response.content)   
+        
+    def test_90_register_area_goes_away_when_logged_in(self):
+        """ If a user is logged in, don't ask them to create an account """
+        
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/')
+        needle = '<div class="pure-u-1-2" id="id_sign_up_form">'
+        self.assertNotIn(needle, response.content)
+        
+    def test_90_register_area_present_when_not_logged_in(self):
+        response= self.client.get('/')
+        needle = '<div class="pure-u-1-2" id="id_sign_up_form">'
+        self.assertIn(needle, response.content)
+        
+        

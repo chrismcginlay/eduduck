@@ -32,8 +32,8 @@
     <hr>
     
     <div class="pure-g-r">
-        <div class="pure-u-1-2">
-            <h2>Register Here</h2>
+        <div class="pure-u-1-2" id="id_sign_up_form">
+            <h2>Sign Up Here</h2>
             <p>We use <a href="www.gravatar.com">Gravatar.com</a> for profile images: if you use the same email address here, your Gravatar will be linked automatically.</p>
             <form id="id_sign_up_form" action="{% url 'registration_register' %}" method="post">{% csrf_token %}
             {{ register_form.as_p }}
