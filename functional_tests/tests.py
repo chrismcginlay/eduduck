@@ -425,23 +425,30 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         
 class AuthorCreatesMaterials(FunctionalTest):
 
-    @skip("")
     def test_can_create_course_and_retrieve_it_later(self):
-        # Jules visits eduduck.com
-        self.browser.get(self.server_url)
+        # Urvasi logs in to the site...
+        self._logUserIn('urvasi', 'hotel23')
 
-        # She logs in to the site...
-        self.fail("Write me")
-
-        # ...and is taken to her profile dashboard
-
+        # ...and then returns to the homepage.
+        self.browser.get('/')
+        
         # There a text-box invites her to create a new course.
+        create = self.browser.find_element_by_xpath("//button[@id='id_course_create']")
+        
+        # She begins by trying to create a course called
+        # 'The Art and Craft of Camping in a UK Summer'
+        
+        # This is rejected as being too long and she is asked to give a short 
+        # title of 1-3 words, max length 20 characters (with the explanation
+        # that a longer title can be given later
 
-        # She calls her new course on 'Camping'...
+        # She calls her new course 'Camping'...
+        
         # ...and on pressing the add button is presented with a form to fill
         # The form automatically shows the course name 'Camping' and assigns
-        # Jules as both organiser and author. She is asked to enter a summary,
-        # a course code, level and number of credits.
+        # Urvasi as both organiser and author. She is asked to enter a full title
+        # a summary, a course code, level and number of credits.
+        
         # On completing and submitting the form, the course is created in the
         # database, she is then taken to a new URL with all the fields
         # re-presented to her. She notices that there is an 'edit' button next
@@ -449,13 +456,13 @@ class AuthorCreatesMaterials(FunctionalTest):
 
         # She decides to alter the level from 'Intermediate' to 'Beginner'
 
-        # Before Jules has time to add lessons, she has to go out, so logs out.
+        # Before Urvasi has time to add lessons, she has to go out, so logs out.
 
         # Later she returns to the site, logs in and immediately sees her new
         # course listed in her profile area. Happy days.
 
         # There is still a textbox for adding another course. She adds a course
-        # on 'Mountain First Aid' but leaves the details blank for now.
+        # on 'Mountain Leadership' but leaves the details blank for now.
 
         # Instead she returns to the profile page, where now both courses are
         # listed.
@@ -465,12 +472,13 @@ class AuthorCreatesMaterials(FunctionalTest):
         ## Clean browser instance - no cookie data etc.
         self.browser = webdriver.Firefox()
 
-        # Albert visits the homepage. He sees both of Jules' courses under
+        # Albert visits the homepage. He sees both of Urvasi' courses under
         # 'available courses' but cannot edit them.
         self.browser.get(self.server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertIn('Camping', page_text)
-        self.assertIn('Mountain First Aid', page_text)
+        self.assertIn('Mountain Leadership', page_text)
+        self.fail("cannot edit them")
 
         # Albert now logs in and again sees both courses under 'available'
         # in his profile area. He enrols in 'Camping' and is taken to a new URL
@@ -480,8 +488,6 @@ class AuthorCreatesMaterials(FunctionalTest):
         # He returns to his profile area and is pleased to see the Camping
         # course listed under 'Your Courses' and the first aid one still under
         # 'available'
-
-        # Even though he is logged in, no edit facility is presented to Albert.
 
     @skip("")
     def test_can_create_and_retrieve_lessons_associated_with_course(self):

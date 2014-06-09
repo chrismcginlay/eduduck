@@ -72,4 +72,8 @@ class HomepageViewTests(TestCase):
         needle = '<form id="id_sign_up_form"'
         self.assertIn(needle, response.content)
         
+    def test_course_create_area_present(self):
+        response = self.client.get('/')
+        needle = 'id="id_course_create"'
+        self.assertIn(needle, response.content)
         
