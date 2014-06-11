@@ -23,7 +23,7 @@
         <form class="pure-form" action="{% url 'courses.views.create' %}">
             <fieldset>
                 <legend>Do It! Create a course right now</legend>
-                <input type="text" placeholder="a simple name for the course">
+                {{ course_form.course_short_name }}
                 <button 
                     id="id_course_create" 
                     type="submit" 

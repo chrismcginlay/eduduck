@@ -1,5 +1,6 @@
 # Test the homepage views
 from django.test import TestCase
+from courses.forms import CourseNameForm
 from courses.models import Course
 
 class HomepageViewTests(TestCase):
@@ -17,6 +18,10 @@ class HomepageViewTests(TestCase):
     def test_homepage_is_found(self):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
+        
+    def test_homepage_uses_coursenameform(self):
+        response = self.client.get('/')
+        self.assertIsInstance(response.context['course_form'], CourseNameForm)
         
     def test_site_title(self):
         response = self.client.get('/')
@@ -61,7 +66,7 @@ class HomepageViewTests(TestCase):
         
         self.client.login(username='chris', password='chris')
         response = self.client.get('/')
-        needle1 = '<div class="pure-u-1-2" id="id_sign_up_form">'
+        needle1 = '<div class="pure-u-1-2" id="id_sign_up_div">'
         self.assertNotIn(needle1, response.content)
         
         needle2 = '<div class="pure-u-1-2" id="id_empty">'

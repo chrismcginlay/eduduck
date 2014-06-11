@@ -9,6 +9,7 @@ class CourseNameFormTest(TestCase):
     def test_form_renders_course_name_input(self):
         form = CourseNameForm()
         self.assertIn('id_course_create', form.as_p())
+        self.assertIn('A short name for the course', form.as_p())
         
 class CourseFullFormTest(TestCase):
     """ The complete course create form """

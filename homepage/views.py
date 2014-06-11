@@ -2,6 +2,7 @@
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from registration.forms import RegistrationForm
+from courses.forms import CourseNameForm
 from courses.models import Course
 
 import logging; logger = logging.getLogger(__name__)
@@ -39,8 +40,10 @@ def home(request):
         except IndexError:
             pass
     register_form = RegistrationForm()
+    course_form = CourseNameForm()
     context_data = {
         'register_form': register_form,
+        'course_form': course_form,
         'course_list': courses_n_24ths,
         'course_count': count_courses_used, 
     }
