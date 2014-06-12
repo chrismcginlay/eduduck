@@ -1,6 +1,4 @@
-"""
-Unit tests for courses views
-"""
+# Unit tests for courses views
 
 import json
 from datetime import datetime
@@ -12,6 +10,7 @@ from bio.models import Bio
 
 from interaction.models import UserCourse
 from lesson.models import Lesson
+from ..views import CourseFullForm
 from ..models import Course
 
 class CourseViewTests(TestCase):
@@ -76,10 +75,35 @@ class CourseViewTests(TestCase):
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
         self.lesson2.save()
         
-    def test_course_create(self):
+    def test_course_create_page_200(self):
         response = self.client.get('/courses/create/')
         self.assertEqual(response.status_code, 200)
+  
+    def test_course_create_view_uses_correct_template(self):
+        response = self.client.get('/courses/create/')
+        self.assertTemplateUsed(response, 'courses/course_create.html')
         
+    def test_course_create_view_uses_correct_form(self):
+        response = self.client.get('/courses/create/')
+        self.assertIsInstance(response.context['form'], CourseFullForm)
+        
+    def test_course_create_page_has_correct_title_and_breadcrumb(self):
+        response = self.client.get('/courses/create/')
+        needle = "<h2 id='id_page_title'>Create a Course</h2>"
+        self.assertIn("<p id='id_breadcrumb'>", response.content)
+        self.assertIn(needle, response.content)
+        
+    def test_course_create_page_has_correct_fields(self):
+        response = self.client.get('/courses/create/')
+        self.assertIn('<input id="id_code"', response.content)
+        self.assertIn('<input id="id_name"', response.content)
+        self.assertIn('id="id_abstract"', response.content)
+
+    def test_course_create_page_has_create_button(self):
+        response = self.client.get('/courses/create/')
+        target = 'id="id_course_create"'
+        self.assertIn(target, response.content)
+    
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
         response = self.client.get('/courses/')

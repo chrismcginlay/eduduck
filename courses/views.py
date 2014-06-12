@@ -6,8 +6,8 @@ from django.shortcuts import (
     render_to_response, 
     get_object_or_404, 
     get_list_or_404,
-    HttpResponse,   #TODO delete once create implemented
 )
+
 from django.template import RequestContext
 from django.utils import timezone
 
@@ -15,6 +15,7 @@ from registration.forms import RegistrationForm
 
 from interaction.models import UserCourse, UserLesson
 from lesson.models import Lesson
+from .forms import CourseFullForm
 from .models import Course
 
 import logging
@@ -22,8 +23,12 @@ logger = logging.getLogger(__name__)
 
 def create(request):
     """View to allow users to create a course"""
+
     logger.info("Course create view")
-    return HttpResponse()
+    t = 'courses/course_create.html'
+    cd = {'form': CourseFullForm()}
+    ci = RequestContext(request)
+    return render_to_response(t, cd, ci)
     
 def index(request):
     """Prepare variables for list of all courses"""
