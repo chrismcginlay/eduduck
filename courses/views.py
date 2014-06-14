@@ -25,25 +25,31 @@ logger = logging.getLogger(__name__)
 def create(request):
     """View to allow users to create a course"""
 
-    course_form = CourseFullForm(data=request.POST)
-    if course_form.is_valid():
-        course = Course.objects.create(
-            code = request.POST['code'],
-            name=request.POST['name'],
-            abstract=request.POST['abstract'],
-            organiser_id=request.user.pk,
-            instructor_id=request.user.pk,
-            level='1',
-            credits=1,
-        )
-        logger.info("Course created {0}".format(course.pk))
-        return redirect(course)
-
-    logger.info("Course create view")
-    t = 'courses/course_create.html'
-    cd = {'form': course_form}
-    ci = RequestContext(request)
-    return render_to_response(t, cd, ci)
+    if request.method=='POST':
+        course_form = CourseFullForm(request.POST)
+        try:
+            course = Course.objects.create(
+                code = request.POST['code'],
+                name=request.POST['name'],
+                abstract=request.POST['abstract'],
+                organiser_id=request.user.pk,
+                instructor_id=request.user.pk,
+                level='1',
+                credits=1,
+            )
+            course.full_clean()
+            course.save()
+            logger.info("Course created {0}".format(course.pk))
+            return redirect(course)
+        except ValidationError:
+            logger.info("User failed to create course")
+        
+    else:
+        logger.info("Course create view")
+        t = 'courses/course_create.html'
+        cd = {'form': CourseFullForm()}
+        ci = RequestContext(request)
+        return render_to_response(t, cd, ci)
     
 def index(request):
     """Prepare variables for list of all courses"""
