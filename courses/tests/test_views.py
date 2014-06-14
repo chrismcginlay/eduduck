@@ -124,12 +124,26 @@ class CourseViewTests(TestCase):
             'name': '',
             'abstract': ''
         })
-        expected_errors = {
-            'name': [NAME_FIELD_REQUIRED_ERROR],
-            'abstract': [ABSTRACT_FIELD_REQUIRED_ERROR],
-            'code': [CODE_FIELD_REQUIRED_ERROR],
-            }
-        self.assertContains(response, expected_errors)
+        expected_errors = (
+            NAME_FIELD_REQUIRED_ERROR,
+            ABSTRACT_FIELD_REQUIRED_ERROR,
+            CODE_FIELD_REQUIRED_ERROR,
+        )
+        for err in expected_errors:
+            self.assertContains(response, err)
+
+    def test_course_create_page_doesnot_show_errors_by_default(self):
+        """ Check that errors don't show up when the form first loads """
+        
+        response = self.client.get('/courses/create/')
+        not_expected_errors = (
+            NAME_FIELD_REQUIRED_ERROR,
+            ABSTRACT_FIELD_REQUIRED_ERROR,
+            CODE_FIELD_REQUIRED_ERROR,
+            )
+        for err in not_expected_errors:
+            self.assertNotContains(response, err)
+            
         
     def test_course_create_page_invalid_form_passes_form_to_template(self):
         response = self.client.post('/courses/create/', data={

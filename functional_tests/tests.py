@@ -427,10 +427,11 @@ class AuthorCreatesMaterials(FunctionalTest):
 
     def test_can_create_course_and_retrieve_it_later(self):
         # Urvasi logs in to the site...
+        self.browser.get(self.server_url)
         self._logUserIn('urvasi', 'hotel23')
 
         # ...and then returns to the homepage.
-        self.browser.get('/')
+        self.browser.get(self.server_url)
         
         # There a text-box invites her to create a new course.
         create = self.browser.find_element_by_xpath("//button[@id='id_course_create']")

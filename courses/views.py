@@ -27,7 +27,6 @@ def create(request):
 
     course_form = CourseFullForm(data=request.POST)
     if course_form.is_valid():
-        import pdb; pdb.set_trace()
         course = Course.objects.create(
             code = request.POST['code'],
             name=request.POST['name'],
