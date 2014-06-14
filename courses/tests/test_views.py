@@ -10,8 +10,13 @@ from bio.models import Bio
 
 from interaction.models import UserCourse
 from lesson.models import Lesson
-from ..views import CourseFullForm
+from ..forms import (
+    NAME_FIELD_REQUIRED_ERROR,
+    CODE_FIELD_REQUIRED_ERROR,
+    ABSTRACT_FIELD_REQUIRED_ERROR,
+    )
 from ..models import Course
+from ..views import CourseFullForm
 
 class CourseViewTests(TestCase):
     """Test the course views"""
@@ -103,7 +108,37 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/create/')
         target = 'id="id_course_create"'
         self.assertIn(target, response.content)
-    
+        
+    def test_course_create_page_invalid_form_sent_to_template(self):
+        response = self.client.post('/courses/create/', data={
+            'code': '',
+            'name': '',
+            'abstract': ''
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'courses/course_create.html')
+        
+    def test_course_create_page_validation_errors_sent_to_template(self):
+        response = self.client.post('/courses/create/', data={
+            'code': '',
+            'name': '',
+            'abstract': ''
+        })
+        expected_errors = {
+            'name': [NAME_FIELD_REQUIRED_ERROR],
+            'abstract': [ABSTRACT_FIELD_REQUIRED_ERROR],
+            'code': [CODE_FIELD_REQUIRED_ERROR],
+            }
+        self.assertContains(response, expected_errors)
+        
+    def test_course_create_page_invalid_form_passes_form_to_template(self):
+        response = self.client.post('/courses/create/', data={
+            'code': '',
+            'name': '',
+            'abstract': ''
+        })
+        self.assertIsInstance(response.context['form'], CourseFullForm)
+        
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
         response = self.client.get('/courses/')

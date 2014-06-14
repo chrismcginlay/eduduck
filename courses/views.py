@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import (
+    redirect,
     render_to_response, 
     get_object_or_404, 
     get_list_or_404,
@@ -24,9 +25,21 @@ logger = logging.getLogger(__name__)
 def create(request):
     """View to allow users to create a course"""
 
+    course_form = CourseFullForm(data=request.POST)
+    if course_form.is_valid():
+        course = Course.objects.create(
+            code = request.POST['code'],
+            name=request.POST['name'],
+            abstract=request.POST['abstract'],
+            organiser_id=request.user.pk,
+            instructor_id=request.user.pk,
+        )
+        logger.info("Course created {0}".format(course.pk))
+        return redirect(course)
+
     logger.info("Course create view")
     t = 'courses/course_create.html'
-    cd = {'form': CourseFullForm()}
+    cd = {'form': course_form}
     ci = RequestContext(request)
     return render_to_response(t, cd, ci)
     
