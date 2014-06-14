@@ -27,12 +27,15 @@ def create(request):
 
     course_form = CourseFullForm(data=request.POST)
     if course_form.is_valid():
+        import pdb; pdb.set_trace()
         course = Course.objects.create(
             code = request.POST['code'],
             name=request.POST['name'],
             abstract=request.POST['abstract'],
             organiser_id=request.user.pk,
             instructor_id=request.user.pk,
+            level='1',
+            credits=1,
         )
         logger.info("Course created {0}".format(course.pk))
         return redirect(course)

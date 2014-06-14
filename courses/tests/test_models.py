@@ -88,6 +88,11 @@ class CourseModelTests(TestCase):
         for key,val in self.course1_data.items():
             self.assertEqual(self.course1.__dict__[key], val)
     
+    def test_cannot_create_invalid_course(self):
+        with self.assertRaises(AssertionError):
+            invalid_course = Course()
+            invalid_course.save()
+        
     def test_course_get_absolute_url(self):
         """Course returns correct get_absolute_url"""
         

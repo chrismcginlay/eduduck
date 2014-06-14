@@ -42,13 +42,7 @@ class Course(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.code
-            assert self.name
-            assert self.organiser
-            assert self.instructor
-            #NB level is a string (eg. 'Foundation', '2')
-            assert self.level
-            assert self.credits >= 0
+            self._checkrep()
 
     def __unicode__(self):
         return self.name
@@ -56,4 +50,17 @@ class Course(models.Model):
     def get_absolute_url(self):
         assert self.id >=1
         return reverse(u"courses.views.single", kwargs= {'course_id': self.id})
+
+    def save(self, *args, **kwargs):
+        self._checkrep()
+        super(Course, self).save(*args, **kwargs)
+        
+    def _checkrep(self):
+        assert self.code
+        assert self.name
+        assert self.organiser
+        assert self.instructor
+        #NB level is a string (eg. 'Foundation', '2')
+        assert self.level
+        assert self.credits >= 0
         
