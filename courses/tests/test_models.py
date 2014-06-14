@@ -92,6 +92,7 @@ class CourseModelTests(TestCase):
         with self.assertRaises(AssertionError):
             invalid_course = Course()
             invalid_course.save()
+            invalid_course.full_clean()
         
     def test_course_get_absolute_url(self):
         """Course returns correct get_absolute_url"""

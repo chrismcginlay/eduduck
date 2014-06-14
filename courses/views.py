@@ -1,7 +1,7 @@
 #courses/views.py
 
 from datetime import datetime, timedelta
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.shortcuts import (
     redirect,
     render_to_response, 
@@ -43,7 +43,10 @@ def create(request):
             return redirect(course)
         except ValidationError:
             logger.info("User failed to create course")
-        
+            t = 'courses/course_create.html'
+            cd = {'form': CourseFullForm()}
+            ci = RequestContext(request)
+            return render_to_response(t, cd, ci)
     else:
         logger.info("Course create view")
         t = 'courses/course_create.html'

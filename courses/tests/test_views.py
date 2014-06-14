@@ -110,27 +110,29 @@ class CourseViewTests(TestCase):
         self.assertIn(target, response.content)
         
     def test_course_create_page_invalid_form_sent_to_template(self):
-        response = self.client.post('/courses/create/', data={
-            'code': '',
-            'name': '',
-            'abstract': ''
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'courses/course_create.html')
-        
+        with self.assertRaises(AssertionError):
+            response = self.client.post('/courses/create/', data={
+                'code': '',
+                'name': '',
+                'abstract': ''
+            })
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, 'courses/course_create.html')
+            
     def test_course_create_page_validation_errors_sent_to_template(self):
-        response = self.client.post('/courses/create/', data={
-            'code': '',
-            'name': '',
-            'abstract': ''
-        })
-        expected_errors = (
-            NAME_FIELD_REQUIRED_ERROR,
-            ABSTRACT_FIELD_REQUIRED_ERROR,
-            CODE_FIELD_REQUIRED_ERROR,
-        )
-        for err in expected_errors:
-            self.assertContains(response, err)
+        with self.assertRaises(AssertionError):
+            response = self.client.post('/courses/create/', data={
+                'code': '',
+                'name': '',
+                'abstract': '',
+            })
+            expected_errors = (
+                NAME_FIELD_REQUIRED_ERROR,
+                ABSTRACT_FIELD_REQUIRED_ERROR,
+                CODE_FIELD_REQUIRED_ERROR,
+            )
+            for err in expected_errors:
+                self.assertContains(response, err)
 
     def test_course_create_page_doesnot_show_errors_by_default(self):
         """ Check that errors don't show up when the form first loads """
@@ -146,12 +148,13 @@ class CourseViewTests(TestCase):
             
         
     def test_course_create_page_invalid_form_passes_form_to_template(self):
-        response = self.client.post('/courses/create/', data={
-            'code': '',
-            'name': '',
-            'abstract': ''
-        })
-        self.assertIsInstance(response.context['form'], CourseFullForm)
+        with self.assertRaises(AssertionError):
+            response = self.client.post('/courses/create/', data={
+                'code': '',
+                'name': '',
+                'abstract': ''
+            })
+            self.assertIsInstance(response.context['form'], CourseFullForm)
         
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
