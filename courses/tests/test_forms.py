@@ -35,3 +35,6 @@ class CourseFullFormTest(TestCase):
             'code': [CODE_FIELD_REQUIRED_ERROR],
         }
         self.assertEqual(form.errors, expected_errors)
+    
+    def test_form_validation_with_course_name_too_long(self):
+        self.fail("write em")

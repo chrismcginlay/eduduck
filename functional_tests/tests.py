@@ -6,6 +6,12 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 
 from .base import FunctionalTest
+from courses.forms import (
+    ABSTRACT_FIELD_REQUIRED_ERROR,
+    CODE_FIELD_REQUIRED_ERROR,
+    NAME_FIELD_REQUIRED_ERROR,
+    NAME_FIELD_TOO_LONG_ERROR,
+)
 
 class GeneralLayoutAndStyle(FunctionalTest):
 
@@ -433,38 +439,65 @@ class AuthorCreatesMaterials(FunctionalTest):
         # ...and then returns to the homepage.
         self.browser.get(self.server_url)
         
-        # There a text-box invites her to create a new course.
-        create = self.browser.find_element_by_xpath("//button[@id='id_course_create']")
+        # There a text-box inviting her to create a new course.
+        text_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_course_name']")
+        create = self.browser.find_element_by_xpath(
+            "//button[@id='id_course_create']")
         
         # She begins by trying to create a course called
         # 'The Art and Craft of Camping in a UK Summer'
+        text_box.send_keys('The Art and Craft of Camping in a UK Summer')
+        create.click()
         
-        # This is rejected as being too long and she is asked to give a short 
-        # title of 1-3 words, max length 20 characters (with the explanation
-        # that a longer title can be given later
-
+        # This is forwarded to a course create form with additional fields.
+        self.assertRegexpMatches(self.browser.current_url, '/courses/create/')
+        self.assertIn('id_abstract', self.browser.page_source)
+        self.assertIn('id_code', self.browser.page_source)
+        
+        # However the course name is rejected as being too long
+        self.assertIn(NAME_FIELD_TOO_LONG_ERROR, self.browser.page_source)
+        
         # She calls her new course 'Camping'...
-        
-        # ...and on pressing the add button is presented with a form to fill
-        # The form automatically shows the course name 'Camping' and assigns
-        # Urvasi as both organiser and author. She is asked to enter a full title
-        # a summary, a course code, level and number of credits.
+        text_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_course_name']")
+        text_box.send_keys('Camping')
+
+        # She tries to create the course, but has not given a code or abstract
+        create = self.browser.find_element_by_xpath(
+            "//button[@id='id_course_create']")
+        create.click()
+        self.assertIn(CODE_FIELD_REQUIRED_ERROR, self.browser.page_source)
+        self.assertIn(ABSTRACT_FIELD_REQUIRED_ERROR, self.browser.page_source)
         
         # On completing and submitting the form, the course is created in the
         # database, she is then taken to a new URL with all the fields
-        # re-presented to her. She notices that there is an 'edit' button next
+        # re-presented to her. 
+        code_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_course_code']")
+        abstract_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_course_abstract']")
+        code_box.send_keys('CAMP01')
+        abstract_box.send_keys('Being organised is the key to a happy camp')
+        create = self.browser.find_element_by_xpath(
+            "//button[@id='id_course_create']")
+        create.click()
+        self.assertRegexpMatches(self.browser.url, '/courses/\d+/')
+
+        #She notices that there is an 'edit' button next
         # to each field and a button for adding lessons to the course.
-
-        # She decides to alter the level from 'Intermediate' to 'Beginner'
-
+        self.fail('Not implemented yet')
+        
         # Before Urvasi has time to add lessons, she has to go out, so logs out.
-
+        self.fail('Not implemented yet')
+        
         # Later she returns to the site, logs in and immediately sees her new
         # course listed in her profile area. Happy days.
-
+        self.fail('Not implemented yet')
+        
         # There is still a textbox for adding another course. She adds a course
         # on 'Mountain Leadership' but leaves the details blank for now.
-
+        
         # Instead she returns to the profile page, where now both courses are
         # listed.
         # Now a new user, Albert, comes along to the site
@@ -479,7 +512,7 @@ class AuthorCreatesMaterials(FunctionalTest):
         page_text = self.browser.find_element_by_tag_name('body').text
         self.assertIn('Camping', page_text)
         self.assertIn('Mountain Leadership', page_text)
-        self.fail("cannot edit them")
+        self.fail("test cannot edit them")
 
         # Albert now logs in and again sees both courses under 'available'
         # in his profile area. He enrols in 'Camping' and is taken to a new URL
