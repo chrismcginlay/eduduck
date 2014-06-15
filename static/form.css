@@ -1,5 +1,7 @@
 /* Form specific CSS */
 
-.errolist {
-color:  #red;
+div.errorlist p, ul.errorlist li {
+    background-color: red;
+    color:  black;
 }
+
