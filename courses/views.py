@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.shortcuts import (
     redirect,
+    render,
     render_to_response, 
     get_object_or_404, 
     get_list_or_404,
@@ -24,36 +25,33 @@ logger = logging.getLogger(__name__)
 
 def create(request):
     """View to allow users to create a course"""
-
+    
     if request.method=='POST':
         course_form = CourseFullForm(request.POST)
-        try:
+        if course_form.is_valid():
+            code = course_form.cleaned_data['code']
+            name = course_form.cleaned_data['name']
+            abstract = course_form.cleaned_data['abstract']
+            organiser_id = request.user.id
+            instructor_id = request.user.id
+            level = '1' 
+            credits = 1
             course = Course.objects.create(
-                code = request.POST['code'],
-                name=request.POST['name'],
-                abstract=request.POST['abstract'],
-                organiser_id=request.user.pk,
-                instructor_id=request.user.pk,
-                level='1',
-                credits=1,
+                code = code,
+                name = name,
+                abstract = abstract,
+                organiser_id = organiser_id,
+                instructor_id = instructor_id,
+                level = level,
+                credits = credits,
             )
-            course.full_clean()
-            course.save()
-            logger.info("Course created {0}".format(course.pk))
+            logger.info("New course (id={0}) created".format(course.pk))
             return redirect(course)
-        except ValidationError:
-            logger.info("User failed to create course")
-            t = 'courses/course_create.html'
-            cd = {'form': CourseFullForm()}
-            ci = RequestContext(request)
-            return render_to_response(t, cd, ci)
     else:
-        logger.info("Course create view")
-        t = 'courses/course_create.html'
-        cd = {'form': CourseFullForm()}
-        ci = RequestContext(request)
-        return render_to_response(t, cd, ci)
-    
+        course_form = CourseFullForm()
+    t = 'courses/course_create.html'
+    return render(request, t, {'form': course_form})
+
 def index(request):
     """Prepare variables for list of all courses"""
 
