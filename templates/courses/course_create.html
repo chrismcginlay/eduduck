@@ -1,0 +1,48 @@
+{% extends "courses/base_course.html" %}
+{% load staticfiles %}
+{% load tz %}
+
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static 'form.css' %}">
+{% endblock extrastyle %}
+
+<!-- TODO uncomment and implement this later
+{% block menu_override %}
+<li class='menu-item-divided'><a href="#">Sections:</a></li>
+<li class='menu_subsection'><a href="#id_resource_progress">+Basics</a></li>
+<li class='menu_subsection'><a href="#id_resource_videos">+Intro Videos</a></li>
+<li class='menu_subsection'><a href="#id_resource_lessons">+Lessons</a></li>
+<li class='menu_subsection'><a href="#id_resource_assessments">+Assessments</a></li>
+<li class='menu_subsection'><a href="#id_resource_study">+Study Group</a></li>
+<li class='menu_subsection'><a href="#id_resource_attachments">+Course Docs</a></li>
+{% endblock menu_override %}
+-->
+
+{% block breadcrumb %}
+<p id='id_breadcrumb'>
+    <a href="{% url 'courses.views.index' %}">All Courses</a> &gt; 
+    <a href="#">Create Course</a>
+</p>
+{% endblock breadcrumb %}
+    
+{% block contentheading %}
+<h2 id='id_page_title'>Create a Course</h2>
+{% endblock contentheading %}
+
+{% block content %}
+    {% if form.errors %}
+        <div class="errorlist">
+            <p>Please correct the following:</p>
+        </div>
+    {% endif %}
+    <form method='post' action='/courses/create/'>
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button 
+        id="id_course_create" 
+        type="submit" 
+        class="pure-button pure-button-primary">
+        Create a Course
+        </button>
+    </form>
+{% endblock content %}
