@@ -14,7 +14,7 @@ class CourseNameFormTest(TestCase):
     
     def test_form_renders_course_name_input(self):
         form = CourseNameForm()
-        self.assertIn('id_course_create', form.as_p())
+        self.assertIn('id_course_name', form.as_p())
         self.assertIn('A short name for the course', form.as_p())
         
 class CourseFullFormTest(TestCase):
@@ -26,7 +26,7 @@ class CourseFullFormTest(TestCase):
         self.assertIn('<input id="id_name"', form.as_p())
         self.assertIn('id="id_abstract"', form.as_p())
         
-    def test_form_validation_for_empty_field(self):
+    def test_fullform_validation_for_empty_field(self):
         form = CourseFullForm(data={'name':'', 'abstract':'', 'code':''})
         self.assertFalse(form.is_valid())
         expected_errors = {
@@ -36,5 +36,12 @@ class CourseFullFormTest(TestCase):
         }
         self.assertEqual(form.errors, expected_errors)
     
-    def test_form_validation_with_course_name_too_long(self):
-        self.fail("write em")
+    def test_fullform_validation_with_course_name_too_long(self):
+        form = CourseFullForm(data={
+            'name': 'This name is far, far too long',
+            'code': 'V4',
+            'abstract': 'This abstract is fine.'
+        })
+        self.assertFalse(form.is_valid())
+        expected_errors = { 'name': ['Ensure this value has at most 20 characters (it has 30).']}
+        self.assertEqual(form.errors, expected_errors)

@@ -3,8 +3,6 @@ from django import forms
 from courses.models import Course
 
 NAME_FIELD_REQUIRED_ERROR = "A course must have a short title"
-NAME_FIELD_TOO_LONG_ERROR = "Please ensure the course name is 13 characters"\
-    " or fewer"
 CODE_FIELD_REQUIRED_ERROR = "Please provide a code for the course"
 ABSTRACT_FIELD_REQUIRED_ERROR = "You must provide an abstract"\
     " (brief description)"

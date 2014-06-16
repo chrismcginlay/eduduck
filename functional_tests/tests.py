@@ -10,7 +10,6 @@ from courses.forms import (
     ABSTRACT_FIELD_REQUIRED_ERROR,
     CODE_FIELD_REQUIRED_ERROR,
     NAME_FIELD_REQUIRED_ERROR,
-    NAME_FIELD_TOO_LONG_ERROR,
 )
 
 class GeneralLayoutAndStyle(FunctionalTest):
@@ -452,23 +451,26 @@ class AuthorCreatesMaterials(FunctionalTest):
         
         # This is forwarded to a course create form with additional fields.
         self.assertRegexpMatches(self.browser.current_url, '/courses/create/')
+        course_name_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_name']")
+        self.assertEqual(course_name_box.text,
+                         'The Art and Craft of Camping in a UK Summer')
         self.assertIn('id_abstract', self.browser.page_source)
         self.assertIn('id_code', self.browser.page_source)
         
-        # However the course name is rejected as being too long
-        self.assertIn(NAME_FIELD_TOO_LONG_ERROR, self.browser.page_source)
-        
-        # She calls her new course 'Camping'...
-        text_box = self.browser.find_element_by_xpath(
-            "//input[@id='id_course_name']")
-        text_box.send_keys('Camping')
-
         # She tries to create the course, but has not given a code or abstract
+        # Also the course name is rejected as being too long
+        self.assertIn('Ensure that...', self.browser.page_source)
         create = self.browser.find_element_by_xpath(
             "//button[@id='id_course_create']")
         create.click()
         self.assertIn(CODE_FIELD_REQUIRED_ERROR, self.browser.page_source)
         self.assertIn(ABSTRACT_FIELD_REQUIRED_ERROR, self.browser.page_source)
+        
+        # She calls her new course 'Camping'...
+        text_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_course_name']")
+        text_box.send_keys('Camping')
         
         # On completing and submitting the form, the course is created in the
         # database, she is then taken to a new URL with all the fields

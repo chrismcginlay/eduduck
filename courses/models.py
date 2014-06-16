@@ -21,8 +21,8 @@ class Course(models.Model):
     code = models.CharField(max_length=10,
                             help_text="arbitrary course code for "\
                             	      "author's reference")
-    name = models.CharField(max_length=150,
-                            help_text="human readable name of the course")
+    name = models.CharField(max_length=20,
+                            help_text="human readable short name of the course")
     abstract = models.TextField(help_text="summary of the course "\
                                 	  "in a couple of paragraphs")
     organiser = models.ForeignKey(User,

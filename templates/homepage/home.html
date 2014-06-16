@@ -20,7 +20,9 @@
     </div>
 
     <div id="id_create_course">
-        <form class="pure-form" action="{% url 'courses.views.create' %}">
+        <form   class="pure-form"
+                action="{% url 'courses.views.create' %}"
+                method="get">
             <fieldset>
                 <legend>Do It! Create a course right now</legend>
                 {{ course_form.course_short_name }}
