@@ -453,17 +453,18 @@ class AuthorCreatesMaterials(FunctionalTest):
         self.assertRegexpMatches(self.browser.current_url, '/courses/create/')
         course_name_box = self.browser.find_element_by_xpath(
             "//input[@id='id_name']")
-        self.assertEqual(course_name_box.text,
+        self.assertEqual(course_name_box.get_attribute('value'),
                          'The Art and Craft of Camping in a UK Summer')
         self.assertIn('id_abstract', self.browser.page_source)
         self.assertIn('id_code', self.browser.page_source)
         
         # She tries to create the course, but has not given a code or abstract
         # Also the course name is rejected as being too long
-        self.assertIn('Ensure that...', self.browser.page_source)
         create = self.browser.find_element_by_xpath(
             "//button[@id='id_course_create']")
         create.click()
+        too_long_err = "Ensure this value has at most 20 characters"
+        self.assertIn(too_long_err, self.browser.page_source)
         self.assertIn(CODE_FIELD_REQUIRED_ERROR, self.browser.page_source)
         self.assertIn(ABSTRACT_FIELD_REQUIRED_ERROR, self.browser.page_source)
         

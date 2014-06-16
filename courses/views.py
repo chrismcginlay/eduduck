@@ -12,6 +12,7 @@ from django.shortcuts import (
 
 from django.template import RequestContext
 from django.utils import timezone
+from django.utils.html import escape
 
 from registration.forms import RegistrationForm
 
@@ -48,7 +49,9 @@ def create(request):
             logger.info("New course (id={0}) created".format(course.pk))
             return redirect(course)
     else:
-        course_form = CourseFullForm()
+        name_desired = escape(request.GET['course_short_name'])
+        data = {'name': name_desired}
+        course_form = CourseFullForm(initial=data)
     t = 'courses/course_create.html'
     return render(request, t, {'form': course_form})
 
