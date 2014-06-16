@@ -468,24 +468,26 @@ class AuthorCreatesMaterials(FunctionalTest):
         self.assertIn(CODE_FIELD_REQUIRED_ERROR, self.browser.page_source)
         self.assertIn(ABSTRACT_FIELD_REQUIRED_ERROR, self.browser.page_source)
         
-        # She calls her new course 'Camping'...
+        # She renames her new course 'Camping'...
         text_box = self.browser.find_element_by_xpath(
-            "//input[@id='id_course_name']")
+            "//input[@id='id_name']")
+        text_box.clear()
         text_box.send_keys('Camping')
         
         # On completing and submitting the form, the course is created in the
         # database, she is then taken to a new URL with all the fields
         # re-presented to her. 
         code_box = self.browser.find_element_by_xpath(
-            "//input[@id='id_course_code']")
+            "//input[@id='id_code']")
         abstract_box = self.browser.find_element_by_xpath(
-            "//input[@id='id_course_abstract']")
+            "//textarea[@id='id_abstract']")
         code_box.send_keys('CAMP01')
         abstract_box.send_keys('Being organised is the key to a happy camp')
         create = self.browser.find_element_by_xpath(
             "//button[@id='id_course_create']")
         create.click()
-        self.assertRegexpMatches(self.browser.url, '/courses/\d+/')
+        target_url = self.server_url + '/courses/\d+/'
+        self.assertRegexpMatches(self.browser.current_url, target_url)
 
         #She notices that there is an 'edit' button next
         # to each field and a button for adding lessons to the course.
