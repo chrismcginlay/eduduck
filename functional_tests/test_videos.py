@@ -15,7 +15,6 @@ class VideoIntegration(FunctionalTest):
 
         # At this point he can see an embedded intro video 
         # (probably outlining the course)
-        import pdb; pdb.set_trace()
         self.browser.find_element_by_xpath("//div[@id='id_intro_video']/iframe")
         
         # as well as further video embedded down the page 
