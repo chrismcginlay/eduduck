@@ -49,7 +49,7 @@ def create(request):
             logger.info("New course (id={0}) created".format(course.pk))
             return redirect(course)
     else:
-        name_desired = escape(request.GET['course_short_name'])
+        name_desired = escape(request.GET.get('course_short_name', '')) # dict get
         data = {'name': name_desired}
         course_form = CourseFullForm(initial=data)
     t = 'courses/course_create.html'
