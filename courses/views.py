@@ -1,6 +1,7 @@
 #courses/views.py
 
 from datetime import datetime, timedelta
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.shortcuts import (
     redirect,
@@ -24,8 +25,9 @@ from .models import Course
 import logging
 logger = logging.getLogger(__name__)
 
+@login_required
 def create(request):
-    """View to allow users to create a course"""
+    """View to allow logged in users to create a course"""
     
     if request.method=='POST':
         course_form = CourseFullForm(request.POST)

@@ -423,7 +423,6 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         progress.find_element_by_xpath("//input[@name='course_withdraw']")
         progress.find_element_by_xpath("//input[@name='course_complete']")
         
-    @skip("")
     def test_user_can_complete_or_withdraw_from_course(self):
         self.fail("Write test")
 
@@ -431,6 +430,23 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
 class AuthorCreatesMaterials(FunctionalTest):
 
     def test_can_create_course_and_retrieve_it_later(self):
+        # Urvasi visits the site and immediately decides to create a course
+        self.browser.get(self.server_url)
+
+        # There is a text-box inviting her to create a new course.
+        text_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_course_name']")
+        create = self.browser.find_element_by_xpath(
+            "//button[@id='id_course_create']")
+        
+        # She tries to create a course on Origami
+        text_box.send_keys('Origami')
+        create.click()
+        
+        # Since she has not logged in, she is invited to do so:
+        redirect_url = '/accounts/login/?next=/courses/create/'
+        self.assertIn(redirect_url, self.browser.current_url)
+        
         # Urvasi logs in to the site...
         self.browser.get(self.server_url)
         self._logUserIn('urvasi', 'hotel23')
@@ -438,7 +454,7 @@ class AuthorCreatesMaterials(FunctionalTest):
         # ...and then returns to the homepage.
         self.browser.get(self.server_url)
         
-        # There a text-box inviting her to create a new course.
+        # There is a text-box inviting her to create a new course.
         text_box = self.browser.find_element_by_xpath(
             "//input[@id='id_course_name']")
         create = self.browser.find_element_by_xpath(
@@ -528,12 +544,18 @@ class AuthorCreatesMaterials(FunctionalTest):
         # course listed under 'Your Courses' and the first aid one still under
         # 'available'
 
+    def test_can_delete_course(self):
+        self.fail("write")
+        
+    def test_can_edit_course_basic_info(self):
+        self.fail("write")
+
     @skip("")
     def test_can_create_and_retrieve_lessons_associated_with_course(self):
         self.fail("Write test")
 
     @skip("")
-    def test_can_edit_course_populating_with_resources(self):
+    def test_can_populate_course_with_resources(self):
         """Author is able to create attachments, videos, LOs etc for course"""
 
         self.fail("Write test")

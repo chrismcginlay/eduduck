@@ -127,8 +127,9 @@ def _get_source(sdir):
     
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
-    run("cd {0}; git checkout 9-course_decouple".format(sdir))
-     
+    #run("cd {0}; git checkout 9-course_decouple".format(sdir))
+    run("cd {0}; git checkout master".format(sdir))    
+        
 def _config_nginx(site_name, sdir):
     sudo("mkdir -p /etc/nginx/conf.d/{0}".format(site_name))
     

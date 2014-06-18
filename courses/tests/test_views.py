@@ -80,36 +80,48 @@ class CourseViewTests(TestCase):
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
         self.lesson2.save()
         
-    def test_course_create_page_200(self):
+    def test_course_create_redirects_if_not_loggedin(self):
+        response = self.client.get('/courses/create/')
+        login_redirect_url = '/accounts/login/?next=/courses/create/'
+        self.assertRedirects(response, login_redirect_url, 302, 200)
+        
+    def test_course_create_page_200_if_loggedin(self):
+        self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
         self.assertEqual(response.status_code, 200)
   
     def test_course_create_view_uses_correct_template(self):
+        self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
         self.assertTemplateUsed(response, 'courses/course_create.html')
         
     def test_course_create_view_uses_correct_form(self):
+        self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
         self.assertIsInstance(response.context['form'], CourseFullForm)
         
     def test_course_create_page_has_correct_title_and_breadcrumb(self):
+        self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
         needle = "<h2 id='id_page_title'>Create a Course</h2>"
         self.assertIn("<p id='id_breadcrumb'>", response.content)
         self.assertIn(needle, response.content)
         
     def test_course_create_page_has_correct_fields(self):
+        self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
         self.assertIn('<input id="id_code"', response.content)
         self.assertIn('<input id="id_name"', response.content)
         self.assertIn('id="id_abstract"', response.content)
 
     def test_course_create_page_has_create_button(self):
+        self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
         target = 'id="id_course_create"'
         self.assertIn(target, response.content)
         
     def test_course_create_page_invalid_form_sent_to_template(self):
+        self.client.login(username='bertie', password='bertword')
         response = self.client.post('/courses/create/', data={
             'code': '',
             'name': '',
@@ -119,6 +131,7 @@ class CourseViewTests(TestCase):
         self.assertTemplateUsed(response, 'courses/course_create.html')
             
     def test_course_create_page_validation_errors_sent_to_template(self):
+        self.client.login(username='bertie', password='bertword')
         response = self.client.post('/courses/create/', data={
             'code': '',
             'name': '',
@@ -135,6 +148,7 @@ class CourseViewTests(TestCase):
     def test_course_create_page_doesnot_show_errors_by_default(self):
         """ Check that errors don't show up when the form first loads """
         
+        self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
         not_expected_errors = (
             NAME_FIELD_REQUIRED_ERROR,
@@ -146,6 +160,7 @@ class CourseViewTests(TestCase):
             
         
     def test_course_create_page_invalid_form_passes_form_to_template(self):
+        self.client.login(username='bertie', password='bertword')
         response = self.client.post('/courses/create/', data={
             'code': '',
             'name': '',
