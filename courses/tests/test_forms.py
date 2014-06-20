@@ -8,6 +8,7 @@ from courses.forms import (
     CourseNameForm, 
     CourseFullForm,
 )
+from courses.models import Course
 
 class CourseNameFormTest(TestCase):
     """ The homepage sports a quick course create form """
@@ -18,7 +19,12 @@ class CourseNameFormTest(TestCase):
         self.assertIn('A short name for the course', form.as_p())
         
 class CourseFullFormTest(TestCase):
-    """ The complete course create form """
+    """ The complete course form. Used to create and edit courses. """
+
+    fixtures = [
+        'auth_user.json', 
+        'courses.json', 
+    ]
     
     def test_fullform_has_correct_field_inputs(self):
         form = CourseFullForm()
@@ -45,3 +51,17 @@ class CourseFullFormTest(TestCase):
         self.assertFalse(form.is_valid())
         expected_errors = { 'name': ['Ensure this value has at most 20 characters (it has 30).']}
         self.assertEqual(form.errors, expected_errors)
+        
+    def test_fullform_renders_course_from_database(self):
+        course = Course.objects.get(pk=1)
+        form = CourseFullForm(instance=course)
+        self.assertIsInstance(form, CourseFullForm)
+        self.assertEqual(form.instance, course)
+        
+    def test_fullform_allows_edit_of_instance_from_database(self):
+        course = Course.objects.get(pk=1)
+        form = CourseFullForm(instance=course)
+        form.instance.name = "Fish paste"
+        form.instance.save()
+        course = Course.objects.get(pk=1)
+        self.assertEqual(course.name, "Fish paste")

@@ -4,6 +4,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('courses.views', 
     url(r'^$', 'index', name='course_index'),
+    url(r'^(?P<course_id>\d+)/edit/$', 'edit', name='course_edit'),
     url(r'^(?P<course_id>\d+)/$', 'single', name='course_single'),
     url(r'^create/$', 'create', name='course_create'),
 )

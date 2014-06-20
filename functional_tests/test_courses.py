@@ -160,22 +160,33 @@ class AuthorCreatesMaterials(FunctionalTest):
         target_url = self.server_url + '/courses/\d+/'
         self.assertRegexpMatches(self.browser.current_url, target_url)
 
-        #She notices that there is an 'edit' button next
-        # to each field and a button for adding lessons to the course.
-        self.fail('Not implemented yet')
+        # She notices that there is an 'edit' button on this course page
+        btn_edit = self.browser.find_element_by_id('id_course_edit')
+        btn_submit = self.browser.find_element_by_id('id_submit')
+        # She decides to improve the abstract:
+        btn_edit.click()
+        target_url = self.server_url + '/courses/1/edit/'
+        self.assertEqual(target_url, self.browser.current_url)
+        self.assertIn('<h2>Edit Course</h2>', self.browser.page_source)
+        abstract_box = self.browser.find_element_by_id('id_abstract')
+        abstract_box.send_keys(". Wibble.")
+        btn_submit.click()
+        
+        target_url = self.server_url + '/courses/1/'
+        self.assertEqual(target_url, self.browser.current_url)
         
         # Before Urvasi has time to add lessons, she has to go out, so logs out.
-        self.fail('Not implemented yet')
+        self._logUserOut()
         
         # Later she returns to the site, logs in and immediately sees her new
         # course listed in her profile area. Happy days.
+        self._logUserIn('urvasi', 'hotel23')
         self.fail('Not implemented yet')
         
-        # There is still a textbox for adding another course. She adds a course
-        # on 'Mountain Leadership' but leaves the details blank for now.
+        # On the homepage, there is still a textbox for adding another course. 
+        # She adds a course on 'Mountain Leadership'.
         
-        # Instead she returns to the profile page, where now both courses are
-        # listed.
+        # She returns to the profile page, where now both courses are listed.
         # Now a new user, Albert, comes along to the site
         self.browser.quit()
 

@@ -3,6 +3,7 @@
 import json
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.http.response import HttpResponseForbidden
 from django.test import TestCase
 from django.utils.html import escape
 
@@ -79,6 +80,51 @@ class CourseViewTests(TestCase):
         self.lesson1.save()
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
         self.lesson2.save()
+        
+    def test_course_edit_redirects_if_not_loggedin(self):
+        response = self.client.get('/courses/1/edit/')  
+        login_redirect_url = '/accounts/login/?next=/courses/1/edit/'
+        self.assertRedirects(response, login_redirect_url, 302, 200)
+
+    def test_course_edit_forbidden_if_user_not_permitted(self):
+        self.client.login(username='hank', password='hankdo')
+        response = self.client.get('/courses/1/edit/')
+        self.assertIsInstance(response, HttpResponseForbidden)
+
+    def test_course_edit_200_if_user_permitted(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/') 
+        self.assertEqual(response.status_code, 200)
+    
+    def test_course_edit_uses_correct_template(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/') 
+        self.assertTemplateUsed(response, 'courses/course_edit.html')
+        
+    def test_course_edit_page_uses_correct_form(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/')
+        self.assertIsInstance(response.context['form'], CourseFullForm)
+        
+    def test_course_edit_page_has_correct_data_prefilled(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/')
+        self.assertIn('value="EDU02"', response.content)
+        self.assertIn('value="A Course of Leeches"',
+                      response.content)
+        self.assertIn(
+            'Learn practical benefits of leeches</textarea>', 
+            response.content)
+        
+    def test_course_edit_page_validation_errors_sent_to_template(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.post('/courses/1/edit/', data={
+            'code': '',
+            'name': '',
+            'abstract': ''
+            })
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'courses/course_edit.html')
         
     def test_course_create_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/create/')

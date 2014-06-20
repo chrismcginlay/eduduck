@@ -2,7 +2,11 @@
 
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import (
+    ObjectDoesNotExist,
+    PermissionDenied,
+    ValidationError,
+)
 from django.shortcuts import (
     redirect,
     render,
@@ -24,6 +28,26 @@ from .models import Course
 
 import logging
 logger = logging.getLogger(__name__)
+
+def user_permitted_to_edit_course(user, course_id):
+    
+    course = get_object_or_404(Course, pk=course_id)
+    if not user.is_authenticated(): return False
+    if not (user.id ==  course.organiser_id or user.id == course.instructor_id):
+        return False
+    return True
+
+@login_required
+def edit(request, course_id):
+    """View to allow instructor/organiser to edit course"""
+
+    if user_permitted_to_edit_course(request.user, course_id):
+        course = get_object_or_404(Course, pk=course_id)
+        course_form = CourseFullForm(instance=course)
+        t = 'courses/course_edit.html'
+        return render(request, t, {'form': course_form})
+    else:
+        raise PermissionDenied
 
 @login_required
 def create(request):
