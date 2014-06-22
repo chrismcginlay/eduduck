@@ -1,7 +1,6 @@
-"""
-Unit tests for Support 'pseudo'-app
-"""
+""" Unit tests for Support 'pseudo'-app """
 
+from django.core.urlresolvers import reverse, resolve
 from django.test import TestCase
 
 from .forms import SupportForm
@@ -53,3 +52,12 @@ class SupportFormViewTests(TestCase):
         """Test the presence of the thanks page"""
         response = self.client.get('/support/thanks/')
         self.assertEqual(response.status_code, 200)
+
+class SupportUrlTests(TestCase):
+    
+    def test_support_url(self):
+        url = reverse('support')
+        self.assertEqual(url, '/support/')
+        resolver = resolve(url)
+        self.assertEqual(resolver.view_name, 'support')
+        
