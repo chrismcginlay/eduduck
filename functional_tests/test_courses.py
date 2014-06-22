@@ -212,9 +212,6 @@ class AuthorCreatesMaterials(FunctionalTest):
 
     def test_can_delete_course(self):
         self.fail("write")
-        
-    def test_can_edit_course_basic_info(self):
-        self.fail("write")
 
     @skip("")
     def test_can_create_and_retrieve_lessons_associated_with_course(self):

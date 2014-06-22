@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
 urlpatterns = patterns ('support.views',
-    url(r'^$', 'support')
+    url(r'^$', 'support', name='support')
 )
 
 urlpatterns += patterns('',

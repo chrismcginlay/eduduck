@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load tz %}
+
+{% block title %}
+EduDuck|Page Not Found
+{% endblock %}
+
+{% block contentheading %}
+<h1>403: Forbidden</h1>
+{% endblock %}
+
+{% block content %}
+<p>Seeing this error means that the server decided you didn't have 
+sufficient permission to do whatever you were hoping to do.</p>
+<p>Sorry about that.</p>
+<p>It could be an error, or it could be that you weren't meant to do that thing.
+If you want to request permission or think there's an error, please let us 
+know here: <a href="{%url 'support' %}">Support Page</a></p>
+{% endblock %}
