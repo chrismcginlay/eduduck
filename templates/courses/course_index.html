@@ -9,8 +9,10 @@
 
         {% for course in course_list %}
         <article id={{ course.code }}>
-        <h3>{{ course.code }}
-        <a href='{{ course.get_absolute_url }}'>{{ course.name }}</a>
+        <h3>
+            {% if course.code %}{{ course.code }}
+            {% else %}{{ course.pk }}{% endif %}
+            <a href='{{ course.get_absolute_url }}'>{{ course.name }}</a>
         </h3> 
         <p>(With {{ course.lesson_set.count }} 
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 

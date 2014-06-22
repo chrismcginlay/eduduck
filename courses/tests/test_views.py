@@ -13,7 +13,6 @@ from interaction.models import UserCourse
 from lesson.models import Lesson
 from ..forms import (
     NAME_FIELD_REQUIRED_ERROR,
-    CODE_FIELD_REQUIRED_ERROR,
     ABSTRACT_FIELD_REQUIRED_ERROR,
     )
 from ..models import Course
@@ -204,7 +203,6 @@ class CourseViewTests(TestCase):
         expected_errors = (
             NAME_FIELD_REQUIRED_ERROR,
             ABSTRACT_FIELD_REQUIRED_ERROR,
-            CODE_FIELD_REQUIRED_ERROR,
         )
         for err in expected_errors:
             self.assertContains(response, err)
@@ -217,7 +215,6 @@ class CourseViewTests(TestCase):
         not_expected_errors = (
             NAME_FIELD_REQUIRED_ERROR,
             ABSTRACT_FIELD_REQUIRED_ERROR,
-            CODE_FIELD_REQUIRED_ERROR,
             )
         for err in not_expected_errors:
             self.assertNotContains(response, err)

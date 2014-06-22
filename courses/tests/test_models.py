@@ -31,7 +31,6 @@ class CourseModelTests(TestCase):
         'abstract': 'Casting on',
     }
     course3_data = {
-        'code': 'PL1',
         'name': 'Public Speaking',
         'abstract': 'Talking in public',
     }
@@ -87,6 +86,16 @@ class CourseModelTests(TestCase):
             invalid_course = Course()
             invalid_course.save()
             invalid_course.full_clean()
+        
+    def test_can_create_a_course_without_course_code(self):
+        """ Course code is optional """
+        new_course = Course.objects.create(
+            name = "Test Course",
+            abstract = "This course has no code. Should be fine",
+            organiser = self.user1,
+            instructor = self.user1,
+        )
+        new_course.save()
         
     def test_course_get_absolute_url(self):
         """Course returns correct get_absolute_url"""

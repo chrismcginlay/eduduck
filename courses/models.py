@@ -9,7 +9,7 @@ class Course(models.Model):
     """A self contained course of study.
     
     Attributes:
-        code         Course code for human consumption
+        code         Optional. Course code for human consumption
         name         Human readable name of course
         abstract     Summary paragraph outlining course
         organiser    Foreign key: user organising course
@@ -17,8 +17,9 @@ class Course(models.Model):
     """
 
     code = models.CharField(max_length=10,
-                            help_text="arbitrary course code for "\
-                            	      "author's reference")
+                            help_text="optional course code for "\
+                            	      "author's reference",
+                            blank=True)
     name = models.CharField(max_length=20,
                             help_text="human readable short name of the course")
     abstract = models.TextField(help_text="summary of the course "\
@@ -51,7 +52,6 @@ class Course(models.Model):
         super(Course, self).save(*args, **kwargs)
         
     def _checkrep(self):
-        assert self.code
         assert self.name
         assert self.organiser
         assert self.instructor

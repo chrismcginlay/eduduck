@@ -1,9 +1,10 @@
 # Unit tests for course forms
 
+from django.contrib.auth.models import User
 from django.test import TestCase
+
 from courses.forms import (
     NAME_FIELD_REQUIRED_ERROR,
-    CODE_FIELD_REQUIRED_ERROR,
     ABSTRACT_FIELD_REQUIRED_ERROR,
     CourseNameForm, 
     CourseFullForm,
@@ -38,10 +39,20 @@ class CourseFullFormTest(TestCase):
         expected_errors = {
             'name': [NAME_FIELD_REQUIRED_ERROR],
             'abstract': [ABSTRACT_FIELD_REQUIRED_ERROR],
-            'code': [CODE_FIELD_REQUIRED_ERROR],
         }
         self.assertEqual(form.errors, expected_errors)
     
+    def test_fullform_allows_creation_of_course_with_no_course_code(self):
+        person = User.objects.get(pk=1)
+        form = CourseFullForm({
+            'name': "Test Course",
+            'abstract': "A course with no code. Should be fine.",
+        })
+        self.assertTrue(form.is_valid())
+        form.instance.instructor = person
+        form.instance.organiser = person
+        form.save()
+        
     def test_fullform_validation_with_course_name_too_long(self):
         form = CourseFullForm(data={
             'name': 'This name is far, far too long',

@@ -6,7 +6,6 @@ from .base import FunctionalTest
 
 from courses.forms import (
     ABSTRACT_FIELD_REQUIRED_ERROR,
-    CODE_FIELD_REQUIRED_ERROR,
     NAME_FIELD_REQUIRED_ERROR,
 )
 
@@ -129,14 +128,13 @@ class AuthorCreatesMaterials(FunctionalTest):
         self.assertIn('id_abstract', self.browser.page_source)
         self.assertIn('id_code', self.browser.page_source)
         
-        # She tries to create the course, but has not given a code or abstract
+        # She tries to create the course, but has not given an abstract
         # Also the course name is rejected as being too long
         create = self.browser.find_element_by_xpath(
             "//button[@id='id_course_create']")
         create.click()
         too_long_err = "Ensure this value has at most 20 characters"
         self.assertIn(too_long_err, self.browser.page_source)
-        self.assertIn(CODE_FIELD_REQUIRED_ERROR, self.browser.page_source)
         self.assertIn(ABSTRACT_FIELD_REQUIRED_ERROR, self.browser.page_source)
         
         # She renames her new course 'Camping'...
@@ -170,6 +168,9 @@ class AuthorCreatesMaterials(FunctionalTest):
         self.assertIn('<h2>Edit Course</h2>', self.browser.page_source)
         abstract_box = self.browser.find_element_by_id('id_abstract')
         abstract_box.send_keys(". Wibble.")
+        # and delete course code
+        code_box = self.browser.find_element_by_xpath("//input[@id='id_code']")
+        code_box.clear()
         btn_submit.click()
         
         target_url = self.server_url + '/courses/1/'
@@ -211,7 +212,7 @@ class AuthorCreatesMaterials(FunctionalTest):
         # 'available'
 
     def test_can_delete_course(self):
-        self.fail("write")
+        self.fail("not implemented")
 
     @skip("")
     def test_can_create_and_retrieve_lessons_associated_with_course(self):
