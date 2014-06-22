@@ -14,8 +14,6 @@ class Course(models.Model):
         abstract     Summary paragraph outlining course
         organiser    Foreign key: user organising course
         instructor   Foreign key: user providing instruction 
-        level        Level of difficulty of this course (eg SCQF)
-        credits      Number of points awarded on completion
     """
 
     code = models.CharField(max_length=10,
@@ -31,9 +29,6 @@ class Course(models.Model):
     instructor = models.ForeignKey(User,
                                    related_name="courses_instructed_set",
                                    help_text="This user is providing the instruction")
-    level = models.CharField(max_length=10, blank=True, null=True,
-                             help_text="e.g. SCQF level")
-    credits = models.IntegerField(blank=True, null=True,)
 
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
@@ -60,7 +55,3 @@ class Course(models.Model):
         assert self.name
         assert self.organiser
         assert self.instructor
-        #NB level is a string (eg. 'Foundation', '2')
-        assert self.level
-        assert self.credits >= 0
-        

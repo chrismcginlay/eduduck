@@ -5,10 +5,8 @@
   "fields": {
     "code": "DES01", 
     "name": "Blender", 
-    "level": "4", 
     "abstract": "An introduction to Blender", 
     "organiser": 1, 
-    "credits": 45, 
     "instructor": 2
   }
 },
@@ -18,10 +16,8 @@
   "fields": {
     "code": "ENG01", 
     "name": "ISS", 
-    "level": "4", 
     "abstract": "Systems overview of the International Space Station", 
     "organiser": 1, 
-    "credits": 30, 
     "instructor": 1
   }
 },
@@ -31,10 +27,8 @@
   "fields": {
     "code": "PSHE01", 
     "name": "Personal Development", 
-    "level": "2", 
     "abstract": "Fostering the 'Growth Mindset' within a student cohort", 
     "organiser": 2, 
-    "credits": 20, 
     "instructor": 2
   }
 },
@@ -44,10 +38,8 @@
   "fields": {
     "code": "ENGSCI02", 
     "name": "Stellar Structure", 
-    "level": "6", 
     "abstract": "Structure of main sequence stars, inluding discussion of the relevant fundamental physics", 
     "organiser": 1, 
-    "credits": 60, 
     "instructor": 1
   }
 },
@@ -57,10 +49,8 @@
   "fields": {
     "code": "OUT1", 
     "name": "Line Fishing", 
-    "level": "6", 
     "abstract": "Learn about the different rods, lures, line, reels and techniques for sea, loch, and river.", 
     "organiser": 1, 
-    "credits": 15, 
     "instructor": 1
   }
 },
@@ -70,10 +60,8 @@
   "fields": {
     "code": "PERF01", 
     "name": "Contemporary Dance", 
-    "level": "6", 
     "abstract": "Overview of the main styles and development of modern dance.", 
     "organiser": 1, 
-    "credits": 20, 
     "instructor": 1
   }
 },
@@ -83,10 +71,8 @@
   "fields": {
     "code": "PSHE02", 
     "name": "Field First Aid", 
-    "level": "4", 
     "abstract": "Practical first aid for challenging outdoor situations", 
     "organiser": 1, 
-    "credits": 50, 
     "instructor": 1
   }
 }

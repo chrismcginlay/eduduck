@@ -14,8 +14,6 @@
         </h3> 
         <p>(With {{ course.lesson_set.count }} 
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 
-        Level {{ course.level }}, {{ course.credits }}
-        point{{course.credits|pluralize:",s"}}.
 <p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
 <p>Course instructor <a href="{{ course.instructor.bio.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor.username %}</a></p>
 
@@ -39,8 +37,6 @@ wish to register for in future</p>
         </h3> 
         <p>(With {{ course.lesson_set.count }} 
         lesson{{ course.lesson_set.count|pluralize:",s"}}). 
-        Level {{ course.level }}, {{ course.credits }}
-        point{{course.credits|pluralize:",s"}}.
 
 <p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
 <p>Course instructor <a href="{{course.instructor.bio.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor %}</a></p>

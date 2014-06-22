@@ -26,27 +26,19 @@ from ..models import (UserCourse,
 course1_data = {'code': 'EDU02',
                'name': 'A Course of Leeches',
                'abstract': 'Learn practical benefits of leeches',
-               'level': 'Basic',
-               'credits': 30,
                }
 
 course2_data = {'code': 'EDU03',
                'name': 'The Coarse and The Hoarse',
                'abstract': 'High volume swearing leading to loss of voice',
-               'level': 'Advanced',
-               'credits': 30,
                }
 course3_data = {'code': 'EDU04',
                'name': 'Pie Eating',
                'abstract': 'Gut Busting leads to Butt Gusting',
-               'level': 'Horizontal',
-               'credits': 30,
                }
 course4_data = {'code': 'EDU05',
                'name': 'Golk',
                'abstract': 'The Contact Sport',
-               'level': 'Medium',
-               'credits': 30,
                }
 
 

@@ -14,8 +14,6 @@ class AttachmentViewTests(TestCase):
         'code': 'EDU02',
         'name': 'A Course of Leeches',
         'abstract': 'Learn practical benefits of leeches',
-        'level': 'Basic',
-        'credits': 30,
     }
     lesson1_data = {
         'code': 'B1',

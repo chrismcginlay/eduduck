@@ -72,16 +72,12 @@ def create(request):
             abstract = course_form.cleaned_data['abstract']
             organiser_id = request.user.id
             instructor_id = request.user.id
-            level = '1' 
-            credits = 1
             course = Course.objects.create(
                 code = code,
                 name = name,
                 abstract = abstract,
                 organiser_id = organiser_id,
                 instructor_id = instructor_id,
-                level = level,
-                credits = credits,
             )
             logger.info("New course (id={0}) created".format(course.pk))
             return redirect(course)

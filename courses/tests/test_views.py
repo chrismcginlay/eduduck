@@ -26,22 +26,16 @@ class CourseViewTests(TestCase):
         'code': 'EDU02',
         'name': 'A Course of Leeches',
         'abstract': 'Learn practical benefits of leeches',
-        'level': 'basic',
-        'credits': 30,
     }
     course2_data = {
         'code': 'FBR9',
         'name': 'Basic Knitting',
         'abstract': 'Casting on',
-        'level': '5',
-        'credits': 20,
     }  
     course3_data = {
         'code': 'G3',
         'name': 'Nut Bagging',
         'abstract': 'Put the nuts in the bag',
-        'level': '4',
-        'credits': 42,
     }
     lesson1_data = {
         'code': 'B1',
@@ -84,8 +78,7 @@ class CourseViewTests(TestCase):
     def test_course_edits_actually_saved(self):
         self.client.login(username='bertie', password='bertword')
         mod_data = {'code': 'F1', 'name': 'Dingbat', 'abstract': 'Fingbot',
-                    'organiser': self.user1, 'instructor': self.user1,
-                    'level': '1', 'credits': '1'}
+                    'organiser': self.user1, 'instructor': self.user1,}
         ##This should trigger modification of the course
         response = self.client.post('/courses/1/edit/', mod_data)
         
@@ -93,7 +86,6 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/')
         self.assertIn('<h3>F1: Dingbat Course Homepage</h3>', response.content)
         self.assertIn('<p>Fingbot</p>', response.content)
-        self.fail("how to write this?")
         
     def test_course_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/edit/')  

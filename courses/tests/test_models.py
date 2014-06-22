@@ -24,22 +24,16 @@ class CourseModelTests(TestCase):
         'code': 'EDU02',
         'name': 'A Course of Leeches',
         'abstract': 'Learn practical benefits of leeches',
-        'level': 'Basic',
-        'credits': 30,
     }
     course2_data = {
         'code': 'FBR9',
         'name': 'Basic Knitting',
         'abstract': 'Casting on',
-        'level': '5',
-        'credits': 20,
     }
     course3_data = {
         'code': 'PL1',
         'name': 'Public Speaking',
         'abstract': 'Talking in public',
-        'level': 5,
-        'credits': 15,
     }
     lesson1_data = {
         'code': 'B1',

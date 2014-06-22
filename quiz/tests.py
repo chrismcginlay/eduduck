@@ -22,8 +22,6 @@ class QuizModelTests(TestCase):
                    'course_name': 'A Course of Leeches',
                    'course_abstract': 'Learn practical benefits of leeches',
                    'course_organiser': 'Van Gogh',
-                   'course_level': 4,
-                   'course_credits': 30,
                    }
     lesson1_data = {'lesson_code': 'B1',
                     'lesson_name': 'Introduction to Music',
@@ -76,8 +74,6 @@ class QuizViewTests(TestCase):
                    'course_name': 'A Course of Leeches',
                    'course_abstract': 'Learn practical benefits of leeches',
                    'course_organiser': 'Van Gogh',
-                   'course_level': 4,
-                   'course_credits': 30,
                    }
     lesson1_data = {'lesson_code': 'B1',
                     'lesson_name': 'Introduction to Music',
