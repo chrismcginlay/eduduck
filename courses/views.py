@@ -207,6 +207,15 @@ def single(request, course_id):
         userattachments_attachments_tuple = zip(iterNone(), attachments)
     context_data.update({'attachments': userattachments_attachments_tuple})
     
+    #Add a flag if the current user is the organiser or instructor for the 
+    #course, so template can display edit button
+    if request.user.is_authenticated():
+        if request.user.pk == course.organiser_id  \
+                or request.user.pk == course.instructor_id:
+            context_data.update({'user_can_edit': True})
+        else:
+            context_data.update({'user_can_edit': False})
+
     logger.debug('courses.single request context: status='+context_data['status']) 
     template = 'courses/course_single.html'        
     context_instance = RequestContext(request)

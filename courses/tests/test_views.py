@@ -75,6 +75,18 @@ class CourseViewTests(TestCase):
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
         self.lesson2.save()
         
+    def test_course_page_has_edit_button_for_organiser_instructor(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/')
+        self.assertIn("id='id_edit_course'", response.content)
+        self.assertEqual(response.context['user_can_edit'], True)
+
+    def test_course_page_has_no_edit_button_if_not_organiser_instructor(self):
+        self.client.login(username='hank', password='hankdo')
+        response = self.client.get('/courses/1/')
+        self.assertNotIn("id='id_edit_course'", response.content)
+        self.assertEqual(response.context['user_can_edit'], False)
+
     def test_course_edits_actually_saved(self):
         self.client.login(username='bertie', password='bertword')
         mod_data = {'code': 'F1', 'name': 'Dingbat', 'abstract': 'Fingbot',
