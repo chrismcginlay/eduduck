@@ -40,15 +40,26 @@ def user_permitted_to_edit_course(user, course_id):
 @login_required
 def edit(request, course_id):
     """View to allow instructor/organiser to edit course"""
-
+    
     if user_permitted_to_edit_course(request.user, course_id):
         course = get_object_or_404(Course, pk=course_id)
-        course_form = CourseFullForm(instance=course)
-        t = 'courses/course_edit.html'
-        return render(request, t, {'form': course_form})
+        if request.method=='POST':
+            course_form = CourseFullForm(request.POST, instance=course)
+            if course_form.is_valid():
+                course_form.save()
+                logger.info("Course (id={0}) edited".format(course.pk))
+                return redirect(course)
+            else:
+                t = 'courses/course_edit.html'
+                return render(request, t, {'form': course_form})
+        else:
+            course_form = CourseFullForm(instance=course)
+            t = 'courses/course_edit.html'
+            return render(request, t, {'form': course_form})
     else:
+        logger.info("Unauthorized attempt to edit course {0}".format(course_id))
         raise PermissionDenied
-
+    
 @login_required
 def create(request):
     """View to allow logged in users to create a course"""

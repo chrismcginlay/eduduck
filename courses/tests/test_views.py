@@ -81,6 +81,20 @@ class CourseViewTests(TestCase):
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
         self.lesson2.save()
         
+    def test_course_edits_actually_saved(self):
+        self.client.login(username='bertie', password='bertword')
+        mod_data = {'code': 'F1', 'name': 'Dingbat', 'abstract': 'Fingbot',
+                    'organiser': self.user1, 'instructor': self.user1,
+                    'level': '1', 'credits': '1'}
+        ##This should trigger modification of the course
+        response = self.client.post('/courses/1/edit/', mod_data)
+        
+        ##Then visiting the course should reflect the changes
+        response = self.client.get('/courses/1/')
+        self.assertIn('<h3>F1: Dingbat Course Homepage</h3>', response.content)
+        self.assertIn('<p>Fingbot</p>', response.content)
+        self.fail("how to write this?")
+        
     def test_course_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/edit/')  
         login_redirect_url = '/accounts/login/?next=/courses/1/edit/'
