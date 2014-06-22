@@ -95,7 +95,8 @@ class CourseViewTests(TestCase):
         
         ##Then visiting the course should reflect the changes
         response = self.client.get('/courses/1/')
-        self.assertIn('<h3>F1: Dingbat Course Homepage</h3>', response.content)
+        self.assertContains(response, 
+            '<h3>F1 : Dingbat Course Homepage</h3>', html=True)
         self.assertIn('<p>Fingbot</p>', response.content)
         
     def test_course_edit_redirects_if_not_loggedin(self):

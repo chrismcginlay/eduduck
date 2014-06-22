@@ -36,6 +36,14 @@ class FunctionalTest(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
         
+    def _logUserOut(self):
+        logout_link = self.browser.find_element_by_id('id_logout')
+        self.assertTrue(logout_link)
+        logout_link.find_element_by_tag_name('a').click()
+        self.assertEqual(
+            self.browser.current_url,
+            self.server_url + '/accounts/logout/')
+        
     def _logUserIn(self, user, passwd):
         login_link = self.browser.find_element_by_id('id_login')
         self.assertTrue(login_link)

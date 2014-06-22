@@ -159,22 +159,23 @@ class AuthorCreatesMaterials(FunctionalTest):
         self.assertRegexpMatches(self.browser.current_url, target_url)
 
         # She notices that there is an 'edit' button on this course page
-        btn_edit = self.browser.find_element_by_id('id_course_edit')
-        btn_submit = self.browser.find_element_by_id('id_submit')
+        btn_edit = self.browser.find_element_by_id('id_edit_course')
+        edit_target_url = self.server_url + '/courses/\d+/edit/'
         # She decides to improve the abstract:
         btn_edit.click()
-        target_url = self.server_url + '/courses/1/edit/'
-        self.assertEqual(target_url, self.browser.current_url)
-        self.assertIn('<h2>Edit Course</h2>', self.browser.page_source)
+        self.assertRegexpMatches(self.browser.current_url, edit_target_url)
+        self.assertIn('<h2 id="id_page_title">Edit Course</h2>', self.browser.page_source)
         abstract_box = self.browser.find_element_by_id('id_abstract')
         abstract_box.send_keys(". Wibble.")
-        # and delete course code
+        # and delete the course code
         code_box = self.browser.find_element_by_xpath("//input[@id='id_code']")
         code_box.clear()
+        # she submits the changes
+        btn_submit = self.browser.find_element_by_id('id_submit')
         btn_submit.click()
         
-        target_url = self.server_url + '/courses/1/'
-        self.assertEqual(target_url, self.browser.current_url)
+        target_url = self.server_url + '/courses/\d+/'
+        self.assertRegexpMatches(self.browser.current_url, target_url)
         
         # Before Urvasi has time to add lessons, she has to go out, so logs out.
         self._logUserOut()
