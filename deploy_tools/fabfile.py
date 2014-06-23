@@ -314,5 +314,6 @@ def _restart_services(site_name):
     sudo("service nginx reload")
     cmd = "status gunicorn-{0}".format(site_name)
     check_nginx = sudo(cmd)
-    if not check_nginx.find("start/running"):
-        sudo("start gunicorn-{0}".format(site_name))
+    if check_nginx.find("start/running"):
+        sudo("stop gunicorn-{0}".format(site_name))
+    sudo("start gunicorn-{0}".format(site_name))
