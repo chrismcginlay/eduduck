@@ -16,7 +16,7 @@ from ..forms import (
     ABSTRACT_FIELD_REQUIRED_ERROR,
     )
 from ..models import Course
-from ..views import CourseFullForm
+from ..views import CourseFullForm, _courses_n_24ths
 
 class CourseViewTests(TestCase):
     """Test the course views"""
@@ -73,6 +73,13 @@ class CourseViewTests(TestCase):
         self.lesson1.save()
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
         self.lesson2.save()
+        
+    def test_helper__courses_n_24ths_returns_list(self):
+        course_list = Course.objects.all()
+        cn24 = _courses_n_24ths(course_list)
+        self.assertIsInstance(cn24, list)
+        self.assertIs(type(cn24[0]), tuple)    #entry should be 2-tuple
+        self.assertEqual(len(course_list), len(cn24))
         
     def test_course_page_has_edit_button_for_organiser_instructor(self):
         self.client.login(username='bertie', password='bertword')

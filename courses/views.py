@@ -29,7 +29,38 @@ from .models import Course
 import logging
 logger = logging.getLogger(__name__)
 
-def user_permitted_to_edit_course(user, course_id):
+def _courses_n_24ths(clist):
+    """ Take a list of courses cl, 3 courses at a time. Set their widths to 
+    fit names neatly on a row. Return a list of tuples (course, width) """
+    
+    count_courses_used = len(clist)
+    if count_courses_used==0: return None
+    courses_n_24ths = list()
+    for i in [3*j for j in range(1+(count_courses_used-1)/3)]:  # [0,3,6,..]
+        c0,c1,c2 = (0,0,0)
+        try:
+            c0 = len(clist[i+0].name)
+            c1 = len(clist[i+1].name)
+            c2 = len(clist[i+2].name)
+        except IndexError:
+            pass
+        c_total = c0+c1+c2
+        w0 = int(24*c0/c_total)
+        w1 = int(24*c1/c_total)
+        w2 = 24-w0-w1
+
+        #Adjust w0,w1 to ensure total 24 if only 1 or 2 courses in row:
+        if c1==0: (w0,w1,w2)=(24,0,0)
+        if c2==0: (w1,w2)=(24-w0,0)
+        try:
+            courses_n_24ths.append((clist[i+0], w0))
+            courses_n_24ths.append((clist[i+1], w1))
+            courses_n_24ths.append((clist[i+2], w2))
+        except IndexError:
+            pass
+    return courses_n_24ths
+
+def _user_permitted_to_edit_course(user, course_id):
     
     course = get_object_or_404(Course, pk=course_id)
     if not user.is_authenticated(): return False
@@ -41,7 +72,7 @@ def user_permitted_to_edit_course(user, course_id):
 def edit(request, course_id):
     """View to allow instructor/organiser to edit course"""
     
-    if user_permitted_to_edit_course(request.user, course_id):
+    if _user_permitted_to_edit_course(request.user, course_id):
         course = get_object_or_404(Course, pk=course_id)
         if request.method=='POST':
             course_form = CourseFullForm(request.POST, instance=course)
@@ -96,8 +127,8 @@ def index(request):
     course_count = Course.objects.count
     register_form = RegistrationForm()
     template = 'courses/course_index.html'
-
-    context_data = {'course_list':  course_list,
+    cn24ths = _courses_n_24ths(course_list)
+    context_data = {'course_list':  cn24ths,
                     'course_count': course_count,
                     'register_form': register_form,
                    }

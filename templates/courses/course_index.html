@@ -2,11 +2,50 @@
 {% load staticfiles %}
 {% load tz %}
 
-{% block content %}
-{% if user.is_authenticated %}
-    <section id="zone1">
-        <h2>Your Courses</h3>
+{% block menu_override %}
+{% endblock menu_override %}
 
+{% block breadcrumb %}
+<p id='id_breadcrumb'>
+<a href="{% url 'courses.views.index' %}">All Courses</a>
+</p>
+{% endblock breadcrumb %}
+
+{% block contentheading %}
+<h2 id='id_page_title'>All Course Index</h2>
+{% endblock contentheading %}
+
+{% block content %}
+<div class="content">
+    <div id="id_course_selection" class="pure-g-r">
+    {% for course in course_list %}
+        <div class="random_course pure-u-{{ course.1 }}-24">
+            <a href='{{ course.0.get_absolute_url }}' 
+                id='id_{{course.0.name}}_course'>{{ course.0.name }}</a>
+        </div>
+    {% empty %}
+        <div class="random_course pure-u-24-24">
+           <p>No courses?</p>
+        </div>
+    {% endfor %}
+    </div>
+    <div id='id_course_personal_area' class='pure-g-r'>
+        <div class='pure-u-1-3'>
+            <h2>Courses You Enrolled On</h3>
+            <p>Not implemented yet</p>
+        </div>
+        <div class='pure-u-1-3'>
+            <h2>Courses You Instruct or Organise</h2>
+            <p>Not implemented yet</p>
+        </div>
+        <div class='pure-u-1-3'>
+            <h2>Courses of Interest to you</h2>
+            <p>You have flagged these up as maybe interesting to do later.</p>
+            <p>Not implemented yet</p>
+        </div>
+    </div>
+</div>
+<!--
         {% for course in course_list %}
         <article id={{ course.code }}>
         <h3>
@@ -24,12 +63,7 @@
         <h3>You aren't enrolled in any courses yet.</h3>
         {% endfor %}
     </section>
-    <section id="zone2">
-        <h3>Possible Courses</h3>
-        <p>List of 'basket' of courses the student finds interesting and may
-wish to register for in future</p>
-    </section>
-{% else %}
+{% endblock %}
     <section id="zone1">
         <h2>Featured Courses</h2>
         {% for course in course_list %}
@@ -46,5 +80,4 @@ wish to register for in future</p>
         <p class="abstract">{{ course.abstract }}</p>
         {% endfor %}
     </section>
-{% endif %}
-{% endblock %}
+
