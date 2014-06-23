@@ -45,39 +45,4 @@
         </div>
     </div>
 </div>
-<!--
-        {% for course in course_list %}
-        <article id={{ course.code }}>
-        <h3>
-            {% if course.code %}{{ course.code }}
-            {% else %}{{ course.pk }}{% endif %}
-            <a href='{{ course.get_absolute_url }}'>{{ course.name }}</a>
-        </h3> 
-        <p>(With {{ course.lesson_set.count }} 
-        lesson{{ course.lesson_set.count|pluralize:",s"}}). 
-<p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
-<p>Course instructor <a href="{{ course.instructor.bio.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor.username %}</a></p>
-
-        <p class="abstract">{{ course.abstract }}</p>
-        {% empty %}
-        <h3>You aren't enrolled in any courses yet.</h3>
-        {% endfor %}
-    </section>
 {% endblock %}
-    <section id="zone1">
-        <h2>Featured Courses</h2>
-        {% for course in course_list %}
-        <article id={{ course.code }}>
-        <h3>{{ course.code }} 
-        <a href='{{ course.get_absolute_url }}'>{{ course.name }}</a>
-        </h3> 
-        <p>(With {{ course.lesson_set.count }} 
-        lesson{{ course.lesson_set.count|pluralize:",s"}}). 
-
-<p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
-<p>Course instructor <a href="{{course.instructor.bio.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor %}</a></p>
-
-        <p class="abstract">{{ course.abstract }}</p>
-        {% endfor %}
-    </section>
-
