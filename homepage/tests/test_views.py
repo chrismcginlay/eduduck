@@ -40,7 +40,7 @@ class HomepageViewTests(TestCase):
         ##leave just one course
         [c.delete() for c in Course.objects.all()[1:]]
         response = self.client.get('/')
-        self.assertIn('div class="random_course pure-u-24-24">', 
+        self.assertIn('div class="random_course pure-u-24-24"', 
                       response.content)
         
     def test_handle_two_courses(self):
