@@ -281,7 +281,7 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         self.assertEqual(
             self.browser.current_url, 
             self.server_url + '/accounts/register/complete/')
-
+        self.fail("implement this test")
         ## TODO The following would be nice to test. Need to figure out how to
         ## mock the confirmation email activation code.
         ## Could use mailinator or filebased backend for email.
