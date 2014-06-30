@@ -3,58 +3,76 @@
 {% load gravatar %}
 
 {% block contentheading %}
-    <h2>Bio: {{ user.get_full_name }}</h2>
+    <h2 id='id_bio_title'>Bio: {{ user.get_full_name }}</h2>
 {% endblock contentheading %}
 
 {% block content %}
-    <h3>Gravatar</h3>
-    <img src="{% gravatar_url user.email 80 %}">
-    <p>Your profile image is your Gravatar.com avatar, linked to {{ user.email }}</p>
-    <p><a href="{% gravatar_profile user.email %}">Visit your Gravatar.com profile.</a></p>
-
-    <h3>Change Your Password</h3>
-    <a href="/accounts/password/change/">Change Password</a>
-
-    <h3>Your Details</h3>
-    <a href="{%url 'bio.views.edit' %}">Edit Details</a>
-    <table border="1">
-        <tr><td>Name</td><td>{{ user.get_full_name }}</td></tr>
-        <tr><td>Email</td><td>{{ user.email }}</td></tr>
-        <tr><td>Motto</td><td>
-            {{ bio.signature_line|capfirst }}
-        </td></tr>
-        <tr><td>Accepted Terms & Conditions</td><td>
-            {{ bio.accepted_terms }}
-        </td></tr>
-        <tr><td>Timezone</td><td>{{ bio.user_tz }}</td></tr>
-        <tr><td>Your Courses</td><td>
+    <div class='pure-g-r'>
+        <div class='pure-u-1-2' id='id_profile_pic'>
+            <h3>Gravatar</h3>
+            <img src="{% gravatar_url user.email 80 %}">
+            <p>Your profile image is your Gravatar.com avatar, linked to {{ user.email }}</p>
+            <p><a href="{% gravatar_profile user.email %}">Visit your Gravatar.com profile.</a></p>
+        </div>
+        <div class='pure-u-1-2' id='id_change_password'>
+            <h3>Change Your Password</h3>
+            <a href="/accounts/password/change/">Change Password</a>
+        </div>
+        <div class='pure-u-1-2' id='id_courses_enrolled'>
+            <h3>Courses You Enrolled On</h3>
             <table border='1'><tr><th>Course Name</th>
-            <th>Course Home</th><th>Status/History</th></tr>
-
-            {% for uc in usercourses %}
-            <tr><td>{{ uc.course.name }}</td>
-            <td><a href='{{ uc.course.get_absolute_url }}'>visit</a></td>
-            <td><a href='{{ uc.get_absolute_url }}'> 
-                {% if uc.active %}
-                    active
-                {% elif uc.withdrawn %}
-                    withdrawn
-                {% elif uc.completed %}
-                    completed
-                {% endif %}
-            </a></td></tr>
-            {% empty %}
-            <p>You have no registered courses</p>
-            </tr>
-            {% endfor %}
+                <th>Course Home</th><th>Status/History</th></tr>
             
+                {% for uc in usercourses %}
+                    <tr><td>{{ uc.course.name }}</td>
+                        <td><a href='{{ uc.course.get_absolute_url }}'>visit</a></td>
+                        <td><a href='{{ uc.get_absolute_url }}'> 
+                        {% if uc.active %}
+                            active
+                        {% elif uc.withdrawn %}
+                            withdrawn
+                        {% elif uc.completed %}
+                            completed
+                        {% endif %}
+                    </a></td></tr>
+                {% empty %}
+                    <tr><p>You have no registered courses</p></tr>
+                {% endfor %}
             </table>
-        </td></tr>
-        <tr><td>Webpage</td>
-            <td><a href='
-            {% filter force_escape %}{{ bio.webpage }}{% endfilter %}
-            '>{{ bio.webpage }}</a></td>
-        </tr>
-        <tr><td>Description</td><td>{{ bio.description }}</td></tr>
-    </table>
+        </div>
+        <div class='pure-u-1-2' id='id_courses_taught'>
+            <h3>Courses You Administer</h3>
+            <table border='1'><tr><th>Course Name</th><th>Course Home</th></tr>
+                {% for tc in taughtcourses %}
+                    <tr><td>{{ tc.name }}</td>
+                    <td><a href='{{ tc.get_absolute_url }}'>visit</a></td>
+                           <td><a href='{{ tc.get_absolute_url }}'> 
+                    </a></td></tr>
+                {% empty %}
+                    <tr><p>You have no registered courses</p></tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class='pure-u-1-2' id='id_personal_details'>
+            <h3>Your Details</h3>
+            <a href="{%url 'bio.views.edit' %}">Edit Details</a>
+            <table border="1">
+                <tr><td>Name</td><td>{{ user.get_full_name }}</td></tr>
+                <tr><td>Email</td><td>{{ user.email }}</td></tr>
+                <tr><td>Motto</td><td>
+                    {{ bio.signature_line|capfirst }}
+                </td></tr>
+                <tr><td>Accepted Terms & Conditions</td><td>
+                    {{ bio.accepted_terms }}
+                </td></tr>
+                <tr><td>Timezone</td><td>{{ bio.user_tz }}</td></tr>
+                <tr><td>Webpage</td>
+                    <td><a href='
+                    {% filter force_escape %}{{ bio.webpage }}{% endfilter %}
+                    '>{{ bio.webpage }}</a></td>
+                </tr>
+                <tr><td>Description</td><td>{{ bio.description }}</td></tr>
+            </table>
+        </div>
+    </div>
 {% endblock content %}

@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import (render_to_response, get_object_or_404, 
@@ -8,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 
+from courses.models import Course
 from .forms import BioEditForm
 
 import logging
@@ -23,8 +25,11 @@ def bio(request):
     assert(bio)
 
     usercourses = request.user.usercourse_set.all()
+    ruid = request.user.id
+    taughtcourses = Course.objects.filter(Q(organiser__id=ruid) | Q(instructor__id=ruid))
     context_data = {    'bio': bio, 
-                        'usercourses': usercourses,}
+                        'usercourses': usercourses,
+                        'taughtcourses': taughtcourses,}
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 

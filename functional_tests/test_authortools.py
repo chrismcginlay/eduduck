@@ -109,39 +109,27 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self._logUserOut()
         
         # Later she returns to the site, logs in and immediately sees her new
-        # course listed in her profile area. Happy days.
+        # course listed in correct part of profile area. Happy days.
         self._logUserIn('urvasi', 'hotel23')
-        self.fail('Not implemented yet')
+        coursearea = self.browser.find_element_by_id('id_courses_taught')
+        self.assertIn('Camping', coursearea.text)
         
-        # On the homepage, there is still a textbox for adding another course. 
-        # She adds a course on 'Mountain Leadership'.
-        
-        # She returns to the profile page, where now both courses are listed.
         # Now a new user, Albert, comes along to the site
         self.browser.quit()
         
         ## Clean browser instance - no cookie data etc.
         self.browser = webdriver.Firefox()
         
-        # Albert visits the homepage. He sees both of Urvasi' courses under
-        # 'available courses' but cannot edit them.
-        self.browser.get(self.server_url)
-        page_text = self.browser.find_element_by_tag_name('body').text
-        self.assertIn('Camping', page_text)
-        self.assertIn('Mountain Leadership', page_text)
-        self.fail("test cannot edit them")
+        # Albert visits the course index. He sees Urvasi's course, visits its page
+        self.browser.get(self.server_url+'/courses/')
+        courses_area = self.browser.find_element_by_id('id_course_selection') 
+        target_course = self.browser.find_element_by_id('id_Camping_course')
+        target_course.click()
+        title = self.browser.find_element_by_id('id_course_title')
+        self.assertIn('Camping', title.text) 
         
-        # Albert now logs in and again sees both courses under 'available'
-        # in his profile area. He enrols in 'Camping' and is taken to a new URL
-        
-        # This shows a list of lessons in the Camping course (currently zero)
-        
-        # He returns to his profile area and is pleased to see the Camping
-        # course listed under 'Your Courses' and the first aid one still under
-        # 'available'
-        
-        def test_can_delete_course(self):
-            self.fail("not implemented")
+    def test_can_delete_course(self):
+        self.fail("not implemented")
         
 class AuthorCreatesAndEditsLessons(FunctionalTest):
 

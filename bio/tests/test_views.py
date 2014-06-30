@@ -42,6 +42,13 @@ class BioViewTests(TestCase):
         #check for existence of password change link
         self.assertIn('<a href="/accounts/password/change/">Change Password</a>', response.content, "Password change link missing")
 
+    def test_bio_has_courses_taught_and_taken(self):
+        """ There should be an area for courses instructed or courses taken """
+        
+        response = self.client.get('/accounts/bio')
+        self.assertIn('id_courses_enrolled', response.content)
+        self.assertIn('id_courses_taught', response.content)
+
     def test_bio_edit(self):
         """Test response bio.views.edit"""
         
