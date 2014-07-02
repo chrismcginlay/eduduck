@@ -133,9 +133,40 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         
 class AuthorCreatesAndEditsLessons(FunctionalTest):
 
-    @skip("")
-    def test_can_create_and_retrieve_lessons_associated_with_course(self):
-        self.fail("Write test")
+    def test_can_create_retrieve_edit_lessons_associated_with_course(self):
+	""" Starting from an existing course page """
+	
+        self.browser.get(self.server_url)
+	self._logUserIn('chris', 'chris')
+	self.browser.get(self.server_url+'/courses/1')
+        # Chris sees the edit button and clicks it
+	btn_edit = self.browser.find_element_by_id('id_edit_course')
+        btn_edit.click()
+	
+	# On the course edit page, underneath the basic details is a section
+	# listing the existing lessons by title 
+        lessons_area = self.browser.find_element_by_id('id_lessons_area') 
+	self.assertIn(lessons_area.text, 'What is Blender For?')
+	self.assertIn(lessons_area.text, 'Basics of the User Interface')
+	self.assertIn(lessons_area.text, 'Orientiation in 3D Space')	
+	
+	# and an area for the purpose of adding more lessons.
+	lesson_add_area = self.browser.find_element_by_id('id_lesson_add')
+	
+	# This area contains a text box for a lesson title, another for an
+	# abstract
+
+	# and a 'submit' button at the bottom of the form.
+
+	# Chris decides to add a lesson called 'Materials'
+	# with a suitable abstract.
+
+	# On submitting this the page reloads with his lesson added.
+
+	# He can edit any of the titles and abstracts of the lessons,
+	# with the updates saved on hitting submit as before.
+
+	self.fail("Write test")
                   
     @skip("")
     def test_can_populate_course_with_resources(self):
@@ -144,7 +175,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self.fail("Write test")
     
     @skip("")
-    def test_can_edit_lesson_populating_with_resources(self):
+    def test_can_populate_lesson_with_resources(self):
         """Author can create attachments, videos, LOs etc for lesson"""
         
         self.fail("Write test")

@@ -151,6 +151,12 @@ class CourseViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'courses/course_edit.html')
         
+    def test_course_edit_page_has_populated_lesson_area(self):
+	self.client.login(username='bertie', password='bertword')
+	response = self.client.get('/courses/1/edit/')
+	self.assertIn('id_lessons_area', response.content)
+	self.assertIn('Introduction to Music', response.content)
+
     def test_course_create_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/create/')
         login_redirect_url = '/accounts/login/?next=/courses/create/'

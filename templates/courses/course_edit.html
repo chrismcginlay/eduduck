@@ -34,4 +34,10 @@
         Save Edits
         </button>
     </form>
+    <div id='id_lessons_area'>
+	<h3>Lessons</h3>
+	{% for lesson in lessons %}
+	    {{ lesson.name }}
+	{% endfor %}
+    </div>
 {% endblock content %}

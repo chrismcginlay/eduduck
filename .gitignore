@@ -4,6 +4,7 @@ htmlcov/
 *.py#
 *.pyc
 *.html~
+*.swp
 .spyderproject
 .spyderworkspace
 .coverage

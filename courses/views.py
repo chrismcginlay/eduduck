@@ -74,6 +74,7 @@ def edit(request, course_id):
     
     if _user_permitted_to_edit_course(request.user, course_id):
         course = get_object_or_404(Course, pk=course_id)
+	lessons = course.lesson_set.all()
         if request.method=='POST':
             course_form = CourseFullForm(request.POST, instance=course)
             if course_form.is_valid():
@@ -82,11 +83,17 @@ def edit(request, course_id):
                 return redirect(course)
             else:
                 t = 'courses/course_edit.html'
-                return render(request, t, {'form': course_form})
+		c = {	'form': course_form,
+			'lessons': lessons, 
+		    }
+                return render(request, t, c)
         else:
             course_form = CourseFullForm(instance=course)
             t = 'courses/course_edit.html'
-            return render(request, t, {'form': course_form})
+	    c = {    'form': course_form,
+		     'lessons': lessons, 
+		}
+	    return render(request, t, c)
     else:
         logger.info("Unauthorized attempt to edit course {0}".format(course_id))
         raise PermissionDenied
