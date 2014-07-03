@@ -40,6 +40,7 @@ def provision():
         'python-dev',
         'nginx',
         'git',
+        'django-debug-toolbar'
     ]
 
     pip_packages = [
