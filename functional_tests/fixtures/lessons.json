@@ -5,7 +5,6 @@
     "fields": {
         "course": 1,
         "abstract": "Be clear what Blender is, where to download it, what it can achieve, sources of community support.\r\n",
-        "code": "BL1",
         "name": "What is Blender for?"
     }
 },
@@ -15,7 +14,6 @@
     "fields": {
         "course": 1,
         "abstract": "Develop basic familiarity with the main parts of the default user interface.",
-        "code": "BL2",
         "name": "Basics of the User Interface"
     }
 },
@@ -25,7 +23,6 @@
     "fields": {
         "course": 1,
         "abstract": "Learn how to use the number pad to control your point of view in the 3D viewport.\r\nWatch the video that accompanies this lesson, then load the faceviewcube.blend file into blender and try it out for yourself.",
-        "code": "BL3",
         "name": "Orientation in 3D Space"
     }
 },
@@ -35,7 +32,6 @@
     "fields": {
         "course": 2,
         "abstract": "A structural overview of the International Space Station",
-        "code": "ISS01",
         "name": "Structural Overview"
     }
 },
@@ -45,7 +41,6 @@
     "fields": {
         "course": 2,
         "abstract": "Electrical power systems including normal operation and failure levels.",
-        "code": "ISS02",
         "name": "Power Systems"
     }
 },
@@ -55,7 +50,6 @@
     "fields": {
         "course": 2,
         "abstract": "Cabin temperature, air pressure and air composition, radiation monitoring. Failure levels and emergency procedures",
-        "code": "ISS03",
         "name": "Primary Life Support"
     }
 },
@@ -65,7 +59,6 @@
     "fields": {
         "course": 2,
         "abstract": "Water recycling and purification plant, food storage, monitoring and stock rotation.",
-        "code": "ISS04",
         "name": "Secondary Life Support"
     }
 },
@@ -75,7 +68,6 @@
     "fields": {
         "course": 2,
         "abstract": "Primary and backup communications hardware. Ground station protocols.",
-        "code": "ISS05",
         "name": "Communications systems overview"
     }
 },
@@ -85,7 +77,6 @@
     "fields": {
         "course": 2,
         "abstract": "A guide to the medical and surgical facilities on board, protocols for emergency crewmember return, emergency surgery and terrestrial medical support",
-        "code": "ISS06",
         "name": "Medical Emergencies."
     }
 },
@@ -95,7 +86,6 @@
     "fields": {
         "course": 2,
         "abstract": "On orbit attitude control, nominal orbital parameters and safe limits",
-        "code": "ISS07",
         "name": "Propulsion Systems"
     }
 },
@@ -105,7 +95,6 @@
     "fields": {
         "course": 3,
         "abstract": "Starting with practical activities giving students real and significant improvement on a skill, using positive attitude",
-        "code": "STUDY01",
         "name": "Growth Now"
     }
 },
@@ -115,7 +104,6 @@
     "fields": {
         "course": 3,
         "abstract": "What are my limits? Self-limiting behaviours can be useful or a hindrance.",
-        "code": "STUDY02",
         "name": "Self Limiting"
     }
 },
@@ -125,7 +113,6 @@
     "fields": {
         "course": 3,
         "abstract": "Examples of brain plasticity from medical research. Toxicity of the notion of talent",
-        "code": "STUDY03",
         "name": "Talent -vs- Effort"
         }
 },
@@ -135,7 +122,6 @@
     "fields": {
         "course": 3,
         "abstract": "Growth of capacity in sport - work of Matthew Syed",
-        "code": "STUDY04",
         "name": "Case Study A"
     }
 },
@@ -145,7 +131,6 @@
     "fields": {
         "course": 4,
         "abstract": "Structure of a main sequence star and models used to derive properties",
-        "code": "STEL01",
         "name": "Structure"
     }
 },
@@ -155,7 +140,6 @@
     "fields": {
         "course": 4,
         "abstract": "The Photosphere",
-        "code": "STEL02",
         "name": "Photosphere"
         }
 },
@@ -165,7 +149,6 @@
     "fields": {
         "course": 5,
         "abstract": "The differing approaches required for sea-fishing, loch or beach, river fishing.",
-        "code": "FISH01",
         "name": "Introduction"
     }
 },
@@ -175,7 +158,6 @@
     "fields": {
         "course": 5,
         "abstract": "Differences between the rods used in various applications",
-        "code": "FISH02",
         "name": "Rods"
     }
 },
@@ -185,7 +167,6 @@
     "fields": {
         "course": 5,
         "abstract": "Selecting a suitable reel for choice of rod, species, durability and maintenance.",
-        "code": "FISH03",
         "name": "Reel"
     }
 },
@@ -195,7 +176,6 @@
     "fields": {
         "course": 5,
         "abstract": "Choosing the right weight and type of line.",
-        "code": "FISH04",
         "name": "Line"
     }
 },
@@ -205,7 +185,6 @@
     "fields": {
         "course": 6,
         "abstract": "Introduction to modern dance.",
-        "code": "DANCE01",
         "name": "Introduction"
     }
 },
@@ -215,7 +194,6 @@
     "fields": {
         "course": 6,
         "abstract": "Popular UK styles over the last two decades",
-        "code": "DANCE02",
         "name": "UK Popular"
     }
 },
@@ -225,7 +203,6 @@
     "fields": {
         "course": 6,
         "abstract": "Overview of most popular training methodologies",
-        "code": "DANCE03",
         "name": "Training"
     }
 },
@@ -235,7 +212,6 @@
     "fields": {
         "course": 6,
         "abstract": "Common injuries and how to avoid them",
-        "code": "DANCE04",
         "name": "Injuries"
     }
 },
@@ -245,7 +221,6 @@
     "fields": {
         "course": 6,
         "abstract": "History and specialities of the top UK dance conservatoires",
-        "code": "DANCE05",
         "name": "UK Conservatoires"
     }
 },
@@ -255,7 +230,6 @@
     "fields": {
         "course": 7,
         "abstract": "The differing pressures and priorities of wilderness or outdoor first aid.",
-        "code": "MED01",
         "name": "Key Features"
     }
 },
@@ -265,7 +239,6 @@
     "fields": {
         "course": 7,
         "abstract": "Improvising casualty evacuation aids",
-        "code": "MED02",
         "name": "Evacuation"
     }
 },
@@ -275,7 +248,6 @@
     "fields": {
         "course": 7,
         "abstract": "First aid supplies to carry -vs- natural resources available in selected outdoor environments",
-        "code": "MED02",
         "name": "Supplies"
     }
 },
@@ -285,7 +257,6 @@
     "fields": {
         "course": 7,
         "abstract": "Preparing a casualty for stretchered airlift.",
-        "code": "MED03",
         "name": "Airlift"
     }
 }

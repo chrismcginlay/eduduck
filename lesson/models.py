@@ -8,17 +8,13 @@ class Lesson(models.Model):
     """A digestible chunk of learning material within a course.
     
     Attributes:
-    code        Lesson code for human consumption
     name        Human readable full lesson name
     course      ForeignKey - course to which lesson belongs
     abstract    short text description of the lesson
     
     """
     
-    code = models.CharField(max_length=10, blank=True, null=True,
-                            help_text="arbitrary lesson code for "
-                            "author's reference")
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, verbose_name='lesson title')
     course = models.ForeignKey(Course, 
                                help_text="course to which this "
                                "lesson belongs")
@@ -49,7 +45,6 @@ class Lesson(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.code
             assert self.name
             assert self.course
     

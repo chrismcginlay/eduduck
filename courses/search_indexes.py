@@ -19,7 +19,6 @@ class CourseIndex(indexes.SearchIndex, indexes.Indexable):
 class LessonIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     abstract = indexes.CharField(model_attr='abstract')
-    lesson_code = indexes.CharField(model_attr='lesson_code')
     
     def get_model(self):
         return Lesson

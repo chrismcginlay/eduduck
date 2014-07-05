@@ -23,8 +23,7 @@ class QuizModelTests(TestCase):
                    'course_abstract': 'Learn practical benefits of leeches',
                    'course_organiser': 'Van Gogh',
                    }
-    lesson1_data = {'lesson_code': 'B1',
-                    'lesson_name': 'Introduction to Music',
+    lesson1_data = {'lesson_name': 'Introduction to Music',
                     'abstract': 'A summary of what we cover',
                    }
     answer1_data = {'answer_text': "Hot",
@@ -75,7 +74,7 @@ class QuizViewTests(TestCase):
                    'course_abstract': 'Learn practical benefits of leeches',
                    'course_organiser': 'Van Gogh',
                    }
-    lesson1_data = {'lesson_code': 'B1',
+    lesson1_data = {
                     'lesson_name': 'Introduction to Music',
                     'abstract': 'A summary of what we cover',
                    }

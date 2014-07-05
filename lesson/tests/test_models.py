@@ -11,7 +11,12 @@ class LessonTests(TestCase):
         'courses.json', 
         'lessons.json', 
     ]
-    
+   
+    def test_verbose_names(self):
+	""" Verbose names (which will be used in model forms) are correct """
+	
+	self.assertEqual(Lesson._meta.get_field('name').verbose_name, 'lesson title')
+	 
     def test_get_next(self):
         """ Should return the next lesson in the sequence of a course """
 
