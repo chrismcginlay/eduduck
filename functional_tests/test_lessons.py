@@ -30,7 +30,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         lessons.find_element_by_id('id_lesson1').click()
         lesson_page_title = self.browser.find_element_by_id('id_lesson_title')
         self.assertEqual(
-            lesson_page_title.text, "Lesson BL1: What is Blender for?")
+            lesson_page_title.text, "Lesson: What is Blender for?")
         
         # The breadcrumb trail updates to show her position on the first lesson 
         # of the course
@@ -127,7 +127,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         bc = self.browser.find_element_by_id('id_breadcrumb')
         bc.find_elements_by_tag_name('a')
         lt = self.browser.find_element_by_id('id_lesson_title')
-        self.assertEqual(lt.text, 'Lesson BL1: What is Blender for?')
+        self.assertEqual(lt.text, 'Lesson: What is Blender for?')
         
         # Because she has not enrolled in this course, the Progress area
         # shows an 'enrol' button instead of any progress information.

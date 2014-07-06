@@ -37,12 +37,10 @@ class CourseViewTests(TestCase):
         'abstract': 'Put the nuts in the bag',
     }
     lesson1_data = {
-        'code': 'B1',
         'name': 'Introduction to Music',
         'abstract': 'A summary of what we cover',
     }
     lesson2_data = {
-        'code': 'B2',
         'name': 'Stuff',
         'abstract': 'Not a lot',
     }

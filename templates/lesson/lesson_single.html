@@ -22,7 +22,7 @@
 {% endblock breadcrumb %}
 
 {% block contentheading %}
-<h2 id='id_lesson_title'>Lesson {{lesson.code}}: {{lesson.name}}</h2>
+<h2 id='id_lesson_title'>Lesson: {{lesson.name}}</h2>
 <span class='prev_next'>
     {% if lesson.get_prev %}
     &lt;<a id='id_nav_prev' href='{{ lesson.get_prev.get_absolute_url }}'
@@ -30,7 +30,7 @@
     {% else %}
     ---
     {% endif %}
-    | <span title='{{ lesson.code }}:{{ lesson }}'>
+    | <span title='{{ lesson }}'>
         {{ lesson|truncatechars:10 }}</span> | 
     {% if lesson.get_next %}
         <a id='id_nav_next' 
@@ -46,7 +46,7 @@
 {% block content %}
 <div id='id_lesson_intro_area' class='pure-g-r'>
     <div class='pure-u-1-1'>
-        <h3>{{ lesson.code }}: {{ lesson.name }} Lesson Homepage</h3>
+        <h3>{{ lesson.name }} Lesson Homepage</h3>
     </div>
     <div id='id_abstract' class='pure-u-1-1'>
         <p>{{ lesson.abstract }}</p>

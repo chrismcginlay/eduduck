@@ -146,9 +146,9 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
 	# On the course edit page, underneath the basic details is a section
 	# listing the existing lessons by title 
         lessons_area = self.browser.find_element_by_id('id_lessons_area') 
-	self.assertIn(lessons_area.text, 'What is Blender For?')
-	self.assertIn(lessons_area.text, 'Basics of the User Interface')
-	self.assertIn(lessons_area.text, 'Orientiation in 3D Space')	
+	self.assertIn('What is Blender For?', lessons_area.text)
+	self.assertIn('Basics of the User Interface', lessons_area.text)
+	self.assertIn('Orientation in 3D Space', lessons_area.text)	
 	
 	# and an area for the purpose of adding more lessons.
 	lesson_add_area = self.browser.find_element_by_id('id_lesson_add')

@@ -252,28 +252,20 @@ class UserLessonModelTests(TestCase):
         self.course2.save()
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
-        self.lesson1 = Lesson(code="L1", 
-                              name="Test Lesson 1",
-                              course = self.course1)
+        self.lesson1 = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson1.save()
         self.ul = UserLesson(user=self.user1, lesson=self.lesson1)
         self.ul.save()
-        self.lesson2 = Lesson(code="L2", 
-                              name="Test Lesson 2",
-                              course = self.course1)
+        self.lesson2 = Lesson(name="Test Lesson 2", course = self.course1)
         self.lesson2.save()
         self.ul2 = UserLesson(user=self.user1, lesson=self.lesson2)
         self.ul2.save()
-        self.lesson3 = Lesson(code="L3", 
-                              name="Test Lesson 3",
-                              course = self.course1)
+        self.lesson3 = Lesson(name="Test Lesson 3", course = self.course1)
         self.lesson3.save()
         self.ul3 = UserLesson(user=self.user1, lesson=self.lesson3)
         self.ul3.save()
 
-        self.lesson4 = Lesson(code="L4", 
-                              name="Test Lesson 4, in course 2",
-                              course = self.course2)
+        self.lesson4 = Lesson(name="Test Lesson 4, in course 2", course = self.course2)
         self.lesson4.save()
 
 
@@ -431,9 +423,7 @@ class UserLearningIntentionModelTests(TestCase):
         self.course1.save() 
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
-        self.lesson = Lesson(code="L1", 
-                             name="Test Lesson 1",
-                             course = self.course1)
+        self.lesson = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson.save() 
         self.li = LearningIntention(lesson=self.lesson, text="Intend...")
         self.li.save()
@@ -540,13 +530,9 @@ class UserLearningIntentionDetailModelTests(TestCase):
         self.course2.save()
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
-        self.lesson = Lesson(code="L1", 
-                             name="Test Lesson 1",
-                             course = self.course1)
+        self.lesson = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson.save()
-        self.lesson2 = Lesson(code="L2", 
-                              name="Test Lesson 2",
-                              course = self.course2)
+        self.lesson2 = Lesson(name="Test Lesson 2", course = self.course2)
         self.lesson2.save()
         self.li = LearningIntention(lesson=self.lesson, text="Intend...")
         self.li2 = LearningIntention(lesson=self.lesson2, text="Explore...")
@@ -711,13 +697,9 @@ class UserAttachmentModelTests(TestCase):
         self.course2.save()
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
-        self.lesson1 = Lesson(code="L1", 
-                              name="Test Lesson 1",
-                              course = self.course1)
+        self.lesson1 = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson1.save()
-        self.lesson2 = Lesson(code="L2",
-                              name="Test Lesson 2",
-                              course = self.course2)
+        self.lesson2 = Lesson(name="Test Lesson 2", course = self.course2)
         self.lesson2.save()
         #att1 attached to course
         self.att1 = Attachment(course=self.course1, **self.att1_data)

@@ -123,9 +123,7 @@ class UserLessonViewTests(TestCase):
         self.course2.save()     
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
-        self.lesson1 = Lesson(code="L1", 
-                              name="Test Lesson 1",
-                              course = self.course1)
+        self.lesson1 = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson1.save()
         self.ul = UserLesson(user=self.user1, lesson=self.lesson1)
         self.ul.save()
@@ -173,9 +171,7 @@ class UserLearningIntentionViewTests(TestCase):
 
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
-        self.lesson = Lesson(code="L1", 
-                             name="Test Lesson 1",
-                             course = self.course1)
+        self.lesson = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson.save() 
         self.li = LearningIntention(lesson=self.lesson, text="Intend...")
         self.li.save()
@@ -249,9 +245,7 @@ class UserAttachmentViewTests(TestCase):
         self.course1.save() 
         self.uc = UserCourse(course=self.course1, user=self.user1)
         self.uc.save()
-        self.lesson1 = Lesson(code="L1", 
-                              name="Test Lesson 1",
-                              course = self.course1)
+        self.lesson1 = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson1.save()
         #att1 attached to course
         self.att1 = Attachment(course=self.course1, **self.att1_data)
