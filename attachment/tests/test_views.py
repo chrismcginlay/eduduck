@@ -16,7 +16,6 @@ class AttachmentViewTests(TestCase):
         'abstract': 'Learn practical benefits of leeches',
     }
     lesson1_data = {
-        'code': 'B1',
         'name': 'Introduction to Music',
         'abstract': 'A summary of what we cover',
     }
