@@ -85,7 +85,6 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         create.click()
         target_url = self.server_url + '/courses/\d+/'
         self.assertRegexpMatches(self.browser.current_url, target_url)
-        
         # She notices that there is an 'edit' button on this course page
         btn_edit = self.browser.find_element_by_id('id_edit_course')
         edit_target_url = self.server_url + '/courses/\d+/edit/'
@@ -99,7 +98,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         code_box = self.browser.find_element_by_xpath("//input[@id='id_code']")
         code_box.clear()
         # she submits the changes
-        btn_submit = self.browser.find_element_by_id('id_submit')
+        btn_submit = self.browser.find_element_by_id('id_submit_edits')
         btn_submit.click()
         
         target_url = self.server_url + '/courses/\d+/'
@@ -139,34 +138,52 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self.browser.get(self.server_url)
 	self._logUserIn('chris', 'chris')
 	self.browser.get(self.server_url+'/courses/1')
-        # Chris sees the edit button and clicks it
+        # Chris sees the edit course button and clicks it
 	btn_edit = self.browser.find_element_by_id('id_edit_course')
+	lesson_set_target_url = self.server_url + '/courses/1/edit'
         btn_edit.click()
-	
-	# On the course edit page, underneath the basic details is a section
-	# listing the existing lessons by title 
-        lessons_area = self.browser.find_element_by_id('id_lessons_area') 
-	self.assertIn('What is Blender For?', lessons_area.text)
-	self.assertIn('Basics of the User Interface', lessons_area.text)
-	self.assertIn('Orientation in 3D Space', lessons_area.text)	
-	
-	# and an area for the purpose of adding more lessons.
-	lesson_add_area = self.browser.find_element_by_id('id_lesson_add')
-	
-	# This area contains a text box for a lesson title, another for an
-	# abstract
+	self.assertRegexpMatches(self.browser.current_url, lesson_set_target_url)
 
-	# and a 'submit' button at the bottom of the form.
+	# On the edit page, there is a section noting the name of 
+	# course followed by a section listing the existing lessons by title 
+        pt = self.browser.find_element_by_id('id_page_title')
+	self.assertIn('Blender', pt.text)
+	lessons_area = self.browser.find_element_by_id('id_lesson_formset_area') 
+
+	f0 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-0-name']")
+	f1 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-1-name']")
+	f2 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-2-name']")
+	self.assertEqual('What is Blender for?', f0.get_attribute('value'))
+	self.assertEqual('Basics of the User Interface', f1.get_attribute('value'))
+	self.assertEqual('Orientation in 3D Space', f2.get_attribute('value'))	
+	
+	# And an area for the purpose of adding more lessons, containing a text box 
+	# for a lesson title, another for an abstract.
+	new_lesson_name = self.browser.find_element_by_xpath(
+	    "//input[@name='lesson_formset-3-name']")
+	new_lesson_abstract = self.browser.find_element_by_xpath(
+	    "//textarea[@name='lesson_formset-3-abstract']")
 
 	# Chris decides to add a lesson called 'Materials'
 	# with a suitable abstract.
-
-	# On submitting this the page reloads with his lesson added.
+	new_lesson_name.send_keys('Materials')
+	new_lesson_abstract.send_keys('How to create, use share and delete materials')
 
 	# He can edit any of the titles and abstracts of the lessons,
 	# with the updates saved on hitting submit as before.
-
-	self.fail("Write test")
+	lesson2_name = self.browser.find_element_by_xpath(
+	    "//input[@name='lesson_formset-2-name']")
+	lesson2_name.send_keys('Test')
+	lesson2_abstract = self.browser.find_element_by_xpath(
+	    "//textarea[@name='lesson_formset-2-abstract']")
+	# On submitting this the course page reloads with his lesson alterations.
+	submit_edits_button = self.browser.find_element_by_id('id_submit_edits2')
+	submit_edits_button.click()
+	
+	paginator = self.browser.find_element_by_class_name('pure-paginator')
+	self.assertEqual(len(paginator.find_elements_by_tag_name('li')), 4)
+	self.assertIn('Materials', self.browser.page_source)
+	self.assertIn('How to create, use share and delete materials', self.browser.page_source)
                   
     @skip("")
     def test_can_populate_course_with_resources(self):
