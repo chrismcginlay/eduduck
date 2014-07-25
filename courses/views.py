@@ -83,14 +83,14 @@ def edit(request, course_id):
                 return redirect(course)
             else:
                 t = 'courses/course_edit.html'
-		c = {	'form': course_form,
+		c = {	'course_form': course_form,
 			'lessons': lessons, 
 		    }
                 return render(request, t, c)
         else:
             course_form = CourseFullForm(instance=course)
             t = 'courses/course_edit.html'
-	    c = {    'form': course_form,
+	    c = {    'course_form': course_form,
 		     'lessons': lessons, 
 		}
 	    return render(request, t, c)
