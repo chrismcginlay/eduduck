@@ -127,8 +127,13 @@ class CourseViewTests(TestCase):
     def test_course_edit_page_uses_correct_form(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/edit/')
-        self.assertIsInstance(response.context['form'], CourseFullForm)
+        self.assertIsInstance(response.context['course_form'], CourseFullForm)
         
+    def test_course_edit_page_uses_correct_formsets(self):
+	self.client.login(username='bertie', password='bertword')
+	response = self.client.get('/courses/1/edit/')
+	self.assertIsInstance(response.context['lesson_formset'], LessonInlineFormset)
+
     def test_course_edit_page_has_correct_data_prefilled(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/edit/')
