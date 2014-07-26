@@ -7,6 +7,7 @@ from django.core.exceptions import (
     PermissionDenied,
     ValidationError,
 )
+from django.forms.models import inlineformset_factory
 from django.shortcuts import (
     redirect,
     render,
@@ -22,12 +23,16 @@ from django.utils.html import escape
 from registration.forms import RegistrationForm
 
 from interaction.models import UserCourse, UserLesson
+from lesson.forms import LessonEditForm
 from lesson.models import Lesson
 from .forms import CourseFullForm
 from .models import Course
 
 import logging
 logger = logging.getLogger(__name__)
+
+LessonInlineFormset = inlineformset_factory(
+    Course, Lesson, form=LessonEditForm, extra=3)
 
 def _courses_n_24ths(clist):
     """ Take a list of courses cl, 3 courses at a time. Set their widths to 
@@ -74,24 +79,33 @@ def edit(request, course_id):
     
     if _user_permitted_to_edit_course(request.user, course_id):
         course = get_object_or_404(Course, pk=course_id)
-	lessons = course.lesson_set.all()
-        if request.method=='POST':
-            course_form = CourseFullForm(request.POST, instance=course)
+	if request.method=='POST':
+            course_form = CourseFullForm(
+		request.POST, prefix='course_form', instance=course)
+	    lesson_formset = LessonInlineFormset(
+		request.POST, prefix='lesson_formset', instance=course)
             if course_form.is_valid():
                 course_form.save()
                 logger.info("Course (id={0}) edited".format(course.pk))
-                return redirect(course)
-            else:
+            if lesson_formset.is_valid():
+		lesson_formset.save()
+		logger.info("Lessons for course id {0} edited".format(course.pk))
+	    if (course_form.is_valid() and lesson_formset.is_valid()):
+		return redirect(course)
+	    else:
                 t = 'courses/course_edit.html'
 		c = {	'course_form': course_form,
-			'lessons': lessons, 
+			'lesson_formset': lesson_formset, 
 		    }
                 return render(request, t, c)
         else:
-            course_form = CourseFullForm(instance=course)
+            course_form = CourseFullForm(
+		prefix='course_form', instance=course)
+	    lesson_formset = LessonInlineFormset(
+		prefix='lesson_formset', instance=course)
             t = 'courses/course_edit.html'
 	    c = {    'course_form': course_form,
-		     'lessons': lessons, 
+		     'lesson_formset': lesson_formset, 
 		}
 	    return render(request, t, c)
     else:

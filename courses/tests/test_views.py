@@ -16,7 +16,7 @@ from ..forms import (
     ABSTRACT_FIELD_REQUIRED_ERROR,
     )
 from ..models import Course
-from ..views import CourseFullForm, _courses_n_24ths
+from ..views import CourseFullForm, _courses_n_24ths, LessonInlineFormset
 
 class CourseViewTests(TestCase):
     """Test the course views"""
@@ -93,8 +93,15 @@ class CourseViewTests(TestCase):
 
     def test_course_edits_actually_saved(self):
         self.client.login(username='bertie', password='bertword')
-        mod_data = {'code': 'F1', 'name': 'Dingbat', 'abstract': 'Fingbot',
-                    'organiser': self.user1, 'instructor': self.user1,}
+	mod_data = {
+	    'code': 'F1', 
+	    'name': 'Dingbat', 
+	    'abstract': 'Fingbot',
+            'organiser': self.user1,
+	    'instructor': self.user1,
+	    'lesson_formset-TOTAL_FORMS':4,
+	    'lesson_formset-INITIAL_FORMS':1,
+	    'lesson_formset-0-id':u'1',} #prevent MultiVal dict key err.
         ##This should trigger modification of the course
         response = self.client.post('/courses/1/edit/', mod_data)
         
@@ -146,11 +153,14 @@ class CourseViewTests(TestCase):
         
     def test_course_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='bertie', password='bertword')
-        response = self.client.post('/courses/1/edit/', data={
+        data = {
             'code': '',
             'name': '',
-            'abstract': ''
-            })
+            'abstract': '',
+	    'lesson_formset-0-id':u'1',	#prevent MultiVal dict key err.
+	    'lesson_formset-TOTAL_FORMS':u'4',
+	    'lesson_formset-INITIAL_FORMS':u'1'}
+	response = self.client.post('/courses/1/edit/', data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'courses/course_edit.html')
         

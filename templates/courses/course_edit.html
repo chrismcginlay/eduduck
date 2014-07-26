@@ -19,13 +19,13 @@
 {% endblock contentheading %}
 
 {% block content %}
-    {% if form.errors %}
+    {% if course_form.errors %}
         <div class="errorlist">
             <p>Please correct the following:</p>
         </div>
     {% endif %}
     <form method='post' action='#'>
-        {{ form.as_p }}
+        {{ course_form.as_p }}
         {% csrf_token %}
         <button 
         id="id_submit" 
@@ -33,11 +33,6 @@
         class="pure-button pure-button-primary">
         Save Edits
         </button>
+	{{ lesson_formset }}
     </form>
-    <div id='id_lessons_area'>
-	<h3>Lessons</h3>
-	{% for lesson in lessons %}
-	    {{ lesson.name }}
-	{% endfor %}
-    </div>
 {% endblock content %}
