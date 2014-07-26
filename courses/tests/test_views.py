@@ -140,17 +140,7 @@ class CourseViewTests(TestCase):
 	self.client.login(username='bertie', password='bertword')
 	response = self.client.get('/courses/1/edit/')
 	self.assertIsInstance(response.context['lesson_formset'], LessonInlineFormset)
-
-    def test_course_edit_page_has_correct_data_prefilled(self):
-        self.client.login(username='bertie', password='bertword')
-        response = self.client.get('/courses/1/edit/')
-        self.assertIn('value="EDU02"', response.content)
-        self.assertIn('value="A Course of Leeches"',
-                      response.content)
-        self.assertIn(
-            'Learn practical benefits of leeches</textarea>', 
-            response.content)
-        
+       
     def test_course_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='bertie', password='bertword')
         data = {
@@ -163,11 +153,20 @@ class CourseViewTests(TestCase):
 	response = self.client.post('/courses/1/edit/', data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'courses/course_edit.html')
-        
+       
+    def test_course_edit_page_has_course_detail_area(self):
+	self.client.login(username='bertie', password='bertword')
+	response = self.client.get('/courses/1/edit/')
+	self.assertIn('id_course_basics_area', response.content)
+	self.assertIn('value="EDU02"', response.content)
+        self.assertIn('value="A Course of Leeches"', response.content)
+        self.assertIn(
+            'Learn practical benefits of leeches', response.content)
+ 
     def test_course_edit_page_has_populated_lesson_area(self):
 	self.client.login(username='bertie', password='bertword')
 	response = self.client.get('/courses/1/edit/')
-	self.assertIn('id_lessons_area', response.content)
+	self.assertIn('id_lesson_formset_area', response.content)
 	self.assertIn('Introduction to Music', response.content)
 
     def test_course_create_redirects_if_not_loggedin(self):
