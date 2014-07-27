@@ -168,7 +168,6 @@ class CourseViewTests(TestCase):
 	    'lesson_formset-0-id':u'1',	#prevent MultiVal dict key err.
 	    'lesson_formset-TOTAL_FORMS':u'4',
 	    'lesson_formset-INITIAL_FORMS':u'1'}
-	import pdb; pdb.set_trace()
 	response = self.client.post('/courses/1/edit/', data)
 	self.assertIn('Please correct the following:', response.content)
 	

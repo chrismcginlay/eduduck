@@ -19,7 +19,7 @@
 {% endblock contentheading %}
 
 {% block content %}
-    {% if course_form.errors %}
+    {% if course_form.errors or lesson_formset.errors %}
         <div class="errorlist">
             <p>Please correct the following:</p>
         </div>
