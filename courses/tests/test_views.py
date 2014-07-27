@@ -148,9 +148,9 @@ class CourseViewTests(TestCase):
     def test_course_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='bertie', password='bertword')
         data = {
-            'code': '',
-            'name': '',
-            'abstract': '',
+            'course_form-code': '',
+            'course_form-name': '',
+            'course_form-abstract': '',
 	    'lesson_formset-0-id':u'1',	#prevent MultiVal dict key err.
 	    'lesson_formset-TOTAL_FORMS':u'4',
 	    'lesson_formset-INITIAL_FORMS':u'1'}
@@ -158,6 +158,32 @@ class CourseViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'courses/course_edit.html')
        
+    def test_course_edit_page_validation_errors_generate_error_msg(self):
+	self.client.login(username='bertie', password='bertword')
+	##First with missing basic course data
+        data = {
+            'course_form-code': '',
+            'course_form-name': '',
+            'course_form-abstract': '',
+	    'lesson_formset-0-id':u'1',	#prevent MultiVal dict key err.
+	    'lesson_formset-TOTAL_FORMS':u'4',
+	    'lesson_formset-INITIAL_FORMS':u'1'}
+	import pdb; pdb.set_trace()
+	response = self.client.post('/courses/1/edit/', data)
+	self.assertIn('Please correct the following:', response.content)
+	
+	##Then with missing required fields in lesson formset
+        data = {
+            'course_form-code': 'T1',
+            'course_form-name': 'Test',
+            'course_form-abstract': 'With some invalid lessons',
+	    'lesson_formset-0-id':u'1',	#prevent MultiVal dict key err.
+	    'lesson_formset-0-name':'',
+	    'lesson_formset-TOTAL_FORMS':u'4',
+	    'lesson_formset-INITIAL_FORMS':u'1'}
+	response = self.client.post('/courses/1/edit/', data)
+	self.assertIn('Please correct the following:', response.content)
+
     def test_course_edit_page_has_course_detail_area(self):
 	self.client.login(username='bertie', password='bertword')
 	response = self.client.get('/courses/1/edit/')
