@@ -15,7 +15,7 @@
 {% endblock breadcrumb %}
     
 {% block contentheading %}
-<h2 id='id_page_title'>Edit Course</h2>
+<h2 id='id_page_title'>Editing: {{ course.name }}</h2>
 {% endblock contentheading %}
 
 {% block content %}
@@ -29,14 +29,20 @@
 	    {{ course_form.as_p }}
             {% csrf_token %}
             <button 
-        	id="id_submit" 
+        	id="id_submit_course_edits" 
         	type="submit" 
         	class="pure-button pure-button-primary">
             Save Edits
             </button>
 	</article>
 	<article id='id_lesson_formset_area'>
-	     {{ lesson_formset }}
-	</article>
+	    {{ lesson_formset }}
+	    <button 
+        	id="id_submit_lesson_edits" 
+        	type="submit" 
+        	class="pure-button pure-button-primary">
+            Save Edits
+            </button>
+</article>
     </form>
 {% endblock content %}

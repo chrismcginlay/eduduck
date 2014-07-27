@@ -96,6 +96,7 @@ def edit(request, course_id):
                 t = 'courses/course_edit.html'
 		c = {	'course_form': course_form,
 			'lesson_formset': lesson_formset, 
+			'course': course,
 		    }
                 return render(request, t, c)
         else:
@@ -104,8 +105,9 @@ def edit(request, course_id):
 	    lesson_formset = LessonInlineFormset(
 		prefix='lesson_formset', instance=course)
             t = 'courses/course_edit.html'
-	    c = {    'course_form': course_form,
-		     'lesson_formset': lesson_formset, 
+	    c = {   'course_form': course_form,
+		    'lesson_formset': lesson_formset, 
+		    'course': course,
 		}
 	    return render(request, t, c)
     else:

@@ -91,14 +91,14 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         # She decides to improve the abstract:
         btn_edit.click()
         self.assertRegexpMatches(self.browser.current_url, edit_target_url)
-        self.assertIn('<h2 id="id_page_title">Edit Course</h2>', self.browser.page_source)
-        abstract_box = self.browser.find_element_by_id('id_abstract')
+        self.assertIn('<h2 id="id_page_title">Editing: Camping</h2>', self.browser.page_source)
+        abstract_box = self.browser.find_element_by_id('id_course_form-abstract')
         abstract_box.send_keys(". Wibble.")
         # and delete the course code
-        code_box = self.browser.find_element_by_xpath("//input[@id='id_code']")
+        code_box = self.browser.find_element_by_xpath("//input[@id='id_course_form-code']")
         code_box.clear()
         # she submits the changes
-        btn_submit = self.browser.find_element_by_id('id_submit_edits')
+        btn_submit = self.browser.find_element_by_id('id_submit_course_edits')
         btn_submit.click()
         
         target_url = self.server_url + '/courses/\d+/'
@@ -124,7 +124,8 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         courses_area = self.browser.find_element_by_id('id_course_selection') 
         target_course = self.browser.find_element_by_id('id_Camping_course')
         target_course.click()
-        title = self.browser.find_element_by_id('id_course_title')
+        self.browser.implicitly_wait(10)
+	title = self.browser.find_element_by_id('id_course_title')
         self.assertIn('Camping', title.text) 
         
     def test_can_delete_course(self):
@@ -177,7 +178,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
 	lesson2_abstract = self.browser.find_element_by_xpath(
 	    "//textarea[@name='lesson_formset-2-abstract']")
 	# On submitting this the course page reloads with his lesson alterations.
-	submit_edits_button = self.browser.find_element_by_id('id_submit_edits2')
+	submit_edits_button = self.browser.find_element_by_id('id_submit_lesson_edits')
 	submit_edits_button.click()
 	
 	paginator = self.browser.find_element_by_class_name('pure-paginator')
