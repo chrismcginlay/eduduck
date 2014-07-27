@@ -94,15 +94,18 @@ class CourseViewTests(TestCase):
     def test_course_edits_actually_saved(self):
         self.client.login(username='bertie', password='bertword')
 	mod_data = {
-	    'code': 'F1', 
-	    'name': 'Dingbat', 
-	    'abstract': 'Fingbot',
-            'organiser': self.user1,
-	    'instructor': self.user1,
+	    'course_form-code': 'F1', 
+	    'course_form-name': 'Dingbat', 
+	    'course_form-abstract': 'Fingbot',
+            'course_form-organiser': self.user1,
+	    'course_form-instructor': self.user1,
 	    'lesson_formset-TOTAL_FORMS':4,
 	    'lesson_formset-INITIAL_FORMS':1,
-	    'lesson_formset-0-id':u'1',} #prevent MultiVal dict key err.
+	    'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+	    'lesson_formset-0-name':'Boo',
+	    'lesson_formset-0-abstract':'Hoo',}
         ##This should trigger modification of the course
+	import pdb; pdb.set_trace()
         response = self.client.post('/courses/1/edit/', mod_data)
         
         ##Then visiting the course should reflect the changes

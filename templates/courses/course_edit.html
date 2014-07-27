@@ -25,14 +25,18 @@
         </div>
     {% endif %}
     <form method='post' action='#'>
-        {{ course_form.as_p }}
-        {% csrf_token %}
-        <button 
-        id="id_submit" 
-        type="submit" 
-        class="pure-button pure-button-primary">
-        Save Edits
-        </button>
-	{{ lesson_formset }}
+	<article id='id_course_basics_area'>
+	    {{ course_form.as_p }}
+            {% csrf_token %}
+            <button 
+        	id="id_submit" 
+        	type="submit" 
+        	class="pure-button pure-button-primary">
+            Save Edits
+            </button>
+	</article>
+	<article id='id_lesson_formset_area'>
+           {{ lesson_formset }}
+	</articleh>
     </form>
 {% endblock content %}
