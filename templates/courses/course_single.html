@@ -110,7 +110,7 @@
 
         {% regroup course.lesson_set.all by lesson.code as lesson_list %}
         {% for lesson in course.lesson_set.all %}
-            <h4>{{ lesson.code}}; {{ lesson.name }}</h4>
+            <h4>{{ lesson.name }}</h4>
             <article class="abstract">
                 <a href='{{ lesson.get_absolute_url }}'>{{ lesson.name }}</a>
                 <p>{{ lesson.abstract}} 

@@ -105,14 +105,15 @@ class CourseViewTests(TestCase):
 	    'lesson_formset-0-name':'Boo',
 	    'lesson_formset-0-abstract':'Hoo',}
         ##This should trigger modification of the course
-	import pdb; pdb.set_trace()
         response = self.client.post('/courses/1/edit/', mod_data)
         
         ##Then visiting the course should reflect the changes
         response = self.client.get('/courses/1/')
         self.assertContains(response, 
             '<h3>F1 : Dingbat Course Homepage</h3>', html=True)
-        self.assertIn('<p>Fingbot</p>', response.content)
+        self.assertContains(response, '<p>Fingbot</p>', html=True)
+	self.assertContains(response, '<h4>Boo</h4>', html=True)
+	self.assertIn('<p>Hoo', response.content)
         
     def test_course_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/edit/')  
