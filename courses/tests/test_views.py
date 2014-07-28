@@ -82,7 +82,10 @@ class CourseViewTests(TestCase):
     def test_course_page_has_edit_button_for_organiser_instructor(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/')
-        self.assertIn("id='id_edit_course'", response.content)
+        self.assertContains(
+	    response, 
+	    "<a href='/courses/1/edit/' id='id_edit_course' class='pure-button pure-button-primary'>Edit Course</a>",
+	    html=True)
         self.assertEqual(response.context['user_can_edit'], True)
 
     def test_course_page_has_no_edit_button_if_not_organiser_instructor(self):

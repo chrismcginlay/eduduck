@@ -34,16 +34,11 @@
     <div class='pure-u-1-5'>
         {% if status == "auth_reg" or status == "auth_noreg" %}
         {% if user_can_edit %}
-            <form   class='pure-form'
-                    action="{% url 'course_edit' course_id=course.id %}"
-                    method='get'>
-                <button id='id_edit_course'
-                        class='pure-button pure-button-primary'
-                        type='submit'
-                        name='course_edit'>
+	    <a	href = "{% url 'course_edit' course_id=course.id %}"
+		id='id_edit_course'
+                class='pure-button pure-button-primary'>
                     Edit Course
-                </button>
-            </form>
+	</a>
         {% endif %}{% endif %}
         {% if status == "auth_noreg" %}
             <form   class='pure-form' 
