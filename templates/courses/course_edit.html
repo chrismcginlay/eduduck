@@ -24,25 +24,47 @@
             <p>Please correct the following:</p>
         </div>
     {% endif %}
-    <form method='post' action='#'>
-	<article id='id_course_basics_area'>
-	    {{ course_form.as_p }}
-            {% csrf_token %}
+    <form method='post' action='#' class='pure-form pure-form-aligned'>
+        {% csrf_token %}
+	<h3>Basic Details</h3>
+	<fieldset id='id_course_basics_area'>
+	    {% for field in course_form %}
+		<div class='pure-control-group'>
+		    {{ field.errors }}
+		    {{ field.label_tag }}{{ field }}
+		    <br>{{ field.help_text }}
+		</div>
+	    {% endfor %}
+	    <div class='pure-controls'>
             <button 
         	id="id_submit_course_edits" 
         	type="submit" 
         	class="pure-button pure-button-primary">
-            Save Edits
+            Save All Edits
             </button>
-	</article>
-	<article id='id_lesson_formset_area'>
-	    {{ lesson_formset }}
+	    </div>
+	</fieldset>
+	<h3>Lessons</h3>
+	<fieldset id='id_lesson_formset_area'>
+	    {{ lesson_formset.management_form }}
+	    {% for form in lesson_formset %}
+		{% for field in form.visible_fields %}
+		    {{ field.errors }}
+		    {{ field.label_tag }}{{ field }}
+		    <br>{{ field.help_text }}
+		{% endfor %}
+	        {% if lesson_formset.can_delete %}
+		    {{ form.DELETE }}
+		{% endif %}
+	    {% endfor %}
+	    <div class='pure-controls'>
 	    <button 
         	id="id_submit_lesson_edits" 
         	type="submit" 
         	class="pure-button pure-button-primary">
-            Save Edits
+            Save All Edits
             </button>
-</article>
+	    </div>
+	</fieldset>
     </form>
 {% endblock content %}
