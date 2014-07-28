@@ -25,6 +25,7 @@
         </div>
     {% endif %}
     <form method='post' action='#' class='pure-form pure-form-aligned'>
+	{{ lesson_formset.management_form }}
         {% csrf_token %}
 	<h3>Basic Details</h3>
 	<fieldset id='id_course_basics_area'>
@@ -46,16 +47,15 @@
 	</fieldset>
 	<h3>Lessons</h3>
 	<fieldset id='id_lesson_formset_area'>
-	    {{ lesson_formset.management_form }}
 	    {% for form in lesson_formset %}
 		{% for field in form.visible_fields %}
-		    {{ field.errors }}
-		    {{ field.label_tag }}{{ field }}
-		    <br>{{ field.help_text }}
+		    <div class='pure-control-group'>
+			{{ field.errors }}
+		    	{{ field.label_tag }}{{ field }}
+		    	<br>{{ field.help_text }}
+		    </div>
 		{% endfor %}
-	        {% if lesson_formset.can_delete %}
-		    {{ form.DELETE }}
-		{% endif %}
+	    	<hr>
 	    {% endfor %}
 	    <div class='pure-controls'>
 	    <button 
