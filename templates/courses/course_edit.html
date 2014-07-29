@@ -25,8 +25,8 @@
         </div>
     {% endif %}
     <form method='post' action='#' class='pure-form pure-form-aligned'>
-	{{ lesson_formset.management_form }}
         {% csrf_token %}
+	{{ lesson_formset.management_form }}
 	<h3>Basic Details</h3>
 	<fieldset id='id_course_basics_area'>
 	    {% for field in course_form %}
@@ -48,6 +48,9 @@
 	<h3>Lessons</h3>
 	<fieldset id='id_lesson_formset_area'>
 	    {% for form in lesson_formset %}
+		{% for hf in form.hidden_fields %}
+		    {{ hf }}
+		{% endfor %}
 		{% for field in form.visible_fields %}
 		    <div class='pure-control-group'>
 			{{ field.errors }}
