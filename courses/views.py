@@ -79,37 +79,37 @@ def edit(request, course_id):
     
     if _user_permitted_to_edit_course(request.user, course_id):
         course = get_object_or_404(Course, pk=course_id)
-	if request.method=='POST':
+        if request.method=='POST':
             course_form = CourseFullForm(
-		request.POST, prefix='course_form', instance=course)
-	    lesson_formset = LessonInlineFormset(
-		request.POST, prefix='lesson_formset', instance=course)
+                request.POST, prefix='course_form', instance=course)
+            lesson_formset = LessonInlineFormset(
+                request.POST, prefix='lesson_formset', instance=course)
             if course_form.is_valid():
                 course_form.save()
                 logger.info("Course (id={0}) edited".format(course.pk))
             if lesson_formset.is_valid():
-		lesson_formset.save()
-		logger.info("Lessons for course id {0} edited".format(course.pk))
-	    if (course_form.is_valid() and lesson_formset.is_valid()):
-		return redirect(course)
-	    else:
+                lesson_formset.save()
+                logger.info("Lessons for course id {0} edited".format(course.pk))
+            if (course_form.is_valid() and lesson_formset.is_valid()):
+                return redirect(course)
+            else:
                 t = 'courses/course_edit.html'
-		c = {	'course_form': course_form,
-			'lesson_formset': lesson_formset, 
-			'course': course,
-		    }
+                c = { 'course_form': course_form,
+                      'lesson_formset': lesson_formset, 
+                      'course': course,
+                }
                 return render(request, t, c)
         else:
             course_form = CourseFullForm(
-		prefix='course_form', instance=course)
-	    lesson_formset = LessonInlineFormset(
-		prefix='lesson_formset', instance=course)
+                prefix='course_form', instance=course)
+            lesson_formset = LessonInlineFormset(
+                prefix='lesson_formset', instance=course)
             t = 'courses/course_edit.html'
-	    c = {   'course_form': course_form,
-		    'lesson_formset': lesson_formset, 
-		    'course': course,
-		}
-	    return render(request, t, c)
+            c = { 'course_form': course_form,
+                  'lesson_formset': lesson_formset, 
+                  'course': course,
+            }
+            return render(request, t, c)
     else:
         logger.info("Unauthorized attempt to edit course {0}".format(course_id))
         raise PermissionDenied
@@ -151,9 +151,9 @@ def index(request):
     register_form = RegistrationForm()
     template = 'courses/course_index.html'
     cn24ths = _courses_n_24ths(course_list)
-    context_data = {'course_list':  cn24ths,
-                    'course_count': course_count,
-                    'register_form': register_form,
+    context_data = { 'course_list':  cn24ths,
+                     'course_count': course_count,
+                     'register_form': register_form,
                    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
@@ -213,29 +213,29 @@ def single(request, course_id):
                 except ObjectDoesNotExist:
                     lv = None   
                 lessons.append((lic, lv))
-            context_data = {'course': course,
-                            'uc': uc,
-                            'history': history,
-                            'lessons': lessons,
-                            'status': 'auth_reg'}    
+            context_data = { 'course': course,
+                             'uc': uc,
+                             'history': history,
+                             'lessons': lessons,
+                             'status': 'auth_reg'}    
         else:
             #Here we provide for case 2, user registers
-            context_data = {'course': course,
-                            'status': 'auth_noreg'}
+            context_data = { 'course': course,
+                             'status': 'auth_noreg'}
             if request.method == 'POST':
                 if 'course_register' in request.POST:
                     uc = UserCourse(user=request.user, course=course)
                     uc.save()
                     history = uc.hist2list()
-                    context_data = {'course': course,
-                                    'uc': uc,
-                                    'history': history,
-                                    'status': 'auth_reg'}
+                    context_data = { 'course': course,
+                                     'uc': uc,
+                                     'history': history,
+                                     'status': 'auth_reg'}
                     logger.info(str(uc) + 'registers')
                     
     else:
-        context_data = {'course': course,
-                        'status': 'anon'}
+        context_data = { 'course': course,
+                         'status': 'anon'}
                         
     #get attachment data ready
     userattachments_attachments_tuple = [] #to be tuples (user_att|None, uri)
