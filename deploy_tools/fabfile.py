@@ -2,6 +2,7 @@
 from fabric.contrib.files import append, exists, sed, contains
 from fabric.api import env, local, run, sudo, warn
 from fabric.colors import yellow, green
+from fabric.operations import prompt
 import random
 import os, sys
 
@@ -44,6 +45,7 @@ def provision():
 
     pip_packages = [
         'virtualenvwrapper',
+        'django-debug-toolbar',
     ]
     
     apt_cmd = "apt-get install -y " + " ".join([pkg for pkg in apt_packages])
