@@ -16,6 +16,7 @@ def provision():
     
     This will install global package requirements using apt and pip.
     Note that vhost specific python packages will be installed via deploy().
+    (This will be done in the _update_virtualenv function via requirements file).
     Run provision(), then deploy(), then possibly restore().
     """
 
@@ -45,7 +46,6 @@ def provision():
 
     pip_packages = [
         'virtualenvwrapper',
-        'django-debug-toolbar',
     ]
     
     apt_cmd = "apt-get install -y " + " ".join([pkg for pkg in apt_packages])
@@ -63,11 +63,12 @@ def provision():
 def deploy(settings):
     """ Deploy a standard configuration of EduDuck with an empty database.
     
+    Use this to deploy staging or production. Not for dev.
     Run this after completing provision() to install an instance 
     of the EduDuck framework.  There will be no users, courses etc. 
     
     The tool requires that you specify the settings file to use. This will
-    be one of [dev, staging, production].
+    be one of [staging, production].
     
     Consider running restore() next.
     """
@@ -79,13 +80,33 @@ def deploy(settings):
     _get_source(SOURCE_DIR)
     _config_nginx(env.host, SOURCE_DIR)
     _update_virtualenv(SOURCE_DIR)
-    _prepare_environment_variables(env.host)
+    _prepare_environment_variables(settings, env.host)
     _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
     _ready_logfiles()
     _prepare_database(SOURCE_DIR, settings, env.host)
     _update_static_files(SOURCE_DIR, settings)
     _restart_services(env.host)
     
+def devbox():
+    """ Set up a development box.
+
+    Run this after completing provision() to install an instance of
+    EduDuck, configured for development work. After this has finished,
+    you can issue `python manage.py runserver` from the source directory."""
+
+    global settings
+    settings = 'dev'
+
+    # env.host is not set at global scope, only within a task
+    SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
+    
+    _create_dir_tree_if_not_exists(env.host)
+    _get_source(SOURCE_DIR)
+    _update_virtualenv(SOURCE_DIR)
+    _prepare_environment_variables(settings, env.host)
+    _ready_logfiles()
+    _prepare_database(SOURCE_DIR, settings, env.host)
+ 
 def restore():
     """ Repopulate a deployed instance of EduDuck from backup.
     
@@ -113,7 +134,11 @@ def git_update(settings):
 # Private helper functions, don't call directly.
 
 def _create_dir_tree_if_not_exists(site_name):
-    for subdir in ("static", "media", "source", "virtualenv"):
+    if settings=='dev':
+        subdirs = ("source", "virtualenv")
+    else:
+        subdirs = ("static", "media", "source", "virtualenv")
+    for subdir in subdirs:
         run("mkdir -p {0}/{1}/{2}".format(SITES_DIR, site_name, subdir))
         
 def _get_source(sdir):
@@ -123,15 +148,18 @@ def _get_source(sdir):
         run("cd {0}; git fetch".format(sdir))
     else:
         run("git clone {0} {1}".format(REPO_URL, sdir))
-    current_commit = local("git log -n 1 --format=%H", capture = True)
+    current_commit = local(
+        "cd {0}; git log -n 1 --format=%H".format(sdir), capture = True)
     run("cd {0}; git reset --hard {1}".format(sdir, current_commit))
     
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
-    #run("cd {0}; git checkout 98-course_edit".format(sdir))
-    run("cd {0}; git checkout master".format(sdir))    
+    run("cd {0}; git checkout 98-course_edit".format(sdir))
+    #run("cd {0}; git checkout master".format(sdir))    
         
 def _config_nginx(site_name, sdir):
+    if settings=='dev':
+        return
     sudo("mkdir -p /etc/nginx/conf.d/{0}".format(site_name))
     
     if not exists("/etc/nginx/sites-available/{0}".format(site_name)):
@@ -148,7 +176,8 @@ def _config_nginx(site_name, sdir):
         ))
 
 def _write_gunicorn_upstart_script(site_name, sdir):
-
+    if settings=='dev':
+        return
     gunicorn_template_head = sdir + "/deploy_tools/gunicorn_upstart.head.template"
     gunicorn_template_tail = sdir + "/deploy_tools/gunicorn_upstart.tail.template"
     gunicorn_template_mid  = sdir + "/deploy_tools/gunicorn_upstart.mid.template"
@@ -179,7 +208,7 @@ def _update_virtualenv(sdir):
         run("{0}/bin/pip install -r {1}/requirements/base.txt".format(
             virtualenv_dir, sdir))
         
-def _prepare_environment_variables(hostname):
+def _prepare_environment_variables(settings, hostname):
     """ Prepare activate to export required env vars into the virtualenv 
     
     Ideally, you will provide secrets and other environment variables in 
@@ -196,33 +225,56 @@ def _prepare_environment_variables(hostname):
     virtenv_activate = virtenv_dir + '/activate'
     env_config = virtenv_dir + "/virtualenv_envvars.txt"
     
-    # First the SECRET_KEY
-    if not contains(env_config, 'SECRET_KEY'):
+    if settings=='dev':
+        # The dev SECRET_KEY doesn't need to be secret, as it's never deployed
+        # In fact, it can be anything you like on each dev box.
+        secret_key = '$9(8c0@dl9^0m@jautyrv&amp;y92!-ae6ymo+sl=&amp;^3ptfiw*ojt7j' 
+        database_name = 'ed_dev'
+        database_user = 'ed_dev'
+        database_port = ''
+        database_password = 'quickquackquock'
+        email_host_user = 'eduduck@mailinator.com'
+        email_host = 'mailinator.com'
+        email_password = ''
+        email_port = ''
+
+    else: # Not dev!
+        # First the SECRET_KEY
         random.seed()
         charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
-        key = "".join(random.choice(charset) for i in range(69))
-        append(env_config, "SECRET_KEY={0};".format(key))
+        secret_key = "".join(random.choice(charset) for i in range(69))
+
+        # Database parameters
+        random.seed()
+        database_password = "".join(random.choice(charset) for i in range(69))
+        database_user = 'the_duckinator'
+        database_name = 'eduduck'
+        database_port = ''
         
-    # DB PARAMS
+        # Email parameters
+        email_host_user = 'educk@unpossible.info'
+        email_host = 'a2s73.a2hosting.com'
+        email_password = 'set this after installation'
+        email_port = ''
+
+    if not contains(env_config, 'SECRET_KEY'):
+        append(env_config, "SECRET_KEY={0};".format(secret_key))
     if not contains(env_config, 'DATABASE_NAME'):
-        append(env_config, "DATABASE_NAME=eduduck")
+        append(env_config, "DATABASE_NAME={0}".format(database_name))
     if not contains(env_config, 'DATABASE_USER'):
-        append(env_config, "DATABASE_USER=duckinator")
+        append(env_config, "DATABASE_USER={0}".format(database_user))
     if not contains(env_config, 'DATABASE_PASSWORD'):
-        random.seed()
-        charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
-        pw = "".join(random.choice(charset) for i in range(69))
-        append(env_config, "DATABASE_PASSWORD={0}".format(pw))
+        append(env_config, "DATABASE_PASSWORD={0}".format(database_password))
     if not contains(env_config, 'DATABASE_PORT'):
-        append(env_config, "DATABASE_PORT=")
-    
-    # EMAIL PARAMS
+        append(env_config, "DATABASE_PORT={0}".format(database_port))
     if not contains(env_config, 'EMAIL_HOST_USER'):
-        append(env_config, "EMAIL_HOST_USER=educk@unpossible.info")
+        append(env_config, "EMAIL_HOST_USER={0}".format(email_host_user))
     if not contains(env_config, 'EMAIL_PASSWORD'):
-        append(env_config, "EMAIL_PASSWORD=tobespecified")
+        append(env_config, "EMAIL_PASSWORD={0}".format(email_password))
+    if not contains(env_config, "EMAIL_HOST"):
+        append(env_config, "EMAIL_HOST={0}".format(email_host))
     if not contains(env_config, 'EMAIL_PORT'):
-        append(env_config, "EMAIL_PORT=25")
+        append(env_config, "EMAIL_PORT={0}".format(email_port))
     
     # PYTHONPATH
     append(env_config, "PYTHONPATH={0}/{1}/source".format(SITES_DIR, hostname))
@@ -249,7 +301,8 @@ def _prepare_database(sdir, settings, hostname):
 
     # load environment variables
     path_to_activate = "{0}/{1}/virtualenv/bin/activate".format(SITES_DIR, hostname)
-    dbname = "eduduck"
+    get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
+    dbname = run(get_var) 
     get_var = "source {0}; echo $DATABASE_PASSWORD;".format(path_to_activate)
     dbpass = run(get_var)
     get_var = "source {0}; echo $DATABASE_USER;".format(path_to_activate)
@@ -292,6 +345,8 @@ def _prepare_database(sdir, settings, hostname):
     run(sync_cmd)
     
 def _update_static_files(sdir, settings):
+    if settings=='dev':
+        return
     run("source {0}/{1}/virtualenv/bin/activate; django-admin.py collectstatic  --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
         env.host,
@@ -305,12 +360,16 @@ def _restore_database():
     pass
 
 def _restore_media_files():
+    if settings=='dev':
+        return
     """ Restore backups of user uploaded files to media server"""
     
     # not sure where these would be deployed from - some backup service?
     pass
 
 def _restart_services(site_name):
+    if settings=='dev':
+        return
     """ Restart nginx and gunicorn etc"""
     
     sudo("service nginx reload")
