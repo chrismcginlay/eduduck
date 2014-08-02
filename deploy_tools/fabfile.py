@@ -79,7 +79,7 @@ def deploy(settings):
     _create_dir_tree_if_not_exists(env.host)
     _get_source(SOURCE_DIR)
     _config_nginx(env.host, SOURCE_DIR)
-    _update_virtualenv(SOURCE_DIR)
+    _update_virtualenv(SOURCE_DIR, settings)
     _prepare_environment_variables(settings, env.host)
     _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
     _ready_logfiles()
@@ -102,7 +102,7 @@ def devbox():
     
     _create_dir_tree_if_not_exists(env.host)
     _get_source(SOURCE_DIR)
-    _update_virtualenv(SOURCE_DIR)
+    _update_virtualenv(SOURCE_DIR, settings)
     _prepare_environment_variables(settings, env.host)
     _ready_logfiles()
     _prepare_database(SOURCE_DIR, settings, env.host)
@@ -154,8 +154,7 @@ def _get_source(sdir):
     
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
-    run("cd {0}; git checkout 98-course_edit".format(sdir))
-    #run("cd {0}; git checkout master".format(sdir))    
+    run("cd {0}; git checkout master".format(sdir))    
         
 def _config_nginx(site_name, sdir):
     if settings=='dev':
@@ -201,13 +200,22 @@ def _write_gunicorn_upstart_script(site_name, sdir):
     sed_cmd = sed_cmd.format(site_name, gunicorn_template_done, gunicorn_config_path)
     sudo(sed_cmd)
     
-def _update_virtualenv(sdir):
+def _update_virtualenv(sdir, settings):
     virtualenv_dir = sdir + "/../virtualenv"
     if not exists(virtualenv_dir + "/bin/pip"): #
         run("virtualenv --python=python2.7 {0}".format(virtualenv_dir))
-        run("{0}/bin/pip install -r {1}/requirements/base.txt".format(
+    run("{0}/bin/pip install -r {1}/requirements/base.txt".format(
+        virtualenv_dir, sdir))
+    if settings == 'dev':
+        run("{0}/bin/pip install -r {1}/requirements/dev.txt".format(
             virtualenv_dir, sdir))
-        
+    if settings == 'staging':
+        run("{0}/bin/pip install -r {1}/requirements/staging.txt".format(
+            virtualenv_dir, sdir))
+    if settings == 'production':
+        run("{0}/bin/pip install -r {1}/requirements/production.txt".format(
+            virtualenv_dir, sdir))
+  
 def _prepare_environment_variables(settings, hostname):
     """ Prepare activate to export required env vars into the virtualenv 
     
