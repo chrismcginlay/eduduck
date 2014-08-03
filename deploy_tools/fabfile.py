@@ -6,7 +6,9 @@ from fabric.operations import prompt
 import random
 import os, sys
 
-REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
+#REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
+# NB: this will require ssh keys to be registered with github account
+REPO_URL = "git@github.com:chris/eduduck.git"
 
 # One may wish to alter the following, yah?
 SITES_DIR = "/home/chris/sites"
