@@ -154,7 +154,7 @@ def _get_source(sdir):
     
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
-    run("cd {0}; git checkout master".format(sdir))    
+    run("cd {0}; git checkout fabfiling".format(sdir))    
         
 def _config_nginx(site_name, sdir):
     if settings=='dev':
@@ -325,16 +325,19 @@ def _prepare_database(sdir, settings, hostname):
     # but the IDENTIFIED BY bit doesn't work on my local machine.
     
     # if the database user does not exist, create it
+    print(green("Does db user exist? MySQL root password"))
     out = run("mysql -u root -p -e 'select distinct User from mysql.user;'")
     if out.find(dbuser)==-1: # -1 on fail to find
-        create_user_cmd = "create user {0}@localhost identified by '{1}';".format(
-            dbuser, dbpass)
+        create_user_cmd = "create user {0}@localhost identified by '{1}';".format(dbuser, dbpass)
+        print(green("No, user doesn't exist. MySQL root password"))
         run("mysql -u root -p -e \"" + create_user_cmd + "\"")
         
     # if database does not exist create it
     try:
-        out = run("mysqlshow -u root -p {0}".format(dbname))
+        print(green("Does the db exist? MySQL root password"))
+        out = run("mysql -u root -p -e 'use {0};'".format(dbname))
     except:        
+        print(green("No, db doesn't exist. MySQL root password"))
         run("mysqladmin -u root -p create {0}".format(dbname))
         perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
         sql = "GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';".format(
@@ -343,7 +346,10 @@ def _prepare_database(sdir, settings, hostname):
             dbuser,
             dbpass,
         )
-        run("mysql -u root -p -e \"" + sql + "\"")
+
+    # Grant required privileges. Idempotent.
+    print(green("Grant db permissions: MySQL root password"))
+    run("mysql -u root -p -e \"" + sql + "\"")
 
     sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
@@ -378,7 +384,6 @@ def _restore_media_files():
 def _restart_services(site_name):
     if settings=='dev':
         return
-    """ Restart nginx and gunicorn etc"""
     
     sudo("service nginx reload")
     cmd = "status gunicorn-{0}".format(site_name)
