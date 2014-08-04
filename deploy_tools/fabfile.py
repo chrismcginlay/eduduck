@@ -245,7 +245,7 @@ def _prepare_environment_variables(settings, hostname):
         database_password = 'quickquackquock'
         email_host_user = 'eduduck@mailinator.com'
         email_host = 'mailinator.com'
-        email_password = ''
+        email_host_password = ''
         email_port = ''
 
     else: # Not dev!
@@ -264,7 +264,7 @@ def _prepare_environment_variables(settings, hostname):
         # Email parameters
         email_host_user = 'educk@unpossible.info'
         email_host = 'a2s73.a2hosting.com'
-        email_password = 'set this after installation'
+        email_host_password = 'set this after installation'
         email_port = ''
 
     if not contains(env_config, 'SECRET_KEY'):
@@ -279,13 +279,14 @@ def _prepare_environment_variables(settings, hostname):
         append(env_config, "DATABASE_PORT={0}".format(database_port))
     if not contains(env_config, 'EMAIL_HOST_USER'):
         append(env_config, "EMAIL_HOST_USER={0}".format(email_host_user))
-    if not contains(env_config, 'EMAIL_PASSWORD'):
-        append(env_config, "EMAIL_PASSWORD={0}".format(email_password))
+    if not contains(env_config, 'EMAIL_HOST_PASSWORD'):
+        append(env_config, "EMAIL_HOST_PASSWORD={0}".format(email_host_password))
     if not contains(env_config, "EMAIL_HOST"):
         append(env_config, "EMAIL_HOST={0}".format(email_host))
     if not contains(env_config, 'EMAIL_PORT'):
         append(env_config, "EMAIL_PORT={0}".format(email_port))
-    
+    warn(yellow("Remember to set EMAIL_HOST_PASSWORD in {0}".format(env_config)))
+ 
     # PYTHONPATH
     append(env_config, "PYTHONPATH={0}/{1}/source".format(SITES_DIR, hostname))
     
