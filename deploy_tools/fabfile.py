@@ -216,9 +216,13 @@ def _prepare_environment_variables(hostname):
     
     # EMAIL PARAMS
     if not contains(env_config, 'EMAIL_HOST_USER'):
-        append(env_config, "EMAIL_HOST_USER=educk@unpossible.info")
-    if not contains(env_config, 'EMAIL_PASSWORD'):
-        append(env_config, "EMAIL_PASSWORD=tobespecified")
+        append(env_config, "EMAIL_HOST_USER=noreply@eduduck.com")
+    if not contains(env_config, 'EMAIL_HOST'):
+        append(env_config, "EMAIL_HOST=a2s73.a2hosting.com")
+    if not contains(env_config, 'EMAIL_USE_TLS'):
+        append(env_config, "EMAIL_USE_TLS=True")
+    if not contains(env_config, 'EMAIL_HOST_PASSWORD'):
+        append(env_config, "EMAIL_HOST_PASSWORD=tobespecified")
     if not contains(env_config, 'EMAIL_PORT'):
         append(env_config, "EMAIL_PORT=25")
     
