@@ -19,20 +19,18 @@ ALLOWED_HOSTS = [
 assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
 SECRET_KEY = os.environ['SECRET_KEY']
 
-
-#django-registration needs an MTA. For development just use console
+#MTA for django-registration
 #smtp is the default, so for production, use default EMAIL_BACKEND 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-assert 'EMAIL_PASSWORD' in os.environ, 'EMAIL_PASSWORD missing from environment'
-#Fill in for given MTA
-#EMAIL_HOST = 'a2s73.a2hosting.com'
-EMAIL_HOST = 'mail.unpossible.info'
-EMAIL_PORT = 25
-#EMAIL_PORT = 465
-EMAIL_HOST_USER = 'educk@unpossible.info'
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASSWORD']
-#EMAIL_USE_TLS = 'True'
+assert 'EMAIL_HOST' in os.environ, 'EMAIL_HOST missing from environment'
+assert 'EMAIL_PORT' in os.environ, 'EMAIL_PORT missing from environment'
+assert 'EMAIL_HOST_USER' in os.environ, 'EMAIL_HOST_USER missing from environment'
+assert 'EMAIL_HOST_PASSWORD' in os.environ, 'EMAIL_HOST_PASSWORD missing from environment'
+assert 'EMAIL_USE_TLS' in os.environ, 'EMAIL_USE_TLS missing from environment'
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_PORT = os.environ['EMAIL_PORT']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
 
 assert 'DATABASE_NAME' in os.environ, 'DATABASE_NAME missing from environment'
 assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
