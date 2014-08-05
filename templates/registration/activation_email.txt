@@ -1,4 +1,6 @@
-Eduduck account activation 
+Eduduck.com account activation 
+
+Hello, 
 
 Someone registered this email address on {{ site }}.
 If it was you, great, go ahead and activate by following this link or pasting
@@ -6,9 +8,9 @@ If it was you, great, go ahead and activate by following this link or pasting
 http://{{ site.domain }}/accounts/activate/{{ activation_key }}
 You have {{ expiration_days }} days left.
 
-*Please remember that whilst the site is under heavy development the test DB on
-EduDuck.com gets stamped on frequently. Basically this means your username will
-go away.*
-
 If you received this email and didn't register on the site, someone else has
-registered and given your email address.
+tried to register with this email address. If that should be the case, then provided that they do not have access to your email password, they should neither be able to read this email, nor activate the account. 
+
+Should you require further assistance with EduDuck.com, please let someone know via our support page: http://{{ site.domain }}/support
+
+We sincerely hope that EduDuck.com can become a platform to help you learn, and encourage you to share your knowledge with others: set up courses too!
