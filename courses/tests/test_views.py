@@ -83,9 +83,9 @@ class CourseViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/')
         self.assertContains(
-	    response, 
-	    "<a href='/courses/1/edit/' id='id_edit_course' class='pure-button pure-button-primary'>Edit Course</a>",
-	    html=True)
+        response, 
+        "<a href='/courses/1/edit/' id='id_edit_course' class='pure-button pure-button-primary'>Edit Course</a>",
+        html=True)
         self.assertEqual(response.context['user_can_edit'], True)
 
     def test_course_page_has_no_edit_button_if_not_organiser_instructor(self):
@@ -96,17 +96,17 @@ class CourseViewTests(TestCase):
 
     def test_course_edits_actually_saved(self):
         self.client.login(username='bertie', password='bertword')
-	mod_data = {
-	    'course_form-code': 'F1', 
-	    'course_form-name': 'Dingbat', 
-	    'course_form-abstract': 'Fingbot',
+        mod_data = {
+            'course_form-code': 'F1', 
+            'course_form-name': 'Dingbat', 
+            'course_form-abstract': 'Fingbot',
             'course_form-organiser': self.user1,
-	    'course_form-instructor': self.user1,
-	    'lesson_formset-TOTAL_FORMS':4,
-	    'lesson_formset-INITIAL_FORMS':1,
-	    'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
-	    'lesson_formset-0-name':'Boo',
-	    'lesson_formset-0-abstract':'Hoo',}
+            'course_form-instructor': self.user1,
+            'lesson_formset-TOTAL_FORMS':4,
+            'lesson_formset-INITIAL_FORMS':1,
+            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'lesson_formset-0-name':'Boo',
+            'lesson_formset-0-abstract':'Hoo',}
         ##This should trigger modification of the course
         response = self.client.post('/courses/1/edit/', mod_data)
         
@@ -115,8 +115,8 @@ class CourseViewTests(TestCase):
         self.assertContains(response, 
             '<h3>F1 : Dingbat Course Homepage</h3>', html=True)
         self.assertContains(response, '<p>Fingbot</p>', html=True)
-	self.assertContains(response, '<h4>Boo</h4>', html=True)
-	self.assertIn('<p>Hoo', response.content)
+        self.assertContains(response, '<h4>Boo</h4>', html=True)
+        self.assertIn('<p>Hoo', response.content)
         
     def test_course_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/edit/')  
@@ -155,9 +155,10 @@ class CourseViewTests(TestCase):
         self.assertIsInstance(response.context['course_form'], CourseFullForm)
         
     def test_course_edit_page_uses_correct_formsets(self):
-	self.client.login(username='bertie', password='bertword')
-	response = self.client.get('/courses/1/edit/')
-	self.assertIsInstance(response.context['lesson_formset'], LessonInlineFormset)
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/')
+        self.assertIsInstance(
+            response.context['lesson_formset'], LessonInlineFormset)
        
     def test_course_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='bertie', password='bertword')
@@ -165,52 +166,52 @@ class CourseViewTests(TestCase):
             'course_form-code': '',
             'course_form-name': '',
             'course_form-abstract': '',
-	    'lesson_formset-0-id':u'1',	#prevent MultiVal dict key err.
-	    'lesson_formset-TOTAL_FORMS':u'4',
-	    'lesson_formset-INITIAL_FORMS':u'1'}
-	response = self.client.post('/courses/1/edit/', data)
+            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'lesson_formset-TOTAL_FORMS':u'4',
+            'lesson_formset-INITIAL_FORMS':u'1'}
+        response = self.client.post('/courses/1/edit/', data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'courses/course_edit.html')
        
     def test_course_edit_page_validation_errors_generate_error_msg(self):
-	self.client.login(username='bertie', password='bertword')
-	##First with missing basic course data
+        self.client.login(username='bertie', password='bertword')
+        ##First with missing basic course data
         data = {
             'course_form-code': '',
             'course_form-name': '',
             'course_form-abstract': '',
-	    'lesson_formset-0-id':u'1',	#prevent MultiVal dict key err.
-	    'lesson_formset-TOTAL_FORMS':u'4',
-	    'lesson_formset-INITIAL_FORMS':u'1'}
-	response = self.client.post('/courses/1/edit/', data)
-	self.assertIn('Please correct the following:', response.content)
-	
-	##Then with missing required fields in lesson formset
+            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'lesson_formset-TOTAL_FORMS':u'4',
+            'lesson_formset-INITIAL_FORMS':u'1'}
+        response = self.client.post('/courses/1/edit/', data)
+        self.assertIn('Please correct the following:', response.content)
+    
+        ##Then with missing required fields in lesson formset
         data = {
             'course_form-code': 'T1',
             'course_form-name': 'Test',
             'course_form-abstract': 'With some invalid lessons',
-	    'lesson_formset-0-id':u'1',	#prevent MultiVal dict key err.
-	    'lesson_formset-0-name':'',
-	    'lesson_formset-TOTAL_FORMS':u'4',
-	    'lesson_formset-INITIAL_FORMS':u'1'}
-	response = self.client.post('/courses/1/edit/', data)
-	self.assertIn('Please correct the following:', response.content)
+            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'lesson_formset-0-name':'',
+            'lesson_formset-TOTAL_FORMS':u'4',
+            'lesson_formset-INITIAL_FORMS':u'1'}
+        response = self.client.post('/courses/1/edit/', data)
+        self.assertIn('Please correct the following:', response.content)
 
     def test_course_edit_page_has_course_detail_area(self):
-	self.client.login(username='bertie', password='bertword')
-	response = self.client.get('/courses/1/edit/')
-	self.assertIn('id_course_basics_area', response.content)
-	self.assertIn('value="EDU02"', response.content)
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/')
+        self.assertIn('id_course_basics_area', response.content)
+        self.assertIn('value="EDU02"', response.content)
         self.assertIn('value="A Course of Leeches"', response.content)
         self.assertIn(
             'Learn practical benefits of leeches', response.content)
  
     def test_course_edit_page_has_populated_lesson_area(self):
-	self.client.login(username='bertie', password='bertword')
-	response = self.client.get('/courses/1/edit/')
-	self.assertIn('id_lesson_formset_area', response.content)
-	self.assertIn('Introduction to Music', response.content)
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/')
+        self.assertIn('id_lesson_formset_area', response.content)
+        self.assertIn('Introduction to Music', response.content)
 
     def test_course_create_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/create/')
@@ -300,11 +301,12 @@ class CourseViewTests(TestCase):
     
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
+
         response = self.client.get('/courses/')
         self.assertEqual(response.status_code, 200)
         #Next check template variables are present
-        self.assertTrue(x in response.context for x in ['course_list', 
-                                                        'course_count'])
+        self.assertTrue(
+            x in response.context for x in ['course_list', 'course_count'])
 
     def test_course_index_logged_in(self):
         """Check course index loads for logged in user"""
@@ -332,15 +334,15 @@ class CourseViewTests(TestCase):
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         #check template variables present as approp
-        self.assertIn('course', response.context, \
+        self.assertIn('course', response.context, 
             "Missing template var: course")
-        self.assertNotIn('uc', response.context, \
+        self.assertNotIn('uc', response.context, 
             "Missing template var: uc")
-        self.assertIn('attachments', response.context, \
+        self.assertIn('attachments', response.context,
             "Missing template var: attachments")
-        self.assertNotIn('history', response.context, \
+        self.assertNotIn('history', response.context, 
             " Template var should not be there: history")       
-        self.assertEqual('auth_noreg', response.context['status'], \
+        self.assertEqual('auth_noreg', response.context['status'],
             "Registration status should be auth_noreg")
             
         #Register the user and repeat
@@ -396,14 +398,12 @@ class CourseViewTests(TestCase):
         self.assertIn('course_withdraw', response.content)
         self.assertEqual(response.context['uc'].active, True)
         self.assertEqual(response.context['uc'].withdrawn, False)                
-        
         #see that a registered user can complete
         response = self.client.post(url2, {'course_complete':'Complete'})
         self.assertEqual(response.context['status'], 'auth_reg')
         self.assertIn('course_reopen', response.content)
         self.assertEqual(response.context['uc'].active, False)                
         self.assertEqual(response.context['uc'].completed, True)        
-        
         
     def test_course_single_unauth(self):        
         """Check individual course page loads for unauth user"""
@@ -427,8 +427,7 @@ class CourseViewTests(TestCase):
         
 
     def test_86_organiser_instructor_name(self):
-        """Course single template show either full name or username of 
-instructor"""
+        """Course single template show full name or username of instructor"""
 
         # Load up a course single page
         c2 = self.course2
