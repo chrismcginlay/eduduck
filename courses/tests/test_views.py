@@ -133,6 +133,17 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/edit/') 
         self.assertEqual(response.status_code, 200)
     
+    def test_course_edit_page_has_correct_title_and_breadcrumb(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/')
+        needle = "<h2 id='id_page_title'>Editing: A Course of Leeches</h2>"
+        self.assertIn(needle, response.content)
+        self.assertIn("<p id='id_breadcrumb'>", response.content)
+        self.assertContains(
+            response, 
+            "<a href='/courses/'>All Courses</a> > <a href='/courses/1/'>A Course of Leeches</a> > Edit",
+            html=True)
+
     def test_course_edit_uses_correct_template(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/edit/') 
