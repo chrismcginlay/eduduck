@@ -9,8 +9,7 @@
 {% block breadcrumb %}
 <p id='id_breadcrumb'>
     <a href="{% url 'courses.views.index' %}">All Courses</a> &gt;
-        {{ course.name }}
-    <a href="#">Edit Course</a>
+    <a href="{{ course.get_absolute_url }}">{{ course.name }}</a> &gt; Edit
 </p>
 {% endblock breadcrumb %}
     

@@ -141,8 +141,13 @@ class CourseViewTests(TestCase):
         self.assertIn("<p id='id_breadcrumb'>", response.content)
         self.assertContains(
             response, 
-            "<a href='/courses/'>All Courses</a> > <a href='/courses/1/'>A Course of Leeches</a> > Edit",
+            '<a href="/courses/">All Courses</a>',
             html=True)
+        self.assertContains(
+            response, 
+            '<a href="/courses/1/">A Course of Leeches</a>',
+            html=True)
+
 
     def test_course_edit_uses_correct_template(self):
         self.client.login(username='bertie', password='bertword')
