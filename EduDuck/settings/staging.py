@@ -11,8 +11,6 @@ ALLOWED_HOSTS = [
     'staging.eduduck.com',
     'eduduck.com', 
     'www.eduduck.com', 
-    'static.eduduck.com', 
-    'media.eduduck.com'
 ]
 
 # Make SECRET_KEY unique, and don't share it with anybody.
