@@ -283,6 +283,8 @@ def _prepare_environment_variables(settings, hostname):
         append(env_config, "EMAIL_HOST_PASSWORD={0}".format(email_host_password))
     if not contains(env_config, "EMAIL_HOST"):
         append(env_config, "EMAIL_HOST={0}".format(email_host))
+    if not contains(env_config, 'EMAIL_USE_TLS'):
+        append(env_config, "EMAIL_USE_TLS=True")
     if not contains(env_config, 'EMAIL_PORT'):
         append(env_config, "EMAIL_PORT={0}".format(email_port))
     warn(yellow("Remember to set EMAIL_HOST_PASSWORD in {0}".format(env_config)))
