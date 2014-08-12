@@ -80,7 +80,6 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'core.context_processors.git_branch_render',
-    'core.context_processors.show_survey_link',
 )
 
 MIDDLEWARE_CLASSES = (
