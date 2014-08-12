@@ -47,7 +47,7 @@ class CasualVisitorArrives(FunctionalTest):
 
         # He sees the strapline
         strapline = self.browser.find_element_by_id('strapline').text
-        self.assertIn('Courses are free to take\nor create your own.',
+        self.assertIn("Courses are free to make\nif they're free to take.",
                       strapline)
         
         # Whilst the site is in development, he sees the current branch
