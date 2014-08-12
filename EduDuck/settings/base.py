@@ -98,7 +98,6 @@ ROOT_URLCONF = 'EduDuck.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'EduDuck.wsgi.application'
 
-#TODO: Ensure templates aren't under docroot for production version
 TEMPLATE_DIRS = (
     os.path.join(SITE_ROOT, 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
