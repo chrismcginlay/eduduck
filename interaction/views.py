@@ -65,6 +65,7 @@ def userlearningintentiondetail_single(request, user_id, lid_id):
     """Probably pointlessly display user interaction with single LID"""
     
     #TODO: nothing actually links to this view?
+    #Hmm. Might in the future. Leaving in for now at MVP0.2
     ulid = get_object_or_404(UserLearningIntentionDetail, 
                              user=user_id, 
                              learning_intention_detail=lid_id)
