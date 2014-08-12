@@ -177,10 +177,9 @@ LOGGING = {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
         },
-#TODO uncomment when on Django 1.5
-#        'require_debug_true': {
-#            '()': 'django.utils.log.RequireDebugTrue'
-#        }
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue'
+        }
     },
     'handlers': {
         'null': {
