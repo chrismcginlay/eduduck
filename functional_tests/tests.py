@@ -127,8 +127,9 @@ class VisitorBrowsesMenus(FunctionalTest):
         # Urvasi is visiting the site for the first time;
         # She checks out the main menu
         self.browser.get(self.server_url)
-        items_expected = ['Courses', 'Login', 'Register', 
-                          'Support', 'About']
+        items_expected = [
+            'Courses', 'Login', 'Register', 
+            'Blog', 'Support', 'About']
         self._checkChildItemsPresent(items_expected, 'menu')
 
         # Urvasi is quite methodical and so works her way through each of the
@@ -141,7 +142,9 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.get(self.server_url)
         self._logUserIn('urvasi', 'hotel23')
         ##check logout last as clicking it has a side-effect.
-        items_expected = ['Courses', 'Urvasi', 'Support', 'About', 'Logout']
+        items_expected = [
+            'Courses', 'Urvasi', 'Blog', 
+            'Support', 'About', 'Logout']
         self._checkChildItemsPresent(items_expected, 'menu')
         self._checkChildLinksWork('menu')
         
