@@ -65,11 +65,11 @@ $local:~/deploy_tools fab deploy:host=sue@localhost,settings=dev
 
 or 
 
-$local:~/deploy_tools fab deploy:host=roberta@staging.example.com,settings=staging
+$local:~/deploy_tools fab deploy:host=roberta@staging.example.com:7822,settings=staging
 
 or 
 
-$local:~/deploy_tools fab deploy:host=roberta@example.com,settings=production
+$local:~/deploy_tools fab deploy:host=roberta@www.example.com:7822,settings=production
 
 MySQL, nginx and gunicorn should be configured and services started at the end.
 To test, simply visit the URL.

@@ -6,9 +6,9 @@ from fabric.operations import prompt
 import random
 import os, sys
 
-#REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
+REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
 # NB: this will require ssh keys to be registered with github account
-REPO_URL = "git@github.com:chris/eduduck.git"
+#REPO_URL = "git@github.com:chris/eduduck.git"
 
 # One may wish to alter the following, yah?
 SITES_DIR = "/home/chris/sites"
@@ -78,12 +78,12 @@ def deploy(settings):
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
 
-    _create_dir_tree_if_not_exists(env.host)
+    _create_dir_tree_if_not_exists(env.host, settings)
     _get_source(SOURCE_DIR)
-    _config_nginx(env.host, SOURCE_DIR)
+    _config_nginx(env.host, SOURCE_DIR, settings)
     _update_virtualenv(SOURCE_DIR, settings)
     _prepare_environment_variables(settings, env.host)
-    _write_gunicorn_upstart_script(env.host, SOURCE_DIR)
+    _write_gunicorn_upstart_script(env.host, SOURCE_DIR, settings)
     _ready_logfiles()
     _prepare_database(SOURCE_DIR, settings, env.host)
     _update_static_files(SOURCE_DIR, settings)
@@ -102,7 +102,7 @@ def devbox():
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     
-    _create_dir_tree_if_not_exists(env.host)
+    _create_dir_tree_if_not_exists(env.host, settings)
     _get_source(SOURCE_DIR)
     _update_virtualenv(SOURCE_DIR, settings)
     _prepare_environment_variables(settings, env.host)
@@ -135,7 +135,7 @@ def git_update(settings):
 
 # Private helper functions, don't call directly.
 
-def _create_dir_tree_if_not_exists(site_name):
+def _create_dir_tree_if_not_exists(site_name, settings):
     if settings=='dev':
         subdirs = ("source", "virtualenv")
     else:
@@ -156,9 +156,9 @@ def _get_source(sdir):
     
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
-    run("cd {0}; git checkout fabfiling".format(sdir))    
+    run("cd {0}; git checkout master".format(sdir))    
         
-def _config_nginx(site_name, sdir):
+def _config_nginx(site_name, sdir, settings):
     if settings=='dev':
         return
     sudo("mkdir -p /etc/nginx/conf.d/{0}".format(site_name))
@@ -176,7 +176,7 @@ def _config_nginx(site_name, sdir):
             site_name
         ))
 
-def _write_gunicorn_upstart_script(site_name, sdir):
+def _write_gunicorn_upstart_script(site_name, sdir, settings):
     if settings=='dev':
         return
     gunicorn_template_head = sdir + "/deploy_tools/gunicorn_upstart.head.template"
@@ -344,15 +344,15 @@ def _prepare_database(sdir, settings, hostname):
     except:        
         print(green("No, db doesn't exist. MySQL root password"))
         run("mysqladmin -u root -p create {0}".format(dbname))
-        perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
-        sql = "GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';".format(
-            perms,
-            dbname,
-            dbuser,
-            dbpass,
-        )
 
     # Grant required privileges. Idempotent.
+    perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
+    sql = "GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';".format(
+        perms,
+        dbname,
+        dbuser,
+        dbpass,
+    )
     print(green("Grant db permissions: MySQL root password"))
     run("mysql -u root -p -e \"" + sql + "\"")
 
