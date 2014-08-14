@@ -87,7 +87,7 @@ def deploy(settings):
     _ready_logfiles()
     _prepare_database(SOURCE_DIR, settings, env.host)
     _update_static_files(SOURCE_DIR, settings)
-    _restart_services(env.host)
+    _restart_services(env.host, settings)
     
 def devbox():
     """ Set up a development box.
@@ -129,7 +129,7 @@ def git_update(settings):
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     _get_source(SOURCE_DIR)
     _update_static_files(SOURCE_DIR, settings)
-    _restart_services(env.host)
+    _restart_services(env.host, settings)
 
 
 
@@ -157,6 +157,7 @@ def _get_source(sdir):
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
     run("cd {0}; git checkout master".format(sdir))    
+    #run("cd {0}; git checkout 89-fabfile_db".format(sdir))
         
 def _config_nginx(site_name, sdir, settings):
     if settings=='dev':
@@ -386,7 +387,7 @@ def _restore_media_files():
     # not sure where these would be deployed from - some backup service?
     pass
 
-def _restart_services(site_name):
+def _restart_services(site_name, settings):
     if settings=='dev':
         return
     

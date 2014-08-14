@@ -28,7 +28,6 @@ EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_PORT = os.environ['EMAIL_PORT']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
-import pdb; pdb.set_trace()
 assert 'DATABASE_NAME' in os.environ, 'DATABASE_NAME missing from environment'
 assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
 assert 'DATABASE_PASSWORD' in os.environ, 'DATABASE_PASSWORD missing from environment'
