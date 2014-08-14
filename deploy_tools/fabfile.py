@@ -10,7 +10,7 @@ REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
 # NB: this will require ssh keys to be registered with github account
 #REPO_URL = "git@github.com:chris/eduduck.git"
 
-# One may wish to alter the following, yah?
+# Adjust the following to suit your taste. 
 SITES_DIR = "/home/chris/sites"
 
 def provision():
@@ -255,11 +255,12 @@ def _prepare_environment_variables(settings, hostname):
         charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
         secret_key = "".join(random.choice(charset) for i in range(69))
 
-        # Database parameters
+        # Database parameters.
+        # Staging and production should be using seperate databases:
         random.seed()
         database_password = "".join(random.choice(charset) for i in range(69))
-        database_user = 'the_duckinator'
-        database_name = 'eduduck'
+        database_user = 'the_{0}_duckinator'.format(settings)
+        database_name = '{0}_eduduck'.format(settings)
         database_port = ''
         
         # Email parameters
@@ -275,7 +276,7 @@ def _prepare_environment_variables(settings, hostname):
     if not contains(env_config, 'DATABASE_USER'):
         append(env_config, "DATABASE_USER={0}".format(database_user))
     if not contains(env_config, 'DATABASE_PASSWORD'):
-        append(env_config, "DATABASE_PASSWORD={0}".format(database_password))
+        append(env_config, "DATABASE_PASSWORD='{0}'".format(database_password))
     if not contains(env_config, 'DATABASE_PORT'):
         append(env_config, "DATABASE_PORT={0}".format(database_port))
     if not contains(env_config, 'EMAIL_HOST_USER'):
