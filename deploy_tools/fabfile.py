@@ -259,7 +259,7 @@ def _prepare_environment_variables(settings, hostname):
         # Staging and production should be using seperate databases:
         random.seed()
         database_password = "".join(random.choice(charset) for i in range(69))
-        database_user = 'the_{0}_duckinator'.format(settings)
+        database_user = '{0}_duckinator'.format(settings[:4])
         database_name = '{0}_eduduck'.format(settings)
         database_port = ''
         
@@ -276,7 +276,7 @@ def _prepare_environment_variables(settings, hostname):
     if not contains(env_config, 'DATABASE_USER'):
         append(env_config, "DATABASE_USER={0}".format(database_user))
     if not contains(env_config, 'DATABASE_PASSWORD'):
-        append(env_config, "DATABASE_PASSWORD='{0}'".format(database_password))
+        append(env_config, "DATABASE_PASSWORD={0}".format(database_password))
     if not contains(env_config, 'DATABASE_PORT'):
         append(env_config, "DATABASE_PORT={0}".format(database_port))
     if not contains(env_config, 'EMAIL_HOST_USER'):
