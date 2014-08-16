@@ -74,6 +74,10 @@ $local:~/deploy_tools fab deploy:host=roberta@www.example.com:7822,settings=prod
 MySQL, nginx and gunicorn should be configured and services started at the end.
 To test, simply visit the URL.
 
+After confirming the URL functions, make sure that their is a django admin user and that
+the SITES variable is set up correctly:
+$local:~/deploy_tools fab minimal_production_data:host=billy@www.example.com:7822,settings=production
+
 5. Updating source code to latest git code.
 
 If all that is required is to pull the latest code from github, the use the 
