@@ -33,11 +33,16 @@ assert 'DATABASE_NAME' in os.environ, 'DATABASE_NAME missing from environment'
 assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
 assert 'DATABASE_PASSWORD' in os.environ, 'DATABASE_PASSWORD missing from environment'
 assert 'DATABASE_PORT' in os.environ, 'DATABASE_PORT missing from environment'
+
+#Somehow extra double quotes are being wrapped round the DATABASE_PASSWORD
+#Since I can't find out where they are coming from, rip them off here.
+#TODO Find out what is causing the double quote wrapping and remove this hack:
+dbpw = os.environ['DATABASE_PASSWORD'][1:-1]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'PASSWORD': dbpw,
         'NAME': os.environ['DATABASE_NAME'],
         'PORT': os.environ['DATABASE_PORT'],
         'HOST': '',

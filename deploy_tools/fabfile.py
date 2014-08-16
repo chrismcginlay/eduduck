@@ -276,7 +276,7 @@ def _prepare_environment_variables(settings, hostname):
     if not contains(env_config, 'DATABASE_USER'):
         append(env_config, "DATABASE_USER={0}".format(database_user))
     if not contains(env_config, 'DATABASE_PASSWORD'):
-        append(env_config, "DATABASE_PASSWORD={0}".format(database_password))
+        append(env_config, "DATABASE_PASSWORD='{0}'".format(database_password))
     if not contains(env_config, 'DATABASE_PORT'):
         append(env_config, "DATABASE_PORT={0}".format(database_port))
     if not contains(env_config, 'EMAIL_HOST_USER'):
@@ -335,7 +335,7 @@ def _prepare_database(sdir, settings, hostname):
     print(green("Does db user exist? MySQL root password"))
     out = run("mysql -u root -p -e 'select distinct User from mysql.user;'")
     if out.find(dbuser)==-1: # -1 on fail to find
-        create_user_cmd = "create user {0}@localhost identified by '{1}';".format(dbuser, dbpass)
+        create_user_cmd = "create user {0}@localhost identified by {1};".format(dbuser, dbpass)
         print(green("No, user doesn't exist. MySQL root password"))
         run("mysql -u root -p -e \"" + create_user_cmd + "\"")
         
@@ -349,7 +349,7 @@ def _prepare_database(sdir, settings, hostname):
 
     # Grant required privileges. Idempotent.
     perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
-    sql = "GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';".format(
+    sql = "GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY {3};".format(
         perms,
         dbname,
         dbuser,
