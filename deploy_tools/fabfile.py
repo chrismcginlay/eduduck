@@ -201,14 +201,18 @@ def _write_gunicorn_upstart_script(site_name, sdir, settings):
         env_var_path, 
         gunicorn_template_mid)
     run(sed_cmd)
+    
+    #set the config file permissions prior to write
+    sudo("touch {0}".format(gunicorn_config_path))
+    sudo("chmod 640 {0}".format(gunicorn_config_path))
 
     #join the head, mid and tail
     sudo("cat {0} > {1}".format(gunicorn_template_head, gunicorn_template_done))
     sudo("cat {0} >> {1}".format(gunicorn_template_mid, gunicorn_template_done))
     sudo("cat {0} >> {1}".format(gunicorn_template_tail, gunicorn_template_done))
     
-    #NB this sed sources the freshly written config, not the template
-    sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee {2}"
+    #nb this sed sources the freshly written config, not the template
+    sed_cmd = "sed \"s/sitename/{0}/g\" {1} | tee {2}"
     sed_cmd = sed_cmd.format(site_name, gunicorn_template_done, gunicorn_config_path)
     sudo(sed_cmd)
     
@@ -229,21 +233,25 @@ def _update_virtualenv(sdir, settings):
             virtualenv_dir, sdir))
   
 def _prepare_environment_variables(settings, hostname):
-    """ Prepare activate to export required env vars into the virtualenv 
+    """ prepare activate to export required env vars into the virtualenv 
     
-    Ideally, you will provide secrets and other environment variables in 
+    ideally, you will provide secrets and other environment variables in 
     the virtualenv/bin/virtualenv_envvars.txt file.
     
-    However, that directory doesn't exist until you run this command. Solution
+    however, that directory doesn't exist until you run this command. solution
     might be to split this deploy command into two parts, allowing the user to
     create the virtualenv_envvars file.
     
-    If not, we'll make it up as we go and you can clear up the mess later
+    if not, we'll make it up as we go and you can clear up the mess later
     """
     
     virtenv_dir = "{0}/{1}/virtualenv/bin".format(SITES_DIR, hostname)
     virtenv_activate = virtenv_dir + '/activate'
     env_config = virtenv_dir + "/virtualenv_envvars.txt"
+
+    #Set file permissions:
+    run("touch {0}".format(env_config))
+    run("chmod 640 {0}".format(env_config))
     
     if settings=='dev':
         # The dev SECRET_KEY doesn't need to be secret, as it's never deployed
