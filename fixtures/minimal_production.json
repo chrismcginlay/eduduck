@@ -32,7 +32,7 @@
         "name": "Blender", 
         "abstract": "An introduction to the amazing Blender 3D animation suite.", 
         "organiser": 1, 
-        "instructor": 1, 
+        "instructor": 1
     }
 },
 {
@@ -42,7 +42,7 @@
         "name": "ISS", 
         "abstract": "Stub course: Systems overview of the International Space Station", 
         "organiser": 1, 
-        "instructor": 1,
+        "instructor": 1
     }
 },
 {
@@ -52,7 +52,7 @@
         "name": "Personal Development", 
         "abstract": "Stub course: Fostering the 'Growth Mindset' within a student cohort", 
         "organiser": 1, 
-        "instructor": 1,
+        "instructor": 1
     }
 },
 {
@@ -453,5 +453,5 @@
         "lesson": 3, 
         "name": "3D Cartesians"
     }
-},
+}
 ]
