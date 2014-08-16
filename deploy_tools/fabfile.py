@@ -36,6 +36,13 @@ def provision():
         debconf_cmd = "debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password {0}'".format(passwd)
         sudo(debconf_cmd)
         
+    if not exists('/home/chris/.my.cnf'):
+        run("touch /home/chris/.my.cnf")
+        run("chmod 640 /home/chris/.my.cnf")
+        run("echo [client] > /home/chris/.my.cnf")
+        run("echo user=root >> /home/chris/.my.cnf")
+        run("echo password='{0}' >> /home/chris/.my.cnf".format(passwd))
+
     apt_packages = [
         'python-virtualenv',
         'python-pip',
@@ -350,19 +357,19 @@ def _prepare_database(sdir, settings, hostname):
     
     # if the database user does not exist, create it
     print(green("Does db user exist? MySQL root password"))
-    out = run("mysql -u root -p -e 'select distinct User from mysql.user;'")
+    out = run("mysql -u root -e 'select distinct User from mysql.user;'")
     if out.find(dbuser)==-1: # -1 on fail to find
         create_user_cmd = "create user {0}@localhost identified by {1};".format(dbuser, dbpass)
         print(green("No, user doesn't exist. MySQL root password"))
-        run("mysql -u root -p -e \"" + create_user_cmd + "\"")
+        run("mysql -u root -e \"" + create_user_cmd + "\"")
         
     # if database does not exist create it
     try:
         print(green("Does the db exist? MySQL root password"))
-        out = run("mysql -u root -p -e 'use {0};'".format(dbname))
+        out = run("mysql -u root -e 'use {0};'".format(dbname))
     except:        
         print(green("No, db doesn't exist. MySQL root password"))
-        run("mysqladmin -u root -p create {0}".format(dbname))
+        run("mysqladmin -u root create {0}".format(dbname))
 
     # Grant required privileges. Idempotent.
     perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
@@ -373,7 +380,7 @@ def _prepare_database(sdir, settings, hostname):
         dbpass,
     )
     print(green("Grant db permissions: MySQL root password"))
-    run("mysql -u root -p -e \"" + sql + "\"")
+    run("mysql -u root -e \"" + sql + "\"")
 
     sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
