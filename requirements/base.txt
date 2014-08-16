@@ -7,7 +7,6 @@ gunicorn==18.0
 pyelasticsearch==0.6.1
 pytz==2013.9
 requests==2.2.1
-selenium==2.40.0
 simplejson==3.3.3
 six==1.5.2
 wsgiref==0.1.2
