@@ -1,0 +1,457 @@
+[
+{
+    "pk": 1,
+    "model": "sites.site",
+    "fields": {
+        "domain": "eduduck.com",
+        "name": "EduDuck.com"
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "chris", 
+        "first_name": "Chris", 
+        "last_name": "McGinlay", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2014-04-25T21:16:15Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "", 
+        "email": "chris@eduduck.com", 
+        "date_joined": "2014-02-27T23:44:47Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "courses.course", 
+    "fields": {
+        "name": "Blender", 
+        "abstract": "An introduction to the amazing Blender 3D animation suite.", 
+        "organiser": 1, 
+        "instructor": 1, 
+    }
+},
+{
+    "pk": 2, 
+    "model": "courses.course", 
+    "fields": {
+        "name": "ISS", 
+        "abstract": "Stub course: Systems overview of the International Space Station", 
+        "organiser": 1, 
+        "instructor": 1,
+    }
+},
+{
+    "pk": 3, 
+    "model": "courses.course", 
+    "fields": {
+        "name": "Personal Development", 
+        "abstract": "Stub course: Fostering the 'Growth Mindset' within a student cohort", 
+        "organiser": 1, 
+        "instructor": 1,
+    }
+},
+{
+    "pk": 1,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 1,
+        "abstract": "Be clear what Blender is, where to download it, what it can achieve, sources of community support.\r\n",
+        "name": "What is Blender for?"
+    }
+},
+{
+    "pk": 2,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 1,
+        "abstract": "Develop basic familiarity with the main parts of the default user interface.",
+        "name": "Basics of the User Interface"
+    }
+},
+{
+    "pk": 3,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 1,
+        "abstract": "Learn how to use the number pad to control your point of view in the 3D viewport.\r\nWatch the video that accompanies this lesson, then load the faceviewcube.blend file into blender and try it out for yourself.",
+        "name": "Orientation in 3D Space"
+    }
+},
+{
+    "pk": 4,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 2,
+        "abstract": "A structural overview of the International Space Station",
+        "name": "Structural Overview"
+    }
+},
+{
+    "pk": 5,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 2,
+        "abstract": "Electrical power systems including normal operation and failure levels.",
+        "name": "Power Systems"
+    }
+},
+{
+    "pk": 6,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 2,
+        "abstract": "Cabin temperature, air pressure and air composition, radiation monitoring. Failure levels and emergency procedures",
+        "name": "Primary Life Support"
+    }
+},
+{
+    "pk": 7,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 2,
+        "abstract": "Water recycling and purification plant, food storage, monitoring and stock rotation.",
+        "name": "Secondary Life Support"
+    }
+},
+{
+    "pk": 8,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 2,
+        "abstract": "Primary and backup communications hardware. Ground station protocols.",
+        "name": "Communications systems overview"
+    }
+},
+{
+    "pk": 9,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 2,
+        "abstract": "A guide to the medical and surgical facilities on board, protocols for emergency crewmember return, emergency surgery and terrestrial medical support",
+        "name": "Medical Emergencies."
+    }
+},
+{
+    "pk": 10,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 2,
+        "abstract": "On orbit attitude control, nominal orbital parameters and safe limits",
+        "name": "Propulsion Systems"
+    }
+},
+{
+    "pk": 11,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 3,
+        "abstract": "Starting with practical activities giving students real and significant improvement on a skill, using positive attitude",
+        "name": "Growth Now"
+    }
+},
+{
+    "pk": 12,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 3,
+        "abstract": "What are my limits? Self-limiting behaviours can be useful or a hindrance.",
+        "name": "Self Limiting"
+    }
+},
+{
+    "pk": 13,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 3,
+        "abstract": "Examples of brain plasticity from medical research. Toxicity of the notion of talent",
+        "name": "Talent -vs- Effort"
+        }
+},
+{
+    "pk": 14,
+    "model": "lesson.lesson",
+    "fields": {
+        "course": 3,
+        "abstract": "Growth of capacity in sport - work of Matthew Syed",
+        "name": "Case Study A"
+    }
+},
+{
+  "pk": 1,
+  "model": "outcome.learningintention",
+  "fields": {
+    "lesson": 1,
+    "text": "Recognise a range of tasks for which Blender could be used"
+  }
+},
+{
+  "pk": 2,
+  "model": "outcome.learningintention",
+  "fields": {
+    "lesson": 1,
+    "text": "Identify alternative tools and techniques"
+  }
+},
+{
+  "pk": 1,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "Spot 3D modelling tasks",
+    "learning_intention": 1,
+    "lid_type": "SC"
+  }
+},
+{
+  "pk": 2,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "Spot video sequencing tasks",
+    "learning_intention": 1,
+    "lid_type": "SC"
+  }
+},
+{
+  "pk": 3,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "Spot object animation tasks",
+    "learning_intention": 1,
+    "lid_type": "SC"
+  }
+},
+{
+  "pk": 4,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "Spot object physics tasks",
+    "learning_intention": 1,
+    "lid_type": "SC"
+  }
+},
+{
+  "pk": 5,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "Consider where a manual method might have advantages",
+    "learning_intention": 2,
+    "lid_type": "SC"
+  }
+},
+{
+  "pk": 6,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "Try out alternative software and compare with Blender",
+    "learning_intention": 2,
+    "lid_type": "SC"
+  }
+},
+{
+  "pk": 7,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "Talk about the advantages/disadvantages of Blender compared to other approaches",
+    "learning_intention": 2,
+    "lid_type": "SC"
+  }
+},
+{
+  "pk": 8,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "I can correctly identify or reject various tasks as being well suited to Blender",
+    "learning_intention": 1,
+    "lid_type": "LO"
+  }
+},
+{
+  "pk": 9,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "I can state whether the main techique of a task involves modelling, sequencing, animating or physics simulation",
+    "learning_intention": 1,
+    "lid_type": "LO"
+  }
+},
+{
+  "pk": 10,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "I can make a selection of appropriate tool or technique for a given job",
+    "learning_intention": 2,
+    "lid_type": "LO"
+  }
+},
+{
+  "pk": 11,
+  "model": "outcome.learningintentiondetail",
+  "fields": {
+    "text": "I can give reasons supporting selection of a particular tool or technique.",
+    "learning_intention": 2,
+    "lid_type": "LO"
+  }
+},
+{
+    "pk": 1,
+    "model": "attachment.attachment",
+    "fields": {
+        "course": 1,
+        "attachment": "attachments/course_overview.odt",
+        "seq": null,
+        "lesson": null,
+        "name": "Blender Course Overview",
+        "desc": "Outline of the course content..."
+    }
+},
+{
+    "pk": 2,
+    "model": "attachment.attachment",
+    "fields": {
+        "course": 1,
+        "attachment": "attachments/advice.txt",
+        "seq": null,
+        "lesson": null,
+        "name": "Course Advice",
+        "desc": "Just some advice, dude."
+    }
+},
+{
+    "pk": 3,
+    "model": "attachment.attachment",
+    "fields": {
+        "course": 1,
+        "attachment": "attachments/dummy_file.txt",
+        "seq": null,
+        "lesson": null,
+        "name": "Dummy File",
+        "desc": "Dummy attachment test"
+    }
+},
+{
+    "pk": 4,
+    "model": "attachment.attachment",
+    "fields": {
+        "course": null,
+        "attachment": "attachments/lesson_notes1.odt",
+        "seq": null,
+        "lesson": 1,
+        "name": "Lesson 1 Notes",
+        "desc": "The background reading for Lesson 1"
+    }
+},
+{
+    "pk": 5,
+    "model": "attachment.attachment",
+    "fields": {
+        "course": null,
+        "attachment": "attachments/lesson_notes2.odt",
+        "seq": null,
+        "lesson": 2,
+        "name": "Lesson 2 Notes",
+        "desc": "Study notes for lesson 2"
+    }
+},
+{
+    "pk": 6,
+    "model": "attachment.attachment",
+    "fields": {
+        "course": null,
+        "attachment": "attachments/blender_ui.png",
+        "seq": null,
+        "lesson": 2,
+        "name": "Blender UI",
+        "desc": "The Blender User Interface"
+    }
+},
+{
+    "pk": 7,
+    "model": "attachment.attachment",
+    "fields": {
+        "course": null,
+        "attachment": "attachments/blender_ui_annotated.png",
+        "seq": null,
+        "lesson": 2,
+        "name": "Blender UI annotated",
+        "desc": "Annotated graphic of the UI"
+    }
+},
+{
+    "pk": 8,
+    "model": "attachment.attachment",
+    "fields": {
+        "course": null,
+        "attachment": "attachments/faceviewcube.blend",
+        "seq": null,
+        "lesson": 3,
+        "name": "FaceViewCube Blendfile",
+        "desc": "The blender file for this lesson."
+    }
+},
+{
+    "pk": 9,
+    "model": "attachment.attachment",
+    "fields": {
+        "course": null,
+        "attachment": "attachments/lesson_notes3.odt",
+        "seq": null,
+        "lesson": 3,
+        "name": "Lesson 3 Notes",
+        "desc": "Course notes for lesson 3"
+    }
+},
+{
+    "pk": 1, 
+    "model": "video.video", 
+    "fields": {
+        "url": "http://www.youtube.com/embed/ffoBhqpsVPw", 
+        "course": 1, 
+        "lesson": null, 
+        "name": "Blender Course Intro"
+    }
+},
+{
+    "pk": 2, 
+    "model": "video.video", 
+    "fields": {
+        "url": "http://www.youtube.com/embed/b5qZnK_7f6U", 
+        "course": null, 
+        "lesson": 1, 
+        "name": "What is Blender?"
+    }
+},
+{
+    "pk": 3, 
+    "model": "video.video", 
+    "fields": {
+        "url": "http://youtube.com/embed/1uKZmb1O-os?rel=0", 
+        "course": null, 
+        "lesson": 3, 
+        "name": "Controlling Orientation"
+    }
+},
+{
+    "pk": 4, 
+    "model": "video.video", 
+    "fields": {
+        "url": "http://youtube.com/embed/8sJi9-1Hq_c", 
+        "course": null, 
+        "lesson": 2, 
+        "name": "Basics of the User Interface"
+    }
+},
+{
+    "pk": 5, 
+    "model": "video.video", 
+    "fields": {
+        "url": "http://www.youtube.com/embed/00wabfcXKE0", 
+        "course": null, 
+        "lesson": 3, 
+        "name": "3D Cartesians"
+    }
+},
+]
