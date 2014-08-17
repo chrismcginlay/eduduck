@@ -287,11 +287,23 @@ def _prepare_environment_variables(settings, hostname):
         database_name = '{0}_eduduck'.format(settings)
         database_port = ''
         
-        # Email parameters
+        # Email parameters defaults
         email_host_user = 'educk@unpossible.info'
         email_host = 'a2s73.a2hosting.com'
         email_host_password = 'set this after installation'
-        email_port = ''
+        email_port = '25'
+        email_use_tls = 'True'
+        
+        #User prompt for optional override
+        print green("Email parameters. Leave blank for defaults "\
+            "then fix yourself later")
+        email_host_user = prompt(
+            "EMAIL_HOST_USER = {0}".format(email_host_user))
+        email_host = prompt("EMAIL_HOST = {0}".format(email_host))
+        email_host_password = 
+            prompt("EMAIL_HOST_PASSWORD = {0}".format(email_host_password))
+        email_port = prompt("EMAIL_PORT = {0}".format(email_port))
+        email_use_tls = prompt("EMAIL_USE_TLS = {0}".format(email_use_tls))
 
     if not contains(env_config, 'SECRET_KEY'):
         append(env_config, "SECRET_KEY={0};".format(secret_key))
@@ -310,10 +322,11 @@ def _prepare_environment_variables(settings, hostname):
     if not contains(env_config, "EMAIL_HOST"):
         append(env_config, "EMAIL_HOST={0}".format(email_host))
     if not contains(env_config, 'EMAIL_USE_TLS'):
-        append(env_config, "EMAIL_USE_TLS=True")
+        append(env_config, "EMAIL_USE_TLS={0}".format(email_use_tls))
     if not contains(env_config, 'EMAIL_PORT'):
         append(env_config, "EMAIL_PORT={0}".format(email_port))
-    warn(yellow("Remember to set EMAIL_HOST_PASSWORD in {0}".format(env_config)))
+    warn(yellow("Email password issues? "\
+        "Verify EMAIL_HOST_PASSWORD in {0}".format(env_config)))
  
     # PYTHONPATH
     append(env_config, "PYTHONPATH={0}/{1}/source".format(SITES_DIR, hostname))
@@ -349,7 +362,7 @@ def _prepare_database(sdir, settings, hostname):
     get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
     dbname = run(get_var)
 
-    # TODO
+    # TODO - test to see if recent work resolves this.
     # There is an odd thing going on here with passwords sometimes.
     # Sometimes password is not set (SHOW GRANTS FOR duckinator@localhost;) 
     # SET PASSWORD FOR 'duckinator'@'localhost' = PASSWORD('pw'); seems to work
