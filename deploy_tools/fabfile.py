@@ -134,7 +134,7 @@ def minimal_production_data(sdir):
     Also ensures SITES entry is set to eduduck.com instead of example.com"""
 
     run("cd {0}; python manage.py loaddata fixtures/minimal_production.json"\
-        " --settings=EduDuck.settings.production".format(sdir)
+        " --settings=EduDuck.settings.production".format(sdir))
 
 def git_update(settings):
     """ Git pull the latest code from github, then run collectstatic,  
@@ -296,12 +296,12 @@ def _prepare_environment_variables(settings, hostname):
         
         #User prompt for optional override
         print green("Email parameters. Leave blank for defaults "\
-            "then fix yourself later")
+            "or enter replacement values.")
         email_host_user = prompt(
             "EMAIL_HOST_USER = {0}".format(email_host_user))
         email_host = prompt("EMAIL_HOST = {0}".format(email_host))
-        email_host_password = 
-            prompt("EMAIL_HOST_PASSWORD = {0}".format(email_host_password))
+        email_host_password = prompt(
+            "EMAIL_HOST_PASSWORD = {0}".format(email_host_password))
         email_port = prompt("EMAIL_PORT = {0}".format(email_port))
         email_use_tls = prompt("EMAIL_USE_TLS = {0}".format(email_use_tls))
 
@@ -319,7 +319,9 @@ def _prepare_environment_variables(settings, hostname):
         append(env_config, "EMAIL_HOST_USER={0}".format(email_host_user))
     if not contains(env_config, 'EMAIL_HOST_PASSWORD'):
         append(env_config, "EMAIL_HOST_PASSWORD={0}".format(email_host_password))
-    if not contains(env_config, "EMAIL_HOST"):
+    
+    #NB below, search for EMAIL_HOST=, trailing = excludes EMAIL_HOST_USER etc.
+    if not contains(env_config, "EMAIL_HOST="):
         append(env_config, "EMAIL_HOST={0}".format(email_host))
     if not contains(env_config, 'EMAIL_USE_TLS'):
         append(env_config, "EMAIL_USE_TLS={0}".format(email_use_tls))
