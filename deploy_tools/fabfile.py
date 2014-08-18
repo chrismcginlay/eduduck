@@ -288,7 +288,7 @@ def _prepare_environment_variables(settings, hostname):
         database_port = ''
         
         # Email parameters defaults
-        email_host_user = 'educk@unpossible.info'
+        email_host_user = 'noreply@eduduck.com'
         email_host = 'a2s73.a2hosting.com'
         email_host_password = 'set this after installation'
         email_port = '25'
@@ -297,13 +297,29 @@ def _prepare_environment_variables(settings, hostname):
         #User prompt for optional override
         print green("Email parameters. Leave blank for defaults "\
             "or enter replacement values.")
-        email_host_user = prompt(
+        print yellow(
+            "TODO BUG 110: Won't actually replace existing values in config") 
+        response = prompt(
             "EMAIL_HOST_USER = {0}".format(email_host_user))
-        email_host = prompt("EMAIL_HOST = {0}".format(email_host))
-        email_host_password = prompt(
+        if response:
+            email_host_user = response
+
+        response = prompt("EMAIL_HOST = {0}".format(email_host))
+        if response:
+            email_host = response
+
+        response = prompt(
             "EMAIL_HOST_PASSWORD = {0}".format(email_host_password))
-        email_port = prompt("EMAIL_PORT = {0}".format(email_port))
-        email_use_tls = prompt("EMAIL_USE_TLS = {0}".format(email_use_tls))
+        if response:
+            email_host_password = response
+
+        response = prompt("EMAIL_PORT = {0}".format(email_port))
+        if response:
+            email_port = response
+
+        response = prompt("EMAIL_USE_TLS = {0}".format(email_use_tls))
+        if response:    
+            email_use_tls = response
 
     if not contains(env_config, 'SECRET_KEY'):
         append(env_config, "SECRET_KEY={0};".format(secret_key))
