@@ -211,8 +211,10 @@ def _write_gunicorn_upstart_script(site_name, sdir, settings):
     
     #set the config file permissions prior to write
     sudo("touch {0}".format(gunicorn_config_path))
-    sudo("chmod 640 {0}".format(gunicorn_config_path))
-
+    sudo("touch {0}".format(gunicorn_template_done))
+    sudo("chmod 660 {0}".format(gunicorn_config_path))
+    sudo("chmod 660 {0}".format(gunicorn_template_done))
+    
     #join the head, mid and tail
     sudo("cat {0} > {1}".format(gunicorn_template_head, gunicorn_template_done))
     sudo("cat {0} >> {1}".format(gunicorn_template_mid, gunicorn_template_done))
@@ -223,6 +225,8 @@ def _write_gunicorn_upstart_script(site_name, sdir, settings):
     sed_cmd = sed_cmd.format(site_name, gunicorn_template_done, gunicorn_config_path)
     sudo(sed_cmd)
     
+    #cleanup - delete the dud config template
+    sudo("rm {0}".format(gunicorn_template_done))
 def _update_virtualenv(sdir, settings):
     virtualenv_dir = sdir + "/../virtualenv"
     if not exists(virtualenv_dir + "/bin/pip"): #
