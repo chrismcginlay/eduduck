@@ -227,6 +227,7 @@ def _write_gunicorn_upstart_script(site_name, sdir, settings):
     
     #cleanup - delete the dud config template
     sudo("rm {0}".format(gunicorn_template_done))
+
 def _update_virtualenv(sdir, settings):
     virtualenv_dir = sdir + "/../virtualenv"
     if not exists(virtualenv_dir + "/bin/pip"): #
@@ -280,7 +281,9 @@ def _prepare_environment_variables(settings, hostname):
     else: # Not dev!
         # First the SECRET_KEY
         random.seed()
-        charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
+        #Seems that $ character causes string escape problems with mysql-python
+        #Removed from charset
+        charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#%^&*(-_=+)"
         secret_key = "".join(random.choice(charset) for i in range(69))
 
         # Database parameters.
@@ -378,7 +381,7 @@ def _prepare_database(sdir, settings, hostname):
     get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
     dbname = run(get_var) 
     get_var = "source {0}; echo $DATABASE_PASSWORD;".format(path_to_activate)
-    dbpass = run(get_var)
+    dbpass = run(get_var)[1:-1]
     get_var = "source {0}; echo $DATABASE_USER;".format(path_to_activate)
     dbuser = run(get_var)
     get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
@@ -394,28 +397,27 @@ def _prepare_database(sdir, settings, hostname):
     print(green("Does db user exist? MySQL root password"))
     out = run("mysql -u root -e 'select distinct User from mysql.user;'")
     if out.find(dbuser)==-1: # -1 on fail to find
-        create_user_cmd = "create user {0}@localhost identified by {1};".format(dbuser, dbpass)
+        create_user_cmd = "create user {0}@localhost identified by '{1}';".format(dbuser, dbpass)
         print(green("No, user doesn't exist. MySQL root password"))
-        run("mysql -u root -e \"" + create_user_cmd + "\"")
+        run('mysql -u root -e "{0}"'.format(create_user_cmd))
         
     # if database does not exist create it
     try:
-        print(green("Does the db exist? MySQL root password"))
+        print(green("Does the db exist?"))
         out = run("mysql -u root -e 'use {0};'".format(dbname))
     except:        
-        print(green("No, db doesn't exist. MySQL root password"))
+        print(green("No, db doesn't exist."))
         run("mysqladmin -u root create {0}".format(dbname))
-
     # Grant required privileges. Idempotent.
     perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
-    sql = "GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY {3};".format(
+    sql = "GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';".format(
         perms,
         dbname,
         dbuser,
         dbpass,
     )
-    print(green("Grant db permissions: MySQL root password"))
-    run("mysql -u root -e \"" + sql + "\"")
+    print(green("Grant db permissions:"))
+    run('mysql -u root -e "{0}"'.format(sql))
 
     sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
