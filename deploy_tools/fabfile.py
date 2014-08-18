@@ -219,7 +219,7 @@ def _write_gunicorn_upstart_script(site_name, sdir, settings):
     sudo("cat {0} >> {1}".format(gunicorn_template_tail, gunicorn_template_done))
     
     #nb this sed sources the freshly written config, not the template
-    sed_cmd = "sed \"s/sitename/{0}/g\" {1} | tee {2}"
+    sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee {2}"
     sed_cmd = sed_cmd.format(site_name, gunicorn_template_done, gunicorn_config_path)
     sudo(sed_cmd)
     
