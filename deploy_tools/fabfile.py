@@ -336,7 +336,7 @@ def _prepare_environment_variables(settings, hostname):
     if not contains(env_config, 'DATABASE_USER'):
         append(env_config, "DATABASE_USER={0}".format(database_user))
     if not contains(env_config, 'DATABASE_PASSWORD'):
-        append(env_config, "DATABASE_PASSWORD='{0}'".format(database_password))
+        append(env_config, "DATABASE_PASSWORD={0}".format(database_password))
     if not contains(env_config, 'DATABASE_PORT'):
         append(env_config, "DATABASE_PORT={0}".format(database_port))
     if not contains(env_config, 'EMAIL_HOST_USER'):
@@ -391,7 +391,7 @@ def _prepare_database(sdir, settings, hostname):
     get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
     dbname = run(get_var) 
     get_var = "source {0}; echo $DATABASE_PASSWORD;".format(path_to_activate)
-    dbpass = run(get_var)[1:-1]
+    dbpass = run(get_var)
     get_var = "source {0}; echo $DATABASE_USER;".format(path_to_activate)
     dbuser = run(get_var)
     get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
