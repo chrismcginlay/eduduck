@@ -377,7 +377,7 @@ def _ready_logfiles():
    
 def _write_wsgi_file(sdir, settings):
     """ Set up the wsgi.py file for either staging or production """
-    import pdb; pdb.set_trace()
+    
     if settings=='dev':
         return
 
@@ -429,6 +429,7 @@ def _prepare_database(sdir, settings, hostname):
     print(green("Grant db permissions:"))
     run('mysql -u root -e "{0}"'.format(sql))
 
+    import pdb; pdb.set_trace()
     sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
         env.host,
