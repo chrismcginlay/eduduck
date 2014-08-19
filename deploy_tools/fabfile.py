@@ -281,9 +281,9 @@ def _prepare_environment_variables(settings, hostname):
     else: # Not dev!
         # First the SECRET_KEY
         random.seed()
-        #Seems that $ character causes string escape problems with mysql-python
-        #Removed from charset
-        charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#%^&*(-_=+)"
+        #Seems that !$ characters causes string escape problems with nested quoting
+        #required to build mysql -e "command" structures. Removed from charset
+        charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#%^&*(-_=+)"
         secret_key = "".join(random.choice(charset) for i in range(69))
 
         # Database parameters.
@@ -297,7 +297,7 @@ def _prepare_environment_variables(settings, hostname):
         # Email parameters defaults
         email_host_user = 'noreply@eduduck.com'
         email_host = 'a2s73.a2hosting.com'
-        email_host_password = 'set this after installation'
+        email_host_password = 'can_set_after_installation'
         email_port = '25'
         email_use_tls = 'True'
         
@@ -375,7 +375,7 @@ def _ready_logfiles():
     sudo("chmod 700 /var/log/eduduck_db.log")
     
 def _prepare_database(sdir, settings, hostname):
-
+    
     # load environment variables
     path_to_activate = "{0}/{1}/virtualenv/bin/activate".format(SITES_DIR, hostname)
     get_var = "source {0}; echo $DATABASE_NAME;".format(path_to_activate)
