@@ -127,15 +127,17 @@ def restore():
     _restore_database()
     _restore_media_files(SOURCE_DIR)
 
-def minimal_production_data(sdir):
+def minimal_production_data():
     """ Load minimal production data for the first production install.
 
     Use this to quickly put up 3 courses with some example content and to
     have a django admin user.
     Also ensures SITES entry is set to eduduck.com instead of example.com"""
 
-    run("cd {0}; python manage.py loaddata fixtures/minimal_production.json"\
-        " --settings=EduDuck.settings.production".format(sdir))
+    SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
+    run("cd {0}; source ../virtualenv/bin/activate;"\
+        " python manage.py loaddata fixtures/minimal_production.json"\
+        " --settings=EduDuck.settings.production".format(SOURCE_DIR))
 
 def git_update(settings):
     """ Git pull the latest code from github, then run collectstatic,  
