@@ -92,7 +92,7 @@ def deploy(settings):
     _prepare_environment_variables(settings, env.host)
     _write_gunicorn_upstart_script(env.host, SOURCE_DIR, settings)
     _ready_logfiles()
-    _write_wsgi_file(sdir, settings)
+    _write_wsgi_file(SOURCE_DIR, settings)
     _prepare_database(SOURCE_DIR, settings, env.host)
     _update_static_files(SOURCE_DIR, settings)
     _restart_services(env.host, settings)
@@ -377,12 +377,12 @@ def _ready_logfiles():
    
 def _write_wsgi_file(sdir, settings):
     """ Set up the wsgi.py file for either staging or production """
-
+    import pdb; pdb.set_trace()
     if settings=='dev':
         return
 
     run("rm {0}/EduDuck/wsgi.py".format(sdir))
-    run("sed \"s/SETTINGSFILE/{1}\" | tee {0}/EduDuck/wsgi.py".format(sdir, settings))
+    run("sed \"s/SETTINGSFILE/{1}/\" {0}/deploy_tools/wsgi.template | tee {0}/EduDuck/wsgi.py".format(sdir, settings))
  
 def _prepare_database(sdir, settings, hostname):
     
