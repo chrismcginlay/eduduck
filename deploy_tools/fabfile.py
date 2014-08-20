@@ -205,6 +205,9 @@ def _write_gunicorn_upstart_script(site_name, sdir, settings):
     gunicorn_template_done = sdir + "/deploy_tools/gunicorn_upstart.template"
     gunicorn_config_path = "/etc/init/gunicorn-{0}.conf".format(site_name)
     env_var_path = sdir + "/../virtualenv/bin/virtualenv_envvars.txt"
+    
+    #The ...mid.template will be sensitive, set chmod 660 before beginning
+    run("touch {0}; chmod 660 {0}".format(gunicorn_template_mid))
 
     #prepend env to each line of env_var_path > gunicorn_template_mid
     sed_cmd = "awk '$0=\"env \"$0' {0} > {1}".format(
@@ -223,6 +226,9 @@ def _write_gunicorn_upstart_script(site_name, sdir, settings):
     sudo("cat {0} >> {1}".format(gunicorn_template_mid, gunicorn_template_done))
     sudo("cat {0} >> {1}".format(gunicorn_template_tail, gunicorn_template_done))
     
+    #through away the ...mid.template as it is sensitive and redundant
+    run("rm {0}".format(gunicorn_template_mid))
+
     #nb this sed sources the freshly written config, not the template
     sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee {2}"
     sed_cmd = sed_cmd.format(site_name, gunicorn_template_done, gunicorn_config_path)
@@ -431,7 +437,6 @@ def _prepare_database(sdir, settings, hostname):
     print(green("Grant db permissions:"))
     run('mysql -u root -e "{0}"'.format(sql))
 
-    import pdb; pdb.set_trace()
     sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput".format(
         SITES_DIR,
         env.host,
