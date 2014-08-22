@@ -175,8 +175,8 @@ def _get_source(sdir):
     
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
-    #run("cd {0}; git checkout master".format(sdir))    
-    run("cd {0}; git checkout 89-fabfile_db".format(sdir))
+    run("cd {0}; git checkout master".format(sdir))    
+    #run("cd {0}; git checkout 112-password_reset".format(sdir))
         
 def _config_nginx(site_name, sdir, settings):
     if settings=='dev':
