@@ -15,6 +15,8 @@ urlpatterns = patterns('',
     url(r'^interaction/', include('interaction.urls')),
     url(r'^accounts/bio/', include('bio.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
+    # line below for #112
+    url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^attachment/', include('attachment.urls')),
 )

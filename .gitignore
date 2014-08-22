@@ -8,6 +8,7 @@ htmlcov/
 .spyderproject
 .spyderworkspace
 .coverage
+*,cover
 .rope*
 .js~
 *.kate-swp

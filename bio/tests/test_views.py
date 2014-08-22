@@ -110,4 +110,13 @@ class BioViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context for x in 
                         ['timezone', 'webpage', 'description'])
+    
+    def test_password_reset_reachable(self):
+        url = "/accounts/password/reset/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
+    def test_password_reset_done_reachable(self):
+        url = "/accounts/password_reset/done/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
