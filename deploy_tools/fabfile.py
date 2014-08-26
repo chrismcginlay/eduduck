@@ -286,6 +286,7 @@ def _prepare_environment_variables(settings, hostname):
         email_host = 'mailinator.com'
         email_host_password = ''
         email_port = ''
+	email_use_tls = True
 
     else: # Not dev!
         # First the SECRET_KEY
