@@ -104,7 +104,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         target_url = self.server_url + '/courses/\d+/'
         self.assertRegexpMatches(self.browser.current_url, target_url)
         
-        # Before Urvasi has time to add lessons, she has to go out, so logs out.
+	# Before Urvasi has time to add lessons, she has to go out, so logs out.
         self._logUserOut()
         
         # Later she returns to the site, logs in and immediately sees her new
@@ -130,7 +130,34 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         
     def test_can_delete_course(self):
         self.fail("not implemented")
-        
+ 
+    def test_can_populate_course_with_resources(self):
+        """Author is able to create attachments, videos, LOs etc for course"""
+ 
+	# Now that the basics are right, Urvasi wants to have a nice intro video
+	# embedded on the course home page.
+	
+	# She sees an area on the course form for adding a youtube intro video.
+
+	# Urvasi thinks that she has the desired url in her clipboard and pastes 
+	# but unfortunately the clipboard just pastes garbage which she submits
+
+	# The invalid url is picked up and an error message is displayed.
+
+	# Urvasi now puts in the correct url and resubmits.
+
+	# All is well, the video shows up on the course homepage.
+
+	# Urvasi decides to edit the course page again and switch the video.
+
+	# This works:
+
+	# Finally she decides to delete introductory video entirely.
+
+	# It no longer appears on the course page.
+        self.fail("Write test")
+       
+ 
 class AuthorCreatesAndEditsLessons(FunctionalTest):
 
     def test_can_create_retrieve_edit_lessons_associated_with_course(self):
@@ -186,14 +213,32 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
 	self.assertIn('Materials', self.browser.page_source)
 	self.assertIn('How to create, use share and delete materials', self.browser.page_source)
                   
-    @skip("")
-    def test_can_populate_course_with_resources(self):
-        """Author is able to create attachments, videos, LOs etc for course"""
-        
-        self.fail("Write test")
-    
-    @skip("")
+   
     def test_can_populate_lesson_with_resources(self):
         """Author can create attachments, videos, LOs etc for lesson"""
-        
+	
+	# Chris logs in and heads to the first course edit page.
+	
+	# He decides to edit a lesson
+
+	# Chris has the option to add a video to the lesson page
+
+	# He enters a url which doesn't resolve
+
+	# This triggers and error message
+
+	# On fixing the error, the edits save properly and the video is embeded
+	
+	# Chris logs out and finds that the video is of course still available
+	# to logged out users.
+
+	# He decides to edit the course page again and switch the video.
+
+	# This works:
+
+	# Finally he decides to delete introductory video entirely.
+
+	# It no longer appears on the course page.
+ 
+	self.fail("write me")  
         self.fail("Write test")
