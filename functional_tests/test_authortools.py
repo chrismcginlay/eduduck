@@ -104,7 +104,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         target_url = self.server_url + '/courses/\d+/'
         self.assertRegexpMatches(self.browser.current_url, target_url)
         
-	# Before Urvasi has time to add lessons, she has to go out, so logs out.
+	    # Before Urvasi has time to add lessons, she has to go out, so logs out.
         self._logUserOut()
         
         # Later she returns to the site, logs in and immediately sees her new
@@ -125,7 +125,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         target_course = self.browser.find_element_by_id('id_Camping_course')
         target_course.click()
         self.browser.implicitly_wait(10)
-	title = self.browser.find_element_by_id('id_course_title')
+	    title = self.browser.find_element_by_id('id_course_title')
         self.assertIn('Camping', title.text) 
         
     def test_can_delete_course(self):
@@ -134,28 +134,48 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
     def test_can_populate_course_with_resources(self):
         """Author is able to create attachments, videos, LOs etc for course"""
  
-	# Now that the basics are right, Urvasi wants to have a nice intro video
-	# embedded on the course home page.
-	
-	# She sees an area on the course form for adding a youtube intro video.
+        # Chris wants to have a nice intro video on course 4
+        # embedded on the course home page. He goes to the edit page
+        self.browser.get(self.server_url)
+        self._logUserIn('chris', 'chris')
+        self.browser.get(self.server_url+'/courses/4/edit/')
 
-	# Urvasi thinks that she has the desired url in her clipboard and pastes 
-	# but unfortunately the clipboard just pastes garbage which she submits
+        # he sees an area on the course form for adding a youtube intro video.
+        vfs = self.browser.find_element_by_id('id_video_formset_area')
+        video_name_widget = vfs.find_element_by_id('id_video_title')
+        video_url_widget = vfs.find_element_by_id('id_video_url')
 
-	# The invalid url is picked up and an error message is displayed.
+        # Chris thinks that he has the desired url in clipboard and pastes 
+        # but unfortunately the clipboard just pastes garbage which he submits
+        video_name_widget.send_keys("My Intro Video")
+        video_url_widget.send_keys("httttp://yotub.com/notvalid")
+        btn_submit = vfs.find_element_by_id('id_submit_video_edits')
+        btn_submit.click()
 
-	# Urvasi now puts in the correct url and resubmits.
+        # The invalid url is picked up and an error message is displayed.
+        self.assertIn(INVALID_VIDEO_URL_ERROR, self.browser.page_source)
+        
+        # Chris now puts in the correct url and resubmits.
+        vfs = self.browser.find_element_by_id('id_video_formset_area')
+        video_name_widget = vfs.find_element_by_id('id_video_title')
+        video_name_widget.send_keys("My Intro Video")
+        video_url_widget.send_keys("http://youtu.be/uIlu7szab5I")
+        btn_submit = vfs.find_element_by_id('id_submit_video_edits')
+        btn_submit.click()
 
-	# All is well, the video shows up on the course homepage.
+        # All is well, the video shows up on the course homepage.
+        self.assertEqual(self.browser.current_url, self.server_url+'/courses/4/')
+        self.browser.find_element_by_id('tba')
 
-	# Urvasi decides to edit the course page again and switch the video.
-
-	# This works:
-
-	# Finally she decides to delete introductory video entirely.
-
-	# It no longer appears on the course page.
-        self.fail("Write test")
+        # Finally he decides to delete introductory video entirely.
+        self.browser.get(self.server_url+'/courses/4/edit/')
+        btn_delete = vfs.find_element_by_id('id_delete_video_edits')
+        btn_delete.click()
+        self.fail("confirmation mbox")
+    
+        # It no longer appears on the course page.
+        self.browser.get(self.server_url+'/courses/4/')
+        self.fail("element not there")
        
  
 class AuthorCreatesAndEditsLessons(FunctionalTest):
@@ -164,81 +184,84 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
 	""" Starting from an existing course page """
 	
         self.browser.get(self.server_url)
-	self._logUserIn('chris', 'chris')
-	self.browser.get(self.server_url+'/courses/1')
+    	self._logUserIn('chris', 'chris')
+    	self.browser.get(self.server_url+'/courses/1')
         # Chris sees the edit course button and clicks it
-	btn_edit = self.browser.find_element_by_id('id_edit_course')
-	lesson_set_target_url = self.server_url + '/courses/1/edit'
+	    btn_edit = self.browser.find_element_by_id('id_edit_course')
+	    lesson_set_target_url = self.server_url + '/courses/1/edit'
         btn_edit.click()
-	self.assertRegexpMatches(self.browser.current_url, lesson_set_target_url)
+	    self.assertRegexpMatches(self.browser.current_url, lesson_set_target_url)
 
-	# On the edit page, there is a section noting the name of 
-	# course followed by a section listing the existing lessons by title 
+        # On the edit page, there is a section noting the name of 
+        # course followed by a section listing the existing lessons by title 
         pt = self.browser.find_element_by_id('id_page_title')
-	self.assertIn('Blender', pt.text)
-	lessons_area = self.browser.find_element_by_id('id_lesson_formset_area') 
+        self.assertIn('Blender', pt.text)
+        lessons_area = self.browser.find_element_by_id('id_lesson_formset_area') 
 
-	f0 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-0-name']")
-	f1 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-1-name']")
-	f2 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-2-name']")
-	self.assertEqual('What is Blender for?', f0.get_attribute('value'))
-	self.assertEqual('Basics of the User Interface', f1.get_attribute('value'))
-	self.assertEqual('Orientation in 3D Space', f2.get_attribute('value'))	
-	
-	# And an area for the purpose of adding more lessons, containing a text box 
-	# for a lesson title, another for an abstract.
-	new_lesson_name = self.browser.find_element_by_xpath(
-	    "//input[@name='lesson_formset-3-name']")
-	new_lesson_abstract = self.browser.find_element_by_xpath(
-	    "//textarea[@name='lesson_formset-3-abstract']")
+        f0 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-0-name']")
+        f1 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-1-name']")
+        f2 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-2-name']")
+        self.assertEqual('What is Blender for?', f0.get_attribute('value'))
+        self.assertEqual('Basics of the User Interface', f1.get_attribute('value'))
+        self.assertEqual('Orientation in 3D Space', f2.get_attribute('value'))	
+        
+        # And an area for the purpose of adding more lessons, containing a text box 
+        # for a lesson title, another for an abstract.
+        new_lesson_name = self.browser.find_element_by_xpath(
+            "//input[@name='lesson_formset-3-name']")
+        new_lesson_abstract = self.browser.find_element_by_xpath(
+            "//textarea[@name='lesson_formset-3-abstract']")
 
-	# Chris decides to add a lesson called 'Materials'
-	# with a suitable abstract.
-	new_lesson_name.send_keys('Materials')
-	new_lesson_abstract.send_keys('How to create, use share and delete materials')
+        # Chris decides to add a lesson called 'Materials'
+        # with a suitable abstract.
+        new_lesson_name.send_keys('Materials')
+        new_lesson_abstract.send_keys('How to create, use share and delete materials')
 
-	# He can edit any of the titles and abstracts of the lessons,
-	# with the updates saved on hitting submit as before.
-	lesson2_name = self.browser.find_element_by_xpath(
-	    "//input[@name='lesson_formset-2-name']")
-	lesson2_name.send_keys('Test')
-	lesson2_abstract = self.browser.find_element_by_xpath(
-	    "//textarea[@name='lesson_formset-2-abstract']")
-	# On submitting this the course page reloads with his lesson alterations.
-	submit_edits_button = self.browser.find_element_by_id('id_submit_lesson_edits')
-	submit_edits_button.click()
-	
-	paginator = self.browser.find_element_by_class_name('pure-paginator')
-	self.assertEqual(len(paginator.find_elements_by_tag_name('li')), 4)
-	self.assertIn('Materials', self.browser.page_source)
-	self.assertIn('How to create, use share and delete materials', self.browser.page_source)
+        # He can edit any of the titles and abstracts of the lessons,
+        # with the updates saved on hitting submit as before.
+        lesson2_name = self.browser.find_element_by_xpath(
+            "//input[@name='lesson_formset-2-name']")
+        lesson2_name.send_keys('Test')
+        lesson2_abstract = self.browser.find_element_by_xpath(
+            "//textarea[@name='lesson_formset-2-abstract']")
+        # On submitting this the course page reloads with his lesson alterations.
+        submit_edits_button = self.browser.find_element_by_id('id_submit_lesson_edits')
+        submit_edits_button.click()
+        
+        paginator = self.browser.find_element_by_class_name('pure-paginator')
+        self.assertEqual(len(paginator.find_elements_by_tag_name('li')), 4)
+        self.assertIn('Materials', self.browser.page_source)
+        self.assertIn('How to create, use share and delete materials', 
+            self.browser.page_source)
                   
    
     def test_can_populate_lesson_with_resources(self):
         """Author can create attachments, videos, LOs etc for lesson"""
 	
-	# Chris logs in and heads to the first course edit page.
-	
-	# He decides to edit a lesson
+        # Chris logs in and heads to the first course page.
+        self.browser.get(self.server_url)
+    	self._logUserIn('chris', 'chris')
+    	self.browser.get(self.server_url+'/courses/1/')
 
-	# Chris has the option to add a video to the lesson page
+        # He decides to edit a lesson
 
-	# He enters a url which doesn't resolve
+        # Chris has the option to add a video to the lesson page
 
-	# This triggers and error message
+        # He enters a url which doesn't resolve
 
-	# On fixing the error, the edits save properly and the video is embeded
-	
-	# Chris logs out and finds that the video is of course still available
-	# to logged out users.
+        # This triggers and error message
 
-	# He decides to edit the course page again and switch the video.
+        # On fixing the error, the edits save properly and the video is embeded
+        
+        # Chris logs out and finds that the video is of course still available
+        # to logged out users.
 
-	# This works:
+        # He decides to edit the course page again and switch the video.
 
-	# Finally he decides to delete introductory video entirely.
+        # This works:
 
-	# It no longer appears on the course page.
- 
-	self.fail("write me")  
-        self.fail("Write test")
+        # Finally he decides to delete introductory video entirely.
+
+        # It no longer appears on the course page.
+     
+        self.fail("write me")  
