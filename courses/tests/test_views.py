@@ -14,6 +14,7 @@ from lesson.models import Lesson
 from ..forms import (
     NAME_FIELD_REQUIRED_ERROR,
     ABSTRACT_FIELD_REQUIRED_ERROR,
+    INVALID_VIDEO_URL,
     )
 from ..models import Course
 from ..views import CourseFullForm, _courses_n_24ths, LessonInlineFormset
@@ -46,10 +47,12 @@ class CourseViewTests(TestCase):
     }
 
     def setUp(self):
-        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
+        self.user1 = User.objects.create_user(
+            'bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
-        self.user2 = User.objects.create_user('hank', 'hank@example.com', 'hankdo')
+        self.user2 = User.objects.create_user(
+            'hank', 'hank@example.com', 'hankdo')
         self.user2.is_active = True
         self.user2.save()
 
@@ -164,6 +167,8 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/edit/')
         self.assertIsInstance(
             response.context['lesson_formset'], LessonInlineFormset)
+        self.assertIsInstance(
+            response.context['video_formset'], VideoInlineFormset)
        
     def test_course_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='bertie', password='bertword')
@@ -190,7 +195,9 @@ class CourseViewTests(TestCase):
             'lesson_formset-INITIAL_FORMS':u'1'}
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
-    
+        self.assertIn(response, NAME_FIELD_REQUIRED_ERROR)
+        self.assertIn(response, ABSTRACT_FIELD_REQUIRED_ERROR)
+ 
         ##Then with missing required fields in lesson formset
         data = {
             'course_form-code': 'T1',
@@ -203,6 +210,24 @@ class CourseViewTests(TestCase):
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
 
+        ##And with invalid url in video formset
+        data = {
+            'course_form-code': 'T1',
+            'course_form-name': 'Test',
+            'course_form-abstract': 'With invalid video url',
+            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'lesson_formset-0-name':'Test',
+            'lesson_formset-TOTAL_FORMS':u'4',
+            'lesson_formset-INITIAL_FORMS':u'1'
+            'video_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'video_formset-0-name':'Invalid url',
+            'video_formset-0-url':'htp://yotub.vom/56tyY',
+            'video_formset-TOTAL_FORMS':u'2',
+            'video_formset-INITIAL_FORMS':u'2'}
+        response = self.client.post('/courses/1/edit/', data)
+        self.assertIn('Please correct the following:', response.content)
+        self.assertContains(response, INVALID_VIDEO_URL)	
+       
     def test_course_edit_page_has_course_detail_area(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/edit/')
@@ -217,6 +242,11 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/edit/')
         self.assertIn('id_lesson_formset_area', response.content)
         self.assertIn('Introduction to Music', response.content)
+
+    def test_course_edit_page_has_video_area(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit')
+        self.assertIn('id_video_formset_area', response.content)
 
     def test_course_create_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/create/')
