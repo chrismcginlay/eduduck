@@ -11,10 +11,10 @@ from bio.models import Bio
 
 from interaction.models import UserCourse
 from lesson.models import Lesson
+from video.forms import INVALID_VIDEO_URL_ERROR
 from ..forms import (
     NAME_FIELD_REQUIRED_ERROR,
     ABSTRACT_FIELD_REQUIRED_ERROR,
-    INVALID_VIDEO_URL,
     )
 from ..models import Course
 from ..views import CourseFullForm, _courses_n_24ths, LessonInlineFormset
@@ -218,7 +218,7 @@ class CourseViewTests(TestCase):
             'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
             'lesson_formset-0-name':'Test',
             'lesson_formset-TOTAL_FORMS':u'4',
-            'lesson_formset-INITIAL_FORMS':u'1'
+            'lesson_formset-INITIAL_FORMS':u'1',
             'video_formset-0-id':u'1', #prevent MultiVal dict key err.
             'video_formset-0-name':'Invalid url',
             'video_formset-0-url':'htp://yotub.vom/56tyY',

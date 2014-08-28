@@ -25,6 +25,7 @@ from registration.forms import RegistrationForm
 from interaction.models import UserCourse, UserLesson
 from lesson.forms import LessonEditForm
 from lesson.models import Lesson
+from video.models import Video
 from .forms import CourseFullForm
 from .models import Course
 
@@ -33,6 +34,8 @@ logger = logging.getLogger(__name__)
 
 LessonInlineFormset = inlineformset_factory(
     Course, Lesson, form=LessonEditForm, extra=3)
+VideoInlineFormset = inlineformset_factory(
+    Course, Video, extra=1)
 
 def _courses_n_24ths(clist):
     """ Take a list of courses cl, 3 courses at a time. Set their widths to 
@@ -84,18 +87,26 @@ def edit(request, course_id):
                 request.POST, prefix='course_form', instance=course)
             lesson_formset = LessonInlineFormset(
                 request.POST, prefix='lesson_formset', instance=course)
+            video_formset = VideoInlineFormset(
+                request.POST, prefix='video_formset', instance=course)
             if course_form.is_valid():
                 course_form.save()
                 logger.info("Course (id={0}) edited".format(course.pk))
             if lesson_formset.is_valid():
                 lesson_formset.save()
                 logger.info("Lessons for course id {0} edited".format(course.pk))
-            if (course_form.is_valid() and lesson_formset.is_valid()):
+            if video_formset.is_valid():
+                video_formset.save()
+                logger.info("Video for course id {0} saved".format(course.pk))
+            if (course_form.is_valid() 
+                and lesson_formset.is_valid()
+                and video_formset.is_valid()):
                 return redirect(course)
             else:
                 t = 'courses/course_edit.html'
                 c = { 'course_form': course_form,
-                      'lesson_formset': lesson_formset, 
+                      'lesson_formset': lesson_formset,
+                      'video_formset': video_formset, 
                       'course': course,
                 }
                 return render(request, t, c)
@@ -104,9 +115,12 @@ def edit(request, course_id):
                 prefix='course_form', instance=course)
             lesson_formset = LessonInlineFormset(
                 prefix='lesson_formset', instance=course)
+            video_formset = VideoInlineFormset(
+                prefix='video_formset', instance=course)
             t = 'courses/course_edit.html'
             c = { 'course_form': course_form,
-                  'lesson_formset': lesson_formset, 
+                  'lesson_formset': lesson_formset,
+                  'video_formset': video_formset, 
                   'course': course,
             }
             return render(request, t, c)
