@@ -26,7 +26,8 @@
     <form method='post' action='#' class='pure-form pure-form-aligned'>
         {% csrf_token %}
 	    {{ lesson_formset.management_form }}
-	    <h3>Basic Details</h3>
+	    {{ video_formset.management_form }}
+        <h3>Basic Details</h3>
 	    <fieldset id='id_course_basics_area'>
 	        {% for field in course_form %}
 		        <div class='pure-control-group'>
@@ -38,6 +39,24 @@
 	        <div class='pure-controls'>
                 <button 
         	        id="id_submit_course_edits" 
+        	        type="submit" 
+        	        class="pure-button pure-button-primary">
+                    Save All Edits
+                </button>
+	        </div>
+	    </fieldset>
+        <h3>Intro Video(s)</h3>
+	    <fieldset id='id_video_formset_area'>
+	        {% for field in video_formset %}
+		        <div class='pure-control-group'>
+		            {{ field.errors }}
+		            {{ field.label_tag }}{{ field }}
+		            <br>{{ field.help_text }}
+		        </div>
+	        {% endfor %}
+	        <div class='pure-controls'>
+                <button 
+        	        id="id_submit_video_edits" 
         	        type="submit" 
         	        class="pure-button pure-button-primary">
                     Save All Edits
