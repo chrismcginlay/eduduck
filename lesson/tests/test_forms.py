@@ -29,7 +29,8 @@ class LessonFormTests(TestCase):
         self.assertIn('id_abstract', form.as_p())
 
     def test_form_has_correct_error_messages(self):
-        form = LessonEditForm(data={'name':'', 'abstract':'', 'code':''})
+        form = LessonEditForm(
+            data={'course':u'1', 'name':'', 'abstract':'', 'code':''})
         self.assertFalse(form.is_valid())
         expected_errors = {
             'name': [LESSON_NAME_FIELD_REQUIRED_ERROR],
