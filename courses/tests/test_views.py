@@ -117,6 +117,7 @@ class CourseViewTests(TestCase):
             'lesson_formset-0-name':'Boo',
             'lesson_formset-0-abstract':'Hoo',
             'video_formset-0-url':'http://youtu.be/EJiUWBiM8HE',
+            'video_formest-0-name':'Cmdr Hadfield\'s Soda',
             'video_formset-TOTAL_FORMS':u'1',
             'video_formset-INITIAL_FORMS':u'0'}
         ##This should trigger modification of the course
@@ -129,6 +130,7 @@ class CourseViewTests(TestCase):
         self.assertContains(response, '<p>Fingbot</p>', html=True)
         self.assertContains(response, '<h4>Boo</h4>', html=True)
         self.assertIn('<p>Hoo', response.content)
+        self.assertIn('Cmdr Hadfield\'s Soda', response.content)
         self.assertIn('EJiUWBiM8HE', response.content) #youtube video
         
     def test_course_edit_redirects_if_not_loggedin(self):
@@ -228,7 +230,6 @@ class CourseViewTests(TestCase):
             'video_formset-INITIAL_FORMS':u'0'}
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
-        import pdb; pdb.set_trace()
         self.assertIn(LESSON_NAME_FIELD_REQUIRED_ERROR, response.content)
 
         ##And with invalid url in video formset
