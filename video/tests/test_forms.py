@@ -4,6 +4,7 @@ from ..forms import (
     VIDEO_NAME_FIELD_REQUIRED_ERROR,
     VIDEO_URL_FIELD_REQUIRED_ERROR,
     VIDEO_URL_FIELD_INVALID_ERROR,
+    VIDEO_URL_FIELD_YOUTUBE_ERROR,
     VideoForm
 )
 
@@ -47,4 +48,16 @@ class VideoFormTest(TestCase):
             'url': [VIDEO_URL_FIELD_INVALID_ERROR]
         }
         self.assertEqual(form.errors, expected_errors)
-        self.fail("Don't see how this can work")
+        
+        # YouTube video doesn't exist
+        form = VideoForm(
+            data={
+                'course':u'1',
+                'name':'Test',
+                'url':'http://www.youtube.com/embed/ZJqYtyb9iERk'
+            })
+        self.assertFalse(form.is_valid())
+        expected_errors = {
+            'url': [VIDEO_URL_FIELD_YOUTUBE_ERROR]
+        }
+        self.assertEqual(form.errors, expected_errors)
