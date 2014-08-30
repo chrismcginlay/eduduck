@@ -3,6 +3,9 @@
 from django import forms
 from lesson.models import Lesson
 
+LESSON_NAME_FIELD_REQUIRED_ERROR = "A lesson must have a short title"
+LESSON_ABSTRACT_FIELD_REQUIRED_ERROR = "A lesson must have a short abstract"
+
 class LessonEditForm(forms.ModelForm):
     class Meta:
 	model = Lesson
