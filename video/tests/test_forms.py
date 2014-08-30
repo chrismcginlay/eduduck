@@ -1,6 +1,11 @@
 from django.test import TestCase
 
-from ..forms import VideoForm
+from ..forms import (
+    VIDEO_NAME_FIELD_REQUIRED_ERROR,
+    VIDEO_URL_FIELD_REQUIRED_ERROR,
+    VIDEO_URL_FIELD_INVALID_ERROR,
+    VideoForm
+)
 
 class VideoFormTest(TestCase):
     
@@ -21,8 +26,7 @@ class VideoFormTest(TestCase):
     def test_form_renders_correct_fields(self):
         form = VideoForm()
         self.assertIn('id_video_title', form.as_p())
-        self.assertIn('id_name', form.as_p())
-        self.assertIn('id_url', form.as_p())
+        self.assertIn('id_video_url', form.as_p())
 
     def test_form_has_correct_error_messages(self):
         # Missing required fields
@@ -40,7 +44,7 @@ class VideoFormTest(TestCase):
             data={'course':u'1', 'name':'Test', 'url':'htt://example.com'})
         self.assertFalse(form.is_valid())
         expected_errors = {
-            'url': [VIDEO_INVALID_URL_ERROR]
+            'url': [VIDEO_URL_FIELD_INVALID_ERROR]
         }
         self.assertEqual(form.errors, expected_errors)
-
+        self.fail("Don't see how this can work")
