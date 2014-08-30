@@ -2,8 +2,8 @@
 from django import forms
 from courses.models import Course
 
-NAME_FIELD_REQUIRED_ERROR = "A course must have a short title"
-ABSTRACT_FIELD_REQUIRED_ERROR = "You must provide an abstract"\
+COURSE_NAME_FIELD_REQUIRED_ERROR = "A course must have a short title"
+COURSE_ABSTRACT_FIELD_REQUIRED_ERROR = "You must provide an abstract"\
     " (brief description)"
 
 class CourseNameForm(forms.Form):
@@ -21,6 +21,6 @@ class CourseFullForm(forms.models.ModelForm):
         model = Course
         fields = ('code', 'name', 'abstract')
         error_messages = {
-            'name': {'required': NAME_FIELD_REQUIRED_ERROR},
-            'abstract': {'required': ABSTRACT_FIELD_REQUIRED_ERROR},
+            'name': {'required': COURSE_NAME_FIELD_REQUIRED_ERROR},
+            'abstract': {'required': COURSE_ABSTRACT_FIELD_REQUIRED_ERROR},
         }

@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 from courses.forms import (
-    NAME_FIELD_REQUIRED_ERROR,
-    ABSTRACT_FIELD_REQUIRED_ERROR,
+    COURSE_NAME_FIELD_REQUIRED_ERROR,
+    COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
     CourseNameForm, 
     CourseFullForm,
 )
@@ -37,8 +37,8 @@ class CourseFullFormTest(TestCase):
         form = CourseFullForm(data={'name':'', 'abstract':'', 'code':''})
         self.assertFalse(form.is_valid())
         expected_errors = {
-            'name': [NAME_FIELD_REQUIRED_ERROR],
-            'abstract': [ABSTRACT_FIELD_REQUIRED_ERROR],
+            'name': [COURSE_NAME_FIELD_REQUIRED_ERROR],
+            'abstract': [COURSE_ABSTRACT_FIELD_REQUIRED_ERROR],
         }
         self.assertEqual(form.errors, expected_errors)
     

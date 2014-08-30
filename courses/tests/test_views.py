@@ -10,11 +10,12 @@ from django.utils.html import escape
 from bio.models import Bio
 
 from interaction.models import UserCourse
+from lesson.forms import LESSON_NAME_FIELD_REQUIRED_ERROR
 from lesson.models import Lesson
-from video.forms import INVALID_VIDEO_URL_ERROR
+from video.forms import VIDEO_INVALID_URL_FIELD_ERROR
 from ..forms import (
-    NAME_FIELD_REQUIRED_ERROR,
-    ABSTRACT_FIELD_REQUIRED_ERROR,
+    COURSE_NAME_FIELD_REQUIRED_ERROR,
+    COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
     )
 from ..models import Course
 from ..views import (
@@ -210,8 +211,8 @@ class CourseViewTests(TestCase):
             'video_formset-INITIAL_FORMS':u'0'}
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
-        self.assertIn(NAME_FIELD_REQUIRED_ERROR, response)
-        self.assertIn(ABSTRACT_FIELD_REQUIRED_ERROR, response)
+        self.assertIn(COURSE_NAME_FIELD_REQUIRED_ERROR, response.content)
+        self.assertIn(COURSE_ABSTRACT_FIELD_REQUIRED_ERROR, response.content)
  
         ##Then with missing required fields in lesson formset
         data = {
@@ -227,7 +228,8 @@ class CourseViewTests(TestCase):
             'video_formset-INITIAL_FORMS':u'0'}
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
-        self.assertIn(LESSON_NAME_FIELD_REQUIRED, response)
+        import pdb; pdb.set_trace()
+        self.assertIn(LESSON_NAME_FIELD_REQUIRED_ERROR, response.content)
 
         ##And with invalid url in video formset
         data = {
@@ -245,7 +247,7 @@ class CourseViewTests(TestCase):
             'video_formset-INITIAL_FORMS':u'0'}
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
-        self.assertContains(INVALID_VIDEO_URL, response)	
+        self.assertContains(VIDEO_INVALID_URL_FIELD_ERROR, response.content)	
        
     def test_course_edit_page_has_course_detail_area(self):
         self.client.login(username='bertie', password='bertword')
@@ -325,8 +327,8 @@ class CourseViewTests(TestCase):
             'abstract': '',
         })
         expected_errors = (
-            NAME_FIELD_REQUIRED_ERROR,
-            ABSTRACT_FIELD_REQUIRED_ERROR,
+            COURSE_NAME_FIELD_REQUIRED_ERROR,
+            COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
         )
         for err in expected_errors:
             self.assertContains(response, err)
@@ -337,8 +339,8 @@ class CourseViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
         not_expected_errors = (
-            NAME_FIELD_REQUIRED_ERROR,
-            ABSTRACT_FIELD_REQUIRED_ERROR,
+            COURSE_NAME_FIELD_REQUIRED_ERROR,
+            COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
             )
         for err in not_expected_errors:
             self.assertNotContains(response, err)
