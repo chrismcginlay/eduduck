@@ -8,7 +8,7 @@ from ..forms import (
     VideoForm
 )
 
-from ..util import get_youtube_id_from_urls
+from ..utils import get_youtube_id_from_url
 
 class VideoFormTest(TestCase):
     
