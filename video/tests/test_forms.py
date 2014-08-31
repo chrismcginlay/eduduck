@@ -51,12 +51,12 @@ class VideoFormTest(TestCase):
         }
         self.assertEqual(form.errors, expected_errors)
         
-        # YouTube video doesn't exist
+        # YouTube video id is wrong
         form = VideoForm(
             data={
                 'course':u'1',
                 'name':'Test',
-                'url':'http://www.youtube.com/embed/ZJqYtyb9iERk'
+                'url':'http://www.youtube.com/embed/ZJqxxtoolongYtyb9iERk'
             })
         self.assertFalse(form.is_valid())
         expected_errors = {
