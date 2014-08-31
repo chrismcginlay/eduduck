@@ -8,6 +8,8 @@ from ..forms import (
     VideoForm
 )
 
+from ..util import get_youtube_id_from_urls
+
 class VideoFormTest(TestCase):
     
     fixtures = [
