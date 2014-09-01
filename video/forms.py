@@ -1,13 +1,11 @@
 # video/forms.py
 from django import forms
 from video.models import Video
+from video.utils import VIDEO_URL_FIELD_INVALID_ERROR
 
-VIDEO_URL_FIELD_INVALID_ERROR = "Please check your video URL," \
-    " it seem's invalid."
 VIDEO_NAME_FIELD_REQUIRED_ERROR = "Please provide a descriptive name" \
     " for the video."
 VIDEO_URL_FIELD_REQUIRED_ERROR = "Please provide a url for the video."
-VIDEO_URL_FIELD_YOUTUBE_ERROR = "Video doesn't seem to be available on YouTube"
 
 class VideoForm(forms.ModelForm):
     class Meta:

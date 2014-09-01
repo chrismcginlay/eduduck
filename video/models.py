@@ -2,8 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from courses.models import Course
 from lesson.models import Lesson
-
-# Create your models here.
+from video.utils import validate_youtube_url
 
 class Video(models.Model):
     """ URLs and various meta data
@@ -18,7 +17,7 @@ class Video(models.Model):
     
     #TODO: use YouTube / Vimeo APIs to pull video meta data such as title, tags    
     name = models.CharField(max_length=200)
-    url = models.URLField()
+    url = models.URLField(validators=[validate_youtube_url])
     lesson = models.ForeignKey(Lesson, blank=True, null=True)
     course = models.ForeignKey(Course, blank=True, null=True)
     

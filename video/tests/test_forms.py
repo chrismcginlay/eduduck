@@ -3,12 +3,9 @@ from django.test import TestCase
 from ..forms import (
     VIDEO_NAME_FIELD_REQUIRED_ERROR,
     VIDEO_URL_FIELD_REQUIRED_ERROR,
-    VIDEO_URL_FIELD_INVALID_ERROR,
-    VIDEO_URL_FIELD_YOUTUBE_ERROR,
     VideoForm
 )
-
-from ..utils import get_youtube_id_from_url
+from ..utils import get_youtube_id_from_url, VIDEO_URL_FIELD_INVALID_ERROR 
 
 class VideoFormTest(TestCase):
     
@@ -60,6 +57,6 @@ class VideoFormTest(TestCase):
             })
         self.assertFalse(form.is_valid())
         expected_errors = {
-            'url': [VIDEO_URL_FIELD_YOUTUBE_ERROR]
+            'url': [VIDEO_URL_FIELD_INVALID_ERROR]
         }
         self.assertEqual(form.errors, expected_errors)

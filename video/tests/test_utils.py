@@ -3,7 +3,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from ..utils import get_youtube_id_from_url, youtube_validator
+from ..utils import get_youtube_id_from_url, validate_youtube_url
 
 class VideoUtilTest(TestCase):
 
@@ -23,7 +23,7 @@ class VideoUtilTest(TestCase):
         ]
         expected_id = "dQw4w9WgXcQ"
 
-        for url in urls_2_test:
+        for url in urls_2_pass:
             self.assertEqual(get_youtube_id_from_url(url), expected_id, url)
 
     def test_nonetype_returned_from_urls(self):
@@ -39,7 +39,7 @@ class VideoUtilTest(TestCase):
         for url in urls_2_fail:
             self.assertEqual(get_youtube_id_from_url(url), None)
 
-    def test_youtube_validator(self):
+    def test_validate_url(self):
         
         urls_2_fail = [
             r"http://yout.be/dQw49WgXc",
@@ -50,7 +50,7 @@ class VideoUtilTest(TestCase):
         ]
         for url in urls_2_fail:
             with self.assertRaises(ValidationError):
-                youtube_validator(url)
+                validate_youtube_url(url)
 
         urls_2_pass = [
             r"http://youtu.be/dQw4w9WgXcQ",
@@ -63,6 +63,6 @@ class VideoUtilTest(TestCase):
             r"http://www.youtube.com/?feature=player_embedded&v=dQw4w9WgXcQ",
         ]
         for url in urls_2_pass:
-            youtube_validator(url)
+            validate_youtube_url(url)
 
 
