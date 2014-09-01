@@ -1,8 +1,9 @@
 # video/tests/test_utils.py
 
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from ..utils import get_youtube_id_from_url
+from ..utils import get_youtube_id_from_url, youtube_validator
 
 class VideoUtilTest(TestCase):
 
@@ -10,7 +11,7 @@ class VideoUtilTest(TestCase):
         """Various URL structures need testing"""
 
         # BTW, you *will* regret visiting any of these URLs
-        urls_2_test = [
+        urls_2_pass = [
             r"http://youtu.be/dQw4w9WgXcQ",
             r"http://www.youtube.com/embed/dQw4w9WgXcQ",
             r"http://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -37,4 +38,31 @@ class VideoUtilTest(TestCase):
         ]
         for url in urls_2_fail:
             self.assertEqual(get_youtube_id_from_url(url), None)
+
+    def test_youtube_validator(self):
+        
+        urls_2_fail = [
+            r"http://yout.be/dQw49WgXc",
+            r"http://youtu.be/dQw49WgXc",
+            r"http://www.youtube.com/embed/dqW4w9", 
+            r"http://www.youtube.com/v/dqW4w9", 
+            r"http://www.youtube.com/watch?feature=player_embedded&v=dQw",
+        ]
+        for url in urls_2_fail:
+            with self.assertRaises(ValidationError):
+                youtube_validator(url)
+
+        urls_2_pass = [
+            r"http://youtu.be/dQw4w9WgXcQ",
+            r"http://www.youtube.com/embed/dQw4w9WgXcQ",
+            r"http://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            r"http://www.youtube.com/?v=dQw4w9WgXcQ",
+            r"http://www.youtube.com/v/dQw4w9WgXcQ",
+            r"http://www.youtube.com/e/dQw4w9WgXcQ",
+            r"http://www.youtube.com/watch?feature=player_embedded&v=dQw4w9WgXcQ",
+            r"http://www.youtube.com/?feature=player_embedded&v=dQw4w9WgXcQ",
+        ]
+        for url in urls_2_pass:
+            youtube_validator(url)
+
 

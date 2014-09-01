@@ -1,7 +1,7 @@
 # video/utils.py
 
 import re
-
+from django.core.exceptions import ValidationError
 from urlparse import parse_qs, urlparse
 
 def get_youtube_id_from_url(url):
@@ -34,4 +34,9 @@ def get_youtube_id_from_url(url):
         return None
     else:
         return id
+
+def youtube_validator(url):
+    id = get_youtube_id_from_url(url)
+    if not id:
+        raise ValidationError("{0} is not a valid youtube url.'".format(url))
 
