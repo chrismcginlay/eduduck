@@ -91,7 +91,8 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         # She decides to improve the abstract:
         btn_edit.click()
         self.assertRegexpMatches(self.browser.current_url, edit_target_url)
-        self.assertIn('<h2 id="id_page_title">Editing: Camping</h2>', self.browser.page_source)
+        self.assertIn('<h2 id="id_page_title">Editing: Camping</h2>', 
+            self.browser.page_source)
         abstract_box = self.browser.find_element_by_id('id_course_form-abstract')
         abstract_box.send_keys(". Wibble.")
         # and delete the course code
@@ -104,7 +105,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         target_url = self.server_url + '/courses/\d+/'
         self.assertRegexpMatches(self.browser.current_url, target_url)
         
-	    # Before Urvasi has time to add lessons, she has to go out, so logs out.
+        # Before Urvasi has time to add lessons, she has to go out, so logs out.
         self._logUserOut()
         
         # Later she returns to the site, logs in and immediately sees her new
@@ -125,7 +126,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         target_course = self.browser.find_element_by_id('id_Camping_course')
         target_course.click()
         self.browser.implicitly_wait(10)
-	    title = self.browser.find_element_by_id('id_course_title')
+        title = self.browser.find_element_by_id('id_course_title')
         self.assertIn('Camping', title.text) 
         
     def test_can_delete_course(self):
@@ -181,16 +182,16 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
 class AuthorCreatesAndEditsLessons(FunctionalTest):
 
     def test_can_create_retrieve_edit_lessons_associated_with_course(self):
-	""" Starting from an existing course page """
-	
+        """ Starting from an existing course page """
+    
         self.browser.get(self.server_url)
-    	self._logUserIn('chris', 'chris')
-    	self.browser.get(self.server_url+'/courses/1')
+        self._logUserIn('chris', 'chris')
+        self.browser.get(self.server_url+'/courses/1')
         # Chris sees the edit course button and clicks it
-	    btn_edit = self.browser.find_element_by_id('id_edit_course')
-	    lesson_set_target_url = self.server_url + '/courses/1/edit'
+        btn_edit = self.browser.find_element_by_id('id_edit_course')
+        lesson_set_target_url = self.server_url + '/courses/1/edit'
         btn_edit.click()
-	    self.assertRegexpMatches(self.browser.current_url, lesson_set_target_url)
+        self.assertRegexpMatches(self.browser.current_url, lesson_set_target_url)
 
         # On the edit page, there is a section noting the name of 
         # course followed by a section listing the existing lessons by title 
@@ -203,7 +204,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         f2 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-2-name']")
         self.assertEqual('What is Blender for?', f0.get_attribute('value'))
         self.assertEqual('Basics of the User Interface', f1.get_attribute('value'))
-        self.assertEqual('Orientation in 3D Space', f2.get_attribute('value'))	
+        self.assertEqual('Orientation in 3D Space', f2.get_attribute('value'))  
         
         # And an area for the purpose of adding more lessons, containing a text box 
         # for a lesson title, another for an abstract.
@@ -237,11 +238,11 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
    
     def test_can_populate_lesson_with_resources(self):
         """Author can create attachments, videos, LOs etc for lesson"""
-	
+    
         # Chris logs in and heads to the first course page.
         self.browser.get(self.server_url)
-    	self._logUserIn('chris', 'chris')
-    	self.browser.get(self.server_url+'/courses/1/')
+        self._logUserIn('chris', 'chris')
+        self.browser.get(self.server_url+'/courses/1/')
 
         # He decides to edit a lesson
 

@@ -12,7 +12,7 @@ from bio.models import Bio
 from interaction.models import UserCourse
 from lesson.forms import LESSON_NAME_FIELD_REQUIRED_ERROR
 from lesson.models import Lesson
-from video.forms import VIDEO_INVALID_URL_FIELD_ERROR
+from video.utils import VIDEO_URL_FIELD_INVALID_ERROR
 from ..forms import (
     COURSE_NAME_FIELD_REQUIRED_ERROR,
     COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
@@ -248,7 +248,7 @@ class CourseViewTests(TestCase):
             'video_formset-INITIAL_FORMS':u'0'}
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
-        self.assertIn(VIDEO_INVALID_URL_FIELD_ERROR, response.content)	
+        self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, response.content)	
        
     def test_course_edit_page_has_course_detail_area(self):
         self.client.login(username='bertie', password='bertword')
