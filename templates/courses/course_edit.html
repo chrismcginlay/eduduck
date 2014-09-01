@@ -47,12 +47,18 @@
 	    </fieldset>
         <h3>Intro Video(s)</h3>
 	    <fieldset id='id_video_formset_area'>
-	        {% for field in video_formset %}
-		        <div class='pure-control-group'>
-		            {{ field.errors }}
-		            {{ field.label_tag }}{{ field }}
-		            <br>{{ field.help_text }}
-		        </div>
+	        {% for form in video_formset %}
+                {% for hf in form.hidden_fields %}
+                    {{ hf }}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+		            <div class='pure-control-group'>
+		                {{ field.errors }}
+		                {{ field.label_tag }}{{ field }}
+		                <br>{{ field.help_text }}
+		            </div>
+                {% endfor %}
+                <hr>
 	        {% endfor %}
 	        <div class='pure-controls'>
                 <button 
