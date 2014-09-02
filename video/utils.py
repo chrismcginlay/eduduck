@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from urlparse import parse_qs, urlparse
 
 VIDEO_URL_FIELD_INVALID_ERROR = "Please check your video URL," \
-    " it seem's invalid."
+    " it seems invalid."
 
 def get_youtube_id_from_url(url):
     """Extract the video ID code from various youtube URLs"""
