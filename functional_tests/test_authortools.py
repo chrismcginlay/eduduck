@@ -5,8 +5,8 @@ from unittest import skip
 from .base import FunctionalTest
 
 from courses.forms import (
-    ABSTRACT_FIELD_REQUIRED_ERROR,
-    NAME_FIELD_REQUIRED_ERROR,
+    COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
+    COURSE_NAME_FIELD_REQUIRED_ERROR,
 )
 
 class AuthorUsesCourseAuthoringTools(FunctionalTest):
@@ -63,7 +63,8 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         create.click()
         too_long_err = "Ensure this value has at most 20 characters"
         self.assertIn(too_long_err, self.browser.page_source)
-        self.assertIn(ABSTRACT_FIELD_REQUIRED_ERROR, self.browser.page_source)
+        self.assertIn(COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
+            self.browser.page_source)
         
         # She renames her new course 'Camping'...
         text_box = self.browser.find_element_by_xpath(
