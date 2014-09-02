@@ -25,6 +25,7 @@ from registration.forms import RegistrationForm
 from interaction.models import UserCourse, UserLesson
 from lesson.forms import LessonEditForm
 from lesson.models import Lesson
+from video.forms import VideoForm
 from video.models import Video
 from .forms import CourseFullForm
 from .models import Course
@@ -35,7 +36,7 @@ logger = logging.getLogger(__name__)
 LessonInlineFormset = inlineformset_factory(
     Course, Lesson, form=LessonEditForm, extra=3)
 VideoInlineFormset = inlineformset_factory(
-    Course, Video, extra=1)
+    Course, Video, form=VideoForm, extra=1, exclude=('lesson',))
 
 def _courses_n_24ths(clist):
     """ Take a list of courses cl, 3 courses at a time. Set their widths to 
