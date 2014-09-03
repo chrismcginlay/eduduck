@@ -144,8 +144,8 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
 
         # he sees an area on the course form for adding a youtube intro video.
         vfs = self.browser.find_element_by_id('id_video_formset_area')
-        video_name_widget = vfs.find_element_by_id('id_video_title')
-        video_url_widget = vfs.find_element_by_id('id_video_url')
+        video_name_widget = vfs.find_element_by_name('video_formset-0-name')
+        video_url_widget = vfs.find_element_by_id('id_video_formset-0-url')
 
         # Chris thinks that he has the desired url in clipboard and pastes 
         # but unfortunately the clipboard just pastes garbage which he submits
@@ -159,8 +159,9 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         
         # Chris now puts in the correct url and resubmits.
         vfs = self.browser.find_element_by_id('id_video_formset_area')
-        video_name_widget = vfs.find_element_by_id('id_video_title')
+        video_name_widget = vfs.find_element_by_name('video_formset-0-name')
         video_name_widget.send_keys("My Intro Video")
+        video_url_widget = vfs.find_element_by_id('id_video_formset-0-url')
         video_url_widget.send_keys("http://youtu.be/uIlu7szab5I")
         btn_submit = vfs.find_element_by_id('id_submit_video_edits')
         btn_submit.click()
