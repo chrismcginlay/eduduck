@@ -75,9 +75,9 @@
         <p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
         <p>Course instructor <a href="{{course.instructor.bio.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor %}</a></p>
     </div>
-
     <div id='id_intro_video' class='pure-u-1-2'>
-        {% for v in course.video_set.all|slice:"1" %}
+        {% for v in course.video_set.all|slice:":1" %}
+        {{v.name}}<br>
         <iframe width="201" height="113" src="{{v.url}}" frameborder="0" allowfullscreen></iframe>
         {% empty %}
                 <p>There are no intro videos for this course</p>
@@ -151,6 +151,7 @@
     <div class='pure-u-1-3' id='id_resource_videos'>
         <h3>Intro Videos</h3>
         {% for v in course.video_set.all %}
+            {{ v.name }}
             <iframe width="280" height="158" src='{{ v.url }}' 
             frameborder="0" allowfullscreen></iframe>
         {% empty %}
