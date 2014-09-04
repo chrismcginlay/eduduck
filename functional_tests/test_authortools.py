@@ -8,6 +8,7 @@ from courses.forms import (
     COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
     COURSE_NAME_FIELD_REQUIRED_ERROR,
 )
+from video.utils import VIDEO_URL_FIELD_INVALID_ERROR
 
 class AuthorUsesCourseAuthoringTools(FunctionalTest):
     
@@ -155,30 +156,32 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         btn_submit.click()
 
         # The invalid url is picked up and an error message is displayed.
-        self.assertIn(INVALID_VIDEO_URL_ERROR, self.browser.page_source)
-        
+        self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, self.browser.page_source)
         # Chris now puts in the correct url and resubmits.
         vfs = self.browser.find_element_by_id('id_video_formset_area')
         video_name_widget = vfs.find_element_by_name('video_formset-0-name')
+        video_name_widget.clear()
         video_name_widget.send_keys("My Intro Video")
         video_url_widget = vfs.find_element_by_id('id_video_formset-0-url')
-        video_url_widget.send_keys("http://youtu.be/uIlu7szab5I")
+        video_url_widget.clear()
+        video_url_widget.send_keys("http://www.youtube.com/embed/uIlu7szab5I")
         btn_submit = vfs.find_element_by_id('id_submit_video_edits')
         btn_submit.click()
-
         # All is well, the video shows up on the course homepage.
         self.assertEqual(self.browser.current_url, self.server_url+'/courses/4/')
-        self.browser.find_element_by_id('tba')
+        vid = self.browser.find_element_by_id('id_intro_video')
+        self.assertIn('My Intro Video', vid.text)
 
         # Finally he decides to delete introductory video entirely.
         self.browser.get(self.server_url+'/courses/4/edit/')
-        btn_delete = vfs.find_element_by_id('id_delete_video_edits')
-        btn_delete.click()
-        self.fail("confirmation mbox")
-    
+        delete_check = self.browser.find_element_by_id('id_video_formset-0-DELETE')
+        delete_check.click()
+        btn_submit = self.browser.find_element_by_id('id_submit_video_edits')
+        btn_submit.click()
+ 
         # It no longer appears on the course page.
         self.browser.get(self.server_url+'/courses/4/')
-        self.fail("element not there")
+        self.assertNotIn('My Intro Video', self.browser.page_source)
        
  
 class AuthorCreatesAndEditsLessons(FunctionalTest):
