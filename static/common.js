@@ -1,15 +1,16 @@
+// Shadable class. To use specify 'shadable' class on an element.
+// The next sibling element will shade or toggle.
 $(document).ready(function(){    
-    $( '<span class="shade" title="Show/Hide">&uarr;</span>' ).insertBefore( ".abstract" );
-    $( '<span class="shade" title="Show/Hide">&uarr;</span>' ).insertBefore( ".FYI" );
-
+    $( ".shadable" ).prepend('<span class="shade" title="Show/Hide">&darr;</span>');
     $( ".shade" ).click(function(){
-        $( this ).next().slideToggle( "slow" );
-        //http://www.unicode.org/charts/PDF/U2190.pdf  \u2193 == &darr;
-        //Toggle from down arrow to up arrow etc.
-        if ($( this ).html()=='\u2193'){
-            $( this ).html('&uarr;');
-        } else {
+        $( this ).parent().next().slideToggle( "slow" );
+        //http://www.unicode.org/charts/PDF/U2190.pdf
+        //  \u2193 == &darr; \u2191 == &uarr; \u2192 == &rarr;
+        //Toggle from down arrow to right arrow etc.
+        if ($( this ).html()=='\u2192'){
             $( this ).html('&darr;');
+        } else {
+            $( this ).html('&rarr;');
         }
     });
 });

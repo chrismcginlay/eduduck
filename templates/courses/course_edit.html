@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="{% static 'form.css' %}">
 {% endblock extra_style %}
 
+{{% block extra_script %}
+    <script src="{% static 'common.js' %}" ></script>
+{% endblock extra_script %}
+
 {% block breadcrumb %}
 <p id='id_breadcrumb'>
     <a href="{% url 'courses.views.index' %}">All Courses</a> &gt;
@@ -25,75 +29,75 @@
     {% endif %}
     <form method='post' action='#' class='pure-form pure-form-aligned'>
         {% csrf_token %}
-	    {{ lesson_formset.management_form }}
-	    {{ video_formset.management_form }}
-        <h3>Basic Details</h3>
-	    <fieldset id='id_course_basics_area'>
-	        {% for field in course_form %}
-		        <div class='pure-control-group'>
-		            {{ field.errors }}
-		            {{ field.label_tag }}{{ field }}
-		            <br>{{ field.help_text }}
-		        </div>
-	        {% endfor %}
-	        <div class='pure-controls'>
+        {{ lesson_formset.management_form }}
+        {{ video_formset.management_form }}
+        <h3 class='shadable'>Basic Details</h3>
+        <fieldset id='id_course_basics_area'>
+            {% for field in course_form %}
+                <div class='pure-control-group'>
+                    {{ field.errors }}
+                    {{ field.label_tag }}{{ field }}
+                    <br>{{ field.help_text }}
+                </div>
+            {% endfor %}
+            <div class='pure-controls'>
                 <button 
-        	        id="id_submit_course_edits" 
-        	        type="submit" 
-        	        class="pure-button pure-button-primary">
+                    id="id_submit_course_edits" 
+                    type="submit" 
+                    class="pure-button pure-button-primary">
                     Save All Edits
                 </button>
-	        </div>
-	    </fieldset>
-        <h3>Intro Video(s)</h3>
-	    <fieldset id='id_video_formset_area'>
-	        <em>NB: Temporary Pain: For now, can you please enter YouTube addressess in precisely the following format, otherwise they will not show up. This pain will go away at the next release (MVP0.3)<br>http://www.youtube.com/embed/11digitid</em>
+            </div>
+        </fieldset>
+        <h3 class='shadable'>Intro Video(s)</h3>
+        <fieldset id='id_video_formset_area'>
+            <em>NB: Temporary Pain: For now, can you please enter YouTube addressess in precisely the following format, otherwise they will not show up. This pain will go away at the next release (MVP0.3)<br>http://www.youtube.com/embed/11digitid</em>
             {% for form in video_formset %}
                 {% for hf in form.hidden_fields %}
                     {{ hf }}
                 {% endfor %}
                 {% for field in form.visible_fields %}
-		            <div class='pure-control-group'>
-		                {{ field.errors }}
-		                {{ field.label_tag }}{{ field }}
-		                <br>{{ field.help_text }}
-		            </div>
+                    <div class='pure-control-group'>
+                        {{ field.errors }}
+                        {{ field.label_tag }}{{ field }}
+                        <br>{{ field.help_text }}
+                    </div>
                 {% endfor %}
                 <hr>
-	        {% endfor %}
-	        <div class='pure-controls'>
+            {% endfor %}
+            <div class='pure-controls'>
                 <button 
-        	        id="id_submit_video_edits" 
-        	        type="submit" 
-        	        class="pure-button pure-button-primary">
+                    id="id_submit_video_edits" 
+                    type="submit" 
+                    class="pure-button pure-button-primary">
                     Save All Edits
                 </button>
-	        </div>
-	    </fieldset>
-	    <h3>Lessons</h3>
-	    <fieldset id='id_lesson_formset_area'>
-	        {% for form in lesson_formset %}
-		        {% for hf in form.hidden_fields %}
-		            {{ hf }}
-		        {% endfor %}
-		        {% for field in form.visible_fields %}
-		            <div class='pure-control-group'>
-			            {{ field.errors }}
-		    	        {{ field.label_tag }}{{ field }}
-		    	        <br>{{ field.help_text }}
-		            </div>
-		        {% endfor %}
-	    	    <hr>
-	        {% endfor %}
-	        <div class='pure-controls'>
-	            <button 
-        	        id="id_submit_lesson_edits" 
-        	        type="submit" 
-        	        class="pure-button pure-button-primary">
+            </div>
+        </fieldset>
+        <h3 class='shadable'>Lessons</h3>
+        <fieldset id='id_lesson_formset_area'>
+            {% for form in lesson_formset %}
+                {% for hf in form.hidden_fields %}
+                    {{ hf }}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+                    <div class='pure-control-group'>
+                        {{ field.errors }}
+                        {{ field.label_tag }}{{ field }}
+                        <br>{{ field.help_text }}
+                    </div>
+                {% endfor %}
+                <hr>
+            {% endfor %}
+            <div class='pure-controls'>
+                <button 
+                    id="id_submit_lesson_edits" 
+                    type="submit" 
+                    class="pure-button pure-button-primary">
                     Save All Edits
                 </button>
-	        </div>
-	    </fieldset>
+            </div>
+        </fieldset>
     </form>
 {% endblock content %}
 

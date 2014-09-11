@@ -1,7 +1,9 @@
 {% extends "courses/base_course.html" %}
 {% load staticfiles %}
 {% load tz %}
-
+{% block extra_script %}
+    <script src="{% static 'common.js' %}" ></script>
+{% endblock extra_script %}
 {% block menu_override %}
 <li class='menu-item-divided'><a href="#">{{ course.name }}</a></li>
 <li class='menu_subsection'><a href="#id_resource_videos">Intro Videos</a></li>
@@ -34,11 +36,11 @@
     <div class='pure-u-1-5'>
         {% if status == "auth_reg" or status == "auth_noreg" %}
         {% if user_can_edit %}
-	    <a	href = "{% url 'course_edit' course_id=course.id %}"
-		id='id_edit_course'
+        <a  href = "{% url 'course_edit' course_id=course.id %}"
+        id='id_edit_course'
                 class='pure-button pure-button-primary'>
                     Edit Course
-	</a>
+        </a>
         {% endif %}{% endif %}
         {% if status == "auth_noreg" %}
             <form   class='pure-form' 
@@ -105,9 +107,10 @@
 
         {% regroup course.lesson_set.all by lesson.code as lesson_list %}
         {% for lesson in course.lesson_set.all %}
-            <h4>{{ lesson.name }}</h4>
-            <article class="abstract">
+            <h4 class='shadable'>
                 <a href='{{ lesson.get_absolute_url }}'>{{ lesson.name }}</a>
+            </h4>
+            <article class="abstract">
                 <p>{{ lesson.abstract}} 
                 <a href='{{ lesson.get_absolute_url }}'>Go to lesson</a>
                 </p>
