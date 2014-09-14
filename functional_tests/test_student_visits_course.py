@@ -6,6 +6,16 @@ from .base import FunctionalTest
 
 class RegisteredUserInteractsWithCourse(FunctionalTest):
 
+    def test_collapsible_blocks_expand_or_collapse(self):
+        self.browser.get(self.server_url+'/courses/1/')
+        import pdb; pdb.set_trace()
+        shadables = self.browser.find_elements_by_class_name('shadable')
+        for shadable in shadables:
+            shady_bit = shadable.parent().next()
+            self.asserTrue(shady_bit.is_displayed())
+            shadable.click()
+            self.assertFalse(shady_bit.is_displayed())
+    
     def test_user_enrols_on_course(self):
         # User Chris logs in.
         self.browser.get(self.server_url)
