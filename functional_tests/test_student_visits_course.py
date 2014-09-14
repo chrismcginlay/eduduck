@@ -9,10 +9,11 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
     def test_collapsible_blocks_expand_or_collapse(self):
         self.browser.get(self.server_url+'/courses/1/')
         import pdb; pdb.set_trace()
-        shadables = self.browser.find_elements_by_class_name('shadable')
+        shadables = self.browser.find_elements_by_class_name('shade')
         for shadable in shadables:
-            shady_bit = shadable.parent().next()
-            self.asserTrue(shady_bit.is_displayed())
+            ## parent, then sibling element (*)
+            shady_bit = shadable.find_element_by_xpath('../following-sibling::*')
+            self.assertTrue(shady_bit.is_displayed())
             shadable.click()
             self.assertFalse(shady_bit.is_displayed())
     
