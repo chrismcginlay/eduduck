@@ -1,0 +1,19 @@
+/* CSS common to most pages */
+
+.shadable + * {
+    background-color: lightgrey;
+    border: 1px solid grey;
+    border-top: none;
+}   
+
+.shadable {
+    background-color: lightgrey;
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+    margin-bottom: 0;
+}
+
+.shadable + * p {
+    margin-top: 0;
+}

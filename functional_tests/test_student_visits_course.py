@@ -8,7 +8,6 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
 
     def test_collapsible_blocks_expand_or_collapse(self):
         self.browser.get(self.server_url+'/courses/1/')
-        import pdb; pdb.set_trace()
         shadables = self.browser.find_elements_by_class_name('shade')
         for shadable in shadables:
             ## parent, then sibling element (*)

@@ -32,6 +32,7 @@
         {{ lesson_formset.management_form }}
         {{ video_formset.management_form }}
         <h3 class='shadable'>Basic Details</h3>
+        <article>
         <fieldset id='id_course_basics_area'>
             {% for field in course_form %}
                 <div class='pure-control-group'>
@@ -49,7 +50,9 @@
                 </button>
             </div>
         </fieldset>
+        </article>
         <h3 class='shadable'>Intro Video(s)</h3>
+        <article>
         <fieldset id='id_video_formset_area'>
             <em>NB: Temporary Pain: For now, can you please enter YouTube addressess in precisely the following format, otherwise they will not show up. This pain will go away at the next release (MVP0.3)<br>http://www.youtube.com/embed/11digitid</em>
             {% for form in video_formset %}
@@ -74,7 +77,9 @@
                 </button>
             </div>
         </fieldset>
+        </article>
         <h3 class='shadable'>Lessons</h3>
+        <article>
         <fieldset id='id_lesson_formset_area'>
             {% for form in lesson_formset %}
                 {% for hf in form.hidden_fields %}
@@ -98,6 +103,7 @@
                 </button>
             </div>
         </fieldset>
+        </article>
     </form>
 {% endblock content %}
 
