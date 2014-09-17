@@ -112,6 +112,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         
         # Later she returns to the site, logs in and immediately sees her new
         # course listed in correct part of profile area. Happy days.
+        self.browser.get(self.server_url)
         self._logUserIn('urvasi', 'hotel23')
         coursearea = self.browser.find_element_by_id('id_courses_taught')
         self.assertIn('Camping', coursearea.text)

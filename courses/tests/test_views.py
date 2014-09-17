@@ -128,7 +128,7 @@ class CourseViewTests(TestCase):
         self.assertContains(response, 
             '<h3>F1 : Dingbat Course Homepage</h3>', html=True)
         self.assertContains(response, '<p>Fingbot</p>', html=True)
-        self.assertContains(response, '<h4>Boo</h4>', html=True)
+        self.assertIn('Boo</a>', response.content)
         self.assertIn('<p>Hoo', response.content)
         self.assertIn(escape('Cmdr Hadfield\'s Soda'), response.content)
         self.assertIn('EJiUWBiM8HE', response.content) #youtube video
