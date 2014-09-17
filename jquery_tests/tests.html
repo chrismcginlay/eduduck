@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Javascript tests</title>
+    <link rel="stylesheet" href="qunit.css">
+</head>
+
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <h3 class='shadable'>Intro Video(s)</h3>
+        <article>
+            <p>Some content to shade</p>
+        </article>
+    </div>    
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="qunit.js"></script>
+    <script src="../static/common.js"></script>
+    <script>
+
+/*global $, test, equal */
+QUnit.module("Shading Tests");
+QUnit.test("Shadable prepends span", function ( assert ) {
+    assert.ok( $( 'span.shade').length, "Shade span exists");
+});
+QUnit.test("Toggle shade up and down", function ( assert ) {
+    var spanshade = $( 'span.shade' );
+    var shadedbit = spanshade.parent().next();
+    var isVis = false;
+    spanshade.click();
+    shadedbit.promise().done(function (arg1) {
+        isVis = arg1.parent().next().is(':visible');
+    });
+    assert.equal( isVis, false, "Article shades up");
+    
+    spanshade.click();
+    shadedbit.promise().done(function (arg1) {
+        isVis = arg1.parent().next().is(':visible');
+    });
+    assert.equal( isVis, true, "Article shades down")
+});
+    </script>
+</body>
+</html>

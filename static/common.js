@@ -4,7 +4,7 @@ $(document).ready(function(){
     $( ".shadable" ).prepend('<span class="shade" title="Show/Hide">&darr;</span>');
     $( ".shade" ).click(function(){
         // bbs variable is border-bottom-style
-        bbs = $( this ).parent().css('border-bottom-style');
+        var bbs = $( this ).parent().css('border-bottom-style');
         if (bbs=='solid') {
             $( this ).parent().css('border-bottom-style', 'None');
         } else {
