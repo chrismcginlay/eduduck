@@ -250,25 +250,59 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self._logUserIn('chris', 'chris')
         self.browser.get(self.server_url+'/courses/1/')
 
-        # He decides to edit a lesson
-
-        # Chris has the option to add a video to the lesson page
-
-        # He enters a url which doesn't resolve
-
-        # This triggers and error message
-
-        # On fixing the error, the edits save properly and the video is embeded
+        # He visits a lesson page,
+        self.browser.find_element_by_id('id_lesson1').click()
         
-        # Chris logs out and finds that the video is of course still available
-        # to logged out users.
+        # There he sees a lesson edit button, clicks it...
+        btn_edit = self.browser.find_element_by_id('id_edit_lesson')
+        lesson_set_target_url = self.server_url + '/courses/1/lesson/1/edit'
+        btn_edit.click()
+        self.assertRegexpMatches(self.browser.current_url, lesson_set_target_url)
 
-        # He decides to edit the course page again and switch the video.
+        # The lesson edit page is split into logical sections
+        pt = self.browser.find_element_by_id('id_page_title')
+        self.assertIn('What is Blender for?', pt.text)
+        abstract_area = self.browser.find_element_by_id(
+            'id_lesson_abstract_area')
+        video_area = self.browser.find_element_by_id(
+            'id_video_formset_area')
+        attachments_area = self.browser.find_element_by_id(
+            'id_attachment_formset_area')
+        outcome_area = self.browser.find_element_by_id(
+            'id_outcome_formset_area')
 
-        # This works:
+        # Chris tries to add a video to the lesson page, 
+        # but he enters a duff url.
+        video_name_widget = self.browser.find_element_by_xpath(
+            "//input[@name='video_formset-0-name']")
+        video_url_widget = self.browser.find_element_by_xpath(
+            "//input[@name='video_formset-0-url']")
+        video_name_widget.clear()
+        video_url_widget.clear()
+        video_name_widget.send_keys("Broken url")
+        video_url_widget.send_keys("https://www.youtube.com/watch?v=kT")
+        btn_submit = video_area.find_element_by_id('id_submit_video_edits')
+        btn_submit.click()
+   
+        # This triggers an error message
+        self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, self.browser.page_source)
 
-        # Finally he decides to delete introductory video entirely.
+        # On fixing the error, the edits save properly and the video is embedded
+        video_url_widget = self.browser.find_element_by_xpath(
+            "//input[@name='video_formset-0-url']")
+        video_url_widget.clear()
+        video_url_widget.send_keys(
+            "https://www.youtube.com/watch?v=kT7qrYi8R_M")
+        btn_submit = video_area.find_element_by_id('id_submit_video_edits')
+        btn_submit.click()
+        
+        self.assertEqual(
+            self.browser.current_url, self.server_url+'/courses/1/lesson/1/')
+        vid = self.browser.find_element_by_id('id_video_1')
 
-        # It no longer appears on the course page.
-     
-        self.fail("write me")  
+        # Chris logs out and finds that the resources are of course still available
+        # to casual site visitors.
+        self._logUserOut()
+        self.browser.get('/courses/1/lesson/1/')
+        self.browser.find_element_by_id('id_video_1') 
+
