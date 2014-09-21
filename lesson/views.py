@@ -1,8 +1,11 @@
 # Views for lesson app
+from datetime import datetime, timedelta
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
+from django.utils import timezone
+
 from interaction.models import UserLesson
 from .models import Lesson
 
@@ -16,6 +19,14 @@ def iterNone():
     
     yield None
     
+def _user_permitted_to_edit_lesson(user, lesson_id):
+    
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    if not user.is_authenticated(): return False
+    if not (user.id ==  lesson.course.organiser_id 
+        or user.id == lesson.course.instructor_id):
+        return False
+    return True
 
 def lesson(request, course_id, lesson_id):
     """Prepare variables for detail of individual lesson"""
