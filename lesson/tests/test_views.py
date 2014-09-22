@@ -89,7 +89,7 @@ class LessonViewTests(TestCase):
     def test_lesson_page_has_edit_button_for_organiser_instructor(self):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/1/lesson/1/')
-        self.assertIn("id='id_edit_course'", response.content)
+        self.assertIn("id='id_edit_lesson'", response.content)
         self.assertEqual(response.context['user_can_edit_lesson'], True)
 
     def test_lesson_page_has_no_edit_button_if_not_organiser_instructor(self):

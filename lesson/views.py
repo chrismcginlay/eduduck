@@ -2,7 +2,10 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import (
+    ObjectDoesNotExist,
+    PermissionDenied,
+)
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.utils import timezone
@@ -124,7 +127,10 @@ def visit(request, course_id, lesson_id):
     return render_to_response(template, context_data, context_instance)
     
 @login_required
-def edit(request, course_id, lesson_id):
-    t = 'lesson/lesson_edit.html'
-    c = {}
-    return render(request, t, c)
+def edit(request, lesson_id, course_id):
+    if not(_user_permitted_to_edit_lesson(request.user, lesson_id)):
+        raise PermissionDenied()
+    else:        
+        t = 'lesson/lesson_edit.html'
+        c = {}
+        return render(request, t, c)
