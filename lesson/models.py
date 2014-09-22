@@ -54,7 +54,7 @@ class Lesson(models.Model):
     def get_absolute_url(self):
         assert self.course
         assert self.id
-        return reverse(u"lesson.views.lesson", kwargs = { 
+        return reverse(u"lesson_visit", kwargs = { 
             'course_id': self.course.id,
             'lesson_id': self.id })
             

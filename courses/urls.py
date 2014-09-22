@@ -1,8 +1,7 @@
 # urls for courses app
-from django.conf.urls import patterns, url
-#from .views import index, single
+from django.conf.urls import include, patterns, url
 
-urlpatterns = patterns('courses.views', 
+urlpatterns = patterns('courses.views',
     url(r'^$', 'index', name='course_index'),
     url(r'^(?P<course_id>\d+)/edit/$', 'edit', name='course_edit'),
     url(r'^(?P<course_id>\d+)/$', 'single', name='course_single'),
@@ -10,6 +9,6 @@ urlpatterns = patterns('courses.views',
 )
 
 urlpatterns += patterns('',
-    url(r'^(?P<course_id>\d+)/lesson/(?P<lesson_id>\d+)/$',
-        'lesson.views.lesson', name='course_lesson'),
+    url(r'^(?P<course_id>\d+)/lesson/', include('lesson.urls')),
 )
+

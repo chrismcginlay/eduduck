@@ -28,7 +28,7 @@ def _user_permitted_to_edit_lesson(user, lesson_id):
         return False
     return True
 
-def lesson(request, course_id, lesson_id):
+def visit(request, course_id, lesson_id):
     """Prepare variables for detail of individual lesson"""
 
     logger.info('Course id=' + str(course_id) + \
@@ -116,11 +116,13 @@ def lesson(request, course_id, lesson_id):
         'attachments': userattachments_attachments_tuple,
         'learning_intentions': learning_intentions,
     }
-    if _user_permitted_to_edit_lesson():
+    if _user_permitted_to_edit_lesson(request.user, lesson_id):
         context_data.update({'user_can_edit_lesson': True})
     else:
         context_data.update({'user_can_edit_lesson': False})
 
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
-     
+    
+def edit():
+    pass 
