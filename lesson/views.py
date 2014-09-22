@@ -1,6 +1,7 @@
 # Views for lesson app
 from datetime import datetime, timedelta
 
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
@@ -11,8 +12,6 @@ from .models import Lesson
 
 
 import logging; logger = logging.getLogger(__name__)
-
-
 
 def iterNone(): 
     """Make None type iterable for zip function used below"""
@@ -124,5 +123,8 @@ def visit(request, course_id, lesson_id):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
     
-def edit():
-    pass 
+@login_required
+def edit(request, course_id, lesson_id):
+    t = 'lesson/lesson_edit.html'
+    c = {}
+    return render(request, t, c)
