@@ -108,13 +108,19 @@ def lesson(request, course_id, lesson_id):
         userattachments_attachments_tuple = zip(iterNone(), attachments)
     
     template = 'lesson/lesson_single.html'
-    context_data =  {'course':  course,
-                     'lesson':  lesson,
-                     'ul':      ul,
-                     'history': history,
-                     'attachments': userattachments_attachments_tuple,
-                     'learning_intentions': learning_intentions,
-                    }
+    context_data =  {
+        'course':  course,
+        'lesson':  lesson,
+        'ul':      ul,
+        'history': history,
+        'attachments': userattachments_attachments_tuple,
+        'learning_intentions': learning_intentions,
+    }
+    if _user_permitted_to_edit_lesson():
+        context_data.update({'user_can_edit_lesson': True})
+    else:
+        context_data.update({'user_can_edit_lesson': False})
+
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
      
