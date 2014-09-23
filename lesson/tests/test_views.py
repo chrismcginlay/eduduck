@@ -99,6 +99,32 @@ class LessonViewTests(TestCase):
         self.assertEqual(response.context['user_can_edit_lesson'], False)
 
     def test_lesson_edits_actually_saved(self):
+        self.client.login(username='chris', password='chris')
+        mod_data = {
+            'lesson_form-code': 'F1', 
+            'lesson_form-name': 'Dingbat', 
+            'lesson_form-abstract': 'Fingbot',
+            'lesson_formset-TOTAL_FORMS':4,
+            'lesson_formset-INITIAL_FORMS':1,
+            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'lesson_formset-0-name':'Boo',
+            'lesson_formset-0-abstract':'Hoo',
+            'video_formset-0-url':'http://www.youtube.com/embed/EJiUWBiM8HE',
+            'video_formset-0-name':'Cmdr Hadfield\'s Soda',
+            'video_formset-TOTAL_FORMS':u'1',
+            'video_formset-INITIAL_FORMS':u'0'}
+        ##This should trigger modification of the lesson
+        response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
+        
+        ##Then visiting the lesson should reflect the changes
+        response = self.client.get('/courses/1/lesson/1/')
+        self.assertContains(response, 
+            '<h3>New Lesson Name</h3>', html=True)
+        self.assertContains(response, '<p>A new abstract</p>', html=True)
+        self.assertIn('Boo</a>', response.content)
+        self.assertIn('<p>Hoo', response.content)
+        self.assertIn(escape('Cmdr Hadfield\'s Soda'), response.content)
+        self.assertIn('EJiUWBiM8HE', response.content) #youtube video
         self.fail("write me")
 
     def test_lesson_edit_redirects_if_not_loggedin(self):
@@ -117,21 +143,56 @@ class LessonViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_lesson_edit_page_has_correct_title_and_breadcrumb(self):
-        self.fail("write me")
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/1/lesson/1/edit/')
+        needle = "<h2 id='id_page_title'>Editing: What is Blender for?</h2>"
+        self.assertIn(needle, response.content)
+        self.assertIn("<p id='id_breadcrumb'>", response.content)
+        self.assertContains(
+            response, 
+            '<a href="/courses/">All Courses</a>',
+            html=True)
+        self.assertContains(
+            response,
+            '<a href="/courses/1/">Blender</a>',
+            html=True)
+        self.assertContains(
+            response,
+            '<a href="/courses/1/lesson/1/">Lesson</a>',
+            html=True)
+
     def test_lesson_edit_uses_correct_template(self):
-        self.fail("write me")
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/1/lesson/1/edit/') 
+        self.assertTemplateUsed(response, 'courses/lesson_edit.html')
+
     def test_lesson_edit_page_uses_correct_form(self):
-        self.fail("write me")
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/1/lesson/1/edit/')
+        self.assertIsInstance(response.context['lesson_form'], LessonFullForm)
+
     def test_lesson_edit_page_uses_correct_formsets(self):
-        self.fail("write me")
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/1/lesson/1/edit/')
+        self.assertIsInstance(
+            response.context['video_formset'], VideoInlineFormset)
+
     def test_lesson_edit_page_validation_errors_sent_to_template(self):
         self.fail("write me")
+
     def test_lesson_edit_page_validation_errors_generate_error_msg(self):
         self.fail("write me")
+
     def test_lesson_edit_page_has_lesson_abstract_area(self):
-        self.fail("write me")
-    def test_lesson_edit_page_has_populated_lesson_area(self):
-        self.fail("write me")
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/1/lesson/1/edit/')
+        self.assertIn('id_lesson_abstract_area', response.content)
+        self.assertIn('value="What is Blender for?"', response.content)
+        self.assertIn(
+            'Be clear what Blender is', response.content)
+
     def test_lesson_edit_page_has_video_area(self):
-        self.fail("write me")
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/1/lesson/1/edit/')
+        self.assertIn('id_video_formset_area', response.content)
 

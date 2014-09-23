@@ -163,7 +163,6 @@ class CourseViewTests(TestCase):
             '<a href="/courses/1/">A Course of Leeches</a>',
             html=True)
 
-
     def test_course_edit_uses_correct_template(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/edit/') 
