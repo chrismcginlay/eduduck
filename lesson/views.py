@@ -30,7 +30,7 @@ def _user_permitted_to_edit_lesson(user, lesson_id):
         return False
     return True
 
-def visit(request, course_id, lesson_id):
+def visit(request, course_id, lesson_id): 
     """Prepare variables for detail of individual lesson"""
 
     logger.info('Course id=' + str(course_id) + \
@@ -129,8 +129,16 @@ def visit(request, course_id, lesson_id):
 @login_required
 def edit(request, lesson_id, course_id):
     if not(_user_permitted_to_edit_lesson(request.user, lesson_id)):
+        logger.info("Unauthorized attempt to edit lesson {0}".format(lesson_id))
         raise PermissionDenied()
     else:        
+        logger.info('Course id=' + str(course_id) + \
+            ', Lesson id=' + str(lesson_id) + ' edit')
+        lesson = get_object_or_404(Lesson, id=lesson_id)
+        course = lesson.course
         t = 'lesson/lesson_edit.html'
-        c = {}
+        c = {
+            'course': course,
+            'lesson': lesson,
+        }
         return render(request, t, c)

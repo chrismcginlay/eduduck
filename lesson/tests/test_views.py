@@ -158,13 +158,13 @@ class LessonViewTests(TestCase):
             html=True)
         self.assertContains(
             response,
-            '<a href="/courses/1/lesson/1/">Lesson</a>',
+            '<a href="/courses/1/lesson/1/">What is Blender for?</a>',
             html=True)
 
     def test_lesson_edit_uses_correct_template(self):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/1/lesson/1/edit/') 
-        self.assertTemplateUsed(response, 'courses/lesson_edit.html')
+        self.assertTemplateUsed(response, 'lesson/lesson_edit.html')
 
     def test_lesson_edit_page_uses_correct_form(self):
         self.client.login(username='chris', password='chris')
