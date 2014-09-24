@@ -1,0 +1,23 @@
+{% extends "lesson/base_lesson.html" %}
+{% load staticfiles %}
+{% load tz %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'form.css' %}">
+{% endblock extra_style %}
+
+{{% block extra_script %}
+    <script src="{% static 'common.js' %}" ></script>
+{% endblock extra_script %}
+
+{% block breadcrumb %}
+<p id='id_breadcrumb'>
+    <a href="{% url 'courses.views.index' %}">All Courses</a> &gt;
+    <a href="{{ course.get_absolute_url }}">{{ course.name }}</a> &gt; 
+    <a href="{{ lesson.get_absolute_url }}">{{ lesson.name }}</a> &gt; Edit
+</p>
+{% endblock breadcrumb %}
+
+{% block contentheading %}
+<h2 id='id_page_title'>Editing: {{ lesson.name }}</h2>
+{% endblock contentheading %}
