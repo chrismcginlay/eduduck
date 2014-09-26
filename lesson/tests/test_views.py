@@ -7,6 +7,11 @@ from django.test import TestCase
 
 from lesson.models import Lesson
 from interaction.models import UserCourse
+from ..views import (
+    LessonEditForm,
+    VideoInlineFormset
+    )
+
 
 class LessonViewTests(TestCase):
     
@@ -169,7 +174,7 @@ class LessonViewTests(TestCase):
     def test_lesson_edit_page_uses_correct_form(self):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/1/lesson/1/edit/')
-        self.assertIsInstance(response.context['lesson_form'], LessonFullForm)
+        self.assertIsInstance(response.context['lesson_form'], LessonEditForm)
 
     def test_lesson_edit_page_uses_correct_formsets(self):
         self.client.login(username='chris', password='chris')

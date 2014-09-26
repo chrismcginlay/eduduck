@@ -6,15 +6,22 @@ from django.core.exceptions import (
     ObjectDoesNotExist,
     PermissionDenied,
 )
+from django.forms.models import inlineformset_factory
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.utils import timezone
 
 from interaction.models import UserLesson
+from video.forms import VideoForm
+from video.models import Video
+from .forms import LessonEditForm
 from .models import Lesson
 
 
 import logging; logger = logging.getLogger(__name__)
+
+VideoInlineFormset = inlineformset_factory(
+    Lesson, Video, form=VideoForm, extra=1, exclude=('course',))
 
 def iterNone(): 
     """Make None type iterable for zip function used below"""
@@ -132,13 +139,38 @@ def edit(request, lesson_id, course_id):
         logger.info("Unauthorized attempt to edit lesson {0}".format(lesson_id))
         raise PermissionDenied()
     else:        
-        logger.info('Course id=' + str(course_id) + \
-            ', Lesson id=' + str(lesson_id) + ' edit')
         lesson = get_object_or_404(Lesson, id=lesson_id)
-        course = lesson.course
-        t = 'lesson/lesson_edit.html'
-        c = {
-            'course': course,
-            'lesson': lesson,
-        }
-        return render(request, t, c)
+        if request.method=='POST':
+            lesson_form = LessonEditForm(
+                request.POST, prefix='lesson_form', instance=lesson)
+            video_formset = VideoInlineFormset(
+                request.POST, prefix='video_formset', instance=lesson)
+            if lesson_form.is_valid():
+                lesson_form.save()
+                logger.info("Lesson (id={0}) edited".format(lesson.pk))
+            if video_formset.is_valid():
+                video_formset.save()
+                logger.info("Video for lesson id {0} saved".format(lesson.pk))
+            if (lesson_form.is_valid() and video_formset.is_valid()):
+                logger.info("Lesson (id={0}) edited".format(lesson.pk))
+                return redirect(lesson)
+            else:
+                t = 'lesson/lesson_edit.html'
+                c = {
+                    'course': lesson.course,
+                    'lesson_form': lesson_form,
+                    'video_formset': video_formset,
+                }
+                return render(request, t, c)
+        else: #not post
+            lesson_form = LessonEditForm(
+                prefix='lesson_form', instance=lesson)
+            video_formset = VideoInlineFormset(
+                prefix='video_formset', instance=lesson)
+            t = 'lesson/lesson_edit.html'
+            c = { 'lesson_form': lesson_form,
+                  'video_formset': video_formset, 
+                  'course': lesson.course,
+            }
+            return render(request, t, c)
+ 

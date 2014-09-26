@@ -102,6 +102,7 @@ def edit(request, course_id):
             if (course_form.is_valid() 
                 and lesson_formset.is_valid()
                 and video_formset.is_valid()):
+                logger.info("course (id={0}) edited".format(course.pk))
                 return redirect(course)
             else:
                 t = 'courses/course_edit.html'
