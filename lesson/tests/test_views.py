@@ -8,6 +8,14 @@ from django.utils.html import escape
 
 from lesson.models import Lesson
 from interaction.models import UserCourse
+from video.forms import (
+    VIDEO_NAME_FIELD_REQUIRED_ERROR,
+    VIDEO_URL_FIELD_INVALID_ERROR,
+)
+from ..forms import (
+    LESSON_NAME_FIELD_REQUIRED_ERROR,
+    LESSON_ABSTRACT_FIELD_REQUIRED_ERROR,
+    )
 from ..views import (
     LessonEditForm,
     VideoInlineFormset
@@ -177,11 +185,37 @@ class LessonViewTests(TestCase):
             response.context['video_formset'], VideoInlineFormset)
 
     def test_lesson_edit_page_validation_errors_sent_to_template(self):
-        self.fail("write me")
+        self.client.login(username='chris', password='chris')
+        mod_data = {
+            'lesson_form-code': '', 
+            'lesson_form-name': '', 
+            'lesson_form-abstract': '',
+            'video_formset-0-url':'http://www.youtube.com/embed/E8HE',
+            'video_formset-0-name':'',
+            'video_formset-TOTAL_FORMS':u'1',
+            'video_formset-INITIAL_FORMS':u'0'}
+        response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'lesson/lesson_edit.html')
 
     def test_lesson_edit_page_validation_errors_generate_error_msg(self):
-        self.fail("write me")
+        self.client.login(username='chris', password='chris')
+        mod_data = {
+            'lesson_form-code': '', 
+            'lesson_form-name': '', 
+            'lesson_form-abstract': '',
+            'video_formset-0-url':'http://www.youtube.com/embed/E8HE',
+            'video_formset-0-name':'',
+            'video_formset-TOTAL_FORMS':u'1',
+            'video_formset-INITIAL_FORMS':u'0'}
+        response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(LESSON_NAME_FIELD_REQUIRED_ERROR, response.content)
+        self.assertIn(LESSON_ABSTRACT_FIELD_REQUIRED_ERROR, response.content)
+        self.assertIn(VIDEO_NAME_FIELD_REQUIRED_ERROR, response.content)
+        self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, response.content)
 
+ 
     def test_lesson_edit_page_has_lesson_basics_area(self):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/1/lesson/1/edit/')
