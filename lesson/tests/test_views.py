@@ -105,15 +105,12 @@ class LessonViewTests(TestCase):
 
     def test_lesson_edits_actually_saved(self):
         self.client.login(username='chris', password='chris')
+        import pdb; pdb.set_trace()
         mod_data = {
             'lesson_form-code': 'F1', 
             'lesson_form-name': 'Dingbat', 
             'lesson_form-abstract': 'Fingbot',
-            'lesson_formset-TOTAL_FORMS':4,
-            'lesson_formset-INITIAL_FORMS':1,
-            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
-            'lesson_formset-0-name':'Boo',
-            'lesson_formset-0-abstract':'Hoo',
+            #'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
             'video_formset-0-url':'http://www.youtube.com/embed/EJiUWBiM8HE',
             'video_formset-0-name':'Cmdr Hadfield\'s Soda',
             'video_formset-TOTAL_FORMS':u'1',
@@ -191,7 +188,7 @@ class LessonViewTests(TestCase):
     def test_lesson_edit_page_has_lesson_abstract_area(self):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/1/lesson/1/edit/')
-        self.assertIn('id_lesson_abstract_area', response.content)
+        self.assertIn('id_lesson__area', response.content)
         self.assertIn('value="What is Blender for?"', response.content)
         self.assertIn(
             'Be clear what Blender is', response.content)

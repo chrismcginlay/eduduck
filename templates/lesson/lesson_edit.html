@@ -21,3 +21,61 @@
 {% block contentheading %}
 <h2 id='id_page_title'>Editing: {{ lesson.name }}</h2>
 {% endblock contentheading %}
+
+{% block content %}
+    {% if lesson_form.errors or video_formset.errors %}
+        <div class="errorlist">
+            <p>Please correct the following:</p>
+        </div>
+    {% endif %}
+    <form method='post' action='#' class='pure-form pure-form-aligned'>
+        {% csrf_token %}
+        {{ video_formset.management_form }}
+        <h3 class='shadable'>Basic Details</h3>
+        <article>
+        <fieldset id='id_lesson_basics_area'>
+            {% for field in lesson_form %}
+                <div class='pure-control-group'>
+                    {{ field.errors }}
+                    {{ field.label_tag }}{{ field }}
+                    <br>{{ field.help_text }}
+                </div>
+            {% endfor %}
+            <div class='pure-controls'>
+                <button 
+                    id="id_submit_lesson_edits" 
+                    type="submit" 
+                    class="pure-button pure-button-primary">
+                    Save All Edits
+                </button>
+            </div>
+        </fieldset>
+        </article>
+        <h3 class='shadable'>Video(s)</h3>
+        <article>
+        <fieldset id='id_video_formset_area'>
+            <em>NB: Temporary Pain: For now, can you please enter YouTube addressess in precisely the following format, otherwise they will not show up. This pain will go away at the next release (MVP0.3)<br>http://www.youtube.com/embed/11digitid</em>
+            {% for form in video_formset %}
+                {% for hf in form.hidden_fields %}
+                    {{ hf }}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+                    <div class='pure-control-group'>
+                        {{ field.errors }}
+                        {{ field.label_tag }}{{ field }}
+                        <br>{{ field.help_text }}
+                    </div>
+                {% endfor %}
+                <hr>
+            {% endfor %}
+            <div class='pure-controls'>
+                <button 
+                    id="id_submit_video_edits" 
+                    type="submit" 
+                    class="pure-button pure-button-primary">
+                    Save All Edits
+                </button>
+            </div>
+        </fieldset>
+        </article> 
+{% endblock %} 
