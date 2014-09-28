@@ -7,7 +7,12 @@ from django.core.exceptions import (
     PermissionDenied,
 )
 from django.forms.models import inlineformset_factory, modelform_factory
-from django.shortcuts import render, get_object_or_404, render_to_response
+from django.shortcuts import (
+    redirect,
+    render, 
+    get_object_or_404, 
+    render_to_response
+)
 from django.template import RequestContext
 from django.utils import timezone
 
