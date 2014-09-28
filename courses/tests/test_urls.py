@@ -20,7 +20,7 @@ class UrlTests(TestCase):
         url = reverse('course_lesson', args=[1,1])
         self.assertEqual(url, '/courses/1/lesson/1/')
         resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'course_lesson')
+        self.assertEqual(resolver.view_name, 'lesson_view')
         self.assertEqual(resolver.kwargs, {'course_id': '1', 'lesson_id': '1'})
         
     def test_course_create(self):

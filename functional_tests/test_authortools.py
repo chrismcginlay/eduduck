@@ -255,15 +255,15 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         
         # There he sees a lesson edit button, clicks it...
         btn_edit = self.browser.find_element_by_id('id_edit_lesson')
-        lesson_set_target_url = self.server_url + '/courses/1/lesson/1/edit'
+        lesson_set_target_url = self.server_url + '/courses/1/lesson/1/edit/'
         btn_edit.click()
         self.assertRegexpMatches(self.browser.current_url, lesson_set_target_url)
 
         # The lesson edit page is split into logical sections
         pt = self.browser.find_element_by_id('id_page_title')
         self.assertIn('What is Blender for?', pt.text)
-        abstract_area = self.browser.find_element_by_id(
-            'id_lesson_abstract_area')
+        basics_area = self.browser.find_element_by_id(
+            'id_lesson_basics_area')
         video_area = self.browser.find_element_by_id(
             'id_video_formset_area')
         attachments_area = self.browser.find_element_by_id(
@@ -281,7 +281,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         video_url_widget.clear()
         video_name_widget.send_keys("Broken url")
         video_url_widget.send_keys("https://www.youtube.com/watch?v=kT")
-        btn_submit = video_area.find_element_by_id('id_submit_video_edits')
+        btn_submit = self.browser.find_element_by_id('id_submit_video_edits')
         btn_submit.click()
    
         # This triggers an error message
@@ -293,7 +293,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         video_url_widget.clear()
         video_url_widget.send_keys(
             "https://www.youtube.com/watch?v=kT7qrYi8R_M")
-        btn_submit = video_area.find_element_by_id('id_submit_video_edits')
+        btn_submit = self.browser.find_element_by_id('id_submit_video_edits')
         btn_submit.click()
         
         self.assertEqual(
