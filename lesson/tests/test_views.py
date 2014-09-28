@@ -4,6 +4,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.http.response import HttpResponseForbidden
 from django.test import TestCase
+from django.utils.html import escape
 
 from lesson.models import Lesson
 from interaction.models import UserCourse
@@ -105,11 +106,10 @@ class LessonViewTests(TestCase):
 
     def test_lesson_edits_actually_saved(self):
         self.client.login(username='chris', password='chris')
-        import pdb; pdb.set_trace()
         mod_data = {
             'lesson_form-code': 'F1', 
-            'lesson_form-name': 'Dingbat', 
-            'lesson_form-abstract': 'Fingbot',
+            'lesson_form-name': 'New Lesson Name', 
+            'lesson_form-abstract': 'A new abstract',
             #'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
             'video_formset-0-url':'http://www.youtube.com/embed/EJiUWBiM8HE',
             'video_formset-0-name':'Cmdr Hadfield\'s Soda',
@@ -123,11 +123,8 @@ class LessonViewTests(TestCase):
         self.assertContains(response, 
             '<h3>New Lesson Name</h3>', html=True)
         self.assertContains(response, '<p>A new abstract</p>', html=True)
-        self.assertIn('Boo</a>', response.content)
-        self.assertIn('<p>Hoo', response.content)
         self.assertIn(escape('Cmdr Hadfield\'s Soda'), response.content)
         self.assertIn('EJiUWBiM8HE', response.content) #youtube video
-        self.fail("write me")
 
     def test_lesson_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/lesson/1/edit/')  
@@ -185,10 +182,10 @@ class LessonViewTests(TestCase):
     def test_lesson_edit_page_validation_errors_generate_error_msg(self):
         self.fail("write me")
 
-    def test_lesson_edit_page_has_lesson_abstract_area(self):
+    def test_lesson_edit_page_has_lesson_basics_area(self):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/1/lesson/1/edit/')
-        self.assertIn('id_lesson__area', response.content)
+        self.assertIn('id_lesson_basics_area', response.content)
         self.assertIn('value="What is Blender for?"', response.content)
         self.assertIn(
             'Be clear what Blender is', response.content)
