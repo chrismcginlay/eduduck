@@ -6,7 +6,7 @@ from django.core.exceptions import (
     ObjectDoesNotExist,
     PermissionDenied,
 )
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, modelform_factory
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.utils import timezone
@@ -139,9 +139,14 @@ def edit(request, lesson_id, course_id):
         logger.info("Unauthorized attempt to edit lesson {0}".format(lesson_id))
         raise PermissionDenied()
     else:        
+        LessonFormNoCourse = modelform_factory(
+            Lesson, 
+            form=LessonEditForm,
+            exclude=('course',)
+        )
         lesson = get_object_or_404(Lesson, id=lesson_id)
         if request.method=='POST':
-            lesson_form = LessonEditForm(
+            lesson_form = LessonFormNoCourse(
                 request.POST, prefix='lesson_form', instance=lesson)
             video_formset = VideoInlineFormset(
                 request.POST, prefix='video_formset', instance=lesson)
@@ -157,20 +162,23 @@ def edit(request, lesson_id, course_id):
             else:
                 t = 'lesson/lesson_edit.html'
                 c = {
+                    'lesson': lesson,
                     'course': lesson.course,
                     'lesson_form': lesson_form,
                     'video_formset': video_formset,
                 }
                 return render(request, t, c)
         else: #not post
-            lesson_form = LessonEditForm(
+            lesson_form = LessonFormNoCourse(
                 prefix='lesson_form', instance=lesson)
             video_formset = VideoInlineFormset(
                 prefix='video_formset', instance=lesson)
             t = 'lesson/lesson_edit.html'
-            c = { 'lesson_form': lesson_form,
-                  'video_formset': video_formset, 
-                  'course': lesson.course,
+            c = { 
+                'lesson': lesson,
+                'lesson_form': lesson_form,
+                'video_formset': video_formset, 
+                'course': lesson.course,
             }
             return render(request, t, c)
  
