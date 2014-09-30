@@ -303,6 +303,6 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         # Chris logs out and finds that the resources are of course still available
         # to casual site visitors.
         self._logUserOut()
-        self.browser.get('/courses/1/lesson/1/')
+        self.browser.get(self.server_url+'/courses/1/lesson/1/')
         self.browser.find_element_by_id('id_video_1') 
 

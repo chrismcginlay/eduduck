@@ -69,7 +69,10 @@
         <h3>Videos</h3>
         <ol>
         {% for v in lesson.video_set.all %}
-        <li>{{ v.pk }} <a href="{{ v.url }}">{{ v.name }}</a></li>
+        <li id='id_video_{{ forloop.counter }}'>
+            {{ v.pk }} 
+            <a href="{{ v.url }}">{{ v.name }}</a>
+        </li>
         <iframe width="280" height="158" src='{{ v.url }}' 
         frameborder="0" allowfullscreen></iframe>
         {% empty %}
