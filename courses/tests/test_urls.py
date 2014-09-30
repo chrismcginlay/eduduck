@@ -16,13 +16,6 @@ class UrlTests(TestCase):
         self.assertEqual(resolver.view_name, 'course_single')
         self.assertEqual(resolver.kwargs, {'course_id': '1'})
         
-    def test_course_lesson(self):
-        url = reverse('course_lesson', args=[1,1])
-        self.assertEqual(url, '/courses/1/lesson/1/')
-        resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'lesson_view')
-        self.assertEqual(resolver.kwargs, {'course_id': '1', 'lesson_id': '1'})
-        
     def test_course_create(self):
         url = reverse('course_create')
         self.assertEqual(url, '/courses/create/')

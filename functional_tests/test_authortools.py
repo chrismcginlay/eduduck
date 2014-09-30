@@ -283,7 +283,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         video_url_widget.send_keys("https://www.youtube.com/watch?v=kT")
         btn_submit = self.browser.find_element_by_id('id_submit_video_edits')
         btn_submit.click()
-   
+        
         # This triggers an error message
         self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, self.browser.page_source)
 

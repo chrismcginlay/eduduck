@@ -4,7 +4,7 @@ from django.test import TestCase
 
 class UrlTests(TestCase):
         
-    def test_lesson_view(self):
+    def test_lesson_visit(self):
         url = reverse('lesson_visit', args=[1,1])
         self.assertEqual(url, '/courses/1/lesson/1/')
         resolver = resolve(url)
