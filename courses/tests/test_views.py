@@ -119,7 +119,10 @@ class CourseViewTests(TestCase):
             'video_formset-0-url':'http://www.youtube.com/embed/EJiUWBiM8HE',
             'video_formset-0-name':'Cmdr Hadfield\'s Soda',
             'video_formset-TOTAL_FORMS':u'1',
-            'video_formset-INITIAL_FORMS':u'0'}
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0'
+        }
         ##This should trigger modification of the course
         response = self.client.post('/courses/1/edit/', mod_data)
         
@@ -132,7 +135,8 @@ class CourseViewTests(TestCase):
         self.assertIn('<p>Hoo', response.content)
         self.assertIn(escape('Cmdr Hadfield\'s Soda'), response.content)
         self.assertIn('EJiUWBiM8HE', response.content) #youtube video
-        
+        self.fail("Add some attachment alteration test")
+ 
     def test_course_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/edit/')  
         login_redirect_url = '/accounts/login/?next=/courses/1/edit/'
@@ -180,6 +184,8 @@ class CourseViewTests(TestCase):
             response.context['lesson_formset'], LessonInlineFormset)
         self.assertIsInstance(
             response.context['video_formset'], VideoInlineFormset)
+        self.assertIsInstance(
+            response.context['attachment_formset'], AttachmentInlineFormset)
        
     def test_course_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='bertie', password='bertword')
@@ -192,7 +198,10 @@ class CourseViewTests(TestCase):
             'lesson_formset-INITIAL_FORMS':u'1',
             'video_formset-0-url':'err://err.err/EJiUWBiM8HE',
             'video_formset-TOTAL_FORMS':u'1',
-            'video_formset-INITIAL_FORMS':u'0'}
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0'
+        }
         response = self.client.post('/courses/1/edit/', data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'courses/course_edit.html')
@@ -209,7 +218,10 @@ class CourseViewTests(TestCase):
             'lesson_formset-INITIAL_FORMS':u'1',
             'video_formset-0-url':'http://youtu.be/EJiUWBiM8HE',
             'video_formset-TOTAL_FORMS':u'1',
-            'video_formset-INITIAL_FORMS':u'0'}
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0'
+        }
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
         self.assertIn(COURSE_NAME_FIELD_REQUIRED_ERROR, response.content)
@@ -226,7 +238,10 @@ class CourseViewTests(TestCase):
             'lesson_formset-INITIAL_FORMS':u'1',
             'video_formset-0-url':'http://youtu.be/EJiUWBiM8HE',
             'video_formset-TOTAL_FORMS':u'1',
-            'video_formset-INITIAL_FORMS':u'0'}
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0'
+        }
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
         self.assertIn(LESSON_NAME_FIELD_REQUIRED_ERROR, response.content)
@@ -244,7 +259,10 @@ class CourseViewTests(TestCase):
             'video_formset-0-name':'Invalid url',
             'video_formset-0-url':'htp://yotub.vom/56tyY',
             'video_formset-TOTAL_FORMS':u'1',
-            'video_formset-INITIAL_FORMS':u'0'}
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0'
+        }
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
         self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, response.content)	
@@ -268,6 +286,11 @@ class CourseViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/edit/')
         self.assertIn('id_video_formset_area', response.content)
+
+    def test_course_edit_page_has_attachment_area(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/')
+        self.assertIn('id_attachment_formset_area', response.content)
 
     def test_course_create_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/create/')
