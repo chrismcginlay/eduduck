@@ -31,6 +31,7 @@
         {% csrf_token %}
         {{ lesson_formset.management_form }}
         {{ video_formset.management_form }}
+        {{ attachment_formset.management_form }}
         <h3 class='shadable'>Basic Details</h3>
         <article>
         <fieldset id='id_course_basics_area'>
@@ -97,6 +98,32 @@
             <div class='pure-controls'>
                 <button 
                     id="id_submit_lesson_edits" 
+                    type="submit" 
+                    class="pure-button pure-button-primary">
+                    Save All Edits
+                </button>
+            </div>
+        </fieldset>
+        </article>
+        <h3 class='shadable'>Attachments</h3>
+        <article>
+        <fieldset id='id_attachment_formset_area'>
+            {% for form in attachment_formset %}
+                {% for hf in form.hidden_fields %}
+                    {{ hf }}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+                    <div class='pure-control-group'>
+                        {{ field.errors }}
+                        {{ field.label_tag }}{{ field }}
+                        <br>{{ field.help_text }}
+                    </div>
+                {% endfor %}
+                <hr>
+            {% endfor %}
+            <div class='pure-controls'>
+                <button 
+                    id="id_submit_attachment_edits" 
                     type="submit" 
                     class="pure-button pure-button-primary">
                     Save All Edits

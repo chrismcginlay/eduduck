@@ -22,7 +22,8 @@ from ..views import (
     CourseFullForm,
     _courses_n_24ths,
     LessonInlineFormset,
-    VideoInlineFormset
+    VideoInlineFormset,
+    AttachmentInlineFormset
     )
 
 class CourseViewTests(TestCase):
