@@ -293,6 +293,14 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/edit/')
         self.assertIn('id_attachment_formset_area', response.content)
 
+    def test_course_edit_attachment_area_doesnt_show_lesson_fk(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/edit/')
+        self.assertNotRegexpMatches(
+            response.content, 
+            'id_attachment_formset-\d+-lesson',
+            'Lesson field shouldn\'t be showing up')
+
     def test_course_create_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/create/')
         login_redirect_url = '/accounts/login/?next=/courses/create/'

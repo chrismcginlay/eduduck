@@ -39,7 +39,7 @@ LessonInlineFormset = inlineformset_factory(
 VideoInlineFormset = inlineformset_factory(
     Course, Video, form=VideoForm, extra=1, exclude=('lesson',))
 AttachmentInlineFormset = inlineformset_factory(
-    Course, Attachment, form=AttachmentForm, extra=1)
+    Course, Attachment, form=AttachmentForm, extra=1, exclude=('lesson',))
 
 def _courses_n_24ths(clist):
     """ Take a list of courses cl, 3 courses at a time. Set their widths to 
