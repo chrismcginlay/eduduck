@@ -196,13 +196,12 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
             'id_attachment_formset-0-file')
 
         # He uploads a course intro (maybe a PDF).
-        tempfile = FunctionalTest._generate_file('junk.txt')
-        file_data = {
-            'attachment_formset-0-file': tempfile, 
-            'attachment_formset_0-name': 'A test file'
-        }
-        response = self.browser.post('#', file_data)    
-        import pdb; pdb.set_trace()
+        with attachment.utils.generate_file('junk.txt') as tempfile:
+            file_data = {
+                'attachment_formset-0-file': tempfile, 
+                'attachment_formset_0-name': 'A test file'
+            }
+            response = self.browser.post('#', file_data)    
         # This is scanned for virus payload, clear.
         self.fail("Write me")
         self.assertEqual(response.status_code, 200)
@@ -215,13 +214,13 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
 
         # Chris then revisits the edit page, uploads a second attachment.
         self.browser.get(self.server_url+'/courses/4/')
-        tempfile = FunctionalTest._generate_file('junk2.pdf')
-        file_data = {
-            'attachment_formset-0-file': tempfile, 
-            'attachment_formset_0-name': 'Another test file'
-        }
-        response = self.browser.post('#', file_data)    
-        
+        with attachment.utils.generate_file('junk2.pdf') as tempfile:
+            file_data = {
+                'attachment_formset-0-file': tempfile, 
+                'attachment_formset_0-name': 'Another test file'
+            }
+            response = self.browser.post('#', file_data)    
+            
         # This is visible on the course page
         self.assertIn('A test file', self.browser.page_source)
 

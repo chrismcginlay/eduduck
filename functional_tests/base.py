@@ -100,18 +100,4 @@ class FunctionalTest(LiveServerTestCase):
             self.browser.switch_to_window(start_window)
             if len(open_windows)>1:
                 self.browser.close()  #close extra windows
-
-    def _generate_file(self, fname):
-        """Generate a dummy file, typically for upload testing
-
-        Concept from http://stackoverflow.com/a/11171303/1593443"""
-
-        try:
-            gen_file = open(fname, 'w')
-            gen_file.write('Testing file upload?')
-            gen_file.write('Does it work?')
-        finally:
-            gen_file.close()
-
-        return gen_file
-        
+       

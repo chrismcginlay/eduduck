@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.utils.html import escape
 
 from bio.models import Bio
-
+from attachment.utils import generate_file
 from interaction.models import UserCourse
 from lesson.forms import LESSON_NAME_FIELD_REQUIRED_ERROR
 from lesson.models import Lesson
@@ -106,27 +106,31 @@ class CourseViewTests(TestCase):
 
     def test_course_edits_actually_saved(self):
         self.client.login(username='bertie', password='bertword')
-        mod_data = {
-            'course_form-code': 'F1', 
-            'course_form-name': 'Dingbat', 
-            'course_form-abstract': 'Fingbot',
-            'course_form-organiser': self.user1,
-            'course_form-instructor': self.user1,
-            'lesson_formset-TOTAL_FORMS':4,
-            'lesson_formset-INITIAL_FORMS':1,
-            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
-            'lesson_formset-0-name':'Boo',
-            'lesson_formset-0-abstract':'Hoo',
-            'video_formset-0-url':'http://www.youtube.com/embed/EJiUWBiM8HE',
-            'video_formset-0-name':'Cmdr Hadfield\'s Soda',
-            'video_formset-TOTAL_FORMS':u'1',
-            'video_formset-INITIAL_FORMS':u'0',
-            'attachment_formset-TOTAL_FORMS':u'1',
-            'attachment_formset-INITIAL_FORMS':u'0'
-        }
-        ##This should trigger modification of the course
-        response = self.client.post('/courses/1/edit/', mod_data)
-        
+        with generate_file('atest.txt') as fp:
+            mod_data = {
+                'course_form-code': 'F1', 
+                'course_form-name': 'Dingbat', 
+                'course_form-abstract': 'Fingbot',
+                'course_form-organiser': self.user1,
+                'course_form-instructor': self.user1,
+                'lesson_formset-TOTAL_FORMS':4,
+                'lesson_formset-INITIAL_FORMS':1,
+                'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+                'lesson_formset-0-name':'Boo',
+                'lesson_formset-0-abstract':'Hoo',
+                'video_formset-0-url':'http://www.youtube.com/embed/EJiUWBiM8HE',
+                'video_formset-0-name':'Cmdr Hadfield\'s Soda',
+                'video_formset-TOTAL_FORMS':u'1',
+                'video_formset-INITIAL_FORMS':u'0',
+                'attachment_formset-0-name':'A test file',
+                'attachment_formset-0-desc':'A description of a file',
+                'attachment_formset-0-file':fp,
+                'attachment_formset-TOTAL_FORMS':u'1',
+                'attachment_formset-INITIAL_FORMS':u'0'
+            }
+            ##This should trigger modification of the course
+            response = self.client.post('/courses/1/edit/', mod_data)
+            
         ##Then visiting the course should reflect the changes
         response = self.client.get('/courses/1/')
         self.assertContains(response, 

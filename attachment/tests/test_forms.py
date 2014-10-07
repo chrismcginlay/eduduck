@@ -31,7 +31,7 @@ class AttachmentFormTest(TestCase):
     def test_form_has_correct_error_messages(self):
         # Missing required fields
         form = AttachmentForm(
-            data={'course':u'1', 'name':'', 'uri':''})
+            data={'course':u'1', 'name':'', 'attachment':''})
         self.assertFalse(form.is_valid())
         expected_errors = {
             'name': [ATTACHMENT_NAME_FIELD_REQUIRED_ERROR],
