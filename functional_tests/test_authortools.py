@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from unittest import skip
 
+from attachment.utils import generate_file
 from .base import FunctionalTest
 
 from courses.forms import (
@@ -192,37 +193,37 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         afs = self.browser.find_element_by_id('id_attachment_formset_area')
         attachment_name_widget = afs.find_element_by_name(
             'attachment_formset-0-name')
-        attachment_file_widget = afs.find_element_by_id(
-            'id_attachment_formset-0-file')
+        attachment_file_widget = afs.find_element_by_name(
+            'attachment_formset-0-attachment')
+        afs.find_element_by_id('id_attachment_formset-0-desc')
 
         # He uploads a course intro (maybe a PDF).
-        with attachment.utils.generate_file('junk.txt') as tempfile:
-            file_data = {
-                'attachment_formset-0-file': tempfile, 
-                'attachment_formset_0-name': 'A test file'
-            }
-            response = self.browser.post('#', file_data)    
+        with generate_file('junk.txt') as tempfile:
+            attachment_file_widget.send_keys(tempfile.name)
+            import pdb; pdb.set_trace()
+            attachment_name_widget.send_keys("A test file")
+            btn=self.browser.find_element_by_id('id_submit_attachment_edits')
+            btn.click()
+        
+        import pdb; pdb.set_trace()
         # This is scanned for virus payload, clear.
         self.fail("Write me")
-        self.assertEqual(response.status_code, 200)
 
-        # On saving the edits, the course page reloads, showing the attachment
-        # This downloads successfully.
+        # The course page reloads, showing the attachment
         url = self.browser.current_url
         self.assertEqual(url, self.server_url+'/courses/4/')
         self.assertIn('A test file', self.browser.page_source)
 
         # Chris then revisits the edit page, uploads a second attachment.
         self.browser.get(self.server_url+'/courses/4/')
-        with attachment.utils.generate_file('junk2.pdf') as tempfile:
-            file_data = {
-                'attachment_formset-0-file': tempfile, 
-                'attachment_formset_0-name': 'Another test file'
-            }
-            response = self.browser.post('#', file_data)    
-            
+        with generate_file('junk2.pdf') as tempfile:
+            attachment_file_widget.send_keys(tempfile.name)
+            attachment_name_widget.send_keys("Another test file")
+            btn=self.browser.find_element_by_id('id_submit_attachment_edits')
+            btn.click()
+
         # This is visible on the course page
-        self.assertIn('A test file', self.browser.page_source)
+        self.assertIn('Another test file', self.browser.page_source)
 
         # Chris finally decides to delete the course intro attachment.
         self.browser.get(self.server_url+'/courses/4/edit/')
