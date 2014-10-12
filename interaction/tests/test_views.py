@@ -239,6 +239,9 @@ class UserAttachmentViewTests(TestCase):
                                               'bertword')
         self.user1.is_active = True
         self.user1.save()    
+        self.user3 = User.objects.create_user('Chuck Norris', 'chuck@tree.far', 'dontask')
+        self.user3.is_active = True
+        self.user3.save()
         self.course1 = Course(**course1_data)
         self.course1.organiser = self.user1
         self.course1.instructor = self.user1
@@ -254,37 +257,85 @@ class UserAttachmentViewTests(TestCase):
         self.att2 = Attachment(lesson=self.lesson1, **self.att1_data)
         self.att2.save()   
 
-    def test_attachment_download(self):
-        #Not logged in, redirect, dont record
+    def test_attachment_download_not_logged_in(self):
+        """Casual visitor - download not recorded"""
         a1 = self.att1.id
         a2 = self.att2.id
         url1 = "/interaction/attachment/{0}/download/".format(a1)
         url2 = "/interaction/attachment/{0}/download/".format(a2)
+        #First try attachment linked to course page
+        response = self.client.get(url1)
+        self.assertEqual(response.status_code, 302)
+        self.assertRaises(ObjectDoesNotExist, UserAttachment.objects.get, id=a1)
+        
+        #Second, try attachment linked to a lesson page
         response = self.client.get(url2)
         self.assertEqual(response.status_code, 302)
         self.assertRaises(ObjectDoesNotExist, UserAttachment.objects.get, id=a2)
 
-        #Now logged in
+    def test_attachment_download_loggedin_but_not_enrolled(self):
+        """Not enrolled visitor - download is still recorded though"""
+        a1 = self.att1.id
+        a2 = self.att2.id
+        url1 = "/interaction/attachment/{0}/download/".format(a1)
+        url2 = "/interaction/attachment/{0}/download/".format(a2)
+        self.client.login(username='Chuck Norris', password='dontask')
+        
+        #First, try attachment linked to course page
+        response = self.client.get(url1)
+        self.assertEqual(response.status_code, 302)      
+        u_att1 = UserAttachment.objects.get(
+            user=self.user3.id,
+            attachment=self.att1.id
+        )
+        self.assertEqual(len(u_att1.hist2list()),1)
+
+        #Second, try attachment linked to lesson page
+        response = self.client.get(url2)
+        self.assertEqual(response.status_code, 302)      
+        u_att2 = UserAttachment.objects.get(
+            user=self.user3.id,
+            attachment=a2
+        )
+        self.assertEqual(len(u_att2.hist2list()),1)
+ 
+    def test_attachment_download_loggedin_and_enrolled(self):
+        """Enrolled visitor - download is recorded"""
+        a1 = self.att1.id
+        a2 = self.att2.id
+        url1 = "/interaction/attachment/{0}/download/".format(a1)
+        url2 = "/interaction/attachment/{0}/download/".format(a2)
+
+        #First, try attachment linked to course page
         self.client.login(username='bertie', password='bertword')
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 302)      
-        u_att1 = UserAttachment.objects.get(user=self.user1.id,
-                                            attachment=self.att1.id)
+        u_att1 = UserAttachment.objects.get(
+            user=self.user1.id,
+            attachment=self.att1.id
+        )
         self.assertEqual(len(u_att1.hist2list()),1)
+        #Calling get(url1) again, history should grow by one log entry
         response = self.client.get(url1)
-        u_att1 = UserAttachment.objects.get(user=self.user1.id,
-                                            attachment=self.att1.id)
+        u_att1 = UserAttachment.objects.get(
+            user=self.user1.id,
+            attachment=a1
+        )
         self.assertEqual(len(u_att1.hist2list()),2)
 
-    def test_attachment_download_not_logged_in(self):
-        """Casual visitor - download not recorded"""
-        self.fail("write test")
-
-    def test_attachment_download_loggedin_but_not_enrolled(self):
-        """Not enrolled visitor - download is still recorded though"""
-        self.fail("write test")
-
-    def test_attachment_download_loggedin_and_enrolled(self):
-        """Enrolled visitor - download is recorded"""
-        self.fail("write test")
+        #Second, try attachment linked to lesson page
+        response = self.client.get(url2)
+        self.assertEqual(response.status_code, 302)      
+        u_att2 = UserAttachment.objects.get(
+            user=self.user1.id,
+            attachment=a2
+        )
+        self.assertEqual(len(u_att2.hist2list()),1)
+        #Calling get(url2) again, history should grow by one log entry
+        response = self.client.get(url2)
+        u_att2 = UserAttachment.objects.get(
+            user=self.user1.id,
+            attachment=a2
+        )
+        self.assertEqual(len(u_att2.hist2list()),2)
 
