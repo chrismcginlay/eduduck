@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from unittest import skip
@@ -199,13 +200,13 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
 
         # He uploads a course intro (maybe a PDF).
         with generate_file('junk.txt') as tempfile:
-            attachment_file_widget.send_keys(tempfile.name)
+            file_path = os.path.join(os.getcwd(), tempfile.name) 
+            attachment_file_widget.send_keys(file_path)
             import pdb; pdb.set_trace()
             attachment_name_widget.send_keys("A test file")
             btn=self.browser.find_element_by_id('id_submit_attachment_edits')
             btn.click()
         
-        import pdb; pdb.set_trace()
         # This is scanned for virus payload, clear.
         self.fail("Write me")
 

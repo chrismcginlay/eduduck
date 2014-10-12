@@ -254,7 +254,6 @@ class UserAttachmentViewTests(TestCase):
         self.att2 = Attachment(lesson=self.lesson1, **self.att1_data)
         self.att2.save()   
 
-
     def test_attachment_download(self):
         #Not logged in, redirect, dont record
         a1 = self.att1.id
@@ -276,3 +275,16 @@ class UserAttachmentViewTests(TestCase):
         u_att1 = UserAttachment.objects.get(user=self.user1.id,
                                             attachment=self.att1.id)
         self.assertEqual(len(u_att1.hist2list()),2)
+
+    def test_attachment_download_not_logged_in(self):
+        """Casual visitor - download not recorded"""
+        self.fail("write test")
+
+    def test_attachment_download_loggedin_but_not_enrolled(self):
+        """Not enrolled visitor - download is still recorded though"""
+        self.fail("write test")
+
+    def test_attachment_download_loggedin_and_enrolled(self):
+        """Enrolled visitor - download is recorded"""
+        self.fail("write test")
+
