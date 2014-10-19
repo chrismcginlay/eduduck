@@ -140,7 +140,10 @@ class CourseViewTests(TestCase):
         self.assertIn('<p>Hoo', response.content)
         self.assertIn(escape('Cmdr Hadfield\'s Soda'), response.content)
         self.assertIn('EJiUWBiM8HE', response.content) #youtube video
-        self.fail("Add some attachment alteration test")
+        import pdb; pdb.set_trace()
+        self.assertIn('A test file', response.content)
+        self.assertIn('A description of a file')
+        self.assertIn("<a href='{0}".format(fp.url, response.content))
  
     def test_course_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/edit/')  

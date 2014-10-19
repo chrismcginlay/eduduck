@@ -135,6 +135,11 @@ def attachment_download(request, att_id):
     """
 
     #Some implementation notes:
+    #3 use cases:
+    #   1. User not logged in. If not @login_required, then no download, no log
+    #   2. User logged in but not enrolled on course. Download, no log
+    #   3. User logged in and enrollled. Download, log it.
+
     #If using login_required decorator the request.user.usercourse_set ORM call
     #will work or throw ObjectDoesNotExist
     #If not using login_required decorator (ie anon user can download) then 
@@ -150,7 +155,7 @@ def attachment_download(request, att_id):
     except ObjectDoesNotExist:
         try:
             course_record = request.user.usercourse_set.get(course=attachment.lesson.course)
-        except ObjectDoesNotExist:
+        except (AttributeError, ObjectDoesNotExist) as err:
             course_record = None
     if course_record:
         #get_or_create return tuple (object, success_state)

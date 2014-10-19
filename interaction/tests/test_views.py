@@ -258,19 +258,19 @@ class UserAttachmentViewTests(TestCase):
         self.att2.save()   
 
     def test_attachment_download_not_logged_in(self):
-        """Casual visitor - download not recorded"""
+        """Casual visitor - download not permitted"""
         a1 = self.att1.id
         a2 = self.att2.id
         url1 = "/interaction/attachment/{0}/download/".format(a1)
         url2 = "/interaction/attachment/{0}/download/".format(a2)
         #First try attachment linked to course page
         response = self.client.get(url1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 403)
         self.assertRaises(ObjectDoesNotExist, UserAttachment.objects.get, id=a1)
         
         #Second, try attachment linked to a lesson page
         response = self.client.get(url2)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 403)
         self.assertRaises(ObjectDoesNotExist, UserAttachment.objects.get, id=a2)
 
     def test_attachment_download_loggedin_but_not_enrolled(self):
@@ -286,7 +286,7 @@ class UserAttachmentViewTests(TestCase):
         self.assertEqual(response.status_code, 302)      
         u_att1 = UserAttachment.objects.get(
             user=self.user3.id,
-            attachment=self.att1.id
+            attachment=a1
         )
         self.assertEqual(len(u_att1.hist2list()),1)
 
