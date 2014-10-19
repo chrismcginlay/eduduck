@@ -136,17 +136,10 @@ def attachment_download(request, att_id):
 
     #Some implementation notes:
     #3 use cases:
-    #   1. User not logged in. If not @login_required, then no download, no log
-    #   2. User logged in but not enrolled on course. Download, no log
+    #   1. User not logged in. Forbidden. 
+    #   2. User logged in but not enrolled on course. Redirect to enrol page 
     #   3. User logged in and enrollled. Download, log it.
 
-    #If using login_required decorator the request.user.usercourse_set ORM call
-    #will work or throw ObjectDoesNotExist
-    #If not using login_required decorator (ie anon user can download) then 
-    #request.user.usercourse_set will throw AttributeError due to AnonymousUser
-    #not having a usercourse_set attribute.
-    #So catch it. Just NB that if using login_required, then the exception will
-    #never be thrown.
     attachment = get_object_or_404(Attachment, id=att_id)    
     try:
         course_record = request.user.usercourse_set.get(course=attachment.course)
@@ -162,11 +155,12 @@ def attachment_download(request, att_id):
         uad = UserAttachment.objects.get_or_create(user=request.user, attachment=attachment)
         #newly created record will automatically record download
         if (uad[1]==False): uad[0].record_download()
-        dl_link = uad[0].attachment.get_absolute_url()               
+        redir_link = uad[0].attachment.get_absolute_url()               
     else:
-        dl_link = attachment.get_absolute_url()
-    logger.debug('Absolute download URI for redirect is ' + dl_link)	
-    redir_resp = HttpResponseRedirect(dl_link)
+        redir_link = '/courses/{0}/enrol/'.format(
+            attachment.course.id or attachment.lesson.course.id)
+    logger.debug('Absolute download URI for redirect is ' + redir_link)	
+    redir_resp = HttpResponseRedirect(redir_link)
     return redir_resp
 
 
