@@ -288,7 +288,6 @@ class UserAttachmentViewTests(TestCase):
         
         #First, try attachment linked to course page
         response = self.client.get(url1)
-        import pdb; pdb.set_trace()
         self.assertRedirects(response, url1_r, 302, 200)      
         self.assertRaises(ObjectDoesNotExist, UserAttachment.objects.get, id=a1)
 

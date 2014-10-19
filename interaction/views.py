@@ -157,10 +157,11 @@ def attachment_download(request, att_id):
         if (uad[1]==False): uad[0].record_download()
         redir_link = uad[0].attachment.get_absolute_url()               
     else:
-        redir_link = '/courses/{0}/enrol/'.format(
-            attachment.course.id or attachment.lesson.course.id)
+        try:
+            parent_course_id = attachment.course.id
+        except AttributeError:
+            parent_course_id = attachment.lesson.course.id
+        redir_link = '/courses/{0}/enrol/'.format(parent_course_id)
     logger.debug('Absolute download URI for redirect is ' + redir_link)	
-    redir_resp = HttpResponseRedirect(redir_link)
-    return redir_resp
-
+    return HttpResponseRedirect(redir_link)
 
