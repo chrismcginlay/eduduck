@@ -1,0 +1,86 @@
+{% extends "courses/base_course.html" %}
+{% load staticfiles %}
+{% load tz %}
+{% block extra_script %}
+    <script src="{% static 'common.js' %}" ></script>
+{% endblock extra_script %}
+{% block menu_override %}
+<li class='menu-item-divided'><a href="#">{{ course.name }}</a></li>
+<li class='menu_subsection'><a href="#id_resource_videos">Intro Videos</a></li>
+{% endblock menu_override %}
+
+{% block breadcrumb %}
+<p id='id_breadcrumb'>
+    <a href="{% url 'courses.views.index' %}">All Courses</a> &gt; 
+    <a href="#">{{ course.name }} Enrol</a>
+</p>
+{% endblock breadcrumb %}
+    
+{% block contentheading %}
+<h2 id='id_course_title'>{{ course.name }} Enrol</h2>
+{% endblock contentheading %}
+
+{% block content %}    
+<div id='id_course_intro_area' class='pure-g-r'>
+    <div class='pure-u-4-5'>
+        <h3>
+            {% if course.code %}{{ course.code }}
+            {% else %}{{ course.pk }}
+            {% endif %}: {{ course.name }} Course Enrol</h3>
+            {% if status == "auth_noreg" %}
+                <p>You've been redirected here, encouraging you to enrol on this course</p>
+                <p>Probably, you tried to access a course resource which requires you to be enrolled!</p>
+            {% elif status == "auth_reg" %}
+                <p>You're enrolled on this course already. If you were trying to access a resource (such as an attachment download) and you keep seeing this page could, their could an error. <a href="{% url 'support.views.support' %}">Please feel free to contact us if there is a problem!</a></p>
+            {% else %}
+                <p>You've possibly tried to access a part of this course, but you aren't logged in. Please register for an account first</p>
+            {% endif %}
+    </div>
+    <div class='pure-u-1-5'>
+       {% if status == "auth_noreg" %}
+           <form   class='pure-form' 
+                    action='{{ course.get_absolute_url }}' 
+                    method='post'>
+                {% csrf_token %}
+                <button id='id_enrol_button' 
+                        class='pure-button pure-button-primary' 
+                        type='submit' 
+                        name='course_register'>
+                    Enrol
+                </button>
+            </form>
+        {% elif status == "auth_reg" %}
+        {% else %}
+            <form   class='pure-form' 
+                    action='/accounts/register/' 
+                    method='post'>
+                {% csrf_token %}
+                <button id='id_signup_button' 
+                        class='pure-button pure-button-primary' 
+                        type='submit' 
+                        name='signup'>
+                    Sign Up!
+                </button>
+            </form>
+        {% endif %}
+    </div>
+    
+    <div id='id_abstract' class='pure-u-1-2'>
+        <p>Hi, and welcome to {{ course.name }}</p>
+        <p>{{ course.abstract }}</p>
+        <p>Course organiser <a href="{{ course.organiser.bio.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
+        <p>Course instructor <a href="{{course.instructor.bio.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor %}</a></p>
+    </div>
+    <div id='id_intro_video' class='pure-u-1-2'>
+        {% for v in course.video_set.all|slice:":1" %}
+        {{v.name}}<br>
+        <iframe width="201" height="113" src="{{v.url}}" frameborder="0" allowfullscreen></iframe>
+        {% empty %}
+                <p>There are no intro videos for this course</p>
+                <iframe width="201" height="113" src="//www.youtube.com/embed/fkm00ZffzNM" frameborder="0" allowfullscreen></iframe>
+        {% endfor %}
+        <br />            
+    </div>
+</div><!-- id_course_intro_area-->
+
+{% endblock content %}

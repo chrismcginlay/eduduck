@@ -28,3 +28,10 @@ class UrlTests(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.view_name, 'course_edit')
         self.assertEqual(resolver.kwargs, {'course_id': '1'})
+
+    def test_course_enrol(self):
+        url = reverse('course_enrol', kwargs={'course_id': 1})
+        self.assertEqual(url, '/courses/1/enrol/')
+        resolver = resolve(url)
+        self.assertEqual(resolver.view_name, 'course_enrol')
+        self.assertEqual(resolver.kwargs, {'course_id': '1'})

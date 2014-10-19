@@ -140,7 +140,6 @@ class CourseViewTests(TestCase):
         self.assertIn('<p>Hoo', response.content)
         self.assertIn(escape('Cmdr Hadfield\'s Soda'), response.content)
         self.assertIn('EJiUWBiM8HE', response.content) #youtube video
-        import pdb; pdb.set_trace()
         self.assertIn('A test file', response.content)
         self.assertIn('A description of a file')
         self.assertIn("<a href='{0}".format(fp.url, response.content))
@@ -393,7 +392,34 @@ class CourseViewTests(TestCase):
             'abstract': ''
         })
         self.assertIsInstance(response.context['form'], CourseFullForm)
+   
+    def test_course_enrol_page_requires_login(self):
+        response = self.client.get('/courses/1/enrol/')
+        login_redirect_url = '/accounts/login/?next=/courses/1/enrol/'
+        self.assertRedirects(response, login_redirect_url, 302, 200)
     
+    def test_course_enrol_page_200_if_loggedin(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/enrol/')
+        self.assertEqual(response.status_code, 200)
+ 
+    def test_course_enrol_page_uses_correct_template(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/enrol/')
+        self.assertTemplateUsed(response, 'courses/course_enrol.html')
+    
+    def test_course_enrol_page_has_enrol_button(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/enrol/')
+        target = "id='id_enrol_button'"
+        self.assertIn(target, response.content)
+    
+    def test_course_enrol_page_has_correct_context_vars(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/enrol/')
+        self.assertIn('course', response.context)
+        self.assertIn('status', response.context)
+
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
 
@@ -414,7 +440,6 @@ class CourseViewTests(TestCase):
             "Missing template var: course_list")
         self.assertIn('course_count', response.context, \
             "Missing template var: course_count")
-        
         
     def test_course_single_auth(self):
         """Check course page loads for authorised user"""

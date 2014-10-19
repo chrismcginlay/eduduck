@@ -171,6 +171,23 @@ def create(request):
     t = 'courses/course_create.html'
     return render(request, t, {'form': course_form})
 
+@login_required
+def enrol(request,course_id):
+    """View to encourage enrolment when non-enrolled user tries to access
+    certain resources"""
+    
+    course = get_object_or_404(Course, pk=course_id)
+    if request.user.is_authenticated():
+        status='auth_noreg'
+        if request.user.usercourse_set.filter(course=course).exists():
+            status='auth_reg'
+    else:
+        status='anon'
+
+    t = 'courses/course_enrol.html'
+    c = { 'course': course, 'status': status }
+    return render(request, t, c) 
+
 def index(request):
     """Prepare variables for list of all courses"""
 
