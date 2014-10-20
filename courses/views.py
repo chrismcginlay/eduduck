@@ -94,7 +94,11 @@ def edit(request, course_id):
             video_formset = VideoInlineFormset(
                 request.POST, prefix='video_formset', instance=course)
             attachment_formset = AttachmentInlineFormset(
-                request.POST, prefix='attachment_formset', instance=course)
+                request.POST, 
+                request.FILES,
+                prefix='attachment_formset',
+                instance=course
+            )
             if course_form.is_valid():
                 course_form.save()
                 logger.info("Course (id={0}) edited".format(course.pk))

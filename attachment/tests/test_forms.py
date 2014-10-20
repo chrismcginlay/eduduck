@@ -1,4 +1,5 @@
 #attachment/test/test_forms.py
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
 from ..forms import (
@@ -6,6 +7,7 @@ from ..forms import (
     ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR, 
     AttachmentForm
 )
+from ..utils import generate_file
 
 class AttachmentFormTest(TestCase):
     
@@ -39,3 +41,13 @@ class AttachmentFormTest(TestCase):
         }
         self.assertEqual(form.errors, expected_errors)
 
+    def test_form_create_new_course_attachment(self):
+        #http://stackoverflow.com/a/20508664        
+        data = {
+            'course':u'1',
+            'name':'Attachment test',
+        }
+        file_data = {'attachment': SimpleUploadedFile('testfile.txt', 'A test file') }
+        form = AttachmentForm(data, file_data)
+        self.assertTrue(form.is_valid())
+        form.save()

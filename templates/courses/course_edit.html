@@ -27,7 +27,7 @@
             <p>Please correct the following:</p>
         </div>
     {% endif %}
-    <form method='post' action='#' class='pure-form pure-form-aligned'>
+    <form enctype="multipart/form-data" method='post' action='#' class='pure-form pure-form-aligned'>
         {% csrf_token %}
         {{ lesson_formset.management_form }}
         {{ video_formset.management_form }}
