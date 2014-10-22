@@ -3,12 +3,12 @@
 import json
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http.response import HttpResponseForbidden
 from django.test import TestCase
 from django.utils.html import escape
 
 from bio.models import Bio
-from attachment.utils import generate_file
 from interaction.models import UserCourse
 from lesson.forms import LESSON_NAME_FIELD_REQUIRED_ERROR
 from lesson.models import Lesson
@@ -106,31 +106,32 @@ class CourseViewTests(TestCase):
 
     def test_course_edits_actually_saved(self):
         self.client.login(username='bertie', password='bertword')
-        with generate_file('atest.txt') as fp:
-            mod_data = {
-                'course_form-code': 'F1', 
-                'course_form-name': 'Dingbat', 
-                'course_form-abstract': 'Fingbot',
-                'course_form-organiser': self.user1,
-                'course_form-instructor': self.user1,
-                'lesson_formset-TOTAL_FORMS':4,
-                'lesson_formset-INITIAL_FORMS':1,
-                'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
-                'lesson_formset-0-name':'Boo',
-                'lesson_formset-0-abstract':'Hoo',
-                'video_formset-0-url':'http://www.youtube.com/embed/EJiUWBiM8HE',
-                'video_formset-0-name':'Cmdr Hadfield\'s Soda',
-                'video_formset-TOTAL_FORMS':u'1',
-                'video_formset-INITIAL_FORMS':u'0',
-                'attachment_formset-0-name':'A test file',
-                'attachment_formset-0-desc':'A description of a file',
-                'attachment_formset-0-file':fp,
-                'attachment_formset-TOTAL_FORMS':u'1',
-                'attachment_formset-INITIAL_FORMS':u'0'
-            }
-            ##This should trigger modification of the course
-            response = self.client.post('/courses/1/edit/', mod_data)
-            
+        fp = SimpleUploadedFile('atest.txt', 'A simple test file')
+        mod_data = {
+            'course_form-code': 'F1', 
+            'course_form-name': 'Dingbat', 
+            'course_form-abstract': 'Fingbot',
+            'course_form-organiser': self.user1,
+            'course_form-instructor': self.user1,
+            'lesson_formset-TOTAL_FORMS':4,
+            'lesson_formset-INITIAL_FORMS':1,
+            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'lesson_formset-0-name':'Boo',
+            'lesson_formset-0-abstract':'Hoo',
+            'video_formset-0-url':'http://www.youtube.com/embed/EJiUWBiM8HE',
+            'video_formset-0-name':'Cmdr Hadfield\'s Soda',
+            'video_formset-TOTAL_FORMS':u'1',
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-0-name':'A test file',
+            'attachment_formset-0-desc':'A description of a file',
+            'attachment_formset-0-attachment':fp,
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0'
+        }
+        ##This should trigger modification of the course
+        response = self.client.post('/courses/1/edit/', mod_data)
+        self.assertRedirects(response, '/courses/1/')
+   
         ##Then visiting the course should reflect the changes
         response = self.client.get('/courses/1/')
         self.assertContains(response, 
@@ -141,8 +142,9 @@ class CourseViewTests(TestCase):
         self.assertIn(escape('Cmdr Hadfield\'s Soda'), response.content)
         self.assertIn('EJiUWBiM8HE', response.content) #youtube video
         self.assertIn('A test file', response.content)
-        self.assertIn('A description of a file')
-        self.assertIn("<a href='{0}".format(fp.url, response.content))
+        self.assertIn('A description of a file', response.content)
+        target = "<a href='/interaction/attachment/1/download/'>A test file</a>"
+        self.assertIn(target, response.content)
  
     def test_course_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/edit/')  
