@@ -1,6 +1,7 @@
 # Unit tests for courses views
 
 import json
+import os
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -82,6 +83,11 @@ class CourseViewTests(TestCase):
         self.lesson2 = Lesson(course=self.course3, **self.lesson2_data)
         self.lesson2.save()
         
+    def tearDown(self):
+        testfile = os.getcwd()+'/media/attachments/atest.txt'
+        if os.path.isfile(testfile):
+            os.remove(testfile)
+
     def test_helper__courses_n_24ths_returns_list(self):
         course_list = Course.objects.all()
         cn24 = _courses_n_24ths(course_list)
