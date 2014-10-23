@@ -400,7 +400,20 @@ class CourseViewTests(TestCase):
             'abstract': ''
         })
         self.assertIsInstance(response.context['form'], CourseFullForm)
-   
+  
+    def test_course_create_page_can_save_data(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.post('/courses/create/', data={
+            'code': 'T01',
+            'name': 'Test',
+            'abstract': 'A test course'
+        })
+        self.assertRedirects(response, '/courses/4/', 302, 200)
+        response = self.client.get('/courses/4/')
+        self.assertIn('T01', response.content)
+        self.assertIn('Test', response.content)
+        self.assertIn('A test course', response.content)
+         
     def test_course_enrol_page_requires_login(self):
         response = self.client.get('/courses/1/enrol/')
         login_redirect_url = '/accounts/login/?next=/courses/1/enrol/'
@@ -427,6 +440,16 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/enrol/')
         self.assertIn('course', response.context)
         self.assertIn('status', response.context)
+
+    def test_course_enrol_page_status_auth_reg(self):
+        """An authenticated and enrolled user status is passed to template"""
+        self.client.login(username='hank', password='hankdo')
+        #Register the user on the course
+        uc = UserCourse(user=self.user2, course=self.course1)
+        uc.save()
+        response = self.client.get('/courses/1/enrol/')
+        self.assertEqual('auth_reg', response.context['status'],
+            "Registration status should be auth_reg")
 
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
