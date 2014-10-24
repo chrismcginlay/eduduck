@@ -118,11 +118,17 @@ class LessonViewTests(TestCase):
             'lesson_form-code': 'F1', 
             'lesson_form-name': 'New Lesson Name', 
             'lesson_form-abstract': 'A new abstract',
-            #'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
             'video_formset-0-url':'http://www.youtube.com/embed/EJiUWBiM8HE',
             'video_formset-0-name':'Cmdr Hadfield\'s Soda',
             'video_formset-TOTAL_FORMS':u'1',
-            'video_formset-INITIAL_FORMS':u'0'}
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-0-name':'A test file',
+            'attachment_formset-0-desc':'A description of a file',
+            'attachment_formset-0-attachment':fp,
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0',
+        }
+ 
         ##This should trigger modification of the lesson
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         
@@ -133,6 +139,7 @@ class LessonViewTests(TestCase):
         self.assertContains(response, '<p>A new abstract</p>', html=True)
         self.assertIn(escape('Cmdr Hadfield\'s Soda'), response.content)
         self.assertIn('EJiUWBiM8HE', response.content) #youtube video
+        self.assertIn('A test file', response.content)
 
     def test_lesson_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/lesson/1/edit/')  
@@ -183,6 +190,8 @@ class LessonViewTests(TestCase):
         response = self.client.get('/courses/1/lesson/1/edit/')
         self.assertIsInstance(
             response.context['video_formset'], VideoInlineFormset)
+        self.assertIsInstance(
+            response.context['attachment_formset'], AttachmentInlineFormset)
 
     def test_lesson_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='chris', password='chris')
@@ -193,7 +202,13 @@ class LessonViewTests(TestCase):
             'video_formset-0-url':'http://www.youtube.com/embed/E8HE',
             'video_formset-0-name':'',
             'video_formset-TOTAL_FORMS':u'1',
-            'video_formset-INITIAL_FORMS':u'0'}
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-0-name':'',
+            'attachment_formset-0-desc':'',
+            'attachment_formset-0-attachment':fp,
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0',
+        }
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'lesson/lesson_edit.html')
@@ -207,14 +222,21 @@ class LessonViewTests(TestCase):
             'video_formset-0-url':'http://www.youtube.com/embed/E8HE',
             'video_formset-0-name':'',
             'video_formset-TOTAL_FORMS':u'1',
-            'video_formset-INITIAL_FORMS':u'0'}
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-0-name':'',
+            'attachment_formset-0-desc':'',
+            'attachment_formset-0-attachment':fp,
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0',
+        }
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         self.assertEqual(response.status_code, 200)
         self.assertIn(LESSON_NAME_FIELD_REQUIRED_ERROR, response.content)
         self.assertIn(LESSON_ABSTRACT_FIELD_REQUIRED_ERROR, response.content)
         self.assertIn(VIDEO_NAME_FIELD_REQUIRED_ERROR, response.content)
         self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, response.content)
-
+        self.assertIn(ATTACHMENT_NAME_FIELD_REQUIRED_ERROR, response.content)
+        self.assertIn(ATTACHMENT_ABSTRACT_FIELD_REQUIRED_ERROR, response.content)
  
     def test_lesson_edit_page_has_lesson_basics_area(self):
         self.client.login(username='chris', password='chris')
@@ -229,3 +251,7 @@ class LessonViewTests(TestCase):
         response = self.client.get('/courses/1/lesson/1/edit/')
         self.assertIn('id_video_formset_area', response.content)
 
+    def test_lesson_edit_page_has_attachment_area(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/1/lesson/1/edit/')
+        self.assertIn('id_attachment_formset_area', response.content)
