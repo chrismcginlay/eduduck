@@ -2,12 +2,17 @@
 
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http.response import HttpResponseForbidden
 from django.test import TestCase
 from django.utils.html import escape
 
 from lesson.models import Lesson
 from interaction.models import UserCourse
+from attachment.forms import (
+    ATTACHMENT_NAME_FIELD_REQUIRED_ERROR,
+    ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR,
+)
 from video.forms import (
     VIDEO_NAME_FIELD_REQUIRED_ERROR,
     VIDEO_URL_FIELD_INVALID_ERROR,
@@ -18,7 +23,8 @@ from ..forms import (
     )
 from ..views import (
     LessonEditForm,
-    VideoInlineFormset
+    VideoInlineFormset,
+    AttachmentInlineFormset,
     )
 
 
@@ -114,6 +120,7 @@ class LessonViewTests(TestCase):
 
     def test_lesson_edits_actually_saved(self):
         self.client.login(username='chris', password='chris')
+        fp = SimpleUploadedFile('atest.txt', 'A simple test file')
         mod_data = {
             'lesson_form-code': 'F1', 
             'lesson_form-name': 'New Lesson Name', 
@@ -195,6 +202,7 @@ class LessonViewTests(TestCase):
 
     def test_lesson_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='chris', password='chris')
+        fp = SimpleUploadedFile('atest.txt', 'A simple test file')
         mod_data = {
             'lesson_form-code': '', 
             'lesson_form-name': '', 
@@ -224,8 +232,8 @@ class LessonViewTests(TestCase):
             'video_formset-TOTAL_FORMS':u'1',
             'video_formset-INITIAL_FORMS':u'0',
             'attachment_formset-0-name':'',
-            'attachment_formset-0-desc':'',
-            'attachment_formset-0-attachment':fp,
+            'attachment_formset-0-desc':'A failure',
+            'attachment_formset-0-attachment':None,
             'attachment_formset-TOTAL_FORMS':u'1',
             'attachment_formset-INITIAL_FORMS':u'0',
         }
@@ -236,7 +244,7 @@ class LessonViewTests(TestCase):
         self.assertIn(VIDEO_NAME_FIELD_REQUIRED_ERROR, response.content)
         self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, response.content)
         self.assertIn(ATTACHMENT_NAME_FIELD_REQUIRED_ERROR, response.content)
-        self.assertIn(ATTACHMENT_ABSTRACT_FIELD_REQUIRED_ERROR, response.content)
+        self.assertIn(ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR, response.content)
  
     def test_lesson_edit_page_has_lesson_basics_area(self):
         self.client.login(username='chris', password='chris')

@@ -11,6 +11,10 @@ from django.utils.html import escape
 
 from bio.models import Bio
 from interaction.models import UserCourse
+from attachment.forms import (
+    ATTACHMENT_NAME_FIELD_REQUIRED_ERROR,
+    ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR,
+) 
 from lesson.forms import LESSON_NAME_FIELD_REQUIRED_ERROR
 from lesson.models import Lesson
 from video.utils import VIDEO_URL_FIELD_INVALID_ERROR
@@ -281,6 +285,29 @@ class CourseViewTests(TestCase):
         response = self.client.post('/courses/1/edit/', data)
         self.assertIn('Please correct the following:', response.content)
         self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, response.content)	
+        
+        ## Then with missing attachment data
+        data = {
+            'course_form-code': 'T1',
+            'course_form-name': 'Test',
+            'course_form-abstract': 'With invalid video url',
+            'lesson_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'lesson_formset-0-name':'Test',
+            'lesson_formset-TOTAL_FORMS':u'4',
+            'lesson_formset-INITIAL_FORMS':u'1',
+            'video_formset-TOTAL_FORMS':u'1',
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-0-id':u'1',
+            'attachment_formset-0-name':'',
+            'attachment_formset-0-attachment':None,
+            'attachment_formset-0-desc':'A failure',
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0'
+        }
+        response = self.client.post('/courses/1/edit/', data)
+        self.assertIn('Please correct the following:', response.content)
+        self.assertIn(ATTACHMENT_NAME_FIELD_REQUIRED_ERROR, response.content)	
+        self.assertIn(ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR, response.content)
        
     def test_course_edit_page_has_course_detail_area(self):
         self.client.login(username='bertie', password='bertword')

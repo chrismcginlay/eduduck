@@ -81,13 +81,29 @@
         <h3 class='shadable'>Attachment(s)</h3>
         <article>
         <fieldset id='id_attachment_formset_area'>
-            <p>UI not implemented yet, sorry.</p>
+            {% for form in attachment_formset %}
+                {% for hf in form.hidden_fields %}
+                    {{ hf }}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+                    {{ field }}
+                {% endfor %}
+                <hr>
+            {% endfor %}
+            <div class='pure-controls'>
+                <button 
+                    id="id_submit_attachment_edits" 
+                    type="submit" 
+                    class="pure-button pure-button-primary">
+                    Save All Edits
+                </button>
+            </div> 
         </fieldset>
+        </article>
         <h3 class='shadable'>Learning Outcome(s)</h3>
         <article>
         <fieldset id='id_outcome_formset_area'>
             <p>UI not implemented yet, sorry.</p>
         </fieldset>
         </article>
-{       </article>
 {% endblock %} 
