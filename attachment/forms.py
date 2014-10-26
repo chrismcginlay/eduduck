@@ -5,7 +5,7 @@ from django import forms
 
 ATTACHMENT_NAME_FIELD_REQUIRED_ERROR = "Please supply a name for the " \
     "attachment."
-ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR = "You haven't specified a file" \
+ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR = "You haven't specified a file " \
     "to attach!"
 
 class AttachmentForm(forms.ModelForm):
