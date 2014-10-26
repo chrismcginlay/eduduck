@@ -205,7 +205,14 @@ class CourseViewTests(TestCase):
             response.context['video_formset'], VideoInlineFormset)
         self.assertIsInstance(
             response.context['attachment_formset'], AttachmentInlineFormset)
-       
+        self.assertTrue(
+            hasattr(response.context['lesson_formset'], 'management_form'))
+        self.assertTrue(
+            hasattr(response.context['video_formset'], 'management_form'))
+        self.assertTrue(
+            hasattr(response.context['attachment_formset'], 'management_form'))
+
+
     def test_course_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='bertie', password='bertword')
         data = {

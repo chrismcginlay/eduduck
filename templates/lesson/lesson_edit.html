@@ -31,6 +31,7 @@
     <form method='post' action='#' class='pure-form pure-form-aligned'>
         {% csrf_token %}
         {{ video_formset.management_form }}
+        {{ attachment_formset.management_form }}
         <h3 class='shadable'>Basic Details</h3>
         <article>
         <fieldset id='id_lesson_basics_area'>
