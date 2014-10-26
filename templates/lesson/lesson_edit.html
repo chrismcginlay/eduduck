@@ -86,7 +86,11 @@
                     {{ hf }}
                 {% endfor %}
                 {% for field in form.visible_fields %}
-                    {{ field }}
+                    <div class='pure-control-group'>
+                        {{ field.errors }}
+                        {{ field.label_tag }}{{ field }}
+                        <br>{{ field.help_text }}
+                    </div>
                 {% endfor %}
                 <hr>
             {% endfor %}

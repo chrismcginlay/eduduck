@@ -244,7 +244,8 @@ class LessonViewTests(TestCase):
         self.assertIn(VIDEO_NAME_FIELD_REQUIRED_ERROR, response.content)
         self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, response.content)
         self.assertIn(ATTACHMENT_NAME_FIELD_REQUIRED_ERROR, response.content)
-        self.assertIn(ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR, response.content)
+        self.assertIn(
+            escape(ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR), response.content)
  
     def test_lesson_edit_page_has_lesson_basics_area(self):
         self.client.login(username='chris', password='chris')
