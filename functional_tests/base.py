@@ -100,4 +100,4 @@ class FunctionalTest(LiveServerTestCase):
             self.browser.switch_to_window(start_window)
             if len(open_windows)>1:
                 self.browser.close()  #close extra windows
-       
+      

@@ -364,10 +364,10 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         # On the edit page he sees an area for adding attachments.
         self.browser.get(self.server_url)
         self._logUserIn('chris', 'chris')
-        self.browser.get(self.server_url+'/courses/1/lesson/4/')
-
-        # On the edit page he sees an area for adding attachments.
+        self.browser.get(self.server_url+'/courses/1/lesson/4/edit/')
         afs = self.browser.find_element_by_id('id_attachment_formset_area')
+        
+        # There are suitable fields for a name and description of the file
         attachment_name_widget = afs.find_element_by_name(
             'attachment_formset-0-name')
         attachment_file_widget = afs.find_element_by_name(
@@ -375,20 +375,12 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         afs.find_element_by_id('id_attachment_formset-0-desc')
 
         # He uploads a lesson summary (maybe a PDF).
-        with TemporaryUploadedFile('atest.txt', 'text/plain', None, None) as fp:
-            attachment_file_widget.send_keys(fp.temporary_file_path())
-            attachment_name_widget.send_keys("A lesson summary")
-            btn=self.browser.find_element_by_id('id_submit_attachment_edits')
-            btn.click()
+        self.fail("Write this test, if it's possible")
         # This is scanned for virus payload, clear.
         #TODO scan
-
+        
         # Having saved the edits, the lesson page reloads, showing the attachment
-        url = self.browser.current_url
-        self.assertEqual(url, self.server_url+'/courses/4/')
-        self.assertIn('A lesson summary', self.browser.page_source)
         # This downloads successfully.
-        self.browser.get(self.server_url+'/interaction/attachment/4/download/')
         self.fail("Write the virus payload scan test referred above")
 
     def test_author_can_populate_course_with_outcomes_etc(self):
