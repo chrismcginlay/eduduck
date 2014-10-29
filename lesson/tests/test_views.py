@@ -268,3 +268,28 @@ class LessonViewTests(TestCase):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/1/lesson/1/edit/')
         self.assertIn('id_attachment_formset_area', response.content)
+
+    def test_lesson_edit_page_attachments_saved(self):
+        self.client.login(username='chris', password='chris')
+        fp = SimpleUploadedFile('atest.txt', 'A simple test file')
+        mod_data = {
+            'lesson_form-code': 'T1', 
+            'lesson_form-name': 'Test Lesson', 
+            'lesson_form-abstract': 'Not much',
+            'video_formset-TOTAL_FORMS':u'0',
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-0-name':'Test',
+            'attachment_formset-0-desc':'A test attach',
+            'attachment_formset-0-attachment':fp,
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0',
+        }
+        response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
+        self.assertRedirects(response, '/courses/1/lesson/1/', 302, 200)
+        response = self.client.get('/courses/1/lesson/1/')
+        self.assertIn('A test attach', response.content)
+        self.assertIn(
+            '<a href=\'/interaction/attachment/1/download/\'>Test</a>', 
+            response.content
+        )
+
