@@ -231,9 +231,9 @@ class VisitorBrowsesBreadcrumbs(FunctionalTest):
         
             
 class NewVisitorDecidesToRegister(FunctionalTest):
-    """Covers registration, bio page, logout and login"""
+    """Covers registration, profile page, logout and login"""
     
-    def test_registration_bio_edit_logout_login(self):
+    def test_registration_profile_edit_logout_login(self):
         # Roland arrives on the site. He has not registered yet.
         # He sees the login option in the menu and the registration area on the 
         # main page.
@@ -246,7 +246,7 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         signup_form = self.browser.find_element_by_id('id_sign_up_form')
         signup_form.submit()
         
-        # He is taken to the accounts/register page & an error message appears:
+        # He is taken to the account/register page & an error message appears:
         error = self.browser.find_element_by_css_selector('.errorlist')
         self.assertEqual(error.text, "This field is required.")
 
@@ -283,19 +283,16 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         signup_form.submit()
         self.assertEqual(
             self.browser.current_url, 
-            self.server_url + '/accounts/register/complete/')
+            self.server_url + '/account/register/complete/')
         self.fail("implement the rest of this test")
         ## TODO The following would be nice to test. Need to figure out how to
         ## mock the confirmation email activation code.
         ## Could use mailinator or filebased backend for email.
         
 """
-        # Roland is taken to his new user profile ('bio') page. 
+        # Roland is taken to his new user profile page. 
         # Here he sees the basic and extra details for his account...
-        self.assertEqual(self.browser.current_url, '/bio/views/edit')
-
-        # ...including his gravatar...
-        self.fail("write me")
+        self.assertEqual(self.browser.current_url, '/account/profile/edit')
         
         # ...and with the possibility to change the default timezone, tagline etc.
         detail_edit_form = self.browser.find_element_by_id('id_edit_account')
@@ -304,12 +301,6 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         # The main page no longer shows the registration area
         self.fail("write me")
         
-        # After spending some time on the site, he decides revisit the account page
-        pass
-
-        # ...which shows up just fine
-        self.fail("write me")
-
         # After spending some more time on the site, he then logs out.
         pass
 
@@ -319,9 +310,6 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         # Roland decides to login again. Pressing the login button, he is taken to
         # the login page
         self.loguserin('Roland', 'wibble')
-        
-        # He logs in successfully and is taken to the home page.
-        self.fail("write me")
 """
 
 class RegisteredUserLogsIn(FunctionalTest):
@@ -334,10 +322,10 @@ class RegisteredUserLogsIn(FunctionalTest):
         # He is not logged in, so sees the login option in the menu
         self._logUserIn('chris', 'chris')
 
-        #This takes him to his account area
+        #This takes him to his profile area
         self.assertEqual(
             self.browser.current_url,
-            self.server_url + '/accounts/bio/')
+            self.server_url + '/account/profile/')
 
         # Since he is logged in, the menu now shows 'logout' in place of login. 
         try:
@@ -346,9 +334,7 @@ class RegisteredUserLogsIn(FunctionalTest):
             pass
         self.assertTrue(self.browser.find_element_by_id('id_logout'))        
 
-        # Also, a link to his 'account', including a small gravatar image
-        account_link = self.browser.find_element_by_id('id_account')
-        self.assertTrue(account_link)
-        gravatar = self.browser.find_element_by_id('id_gravatar')
-        self.assertEqual(gravatar.get_attribute('alt'), "Chris\'s gravatar")
+        # Also, a link to his profile, 
+        profile_link = self.browser.find_element_by_id('id_profile')
+        self.assertTrue(profile_link)
 
