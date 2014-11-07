@@ -27,7 +27,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         create.click()
         
         # Since she has not logged in, she is invited to do so:
-        redirect_url = '/accounts/login/?next=/courses/create/'
+        redirect_url = '/account/login/?next=/courses/create/'
         self.assertIn(redirect_url, self.browser.current_url)
         
         # Urvasi logs in to the site...
