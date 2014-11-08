@@ -13,6 +13,8 @@ urlpatterns = patterns('',
     url(r'^lesson/(?P<lesson_id>\d+)/lint/', include('outcome.urls')),
     url(r'^courses/', include('courses.urls')),
     url(r'^interaction/', include('interaction.urls')),
+    url(r'^accounts/profile/$', TemplateView.as_view(
+        template_name = 'registration/profile.html')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^attachment/', include('attachment.urls')),

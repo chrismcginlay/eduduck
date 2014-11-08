@@ -57,7 +57,7 @@
 
     <!-- login/account/logout area -->
     {% if user.is_authenticated %}
-    <li id="id_account"><a href="{% url 'bio.views.bio' %}"><img id="id_gravatar" src="{% gravatar_url user.email %}" alt="{{ user.username|capfirst }}'s gravatar">
+    <li id="id_account"><a href="profile"><img id="id_avatar" src="" alt="{{ user.username|capfirst }}'s profile pic">
     {{ user.username|capfirst }}</a></li>
     <li id="id_logout"><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a>
     {% else %}
