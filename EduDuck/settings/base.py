@@ -127,9 +127,6 @@ INSTALLED_APPS = (
     #django-haystack via elasticsearch backend
     #'haystack',
 
-    #following provides account activation via email via django-registration
-    'registration',
-
     #eduduck apps
     'attachment',
     'bio',
