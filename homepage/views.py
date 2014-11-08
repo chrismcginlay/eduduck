@@ -1,7 +1,6 @@
 # Homepage views
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
-from registration.forms import RegistrationForm
 from courses.forms import CourseNameForm
 from courses.models import Course
 from courses.views import _courses_n_24ths
@@ -15,10 +14,8 @@ def home(request):
     template = 'homepage/home.html'
     course_list = Course.objects.all()[:6]
     courses_n_24ths = _courses_n_24ths(course_list)
-    register_form = RegistrationForm()
     course_form = CourseNameForm()
     context_data = {
-        'register_form': register_form,
         'course_form': course_form,
         'course_list': courses_n_24ths,
     }

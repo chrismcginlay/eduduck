@@ -20,8 +20,6 @@ from django.template import RequestContext
 from django.utils import timezone
 from django.utils.html import escape
 
-from registration.forms import RegistrationForm
-
 from interaction.models import UserCourse, UserLesson
 from lesson.forms import LessonEditForm
 from lesson.models import Lesson
