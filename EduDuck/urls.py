@@ -6,7 +6,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'homepage.views.home'),
+    url(r'^$', 'homepage.views.home', name='homepage'),
 #    url(r'^search/', include('haystack.urls')),
     url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
     url(r'^support/', include('support.urls')),

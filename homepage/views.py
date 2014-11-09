@@ -22,3 +22,4 @@ def home(request):
 
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
+
