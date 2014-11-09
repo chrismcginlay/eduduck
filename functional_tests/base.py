@@ -42,7 +42,7 @@ class FunctionalTest(LiveServerTestCase):
         logout_link.find_element_by_tag_name('a').click()
         self.assertEqual(
             self.browser.current_url,
-            self.server_url + '/account/logout/')
+            self.server_url + '/accounts/logout/')
         
     def _logUserIn(self, user, passwd):
         login_link = self.browser.find_element_by_id('id_login')
@@ -50,7 +50,7 @@ class FunctionalTest(LiveServerTestCase):
         login_link.find_element_by_tag_name('a').click()
         self.assertEqual(
             self.browser.current_url, 
-            self.server_url + '/account/login/')
+            self.server_url + '/accounts/login/')
         username_textarea = self.browser.find_element_by_id('id_username')
         password_textarea = self.browser.find_element_by_id('id_password')
         form = self.browser.find_element_by_tag_name('form')
@@ -59,7 +59,7 @@ class FunctionalTest(LiveServerTestCase):
         form.submit()
         self.assertEqual(
             self.browser.current_url,
-            self.server_url + '/account/profile/')
+            self.server_url + '/accounts/profile/')
 
     def _checkChildItemsPresent(self, items_expected, parent_element_id):
         """ Verify that the expected items are present in a parent element

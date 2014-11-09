@@ -162,12 +162,10 @@ def index(request):
     logger.info('Course index view')
     course_list = Course.objects.all()
     course_count = Course.objects.count
-    register_form = RegistrationForm()
     template = 'courses/course_index.html'
     cn24ths = _courses_n_24ths(course_list)
     context_data = { 'course_list':  cn24ths,
                      'course_count': course_count,
-                     'register_form': register_form,
                    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)

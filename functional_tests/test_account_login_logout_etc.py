@@ -20,7 +20,7 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         signup_form = self.browser.find_element_by_id('id_sign_up_form')
         signup_form.submit()
         
-        # He is taken to the account/register page & an error message appears:
+        # He is taken to the accounts/register page & an error message appears:
         error = self.browser.find_element_by_css_selector('.errorlist')
         self.assertEqual(error.text, "This field is required.")
 
@@ -57,7 +57,7 @@ class NewVisitorDecidesToRegister(FunctionalTest):
         signup_form.submit()
         self.assertEqual(
             self.browser.current_url, 
-            self.server_url + '/account/register/complete/')
+            self.server_url + '/accounts/register/complete/')
         self.fail("implement the rest of this test")
         ## TODO The following would be nice to test. Need to figure out how to
         ## mock the confirmation email activation code.
@@ -66,7 +66,7 @@ class NewVisitorDecidesToRegister(FunctionalTest):
 """
         # Roland is taken to his new user profile page. 
         # Here he sees the basic and extra details for his account...
-        self.assertEqual(self.browser.current_url, '/account/profile/edit')
+        self.assertEqual(self.browser.current_url, '/accounts/profile/edit')
         
         # ...and with the possibility to change the default timezone, tagline etc.
         detail_edit_form = self.browser.find_element_by_id('id_edit_account')
@@ -99,7 +99,7 @@ class RegisteredUserLogsIn(FunctionalTest):
         #This takes him to his profile area
         self.assertEqual(
             self.browser.current_url,
-            self.server_url + '/account/profile/')
+            self.server_url + '/accounts/profile/')
 
         # Since he is logged in, the menu now shows 'logout' in place of login. 
         try:
