@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^accounts/profile/$', TemplateView.as_view(
         template_name = 'registration/profile.html')),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    url('', include('social.apps.django_app.urls', 
+        namespace='social')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^attachment/', include('attachment.urls')),
 )

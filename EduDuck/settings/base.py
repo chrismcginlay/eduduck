@@ -18,7 +18,6 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.path.normpath(
     os.path.join(os.path.realpath(__file__), "../../../"))
 
-LOGIN_REDIRECT_URL = '/accounts/profile/'
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = 'UTC'
@@ -79,6 +78,8 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     'core.context_processors.git_branch_render',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processrs.login_redirect',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,6 +91,7 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'core.middleware.TimezoneMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddlreware',
 )
 
 ROOT_URLCONF = 'EduDuck.urls'
@@ -104,11 +106,15 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-#django-registration https://bitbucket.org/ubernostrum/django-registration
-#This allows new users 7 days to activate new accounts
-ACCOUNT_ACTIVATION_DAYS = 7
-#Set following to False to disable registration.
-REGISTRATION_OPEN = True
+LOGIN_REDIRECT_URL = '/accounts/profile/'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '882717436949-lb365iq5sb5aeo3l7e8u132bkld9opsm.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'LGVtAs_8PG6hHhD_VdihoIgt'
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -126,6 +132,7 @@ INSTALLED_APPS = (
     #django-haystack via elasticsearch backend
     #'haystack',
 
+    'social.apps.django_app.default',
     #eduduck apps
     'attachment',
     'bio',
@@ -144,6 +151,8 @@ INSTALLED_APPS = (
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+
+
     },
 #this is only here since I can't get python manage.py to read this config (handled via wsgi)
 #use via python manage.py rebuild_index --using='forcron'
