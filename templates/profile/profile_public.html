@@ -1,14 +1,12 @@
-{% extends "bio/base_bio.html" %}
+{% extends "profile/base_profile.html" %}
 {% load url from future %}
-{% load gravatar %}
 
 {% block contentheading %}
-    <h2>Bio: {{ user.get_full_name }}</h2>
+    <h2>Profile: {{ user.get_full_name }}</h2>
 {% endblock contentheading %}
 
 {% block content %}
     <h3>Public Data for {{ fullname }}</h3>
-    {% gravatar_url user.email %}
     <table>
 <!--        <tr><td>Email</td><td><a href='mailto:{{ email }}'>{{ email }}</a></td></tr>-->
         <tr><td>Motto</td><td>

@@ -7,7 +7,7 @@
 
 {% block contentheading %}
 {% if user.is_authenticated %}
-    Welcome {{ user.username|capfirst }}: "{{ user.bio.signature_line }}"
+    Welcome {{ user.username|capfirst }}: "{{ user.profile.signature_line }}"
 {% else %}
     You are currently Logged Out
 {% endif %}

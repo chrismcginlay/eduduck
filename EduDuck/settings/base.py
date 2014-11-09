@@ -135,12 +135,12 @@ INSTALLED_APPS = (
     'social.apps.django_app.default',
     #eduduck apps
     'attachment',
-    'bio',
     'courses',
     'interaction',
     'homepage',
     'lesson',
     'outcome',
+    'profile',
     'quiz',
     'support',
     'video'

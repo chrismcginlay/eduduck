@@ -8,7 +8,7 @@ class TimezoneMiddleware(object):
 
     def process_request(self, request):
         try:
-            tz = request.user.bio.user_tz
+            tz = request.user.profile.user_tz
             timezone.activate(tz)
         except:
             logger.warning("Reverting to default timezone UTC")

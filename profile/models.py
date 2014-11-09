@@ -7,10 +7,10 @@ from django.contrib.auth.models import User
 
 import pytz
 
-class Bio(models.Model):
+class Profile(models.Model):
     """Extend user module with additional data"""
     
-    """Biographical or 'profile' information about users
+    """Profile information about users
 
     Attributes:
         user                1-1Field - Required field - User
@@ -20,7 +20,7 @@ class Bio(models.Model):
         description         More detailed description
         webpage             Link to user's webpage.
 
-    NB, registered courses not recorded here. Instead data relevant to a 
+    NB, enrolled courses not recorded here. Instead data relevant to a 
     user's interactions with a course will be recorded in a 'through' 
     model/table.
     """
@@ -36,7 +36,7 @@ class Bio(models.Model):
     
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
-        super (Bio, self).__init__(*args, **kwargs)
+        super (Profile, self).__init__(*args, **kwargs)
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
@@ -47,24 +47,24 @@ class Bio(models.Model):
         
     def __str__(self):
         """For debug mostly"""
-        return "Bio: " + str(self.id) + " " + self.user.username
+        return "Profile: " + str(self.id) + " " + self.user.username
 
     def get_absolute_url(self):
         assert self.id
-        return reverse(u"bio.views.bio")
+        return reverse(u"profile.views.profile")
 
     def get_profile_url(self):
-        """Return url for publicly visible 'bio' or profile"""
+        """Return url for publicly visible 'profile' or profile"""
 
         assert self.id
-        return reverse(u"bio.views.public", kwargs={'user_id':str(self.id)})
+        return reverse(u"profile.views.public", kwargs={'user_id':str(self.id)})
 
 #########################################
 #   Signals Area
 #########################################
 
 @receiver(post_save, sender=User)
-def create_bio(sender, instance, created, **kwargs):
-    """Ensure user bio is created for each new user"""
+def create_profile(sender, instance, created, **kwargs):
+    """Ensure user profile is created for each new user"""
     if created:
-        Bio.objects.create(user=instance)
+        Profile.objects.create(user=instance)

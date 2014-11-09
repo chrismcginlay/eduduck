@@ -7,7 +7,7 @@ from datetime import datetime
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from bio.models import Bio
+from profile.models import Profile
 
 from lesson.models import Lesson
 from ..models import Course
@@ -46,16 +46,16 @@ class CourseModelTests(TestCase):
         self.user2 = User.objects.create_user('hank', 'hank@example.com', 'hankdo')
         self.user2.is_active = True
         self.user2.save()
-        self.bio1 = self.user1.bio
-        self.bio1.accepted_terms = True
-        self.bio1.signature_line = 'Learning stuff'
-        self.bio1.user_tz = "Europe/Rome"
-        self.bio1.save()
-        self.bio2 = self.user2.bio
-        self.bio2.accepted_terms = True
-        self.bio2.signature_line = 'Tieing knots'
-        self.bio2.user_tz = 'Atlantic/St_Helena'
-        self.bio2.save()
+        self.profile1 = self.user1.profile
+        self.profile1.accepted_terms = True
+        self.profile1.signature_line = 'Learning stuff'
+        self.profile1.user_tz = "Europe/Rome"
+        self.profile1.save()
+        self.profile2 = self.user2.profile
+        self.profile2.accepted_terms = True
+        self.profile2.signature_line = 'Tieing knots'
+        self.profile2.user_tz = 'Atlantic/St_Helena'
+        self.profile2.save()
 
         self.course1 = Course(**self.course1_data)
         self.course1.organiser = self.user1

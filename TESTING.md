@@ -36,13 +36,13 @@ users to the auth_user.json, you'll need to generate a hashed password:
 ##Unit tests at present, and how to run them:##
 `python manage.py test courses --settings=EduDuck.settings.test`
 `python manage.py test interaction --settings=EduDuck.settings.test`
-`python manage.py test bio --settings=EduDuck.settings.test`
+`python manage.py test profile --settings=EduDuck.settings.test`
 `python manage.py test outcome --settings=EduDuck.settings.test`
 `python manage.py test support --settings=EduDuck.settings.test`
 `python manage.py test attachment --settings=EduDuck.settings.test`
 
 Or just run them all:
-    `python manage.py test courses interaction bio outcome support attachment --settings=EduDuck.settings.test`
+    `python manage.py test courses interaction profile outcome support attachment --settings=EduDuck.settings.test`
 
 ##WARNING status in logs after running tests##
 Because the tests intentionally subject the models to failure cases, the tests 

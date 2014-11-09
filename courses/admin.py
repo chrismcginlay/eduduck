@@ -4,17 +4,17 @@ from django.contrib.auth.models import User
 
 from courses.models import Course
 
-from bio.models import Bio
+from profile.models import Profile
 from quiz.models import Quiz, Question, Answer, QuizAttempt, QuestionAttempt
 
 
-class UserBioInline(admin.StackedInline):
-    model = Bio
+class UserProfileInline(admin.StackedInline):
+    model = Profile
     can_delete = False
-    verbose_name_plural = 'bios'
+    verbose_name_plural = 'profiles'
     
 class UserAdmin(UserAdmin):
-    inlines = (UserBioInline, )
+    inlines = (UserProfileInline, )
 
 class QuizAttemptAdmin(admin.ModelAdmin):
     readonly_fields = ("taken_dt",)

@@ -30,7 +30,7 @@ def usercourse_single(request, user_id, course_id):
     uc = get_object_or_404(UserCourse, course=course_id, user=user_id)
     history = uc.hist2list()
     try:
-        tz = request.user.bio.user_tz    
+        tz = request.user.profile.user_tz    
         timezone.activate(tz)
     except:
         logger.warning("Reverting to default timezone (UTC)")
@@ -49,7 +49,7 @@ def userlesson_single(request, user_id, lesson_id):
     ul = get_object_or_404(UserLesson, lesson=lesson_id, user=user_id)
     history = ul.hist2list()
     try:
-        tz = request.user.bio.user_tz    
+        tz = request.user.profile.user_tz    
         timezone.activate(tz)
     except:
         logger.warning("Reverting to default timezone (UTC)")
@@ -72,7 +72,7 @@ def userlearningintentiondetail_single(request, user_id, lid_id):
     logger.info(ulid.__unicode__()+" view interactions")
     history = ulid.hist2list()
     try:
-        tz = request.user.bio.user_tz    
+        tz = request.user.profile.user_tz    
         timezone.activate(tz)
     except:
         logger.warning("Reverting to default timezone (UTC)")

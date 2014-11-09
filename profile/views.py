@@ -10,24 +10,24 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 
 from courses.models import Course
-from .forms import BioEditForm
+from .forms import ProfileEditForm
 
 import logging
 logger = logging.getLogger(__name__)
 
 @login_required
-def bio(request):
-    """Display the user's bio details"""
+def profile(request):
+    """Display the user's profile details"""
     
-    logger.info('Bio id=' + str(request.user.id) + ' view')
-    template = 'bio/bio.html'
-    bio = request.user.bio
-    assert(bio)
+    logger.info('Profile id=' + str(request.user.id) + ' view')
+    template = 'profile/profile.html'
+    profile = request.user.profile
+    assert(profile)
 
     usercourses = request.user.usercourse_set.all()
     ruid = request.user.id
     taughtcourses = Course.objects.filter(Q(organiser__id=ruid) | Q(instructor__id=ruid))
-    context_data = {    'bio': bio, 
+    context_data = {    'profile': profile, 
                         'usercourses': usercourses,
                         'taughtcourses': taughtcourses,}
     context_instance = RequestContext(request)
@@ -35,44 +35,44 @@ def bio(request):
 
 @login_required
 def edit(request):
-    """Allow edit of user's bio details"""
+    """Allow edit of user's profile details"""
     
-    logger.info('Bio id=' + str(request.user.id) + ' edit')    
-    template = 'bio/bio_edit.html'
-    bio = request.user.bio
-    assert(bio)
+    logger.info('Profie id=' + str(request.user.id) + ' edit')    
+    template = 'profile/profile_edit.html'
+    profile = request.user.profile
+    assert(profile)
     if request.method == 'POST':
-        form = BioEditForm(request.POST, instance=bio)
+        form = ProfileEditForm(request.POST, instance=profile)
         if form.is_valid():
-            bio.user_tz = form.cleaned_data['user_tz']
-            bio.accepted_terms = form.cleaned_data['accepted_terms']
-            bio.signature_line = form.cleaned_data['signature_line']
-            bio.description = form.cleaned_data['description']
-            bio.webpage = form.cleaned_data['webpage']
-            bio.save()
-            return HttpResponseRedirect('/accounts/bio/')
+            profile.user_tz = form.cleaned_data['user_tz']
+            profile.accepted_terms = form.cleaned_data['accepted_terms']
+            profile.signature_line = form.cleaned_data['signature_line']
+            profile.description = form.cleaned_data['description']
+            profile.webpage = form.cleaned_data['webpage']
+            profile.save()
+            return HttpResponseRedirect('/accounts/profile/')
     else:
-        form = BioEditForm(instance=bio)
+        form = ProfileEditForm(instance=profile)
         
-    context_data = {    'bio': bio,
+    context_data = {    'profile': profile,
                         'form': form, }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 
 
 def public(request, user_id):
-    """Display publicly visible bio data"""
+    """Display publicly visible profile data"""
 
-    logger.info('Bio id=' + str(user_id) + ' public profile view')
-    template = 'bio/bio_public.html'
+    logger.info('Profile id=' + str(user_id) + ' public profile view')
+    template = 'profile/profile_public.html'
     user = get_object_or_404(User, pk=user_id)
     
     #pass only the required public user data, prevent extraction from context data
     fullname = user.get_full_name()
-    motto = user.bio.signature_line
-    timezone = user.bio.user_tz
-    webpage = user.bio.webpage
-    description = user.bio.description
+    motto = user.profile.signature_line
+    timezone = user.profile.user_tz
+    webpage = user.profile.webpage
+    description = user.profile.description
     
     context_data = { 'fullname': fullname,
                      'motto': motto,

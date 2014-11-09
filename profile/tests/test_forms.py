@@ -3,13 +3,13 @@ from django.test import TestCase
 
 from django.contrib.auth.models import User
 
-from ..models import Bio
-from ..forms import BioEditForm      
+from ..models import Profile 
+from ..forms import ProfileEditForm      
 
-class BioFormTests(TestCase):
-    """Test the operation of bio forms"""
+class ProfileFormTests(TestCase):
+    """Test the operation of profile forms"""
     
-    bio1_data = {'user_tz':         "Europe/Paris",
+    profile1_data = {'user_tz':         "Europe/Paris",
                  'accepted_terms':  True,
                  'signature_line':  'Some catchy signature.',
                  'description':     'Detailed multiline description.',
@@ -21,12 +21,12 @@ class BioFormTests(TestCase):
         self.user1.is_active = True
         self.user1.save()  
         
-        #populate bio + save
-        for key,val in self.bio1_data.items():
-            self.user1.bio.__dict__[key] = val
-        self.user1.bio.save()
+        #populate profile + save
+        for key,val in self.profile1_data.items():
+            self.user1.profile.__dict__[key] = val
+        self.user1.profile.save()
         
-    def test_bioeditform(self):
-        f = BioEditForm(instance = self.user1.bio)
-        self.assertTrue(isinstance(f.instance, Bio))
+    def test_profileeditform(self):
+        f = ProfileEditForm(instance = self.user1.profile)
+        self.assertTrue(isinstance(f.instance, Profile))
         self.assertEqual(f.instance.pk, self.user1.pk)

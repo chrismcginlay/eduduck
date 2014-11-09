@@ -1,7 +1,7 @@
 from django.test import TestCase
 from courses.models import Course
 from lesson.models import Lesson
-from bio.models import User, Bio
+from profile.models import User, Profile 
 from interaction.models import UserCourse
 from ..models import LearningIntention, LearningIntentionDetail
 
@@ -49,10 +49,10 @@ class OutcomeViewTests(TestCase):
         )
         self.lid3.save()   
         
-        self.bio1 = self.user1.bio
-        self.bio1.accepted_terms = True
-        self.bio1.signature_line = 'Learning stuff'
-        self.bio1.save()
+        self.profile1 = self.user1.profile
+        self.profile1.accepted_terms = True
+        self.profile1.signature_line = 'Learning stuff'
+        self.profile1.save()
     
     def test_learning_intention(self):
         """Test view of a single learning intention"""

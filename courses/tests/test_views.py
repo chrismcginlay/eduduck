@@ -7,7 +7,7 @@ from django.http.response import HttpResponseForbidden
 from django.test import TestCase
 from django.utils.html import escape
 
-from bio.models import Bio
+from profile.models import Profile
 
 from interaction.models import UserCourse
 from lesson.forms import LESSON_NAME_FIELD_REQUIRED_ERROR
@@ -495,14 +495,14 @@ class CourseViewTests(TestCase):
 
         # Check username appears for organiser
         org = c2.organiser
-        t = '<p>Course organiser <a href="/accounts/bio/public/{1}/">{0}</a>'
+        t = '<p>Course organiser <a href="/accounts/profile/public/{1}/">{0}</a>'
         target = t.format(org.username, org.pk)
         resp = response.content.replace("\n", "").replace("\t", "")
         self.assertIn(target, resp)
         
         # Check full name appears for instructor
         inst = c2.instructor
-        t = '<p>Course instructor <a href="/accounts/bio/public/{1}/">{0}</a>'
+        t = '<p>Course instructor <a href="/accounts/profile/public/{1}/">{0}</a>'
         target = t.format(inst.get_full_name(), inst.pk)
         self.assertIn(target, resp)
         
