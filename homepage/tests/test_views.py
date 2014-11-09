@@ -25,14 +25,14 @@ class HomepageViewTests(TestCase):
         
     def test_site_title(self):
         response = self.client.get('/')
-        self.assertInHTML('<h1>EduDuck</h1>', response.content)
+        self.assertIn('<h1>EduDuck</h1>', response.content)
         
     def test_handle_no_courses_case(self):
         # Still renders template even if no courses
         
         Course.objects.all().delete()
         response = self.client.get('/')
-        self.assertInHTML('<p>No courses?</p>', response.content)
+        self.assertIn('<p>No courses?</p>', response.content)
     
     def test_handle_just_one_course(self):
         # Can render template if just one course

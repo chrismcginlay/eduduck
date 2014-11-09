@@ -495,14 +495,14 @@ class CourseViewTests(TestCase):
 
         # Check username appears for organiser
         org = c2.organiser
-        t = '<p>Course organiser <a href="/accounts/profile/public/{1}/">{0}</a>'
+        t = '<p>Course organiser <a href="/accounts/profile/{1}/public/">{0}</a>'
         target = t.format(org.username, org.pk)
         resp = response.content.replace("\n", "").replace("\t", "")
         self.assertIn(target, resp)
         
         # Check full name appears for instructor
         inst = c2.instructor
-        t = '<p>Course instructor <a href="/accounts/profile/public/{1}/">{0}</a>'
+        t = '<p>Course instructor <a href="/accounts/profile/{1}/public/">{0}</a>'
         target = t.format(inst.get_full_name(), inst.pk)
         self.assertIn(target, resp)
         
