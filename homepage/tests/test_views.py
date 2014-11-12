@@ -66,7 +66,7 @@ class HomepageViewTests(TestCase):
         
         self.client.login(username='chris', password='chris')
         response = self.client.get('/')
-        needle1 = '<div class="pure-u-1-2" id="id_login_signup">'
+        needle1 = 'id="id_login_signup">'
         self.assertNotIn(needle1, response.content)
         
         needle2 = '<div class="pure-u-1-2" id="id_empty">'
@@ -74,7 +74,7 @@ class HomepageViewTests(TestCase):
         
     def test_90_register_area_present_when_not_logged_in(self):
         response= self.client.get('/')
-        needle = '<form id="id_login_signup"'
+        needle = 'id="id_login_signup"'
         self.assertIn(needle, response.content)
         
     def test_course_create_area_present(self):

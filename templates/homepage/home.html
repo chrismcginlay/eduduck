@@ -45,10 +45,17 @@
         {% else %}
             <div class="pure-u-1-2">
                 <h2>Sign Up Here</h2>
-                <p>We use no longer use Gravatar.com</a> for profile images. You should soon be able to select your profile image by associating a social media account.</p>
+                <p>Login or sign up in seconds with your social media account.</p>
+                <a
+                    id="id_login_signup" 
+                    href="{% url 'django.contrib.auth.views.login' %}">
+                    Login or Sign up!
+                </a>
                 <form id="id_sign_up_form" action="" method="post">{% csrf_token %}
                 register_form
-                <input id="id_submit_reg" class="pure-button" type="submit" value="Sign Up" />
+                <input
+                    id="id_submit_reg" class="pure-button"
+                    type="submit" value="Sign Up" />
                 </form>
             </div>
         {% endif %}
