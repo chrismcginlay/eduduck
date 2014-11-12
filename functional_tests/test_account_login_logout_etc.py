@@ -4,10 +4,44 @@ from selenium.common.exceptions import NoSuchElementException
 
 from .base import FunctionalTest
 
-class NewVisitorDecidesToRegister(FunctionalTest):
+class VisitorDecidesToSignIn(FunctionalTest):
+    """Social signin facilities"""
+    
+    def test_signup_signin_workflow(self):
+        # Roland makes his first visit to the site.
+        # He sees the login/signup area.
+        self.browser.get(self.server_url)
+        login_link = self.browser.find_element_by_id('id_login_signup')
+    
+        # He hits the 'login/signup' option
+        login_link.click()
+
+        # This takes him to a page showing a number of options for social auth
+        # replicated in two areas, one for login, one for signup.
+        psa_url = self.server_url + '/accounts/login/'
+        self.assertEqual(psa_url, self.browser.current_url)
+        self.browser.find_element_by_id('id_login_area')
+        self.browser.find_element_by_id('id_signup_area')
+        goal = self.browser.find_element_by_id('id_google_oauth2_login')
+        self.browser.find_element_by_id('id_dropbox_oauth_login')
+        self.browser.find_element_by_id('id_google_oauth2_signup')
+        self.browser.find_element_by_id('id_dropbox_oauth_signup')
+
+        # He tries to login with google, but there is no record of an account
+        goal.click() # Mock this?
+
+        # He is informed of this and redirected to signup.
+
+        # Having signed up he is redirected to his account profile page.
+
+        # Roland logs out, then logs back in again.
+
+
+class NewVisitorDecidesToRegisterViaEmail(FunctionalTest):
     """Covers registration, profile page, logout and login"""
     
     def test_registration_profile_edit_logout_login(self):
+        self.fail("Amend this for new auth")
         # Roland arrives on the site. He has not registered yet.
         # He sees the login option in the menu and the registration area on the 
         # main page.
