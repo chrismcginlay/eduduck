@@ -24,8 +24,12 @@ class VisitorDecidesToSignIn(FunctionalTest):
         self.browser.find_element_by_id('id_signup_area')
         goal = self.browser.find_element_by_id('id_google_oauth2_login')
         self.browser.find_element_by_id('id_dropbox_oauth_login')
+        self.browser.find_element_by_id('id_twitter_oauth2_login')
+        self.browser.find_element_by_id('id_facebook_oauth2_login')
         self.browser.find_element_by_id('id_google_oauth2_signup')
         self.browser.find_element_by_id('id_dropbox_oauth_signup')
+        self.browser.find_element_by_id('id_twitter_oauth2_signup')
+        self.browser.find_element_by_id('id_facebook_oauth2_signup')
 
         # He tries to login with google, but there is no record of an account
         goal.click() # Mock this?

@@ -1,12 +1,46 @@
 {% extends "registration/base_registration.html" %}
-{% load url from future %}
+{% load staticfiles %}
 
-{% block contentheading %}
-Login
-{% endblock contentheading %}
+{% block contentheading %}Login and Signup Area{% endblock contentheading %}
 
-{% block zone1 %}
-<h3>Account Details</h3>
+{% block content %}
+
+<div class="pure-g-r">
+    <div id="id_signup_area" class="pure-u-1-2">
+        <h3>New User SignUp</h3>
+        <a href="" id="id_google_oauth2_signup"><img 
+            src="{% static 'images/social_150/gplus.png' %}" 
+            height="150" width="150"></a>
+        <a href="" id="id_dropbox_oauth_signup"><img 
+            src="{% static 'images/social_150/dropbox.png' %}"
+            height="150" width="150"></a>
+        <a href="" id="id_twitter_oauth2_signup"><img 
+            src="{% static 'images/social_150/twitter.png' %}" 
+            height="150" width="150"></a>
+        <a href="" id="id_facebook_oauth2_signup"><img 
+            src="{% static 'images/social_150/facebook.png' %}" 
+            height="150" width="150"></a>
+    </div>
+    <div id="id_login_area" class="pure-u-1-2">
+        <h3>Returning User Login</h3>
+        <a href="" id="id_google_oauth2_login"><img 
+            src="{% static 'images/social_150/gplus.png' %}"
+            height="150" width="150"></a>
+        <a href="" id="id_dropbox_oauth_login"><img 
+            src="{% static 'images/social_150/dropbox.png' %}"
+            height="150" width="150"></a>
+        <a href="" id="id_twitter_oauth2_login"><img 
+            src="{% static 'images/social_150/twitter.png' %}" 
+            height="150" width="150"></a>
+        <a href="" id="id_facebook_oauth2_login"><img 
+            src="{% static 'images/social_150/facebook.png' %}" 
+            height="150" width="150"></a>
+   </div>
+</div>
+ 
+<hr>
+<h3>Non-social Account Details</h3>
+<p>If you have an email verified account provided by site admins, you can login here. Everyone else needs to use a social media account.</p>
 
 {% if form.errors %}
 <p><em>Error:</em> Username and password mismatch. Please try again.</p>
