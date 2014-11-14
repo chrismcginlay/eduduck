@@ -31,9 +31,12 @@ class VisitorDecidesToSignIn(FunctionalTest):
         self.browser.find_element_by_id('id_twitter_oauth2_signup')
         self.browser.find_element_by_id('id_facebook_oauth2_signup')
 
-        # He tries to login with google, but there is no record of an account
-        goal.click() # Mock this?
+        ## CAREFUL - following these 3rd party authentications will have a
+        ## side effect if browser is logged in to a service. 
 
+        # He tries to login with google, but there is no record of an account
+        #goal.click() # Mock this?
+        self.fail("Unsure how to test 3rd party auth")
         # He is informed of this and redirected to signup.
 
         # Having signed up he is redirected to his account profile page.

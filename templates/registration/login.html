@@ -8,16 +8,20 @@
 <div class="pure-g-r">
     <div id="id_signup_area" class="pure-u-1-2">
         <h3>New User SignUp</h3>
-        <a href="" id="id_google_oauth2_signup"><img 
+        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" 
+            id="id_google_oauth2_signup"><img 
             src="{% static 'images/social_150/gplus.png' %}" 
             height="150" width="150"></a>
-        <a href="" id="id_dropbox_oauth_signup"><img 
+        <a href="{% url 'social:begin' 'dropbox' %}?next={{ request.path }}"
+            id="id_dropbox_oauth_signup"><img 
             src="{% static 'images/social_150/dropbox.png' %}"
             height="150" width="150"></a>
-        <a href="" id="id_twitter_oauth2_signup"><img 
+        <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}"
+            id="id_twitter_oauth2_signup"><img 
             src="{% static 'images/social_150/twitter.png' %}" 
             height="150" width="150"></a>
-        <a href="" id="id_facebook_oauth2_signup"><img 
+        <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"
+            id="id_facebook_oauth2_signup"><img 
             src="{% static 'images/social_150/facebook.png' %}" 
             height="150" width="150"></a>
     </div>
