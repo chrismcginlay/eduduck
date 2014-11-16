@@ -53,16 +53,12 @@ class CasualVisitorArrives(FunctionalTest):
         branch = self.browser.find_element_by_id('id_branch').text
         self.assertIn('Code Branch:', branch)
 
-        # He sees facilities to register... (but doesn't, yet)
-        self.assertTrue(self.browser.find_element_by_id('id_sign_up_form'))
-        self.assertTrue(self.browser.find_element_by_id('id_username'))
-        self.assertTrue(self.browser.find_element_by_id('id_email'))
-        self.assertTrue(self.browser.find_element_by_id('id_password1'))
-        self.assertTrue(self.browser.find_element_by_id('id_password2'))
-        self.assertTrue(self.browser.find_element_by_id('id_submit_reg'))
-
-        # ...and the option to login, (but doesn't login)
-        self.assertTrue(self.browser.find_element_by_id('id_login'))
+        # He sees icons for signup/login... (but doesn't, yet)
+        self.assertTrue(self.browser.find_element_by_id('id_social_auth_area'))
+        self.assertTrue(self.browser.find_element_by_id('id_google_oauth2'))
+        self.assertTrue(self.browser.find_element_by_id('id_facebook'))
+        self.assertTrue(self.browser.find_element_by_id('id_twitter'))
+        self.assertTrue(self.browser.find_element_by_id('id_dropbox'))
 
         # He sees facilities to create a course
         self.assertTrue(self.browser.find_element_by_id('id_create_course'))
@@ -127,7 +123,7 @@ class VisitorBrowsesMenus(FunctionalTest):
         # She checks out the main menu
         self.browser.get(self.server_url)
         items_expected = [
-            'Courses', 'Login', 'Register', 
+            'Courses', 'Login',  
             'Blog', 'Support', 'About']
         self._checkChildItemsPresent(items_expected, 'menu')
 
@@ -156,8 +152,7 @@ class VisitorBrowsesMenus(FunctionalTest):
 
         # and notes that the menu changes slightly in the course context
         items_expected = ['Urvasi', 'ISS', 'Intro Videos', 'Lessons', 
-            'Assessments', 'Study Group', 'Course Docs', 'Progress'
-        ]
+            'Assessments', 'Study Group', 'Course Docs', 'Progress']
         self._checkChildItemsPresent(items_expected, 'menu')
         self._checkChildLinksWork('menu')
         
@@ -170,8 +165,7 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.find_element_by_id('id_ISS_course').click()
         self.browser.find_element_by_id('id_lesson1').click()
         items_expected = ['Urvasi', 'ISS Home', 'Lesson Home', 'Learn.. Int..',
-                          'Assessment', 'Study Group', 'Docs', 'Progress'
-        ]
+                          'Assessment', 'Study Group', 'Docs', 'Progress']
         self._checkChildItemsPresent(items_expected, 'menu')
         self._checkChildLinksWork('menu')
 
@@ -184,7 +178,7 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.find_element_by_id('id_Blender_course').click()
         self.browser.find_element_by_id('id_lesson1').click()
         self.browser.find_element_by_id('id_LI1').click()
-        items_expected = ['Blender Home', 'Lesson Home', ]
+        items_expected = ['Blender Home', 'Lesson Home']
         self._checkChildItemsPresent(items_expected, 'menu')
         self._checkChildLinksWork('menu')
         

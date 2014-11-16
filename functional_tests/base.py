@@ -89,6 +89,8 @@ class FunctionalTest(LiveServerTestCase):
             start_window = self.browser.current_window_handle
             anchor = self.browser.find_element_by_id(element_id).find_elements_by_tag_name('a')[i]
             url = anchor.get_attribute('href')
+            if anchor.text == 'Logout':
+                continue    #Clicking logout will ruin the rest of the menu test!
             anchor.click()
             ##Next get handle to opened window and switch to it
             open_windows = self.browser.window_handles

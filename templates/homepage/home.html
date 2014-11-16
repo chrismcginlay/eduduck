@@ -43,21 +43,27 @@
             <div class="pure-u-1-2" id="id_empty">
             </div>
         {% else %}
-            <div class="pure-u-1-2">
-                <h2>Sign Up Here</h2>
+            <div class="pure-u-1-2" id="id_social_auth_area">
+                <h2>Login or Sign Up</h2>
                 <p>Login or sign up in seconds with your social media account.</p>
-                <a
-                    id="id_login_signup" 
-                    href="{% url 'django.contrib.auth.views.login' %}">
-                    Login or Sign up!
-                </a>
-                <form id="id_sign_up_form" action="" method="post">{% csrf_token %}
-                register_form
-                <input
-                    id="id_submit_reg" class="pure-button"
-                    type="submit" value="Sign Up" />
-                </form>
-            </div>
+                <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" 
+                    id="id_google_oauth2"><img 
+                    src="{% static 'images/social_50/gplus.png' %}" 
+                    height="50" width="50"></a>
+                <a href="{% url 'social:begin' 'dropbox' %}?next={{ request.path }}"
+                    id="id_dropbox"><img 
+                    src="{% static 'images/social_50/dropbox.png' %}"
+                    height="50" width="50"></a>
+                <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}"
+                    id="id_twitter"><img 
+                    src="{% static 'images/social_50/twitter.png' %}" 
+                    height="50" width="50"></a>
+                <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"
+                    id="id_facebook"><img 
+                    src="{% static 'images/social_50/facebook.png' %}" 
+                    height="50" width="50"></a>
+         
+                    </div>
         {% endif %}
 
         <div class="pure-u-1-2">

@@ -11,7 +11,8 @@ class VisitorDecidesToSignIn(FunctionalTest):
         # Roland makes his first visit to the site.
         # He sees the login/signup area.
         self.browser.get(self.server_url)
-        login_link = self.browser.find_element_by_id('id_login_signup')
+        login_link = self.browser.find_element_by_xpath(
+            "//li[@id='id_login']/a[1]")
     
         # He hits the 'login/signup' option
         login_link.click()

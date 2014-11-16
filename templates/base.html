@@ -56,11 +56,12 @@
 
     <!-- login/account/logout area -->
     {% if user.is_authenticated %}
-    <li id="id_account"><a href="profile"><img id="id_profile" src="" alt="{{ user.username|capfirst }}'s profile pic">
-    {{ user.username|capfirst }}</a></li>
+    <li id="id_account">
+        <a href="{% url 'profile.views.profile' %}"><img 
+        id="id_profile" src="" alt="{{ user.username|capfirst }}'s profile pic">
+        {{ user.username|capfirst }}</a></li>
     <li id="id_logout"><a href="{% url 'django.contrib.auth.views.logout' %}">Logout</a>
     {% else %}
-    <li id='id_register'><a href="{% url 'social:begin' 'google-oauth2' %}">Google Login</a></li>
     <li id='id_login'><a href="{% url 'django.contrib.auth.views.login' %}">Login</a></li>
     {% endif %}
     <!-- end login area -->
