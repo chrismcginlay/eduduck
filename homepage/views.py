@@ -26,7 +26,7 @@ def home(request):
         except KeyError:
             auth_via = request.session['_auth_user_backend']
             assert(auth_via==u'django.contrib.auth.backends.ModelBackend')
-            auth_via = "Username and password. Oooh, how old fashioned"
+            auth_via = "username and password. Oooh, how old fashioned."
         finally:
             context_data.update({'auth_via': auth_via})
  
