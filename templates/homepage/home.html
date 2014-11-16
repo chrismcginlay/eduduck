@@ -40,7 +40,12 @@
     
     <div class="pure-g-r">
         {% if user.is_authenticated %}
-            <div class="pure-u-1-2" id="id_empty">
+            <div class="pure-u-1-2" id="id_account_status">
+            <p>Welcome. You are logged in via {{ auth_via }}</p>
+            <p>You can visit your profile page: <br>
+            <a id="id_profile_link" href="{% url 'profile.views.profile' %}">
+                {{ user.username|capfirst }}
+            </a></p>
             </div>
         {% else %}
             <div class="pure-u-1-2" id="id_social_auth_area">

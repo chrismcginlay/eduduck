@@ -11,6 +11,18 @@ class HomepageViewTests(TestCase):
         'courses.json'
     ]
         
+    def test_homepage_has_correct_context(self):
+        response = self.client.get('/')
+        self.assertIn('course_form', response.context)
+        self.assertIn('course_list', response.context)
+        self.assertNotIn('auth_via', response.context)
+
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/')
+        self.assertIn('auth_via', response.context)
+        self.assertIn('course_form', response.context)
+        self.assertIn('course_list', response.context)
+
     def test_homepage_uses_correct_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'homepage/home.html')
@@ -60,7 +72,12 @@ class HomepageViewTests(TestCase):
         response = self.client.get('/')
         self.assertIn('div class="random_course pure-u-', 
         response.content)   
-        
+       
+    def test_account_profile_link_visible_when_logged_in(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/')
+        self.assertIn('id="id_profile_link"', response.content)
+ 
     def test_90_register_area_goes_away_when_logged_in(self):
         """ If a user is logged in, don't ask them to create an account """
         
@@ -69,13 +86,16 @@ class HomepageViewTests(TestCase):
         needle1 = 'id="id_social_auth_area">'
         self.assertNotIn(needle1, response.content)
         
-        needle2 = '<div class="pure-u-1-2" id="id_empty">'
+        needle2 = '<div class="pure-u-1-2" id="id_account_status">'
         self.assertIn(needle2, response.content)
         
     def test_90_register_area_present_when_not_logged_in(self):
         response= self.client.get('/')
-        needle = 'id="id_social_auth_area"'
-        self.assertIn(needle, response.content)
+        needle1 = 'id="id_social_auth_area"'
+        self.assertIn(needle1, response.content)
+ 
+        needle2 = '<div class="pure-u-1-2" id="id_account_status">'
+        self.assertNotIn(needle2, response.content)
         
     def test_course_create_area_present(self):
         response = self.client.get('/')

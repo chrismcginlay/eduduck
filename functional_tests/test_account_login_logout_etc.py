@@ -34,7 +34,18 @@ class VisitorDecidesToSignIn(FunctionalTest):
 
         ## CAREFUL - following these 3rd party authentications will have a
         ## side effect if browser is logged in to a service. 
+        
+        # Roland logs in ## JUST USE CHRIS/CHRIS until figure out mocking
+        self._logUserIn('chris', 'chris')   
 
+        # Returning to the homepage he sees that the social auth options area
+        # now shows the login method.
+        self.browser.get(self.server_url)
+        self.browser.find_element_by_id('id_account_status')
+        
+        # ...and a link to his profile
+        self.browser.find_element_by_id('id_profile_link')
+ 
         # He tries to login with google, but there is no record of an account
         #goal.click() # Mock this?
         self.fail("Unsure how to test 3rd party auth")
