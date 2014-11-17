@@ -21,17 +21,12 @@ class VisitorDecidesToSignIn(FunctionalTest):
         # replicated in two areas, one for login, one for signup.
         psa_url = self.server_url + '/accounts/login/'
         self.assertEqual(psa_url, self.browser.current_url)
-        self.browser.find_element_by_id('id_login_area')
-        self.browser.find_element_by_id('id_signup_area')
-        goal = self.browser.find_element_by_id('id_google_oauth2_login')
-        self.browser.find_element_by_id('id_dropbox_oauth_login')
-        self.browser.find_element_by_id('id_twitter_oauth2_login')
-        self.browser.find_element_by_id('id_facebook_oauth2_login')
-        self.browser.find_element_by_id('id_google_oauth2_signup')
-        self.browser.find_element_by_id('id_dropbox_oauth_signup')
-        self.browser.find_element_by_id('id_twitter_oauth2_signup')
-        self.browser.find_element_by_id('id_facebook_oauth2_signup')
-
+        self.browser.find_element_by_id('id_signup_login_area')
+        goal = self.browser.find_element_by_id('id_google_oauth2')
+        self.browser.find_element_by_id('id_dropbox_oauth')
+        self.browser.find_element_by_id('id_twitter_oauth2')
+        self.browser.find_element_by_id('id_facebook_oauth2')
+        
         ## CAREFUL - following these 3rd party authentications will have a
         ## side effect if browser is logged in to a service. 
         
@@ -39,13 +34,20 @@ class VisitorDecidesToSignIn(FunctionalTest):
         self._logUserIn('chris', 'chris')   
 
         # Returning to the homepage he sees that the social auth options area
-        # now shows the login method.
+        # now shows the method used to login.
         self.browser.get(self.server_url)
         self.browser.find_element_by_id('id_account_status')
         
         # ...and a link to his profile
         self.browser.find_element_by_id('id_profile_link')
- 
+
+        # Visiting the accounts/login page again; already logged in, so 
+        # instead of login options he sees a message explaining that he is 
+        # already logged in and a link to his profile page.
+        self.browser.get(psa_url)
+        self.browser.find_element_by_id('id_account_status')
+        self.browser.find_element_by_id('id_profile_link')
+
         # He tries to login with google, but there is no record of an account
         #goal.click() # Mock this?
         self.fail("Unsure how to test 3rd party auth")

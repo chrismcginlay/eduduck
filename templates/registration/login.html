@@ -5,65 +5,57 @@
 
 {% block content %}
 
-<div class="pure-g-r">
-    <div id="id_signup_area" class="pure-u-1-2">
-        <h3>New User SignUp</h3>
-        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" 
-            id="id_google_oauth2_signup"><img 
+{% if user.is_authenticated %}
+    <div id="id_account_status">
+        <h3>Already Logged In</h3>
+        <p>You have reached the login page, however you are already logged in.</p>
+        <p>Maybe you would like to <a id="id_profile_link" href={% url 'profile.views.profile' %}>visit your profile page?</a></p>
+    </div>
+{% else %}
+    <div class="pure-g-r">
+    <div id="id_signup_login_area" class="pure-u-1-1">
+        <h3>SignUp or Login</h3>
+        <a href="{% url 'social:begin' 'google-oauth2' %}" 
+            id="id_google_oauth2"><img 
             src="{% static 'images/social_150/gplus.png' %}" 
             height="150" width="150"></a>
-        <a href="{% url 'social:begin' 'dropbox' %}?next={{ request.path }}"
-            id="id_dropbox_oauth_signup"><img 
+        <a href="{% url 'social:begin' 'dropbox' %}"
+            id="id_dropbox_oauth"><img 
             src="{% static 'images/social_150/dropbox.png' %}"
             height="150" width="150"></a>
-        <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}"
-            id="id_twitter_oauth2_signup"><img 
+        <a href="{% url 'social:begin' 'twitter' %}"
+            id="id_twitter_oauth2"><img 
             src="{% static 'images/social_150/twitter.png' %}" 
             height="150" width="150"></a>
-        <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"
-            id="id_facebook_oauth2_signup"><img 
+        <a href="{% url 'social:begin' 'facebook' %}"
+            id="id_facebook_oauth2"><img 
             src="{% static 'images/social_150/facebook.png' %}" 
             height="150" width="150"></a>
+        <hr>
+        <h3>Non-social Account Details</h3>
+        <p>If you have an email verified account provided by site admins, you can login here. Everyone else needs to use a social media account.</p>
+
+        {% if form.errors %}
+        <p><em>Error:</em> Username and password mismatch. Please try again.</p>
+        {% endif %}
+
+        <form method ="post" action="{% url 'django.contrib.auth.views.login' %}">
+        {% csrf_token %}
+        <table>
+        <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </tr>
+        </table>
+        <input type="submit" value="login" />
+        <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+        <a href="{% url 'django.contrib.auth.views.password_reset' %}">Forgotten you password?</a>
     </div>
-    <div id="id_login_area" class="pure-u-1-2">
-        <h3>Returning User Login</h3>
-        <a href="" id="id_google_oauth2_login"><img 
-            src="{% static 'images/social_150/gplus.png' %}"
-            height="150" width="150"></a>
-        <a href="" id="id_dropbox_oauth_login"><img 
-            src="{% static 'images/social_150/dropbox.png' %}"
-            height="150" width="150"></a>
-        <a href="" id="id_twitter_oauth2_login"><img 
-            src="{% static 'images/social_150/twitter.png' %}" 
-            height="150" width="150"></a>
-        <a href="" id="id_facebook_oauth2_login"><img 
-            src="{% static 'images/social_150/facebook.png' %}" 
-            height="150" width="150"></a>
-   </div>
-</div>
- 
-<hr>
-<h3>Non-social Account Details</h3>
-<p>If you have an email verified account provided by site admins, you can login here. Everyone else needs to use a social media account.</p>
-
-{% if form.errors %}
-<p><em>Error:</em> Username and password mismatch. Please try again.</p>
+    </div>
 {% endif %}
-
-<form method ="post" action="{% url 'django.contrib.auth.views.login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-<a href="{% url 'django.contrib.auth.views.password_reset' %}">Forgotten you password?</a>
 {% endblock %}
