@@ -1,5 +1,5 @@
 # Homepage views
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from courses.forms import CourseNameForm
 from courses.models import Course
@@ -30,6 +30,5 @@ def home(request):
         finally:
             context_data.update({'auth_via': auth_via})
  
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
 
