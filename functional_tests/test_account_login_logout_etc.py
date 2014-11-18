@@ -32,6 +32,17 @@ class VisitorDecidesToSignIn(FunctionalTest):
         
         # Roland logs in ## JUST USE CHRIS/CHRIS until figure out mocking
         self._logUserIn('chris', 'chris')   
+        
+        # He is redirected to his profile page
+        target_url = self.server_url + '/accounts/profile/'
+        self.assertEqual(self.browser.current_url, target_url)
+        
+        # ...confirming his login method and other details
+        self.browser.find_element_by_id('id_account_status')
+        self.browser.find_element_by_id('id_courses_enrolled')
+        self.browser.find_element_by_id('id_change_password')
+        self.browser.find_element_by_id('id_courses_taught')
+        self.browser.find_element_by_id('id_personal_details')
 
         # Returning to the homepage he sees that the social auth options area
         # now shows the method used to login.

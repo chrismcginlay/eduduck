@@ -2,12 +2,15 @@
 {% load url from future %}
 
 {% block contentheading %}
-    <h2 id='id_profile_title'>Profile: {{ user.get_full_name }}</h2>
+    <h2 id='id_profile_title'>Hello {{ user.get_full_name }}</h2>
+    <p><em>It's a good idea to update your profile occasionally.</em></p>
 {% endblock contentheading %}
 
 {% block content %}
     <div class='pure-g-r'>
-        <div class='pure-u-1-2' id='id_profile_pic'>
+        <div class='pure-u-1-2' id='id_account_status'>
+            <h3>Authentication</h3>
+            <p>You are currently logged in via {{ auth_via }}.</p>
             <p>Was gravatar, TODO:replace with social media profile pic</p>
         </div>
         <div class='pure-u-1-2' id='id_change_password'>
@@ -15,9 +18,9 @@
             <a href="/accounts/password/change/">Change Password</a>
         </div>
         <div class='pure-u-1-2' id='id_courses_enrolled'>
-            <h3>Courses You Enrolled On</h3>
-            <table border='1'><tr><th>Course Name</th>
-                <th>Course Home</th><th>Status/History</th></tr>
+            <h3>Courses You've Enrolled On</h3>
+            <table class="pure-table pure-table-horizontal"><tr><th>Course</th>
+                <th>Homepage</th><th>Status/History</th></tr>
             
                 {% for uc in usercourses %}
                     <tr><td>{{ uc.course.name }}</td>
@@ -32,27 +35,30 @@
                         {% endif %}
                     </a></td></tr>
                 {% empty %}
-                    <tr><p>You have no registered courses</p></tr>
+                    <tr><td>None</td><td>None</td><td>N/A</td></tr>
+                    <tr><p>You aren't currently enrolled on any courses.</p></tr>
+                    <tr><p>Checkout the <a href="{% url 'courses.views.index' %}">full course list</a><br>(and get your brain on ;-)</p></tr>
                 {% endfor %}
             </table>
         </div>
         <div class='pure-u-1-2' id='id_courses_taught'>
-            <h3>Courses You Administer</h3>
-            <table border='1'><tr><th>Course Name</th><th>Course Home</th></tr>
+            <h3>Courses You Teach or Manage</h3>
+            <table class="pure-table pure-table-horizontal"><tr><th>Course</th><th>Homepage</th></tr>
                 {% for tc in taughtcourses %}
                     <tr><td>{{ tc.name }}</td>
                     <td><a href='{{ tc.get_absolute_url }}'>visit</a></td>
                            <td><a href='{{ tc.get_absolute_url }}'> 
                     </a></td></tr>
                 {% empty %}
-                    <tr><p>You have no registered courses</p></tr>
+                    <tr><td>None</td><td>None</td></tr>
+                    <tr><p><a href="{% url 'courses.views.create' %}">Create a course right now</a><br>...because you can learn by teaching!</p></tr>
                 {% endfor %}
             </table>
         </div>
         <div class='pure-u-1-2' id='id_personal_details'>
             <h3>Your Details</h3>
             <a href="{%url 'profile.views.edit' %}">Edit Details</a>
-            <table border="1">
+            <table class="pure-table pure-table-horizontal">
                 <tr><td>Name</td><td>{{ user.get_full_name }}</td></tr>
                 <tr><td>Email</td><td>{{ user.email }}</td></tr>
                 <tr><td>Motto</td><td>
