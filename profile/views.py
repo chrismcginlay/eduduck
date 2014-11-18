@@ -26,10 +26,13 @@ def profile(request):
 
     usercourses = request.user.usercourse_set.all()
     ruid = request.user.id
-    taughtcourses = Course.objects.filter(Q(organiser__id=ruid) | Q(instructor__id=ruid))
-    context_data = {    'profile': profile, 
-                        'usercourses': usercourses,
-                        'taughtcourses': taughtcourses,}
+    taughtcourses = Course.objects.filter(
+        Q(organiser__id=ruid) | Q(instructor__id=ruid))
+    context_data = {
+        'profile': profile, 
+        'usercourses': usercourses,
+        'taughtcourses': taughtcourses,
+    }
 
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
@@ -75,11 +78,12 @@ def public(request, user_id):
     webpage = user.profile.webpage
     description = user.profile.description
     
-    context_data = { 'fullname': fullname,
-                     'motto': motto,
-                     'timezone': timezone,
-                     'webpage': webpage,
-                     'description': description,
-                    }
+    context_data = { 
+        'fullname': fullname,
+        'motto': motto,
+        'timezone': timezone,
+        'webpage': webpage,
+        'description': description,
+    }
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
