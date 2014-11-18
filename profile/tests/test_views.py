@@ -33,7 +33,7 @@ class ProfileViewTests(TestCase):
             'taughtcourses',
             'auth_via',
         ]
-        [self.assertTrue(x in response.context) for x in context_vars]
+        [self.assertTrue(x in response.context, x+' missing') for x in context_vars]
  
     def test_profile(self):
         """Test response profile.views.profile"""
@@ -49,7 +49,8 @@ class ProfileViewTests(TestCase):
         response = self.client.get('/accounts/profile/')
         self.assertEqual(response.status_code, 200)
         context_vars = ['profile', 'usercourses']
-        [self.assertTrue(x in response.context) for x in context_vars]
+        [self.assertTrue(x in response.context, x+' missing')
+            for x in context_vars]
         self.assertIn('Timezone', response.content, "Timezone not rendered")
 
         #check for existence of password change link
@@ -76,7 +77,8 @@ class ProfileViewTests(TestCase):
         response = self.client.get('/accounts/profile/edit/')
         self.assertEqual(response.status_code, 200)
         context_vars = ['profile', 'form']
-        [self.assertTrue(x in response.context) for x in context_vars]
+        [self.assertTrue(x in response.context, x+' missing')
+            for x in context_vars]
 
         #check for existence of password change link
         self.assertIn('<a href="/accounts/password/change/">Change Password</a>', 
@@ -125,7 +127,8 @@ class ProfileViewTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         context_vars = ['timezone', 'webpage', 'description']
-        [self.assertTrue(x in response.context) for x in context_vars]
+        [self.assertTrue(x in response.context, x+' missing')
+            for x in context_vars]
     
     def test_password_reset_reachable(self):
         url = "/accounts/password_reset/"

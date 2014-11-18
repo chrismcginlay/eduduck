@@ -2,8 +2,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.shortcuts import (render_to_response, get_object_or_404, 
-    get_list_or_404)
+from django.shortcuts import (render, get_object_or_404, get_list_or_404)
     
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -34,8 +33,7 @@ def profile(request):
         'taughtcourses': taughtcourses,
     }
 
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
 
 @login_required
 def edit(request):
@@ -60,8 +58,7 @@ def edit(request):
         
     context_data = {    'profile': profile,
                         'form': form, }
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
 
 
 def public(request, user_id):
@@ -85,5 +82,4 @@ def public(request, user_id):
         'webpage': webpage,
         'description': description,
     }
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
