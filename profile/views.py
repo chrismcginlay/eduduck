@@ -30,6 +30,7 @@ def profile(request):
     context_data = {    'profile': profile, 
                         'usercourses': usercourses,
                         'taughtcourses': taughtcourses,}
+
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 
