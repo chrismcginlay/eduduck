@@ -27,12 +27,23 @@ def profile(request):
     ruid = request.user.id
     taughtcourses = Course.objects.filter(
         Q(organiser__id=ruid) | Q(instructor__id=ruid))
+
     context_data = {
         'profile': profile, 
         'usercourses': usercourses,
         'taughtcourses': taughtcourses,
     }
-
+    # Add further context if required:    
+    if request.user.is_authenticated():
+        try:
+            auth_via = request.session['social_auth_last_login_backend']
+        except KeyError:
+            auth_via = request.session['_auth_user_backend']
+            assert(auth_via==u'django.contrib.auth.backends.ModelBackend')
+            auth_via = "username and password. Oooh, how old fashioned."
+        finally:
+            context_data.update({'auth_via': auth_via})
+ 
     return render(request, template, context_data)
 
 @login_required
