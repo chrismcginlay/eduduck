@@ -114,6 +114,19 @@ SOCIAL_AUTH_FACEBOOK_KEY = '307437099449489'
 SOCIAL_AUTH_FACEBOOK_SECRET = '4f4a3f5309d729d7e636538022e5881e'
 SOCIAL_AUTH_FACEBOOK_EXTENDED_PERMISSIONS = ['email']
 
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.debug.debug',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+    'profile.utils.get_user_avatar',
+)
 AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
     'social.backends.facebook.FacebookOAuth2',

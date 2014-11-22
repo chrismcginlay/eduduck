@@ -1,11 +1,14 @@
+import pytz
+
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import ImageField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from django.contrib.auth.models import User
+from .utils import get_image_path
 
-import pytz
 
 class Profile(models.Model):
     """Extend user module with additional data"""
@@ -19,6 +22,7 @@ class Profile(models.Model):
         signature_line      Personal motto for user
         description         More detailed description
         webpage             Link to user's webpage.
+        avatar              User avatar image field
 
     NB, enrolled courses not recorded here. Instead data relevant to a 
     user's interactions with a course will be recorded in a 'through' 
@@ -33,7 +37,8 @@ class Profile(models.Model):
     signature_line = models.CharField(max_length=200)
     description = models.TextField(max_length=10000,blank = True)
     webpage = models.URLField(blank = True)
-    
+    avatar = ImageField(upload_to=get_image_path, blank=True, null=True)
+ 
     def __init__(self, *args, **kwargs):
         """checkrep on instantiation"""
         super (Profile, self).__init__(*args, **kwargs)

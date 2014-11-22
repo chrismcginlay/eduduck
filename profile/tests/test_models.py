@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from ..models import Profile
 from ..forms import ProfileEditForm
 
-
 class ProfileModelTests(TestCase):
     """Test the model used to present a user profile"""
      
@@ -24,7 +23,7 @@ class ProfileModelTests(TestCase):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
-        
+       
     def test_profile_create(self):
         """Automatically create an empty profile
         
