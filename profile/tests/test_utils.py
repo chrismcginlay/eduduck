@@ -14,7 +14,6 @@ class TestProfileUtilities(TestCase):
  
     def test_get_user_avatar_for_facebook(self):
         f = get_user_avatar
-        import pdb; pdb.set_trace()
         self.fail("figure out, or abandon?")
 
     def test_get_user_avatar_for_google_oauth2(self):
@@ -25,6 +24,6 @@ class TestProfileUtilities(TestCase):
     def test_get_image_path(self):
         person = User.objects.get(pk=1)
         p = get_image_path(person, 'test.jpg')
-        self.assertEqual(p, "avatars/{0}/test.jpg".format(person.id))
+        self.assertEqual(p, "/avatars/{0}/test.jpg".format(person.id))
 
  

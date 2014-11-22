@@ -40,6 +40,7 @@ def get_user_avatar(backend, user, response, *args, **kwargs):
 def get_image_path(user, filename):
     """Construct and return a filepath for user avatar images"""
 
-    pass
+    path = "/avatars/{0}/{1}".format(user.id, filename)
+    return path
 
 
