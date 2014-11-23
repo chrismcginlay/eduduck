@@ -1,4 +1,7 @@
+from os import remove
+from os.path import exists, join
 from urllib2 import urlopen
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
@@ -30,7 +33,14 @@ class ProfileModelTests(TestCase):
         gip = get_image_path(self.user1.profile)
         self.user1.profile.avatar.save(gip, ContentFile(f.read()))
         self.user1.profile.save()  
-     
+    
+    def tearDown(self):
+        gip = get_image_path(self.user1.profile)
+        # Delete avatar from previous tests, if any.
+        fullpath = join(settings.MEDIA_ROOT, gip)
+        if exists(fullpath):
+            remove(fullpath)
+ 
     def test_profile_create(self):
         """Automatically create an empty profile
         

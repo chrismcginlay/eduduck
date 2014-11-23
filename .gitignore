@@ -1,4 +1,5 @@
 htmlcov/
+media/avatars/*
 *.txt~
 *.py~
 *.py#

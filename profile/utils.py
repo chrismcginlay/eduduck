@@ -1,4 +1,6 @@
-# profile/utilities
+# profile/utilitiesi
+from os import remove
+from os.path import exists,join
 from django.contrib.auth.models import User
 from django.core.files.images import ImageFile
 from django.utils.text import slugify
@@ -11,6 +13,9 @@ def get_user_avatar(backend, user, response, *args, **kwargs):
             url = response['image'].get('url')
 
             path = get_image_path(user.profile)
+            fullpath = join(settings.MEDIA_ROOT, path)
+            if os.path.exists(fullpath):
+                os.remove(fullpath)
             user.profile.avatar.save(
                 '{0}{1}'.format('avatar', ext),
                 ImageFile(urllib2.urlopen(url).read()),
