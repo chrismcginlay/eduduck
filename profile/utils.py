@@ -1,8 +1,10 @@
 # profile/utilitiesi
 from os import remove
 from os.path import exists,join
+from urllib2 import urlopen
+from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.files.images import ImageFile
+from django.core.files.base import ContentFile
 from django.utils.text import slugify
 from social.backends.facebook import FacebookOAuth2
 from social.backends.google import GoogleOAuth2
@@ -14,11 +16,11 @@ def get_user_avatar(backend, user, response, *args, **kwargs):
 
             path = get_image_path(user.profile)
             fullpath = join(settings.MEDIA_ROOT, path)
-            if os.path.exists(fullpath):
-                os.remove(fullpath)
+            if exists(fullpath):
+                remove(fullpath)
             user.profile.avatar.save(
-                '{0}{1}'.format('avatar', ext),
-                ImageFile(urllib2.urlopen(url).read()),
+                path,
+                ContentFile(urlopen(url).read()),
                 save=False
             )
             user.save()
@@ -27,9 +29,9 @@ def get_user_avatar(backend, user, response, *args, **kwargs):
         if response.get('id'):
             url = response('id').get('url')
             
-    if isinstance(backend, Twitter):
-        if response.get('profile_image_url'):
-            url = response.get('profile_image_url', '').replace('_normal','')
+#    if isinstance(backend, Twitter):
+#        if response.get('profile_image_url'):
+#            url = response.get('profile_image_url', '').replace('_normal','')
 
 
 def get_image_path(profile, filename=None):
