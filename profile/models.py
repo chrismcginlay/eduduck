@@ -5,8 +5,8 @@ from django.db import models
 from django.db.models import ImageField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 from .utils import get_image_path
 
 
@@ -32,20 +32,28 @@ class Profile(models.Model):
     TIMEZONE_CHOICES = zip(pytz.common_timezones, pytz.common_timezones)
     user = models.OneToOneField(User)
     user_tz = models.CharField(max_length=255, choices=TIMEZONE_CHOICES, 
-                                blank=False, null=False)
+                                blank=False, null=False, default=u"UTC")
     accepted_terms = models.BooleanField(null=False, blank=False, default=True)
     signature_line = models.CharField(max_length=200)
     description = models.TextField(max_length=10000,blank = True)
     webpage = models.URLField(blank = True)
     avatar = ImageField(upload_to=get_image_path, blank=True, null=True)
  
+    def _checkrep(self):
+        """Run checkrep on instantiation"""
+        assert self.user_tz
+        assert self.accepted_terms
+        assert self.user
+        if self.avatar:
+            path = get_image_path(self.user) 
+            assert(self.avatar.url==path)
+
     def __init__(self, *args, **kwargs):
-        """checkrep on instantiation"""
         super (Profile, self).__init__(*args, **kwargs)
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.user
+            self._checkrep()
     
     def __unicode__(self):
         return self.user.username

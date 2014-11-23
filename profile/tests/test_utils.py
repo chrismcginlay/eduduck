@@ -20,13 +20,14 @@ class TestProfileUtilities(TestCase):
     def test_get_user_avatar_for_google_oauth2(self):
         backend = GoogleOAuth2
         user = get_object_or_404(User, id=1)
+        self.fail("write this")
         get_user_avatar(backend, user, response, *args, **kwargs)
 
     def test_get_image_path(self):
         person = User.objects.get(pk=1)
-        p = get_image_path(person)
+        p = get_image_path(person.profile)
         sun = slugify(person.username)
         self.assertEqual(p, 
-            "/avatars/{0}/{1}_id_{0}.jpg".format(person.id, sun))
+            u"avatars/{0}/{1}_id_{0}.jpg".format(person.id, sun))
 
  

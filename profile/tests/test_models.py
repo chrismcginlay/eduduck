@@ -1,4 +1,6 @@
+from urllib2 import urlopen
 from django.core.exceptions import ValidationError
+from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
 from django.test import TestCase
 
@@ -6,6 +8,7 @@ from django.contrib.auth.models import User
 
 from ..models import Profile
 from ..forms import ProfileEditForm
+from ..utils import get_image_path
 
 class ProfileModelTests(TestCase):
     """Test the model used to present a user profile"""
@@ -16,14 +19,18 @@ class ProfileModelTests(TestCase):
         'signature_line':  'Some catchy signature.',
         'description':     'Detailed multiline description.',
         'webpage':         'http://www.unpossible.info',
-        'avatar': 'https://lh4.googleusercontent.com/-Lv-wyEYvSIw/AAAAAAAAAAI/AAAAAAAAOSk/szubx-FyNL0/photo.jpg?sz=50'
     }
 
     def setUp(self):
+        url = 'https://lh4.googleusercontent.com/-Lv-wyEYvSIw/AAAAAAAAAAI/AAAAAAAAOSk/szubx-FyNL0/photo.jpg?sz=50'
+        f = urlopen(url)
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
-       
+        gip = get_image_path(self.user1.profile)
+        self.user1.profile.avatar.save(gip, ContentFile(f.read()))
+        self.user1.profile.save()  
+     
     def test_profile_create(self):
         """Automatically create an empty profile
         
@@ -40,11 +47,6 @@ class ProfileModelTests(TestCase):
         self.user1.profile.full_clean()
         self.user1.profile.save()
         pk = self.user1.profile.pk
-
-        #check        
-        load_profile = get_object_or_404(User, id=pk).profile
-        for key,val in self.profile1_data.items():
-            self.assertEqual(load_profile.__dict__[key], val)
             
     def test_missing_requiredfield_chokes(self):
         """Check that missing fields are caught"""
