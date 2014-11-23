@@ -32,6 +32,7 @@ class ProfileViewTests(TestCase):
             'usercourses',
             'taughtcourses',
             'auth_via',
+            'avatar',
         ]
         [self.assertTrue(x in response.context, x+' missing') for x in context_vars]
  
@@ -126,7 +127,7 @@ class ProfileViewTests(TestCase):
         url = "/accounts/profile/{0}/public/".format(self.user1.profile.id)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        context_vars = ['timezone', 'webpage', 'description']
+        context_vars = ['timezone', 'webpage', 'description', 'avatar']
         [self.assertTrue(x in response.context, x+' missing')
             for x in context_vars]
     

@@ -1,6 +1,10 @@
+# profile/models.py
+from os.path import join
 import pytz
 
+from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.db import models
 from django.db.models import ImageField
 from django.db.models.signals import post_save
@@ -8,7 +12,6 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from .utils import get_image_path
-
 
 class Profile(models.Model):
     """Extend user module with additional data"""
@@ -37,16 +40,15 @@ class Profile(models.Model):
     signature_line = models.CharField(max_length=200)
     description = models.TextField(max_length=10000,blank = True)
     webpage = models.URLField(blank = True)
-    avatar = ImageField(upload_to=get_image_path, blank=True, null=True)
+    avatar = ImageField(upload_to=get_image_path, blank=False, null=False)
  
     def _checkrep(self):
         """Run checkrep on instantiation"""
         assert self.user_tz
         assert self.accepted_terms
         assert self.user
-        if self.avatar:
-            path = get_image_path(self.user) 
-            assert(self.avatar.url==path)
+        path = join(settings.MEDIA_URL, get_image_path(self.user.profile))
+        assert(self.avatar.url==path)
 
     def __init__(self, *args, **kwargs):
         super (Profile, self).__init__(*args, **kwargs)
@@ -61,6 +63,17 @@ class Profile(models.Model):
     def __str__(self):
         """For debug mostly"""
         return "Profile: " + str(self.id) + " " + self.user.username
+
+    def save(self, *args, **kwargs):
+        super(Profile, self).save(*args, **kwargs)
+        if not(self.avatar):
+            # Pull in the default avatar
+            gip = get_image_path(self)
+            f = open(join(settings.MEDIA_ROOT, 'default-avatar.jpg'))
+            self.avatar.save(
+                gip,
+                ContentFile(f.read()),
+            )
 
     def get_absolute_url(self):
         assert self.id

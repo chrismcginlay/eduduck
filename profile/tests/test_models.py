@@ -47,7 +47,14 @@ class ProfileModelTests(TestCase):
         The User postsave hook should mean a profile is created automatically"""
         
         assert(self.user1.profile)
-        
+       
+    def test_profile_with_default_avatar(self):
+        """Without social auth, a default profile should be loaded"""
+        user2 = User.objects.create_user('florence', 'florence@example.com', 'florence')
+        user2.is_active = True
+        user2.save()
+        self.assertEqual(user2.profile.avatar.url, '/media/avatars/2/florence_id_2.jpg')
+
     def test_profile_details(self):
         """Check that profile can be populated with canonical data"""
         

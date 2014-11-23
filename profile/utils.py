@@ -21,9 +21,7 @@ def get_user_avatar(backend, user, response, *args, **kwargs):
             user.profile.avatar.save(
                 path,
                 ContentFile(urlopen(url).read()),
-                save=False
             )
-            user.save()
     
     if isinstance(backend, FacebookOAuth2):
         if response.get('id'):

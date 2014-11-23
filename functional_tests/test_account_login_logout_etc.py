@@ -39,6 +39,7 @@ class VisitorDecidesToSignIn(FunctionalTest):
         
         # ...confirming his login method and other details
         self.browser.find_element_by_id('id_account_status')
+        self.browser.find_element_by_id('id_avatar')
         self.browser.find_element_by_id('id_courses_enrolled')
         self.browser.find_element_by_id('id_change_password')
         self.browser.find_element_by_id('id_courses_taught')

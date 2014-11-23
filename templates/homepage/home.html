@@ -42,7 +42,8 @@
         {% if user.is_authenticated %}
             <div class="pure-u-1-2" id="id_account_status">
             <h2>Welcome. You're logged in</h2>
-            <p>You are currently logged in via {{ auth_via }}</p>
+            <p><img id="id_avatar" src="{{ user.profile.avatar.url }}">
+                You are currently logged in via {{ auth_via }}</p>
             <p>You can visit your profile page: <br>
             <a id="id_profile_link" href="{% url 'profile.views.profile' %}">
                 {{ user.username|capfirst }}

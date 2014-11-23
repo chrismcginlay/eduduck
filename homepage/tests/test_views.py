@@ -16,7 +16,7 @@ class HomepageViewTests(TestCase):
         self.assertIn('course_form', response.context)
         self.assertIn('course_list', response.context)
         self.assertNotIn('auth_via', response.context)
-
+    
         self.client.login(username='chris', password='chris')
         response = self.client.get('/')
         self.assertIn('auth_via', response.context)
@@ -77,7 +77,12 @@ class HomepageViewTests(TestCase):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/')
         self.assertIn('id="id_profile_link"', response.content)
- 
+
+    def test_account_avatar_visible_when_logged_in(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/')
+        self.assertIn('id="id_avatar"', response.content)
+
     def test_90_register_area_goes_away_when_logged_in(self):
         """ If a user is logged in, don't ask them to create an account """
         
