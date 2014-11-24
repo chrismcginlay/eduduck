@@ -1,4 +1,4 @@
-from os import remove
+from os import remove, system
 from os.path import exists, join
 from urllib2 import urlopen
 from django.conf import settings
@@ -25,17 +25,14 @@ class ProfileModelTests(TestCase):
     }
 
     def setUp(self):
+        # Delete avatars from previous tests
+        fullpath = join(settings.MEDIA_ROOT, 'avatars')
+        system("cd {0}; rm * -r".format(fullpath))
+ 
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
-    
-    def tearDown(self):
-        gip = get_image_path(self.user1.profile)
-        # Delete avatar from previous tests, if any.
-        fullpath = join(settings.MEDIA_ROOT, gip)
-        if exists(fullpath):
-            remove(fullpath)
- 
+
     def test_profile_create(self):
         """Automatically create an empty profile
         

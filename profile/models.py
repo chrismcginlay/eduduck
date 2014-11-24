@@ -47,11 +47,8 @@ class Profile(models.Model):
         assert self.user_tz
         assert self.accepted_terms
         assert self.user
-        path = join(settings.MEDIA_ROOT, get_image_path(self.user.profile))
-        try:
-            assert(self.avatar.url==path)
-        except:
-            import pdb; pdb.set_trace()
+        path = join(settings.MEDIA_URL, get_image_path(self.user.profile))
+        assert(self.avatar.url==path)
 
     def __init__(self, *args, **kwargs):
         super (Profile, self).__init__(*args, **kwargs)
