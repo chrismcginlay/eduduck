@@ -1,3 +1,6 @@
+from os import system
+from os.path import join
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
@@ -19,6 +22,10 @@ class ProfileViewTests(TestCase):
     }
 
     def setUp(self):
+        # Delete avatars from previous tests
+        fullpath = join(settings.MEDIA_ROOT, 'avatars')
+        system("cd {0}; rm * -r".format(fullpath))
+ 
         self.user1 = User.objects.create_user(
             'bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
@@ -32,7 +39,6 @@ class ProfileViewTests(TestCase):
             'usercourses',
             'taughtcourses',
             'auth_via',
-            'avatar',
         ]
         [self.assertTrue(x in response.context, x+' missing') for x in context_vars]
  
@@ -127,7 +133,7 @@ class ProfileViewTests(TestCase):
         url = "/accounts/profile/{0}/public/".format(self.user1.profile.id)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        context_vars = ['timezone', 'webpage', 'description', 'avatar']
+        context_vars = ['timezone', 'webpage', 'description']
         [self.assertTrue(x in response.context, x+' missing')
             for x in context_vars]
     
