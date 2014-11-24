@@ -1,4 +1,4 @@
-# profile/utilitiesi
+# profile/utilities
 from os import remove
 from os.path import exists,join
 from urllib2 import urlopen
@@ -10,6 +10,8 @@ from social.backends.facebook import FacebookOAuth2
 from social.backends.google import GoogleOAuth2
 
 def get_user_avatar(backend, user, response, *args, **kwargs):
+    """Used as part of social-auth pipeline"""
+
     if isinstance(backend, GoogleOAuth2):
         if response.get('image') and response['image'].get('url'):
             url = response['image'].get('url')

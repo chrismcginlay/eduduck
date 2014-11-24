@@ -25,14 +25,9 @@ class ProfileModelTests(TestCase):
     }
 
     def setUp(self):
-        url = 'https://lh4.googleusercontent.com/-Lv-wyEYvSIw/AAAAAAAAAAI/AAAAAAAAOSk/szubx-FyNL0/photo.jpg?sz=50'
-        f = urlopen(url)
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
-        gip = get_image_path(self.user1.profile)
-        self.user1.profile.avatar.save(gip, ContentFile(f.read()))
-        self.user1.profile.save()  
     
     def tearDown(self):
         gip = get_image_path(self.user1.profile)
@@ -53,7 +48,8 @@ class ProfileModelTests(TestCase):
         user2 = User.objects.create_user('florence', 'florence@example.com', 'florence')
         user2.is_active = True
         user2.save()
-        self.assertEqual(user2.profile.avatar.url, '/media/avatars/2/florence_id_2.jpg')
+        target = join(settings.MEDIA_URL, 'avatars/2/florence_id_2.jpg')
+        self.assertEqual(user2.profile.avatar.url, target)
 
     def test_profile_details(self):
         """Check that profile can be populated with canonical data"""

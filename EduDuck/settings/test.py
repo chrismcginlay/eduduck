@@ -23,3 +23,4 @@ DATABASES = {
 SECRET_KEY = '$9(8c0@dl9^0m@jautyrv&amp;y92!-ae6ymo+sl=&amp;^3ptfiw*ot7j'
 
 FIXTURE_DIRS = (os.path.join(SITE_ROOT, 'functional_tests/fixtures/'),)
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'test_media')
