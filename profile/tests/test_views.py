@@ -32,7 +32,7 @@ class ProfileViewTests(TestCase):
         self.user1.save()    
        
     def test_profile_has_correct_context(self):
-        login = self.client.login(username='bertie', password='bertword')
+        self.client.login(username='bertie', password='bertword')
         response = self.client.get('/accounts/profile/')
         context_vars =  [
             'profile',
@@ -42,6 +42,13 @@ class ProfileViewTests(TestCase):
         ]
         [self.assertTrue(x in response.context, x+' missing') for x in context_vars]
  
+
+    def test_profile_shows_avatar(self):
+        """The user avatar is visible"""
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/accounts/profile/')
+        self.assertIn('id_avatar', response.content, "Avatar missing")
+
     def test_profile(self):
         """Test response profile.views.profile"""
         

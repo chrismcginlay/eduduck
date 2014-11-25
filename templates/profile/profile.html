@@ -10,8 +10,8 @@
     <div class='pure-g-r'>
         <div class='pure-u-1-2' id='id_account_status'>
             <h3>Authentication</h3>
-            <p>You are currently logged in via {{ auth_via }}.</p>
-            <p>Was gravatar, TODO:replace with social media profile pic</p>
+            <p><img id="id_avatar" src="{{ user.profile.avatar.url }}">
+You are currently logged in via {{ auth_via }}.</p>
         </div>
         <div class='pure-u-1-2' id='id_change_password'>
             <h3>Change Your Password</h3>
