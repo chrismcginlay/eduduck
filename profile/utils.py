@@ -16,29 +16,25 @@ def get_user_avatar(backend, user, response, *args, **kwargs):
         if response.get('image') and response['image'].get('url'):
             url = response['image'].get('url')
 
-            path = get_image_path(user.profile)
-            fullpath = join(settings.MEDIA_ROOT, path)
-            if exists(fullpath):
-                remove(fullpath)
-            user.profile.avatar.save(
-                path,
-                ContentFile(urlopen(url).read()),
-            )
-    
     if isinstance(backend, FacebookOAuth2):
         if response.get('id'):
-            import pdb; pdb.set_trace()
             url = "http://graph.facebook.com/{0}/picture?type=large".format(
                 response['id'])
-            path = get_image_path(user.profile)
-            fullpath = join(settings.MEDIA_ROOT, path)
-            if exists(fullpath):
-                remove(fullpath)
-            user.profile.avatar.save(
-                path,
-                ContentFile(urlopen(url).read()),
-            )
-            
+
+    try:
+        url
+        path = get_image_path(user.profile)
+        fullpath = join(settings.MEDIA_ROOT, path)
+        if exists(fullpath):
+            remove(fullpath)
+        user.profile.avatar.save(
+            path,
+            ContentFile(urlopen(url).read()),
+        )
+
+    except:
+        raise
+           
 #    if isinstance(backend, Twitter):
 #        if response.get('profile_image_url'):
 #            url = response.get('profile_image_url', '').replace('_normal','')
