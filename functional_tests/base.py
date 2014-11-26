@@ -1,4 +1,7 @@
+from os import system
+from os.path import join
 import sys
+from django.conf import settings
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -30,6 +33,9 @@ class FunctionalTest(LiveServerTestCase):
             LiveServerTestCase.tearDownClass()
 
     def setUp(self):
+        # Delete avatars from previous tests
+        fullpath = join(settings.MEDIA_ROOT, 'avatars')
+        system("cd {0}; rm * -r".format(fullpath))
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
 
