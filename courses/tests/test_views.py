@@ -1,10 +1,7 @@
 # Unit tests for courses views
 
 import json
-from os import system
-from os.path import join
 from datetime import datetime
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.http.response import HttpResponseForbidden
 from django.test import TestCase
@@ -56,10 +53,6 @@ class CourseViewTests(TestCase):
     }
 
     def setUp(self):
-        # Delete avatars from previous tests
-        fullpath = join(settings.MEDIA_ROOT, 'avatars')
-        system("cd {0}; rm * -r".format(fullpath))
- 
         self.user1 = User.objects.create_user(
             'bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True

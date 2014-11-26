@@ -1,7 +1,4 @@
 # Test the homepage views
-from os import system
-from os.path import join
-from django.conf import settings
 from django.test import TestCase
 from courses.forms import CourseNameForm
 from courses.models import Course
@@ -14,23 +11,6 @@ class HomepageViewTests(TestCase):
         'courses.json'
     ]
         
-    def setUp(self):
-        # Delete avatars from previous tests
-        fullpath = join(settings.MEDIA_ROOT, 'avatars')
-        system("cd {0}; rm * -r".format(fullpath))
- 
-    def test_homepage_has_correct_context(self):
-        response = self.client.get('/')
-        self.assertIn('course_form', response.context)
-        self.assertIn('course_list', response.context)
-        self.assertNotIn('auth_via', response.context)
-    
-        self.client.login(username='chris', password='chris')
-        response = self.client.get('/')
-        self.assertIn('auth_via', response.context)
-        self.assertIn('course_form', response.context)
-        self.assertIn('course_list', response.context)
-
     def test_homepage_uses_correct_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response, 'homepage/home.html')
