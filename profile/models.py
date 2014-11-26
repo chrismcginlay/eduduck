@@ -11,6 +11,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from .storage import OverwriteFSStorage
 from .utils import get_image_path
 
 class Profile(models.Model):
@@ -40,7 +41,12 @@ class Profile(models.Model):
     signature_line = models.CharField(max_length=200)
     description = models.TextField(max_length=10000,blank = True)
     webpage = models.URLField(blank = True)
-    avatar = ImageField(upload_to=get_image_path, blank=False, null=False)
+    fs = OverwriteFSStorage(
+        base_url=settings.MEDIA_URL, location=settings.MEDIA_ROOT)
+    avatar = ImageField(
+        upload_to=get_image_path, 
+        blank=False, null=False, 
+        storage=fs)
  
     def _checkrep(self):
         """Run checkrep on instantiation"""
