@@ -34,6 +34,16 @@ assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
 assert 'DATABASE_PASSWORD' in os.environ, 'DATABASE_PASSWORD missing from environment'
 assert 'DATABASE_PORT' in os.environ, 'DATABASE_PORT missing from environment'
 
+assert 'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY' in os.environ, 'PSA GOOGLE KEY missing'
+assert 'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET' in os.environ, 'PSA GOOGLE SECRET missing'
+assert 'SOCIAL_AUTH_FACEBOOK_KEY' in os.environ, 'PSA FACEBOOK KEY missing'
+assert 'SOCIAL_AUTH_FACEBOOK_SECRET' in os.environ, 'PSA FACEBOOK SECRET missing'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_SECRET']
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']
+
 #Somehow extra double quotes are being wrapped round the DATABASE_PASSWORD
 #Since I can't find out where they are coming from, rip them off here.
 #TODO Find out what is causing the double quote wrapping and remove this hack:

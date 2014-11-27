@@ -29,6 +29,16 @@ EMAIL_PORT = os.environ['EMAIL_PORT']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
 
+assert 'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY' in os.environ, 'PSA GOOGLE KEY missing'
+assert 'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET' in os.environ, 'PSA GOOGLE SECRET missing'
+assert 'SOCIAL_AUTH_FACEBOOK_KEY' in os.environ, 'PSA FACEBOOK KEY missing'
+assert 'SOCIAL_AUTH_FACEBOOK_SECRET' in os.environ, 'PSA FACEBOOK SECRET missing'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_SECRET']
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']
+
 assert 'DATABASE_NAME' in os.environ, 'DATABASE_NAME missing from environment'
 assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
 assert 'DATABASE_PASSWORD' in os.environ, 'DATABASE_PASSWORD missing from environment'

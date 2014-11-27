@@ -107,13 +107,6 @@ TEMPLATE_DIRS = (
 )
 
 LOGIN_REDIRECT_URL = '/accounts/profile/'
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '882717436949-lb365iq5sb5aeo3l7e8u132bkld9opsm.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'LGVtAs_8PG6hHhD_VdihoIgt'
-SOCIAL_AUTH_FACEBOOK_KEY = '307437099449489'
-SOCIAL_AUTH_FACEBOOK_SECRET = '4f4a3f5309d729d7e636538022e5881e'
-SOCIAL_AUTH_FACEBOOK_EXTENDED_PERMISSIONS = ['email']
-
 SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_details',
     'social.pipeline.social_auth.social_uid',
@@ -125,8 +118,8 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details',
     'profile.utils.get_user_avatar',
-    'social.pipeline.debug.debug',
 )
+
 AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
     'social.backends.facebook.FacebookOAuth2',
@@ -150,6 +143,7 @@ INSTALLED_APPS = (
     #'haystack',
 
     'social.apps.django_app.default',
+
     #eduduck apps
     'attachment',
     'courses',
