@@ -16,33 +16,40 @@ ALLOWED_HOSTS = [
 assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
 SECRET_KEY = os.environ['SECRET_KEY']
 
-#MTA for django-registration
+#MTA
 #smtp is the default, so for production, use default EMAIL_BACKEND 
 assert 'EMAIL_HOST' in os.environ, 'EMAIL_HOST missing from environment'
 assert 'EMAIL_PORT' in os.environ, 'EMAIL_PORT missing from environment'
 assert 'EMAIL_HOST_USER' in os.environ, 'EMAIL_HOST_USER missing from environment'
 assert 'EMAIL_HOST_PASSWORD' in os.environ, 'EMAIL_HOST_PASSWORD missing from environment'
 assert 'EMAIL_USE_TLS' in os.environ, 'EMAIL_USE_TLS missing from environment'
+
 EMAIL_HOST = os.environ['EMAIL_HOST']
 EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_PORT = os.environ['EMAIL_PORT']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
 
-assert 'DATABASE_NAME' in os.environ, 'DATABASE_NAME missing from environment'
-assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
-assert 'DATABASE_PASSWORD' in os.environ, 'DATABASE_PASSWORD missing from environment'
-assert 'DATABASE_PORT' in os.environ, 'DATABASE_PORT missing from environment'
-
 assert 'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY' in os.environ, 'PSA GOOGLE KEY missing'
 assert 'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET' in os.environ, 'PSA GOOGLE SECRET missing'
 assert 'SOCIAL_AUTH_FACEBOOK_KEY' in os.environ, 'PSA FACEBOOK KEY missing'
 assert 'SOCIAL_AUTH_FACEBOOK_SECRET' in os.environ, 'PSA FACEBOOK SECRET missing'
+assert 'SOCIAL_AUTH_FACEBOOK_SCOPE' in os.environ, 'PSA FACEBOOK SCOPE missing'
+assert 'SOCIAL_AUTH_TWITTER_KEY' in os.environ, 'PSA TWITTER KEY missing'
+assert 'SOCIAL_AUTH_TWITTER_SECRET' in os.environ, 'PSA TWITTER SECRET missing'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['SOCIAL_AUTH_GOOGLE_SECRET']
 SOCIAL_AUTH_FACEBOOK_KEY = os.environ['SOCIAL_AUTH_FACEBOOK_KEY']
 SOCIAL_AUTH_FACEBOOK_SECRET = os.environ['SOCIAL_AUTH_FACEBOOK_SECRET']
+SOCIAL_AUTH_FACEBOOK_SCOPE = os.environ['SOCIAL_AUTH_FACEBOOK_SCOPE']
+SOCIAL_AUTH_TWITTER_KEY = os.environ['SOCIAL_AUTH_TWITTER_KEY']
+SOCIAL_AUTH_TWITTER_SECRET = os.environ['SOCIAL_AUTH_TWITTER_SECRET']
+
+assert 'DATABASE_NAME' in os.environ, 'DATABASE_NAME missing from environment'
+assert 'DATABASE_USER' in os.environ, 'DATABASE_USER missing from environment'
+assert 'DATABASE_PASSWORD' in os.environ, 'DATABASE_PASSWORD missing from environment'
+assert 'DATABASE_PORT' in os.environ, 'DATABASE_PORT missing from environment'
 
 #Somehow extra double quotes are being wrapped round the DATABASE_PASSWORD
 #Since I can't find out where they are coming from, rip them off here.

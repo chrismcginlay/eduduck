@@ -353,18 +353,48 @@ def _prepare_environment_variables(settings, hostname):
     if not contains(env_config, 'EMAIL_HOST_PASSWORD'):
         append(env_config, "EMAIL_HOST_PASSWORD={0}".format(email_host_password))
     
-    #NB below, search for EMAIL_HOST=, trailing = excludes EMAIL_HOST_USER etc.
-    if not contains(env_config, "EMAIL_HOST="):
-        append(env_config, "EMAIL_HOST={0}".format(email_host))
-    if not contains(env_config, 'EMAIL_USE_TLS'):
-        append(env_config, "EMAIL_USE_TLS={0}".format(email_use_tls))
-    if not contains(env_config, 'EMAIL_PORT'):
-        append(env_config, "EMAIL_PORT={0}".format(email_port))
-    warn(yellow("Email password issues? "\
-        "Verify EMAIL_HOST_PASSWORD in {0}".format(env_config)))
+   # set up variables for python-social-auth
+    if not contains(env_config, "social_auth_google_oauth2_key"):
+        append(env_config, "social_auth_google_oauth2_key={0}".format(
+            social_auth_google_oauth2_key)
+
+    if not contains(env_config, "social_auth_google_oauth2_secret"):
+        append(env_config, "social_auth_google_oauth2_secret={0}".format(
+            social_auth_google_oauth2_secret)
+
+    if not contains(env_config, "social_auth_facebook_key"):
+        append(env_config, "social_auth_facebook_key={0}".format(
+            social_auth_facebook_key)
+
+    if not contains(env_config, "social_auth_facebook_secret"):
+        append(env_config, "social_auth_facebook_secret={0}".format(
+            social_auth_facebook_secret)
+
+    if not contains(env_config, "social_auth_facebook_scope"):
+        append(env_config, "social_auth_facebook_scope={0}".format(
+            social_auth_facebook_scope)
+
+    if not contains(env_config, "social_auth_twitter_key"):
+        append(env_config, "social_auth_twitter_key={0}".format(
+            social_auth_twitter_key)
+
+    if not contains(env_config, "social_auth_twitter_secret"):
+        append(env_config, "social_auth_twitter_secret={0}".format(
+            social_auth_twitter_secret)
+
+
+    #nb below, search for email_host=, trailing = excludes email_host_user etc.
+    if not contains(env_config, "email_host="):
+        append(env_config, "email_host={0}".format(email_host))
+    if not contains(env_config, 'email_use_tls'):
+        append(env_config, "email_use_tls={0}".format(email_use_tls))
+    if not contains(env_config, 'email_port'):
+        append(env_config, "email_port={0}".format(email_port))
+    warn(yellow("email password issues? "\
+        "verify email_host_password in {0}".format(env_config)))
  
-    # PYTHONPATH
-    append(env_config, "PYTHONPATH={0}/{1}/source".format(SITES_DIR, hostname))
+    # pythonpath
+    append(env_config, "pythonpath={0}/{1}/source".format(sites_dir, hostname))
     
     # Modify the virtualenv activate script, by adding an export command at the
     # end. (If the export already exists, do nothing other than warn
