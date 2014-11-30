@@ -175,8 +175,8 @@ def _get_source(sdir):
     
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
-    run("cd {0}; git checkout master".format(sdir))    
-    #run("cd {0}; git checkout 112-password_reset".format(sdir))
+    #run("cd {0}; git checkout master".format(sdir))    
+    run("cd {0}; git checkout 55-social_auth_minimum".format(sdir))
         
 def _config_nginx(site_name, sdir, settings):
     if settings=='dev':
@@ -353,35 +353,37 @@ def _prepare_environment_variables(settings, hostname):
     if not contains(env_config, 'EMAIL_HOST_PASSWORD'):
         append(env_config, "EMAIL_HOST_PASSWORD={0}".format(email_host_password))
     
-   # set up variables for python-social-auth
+    # set up variables for python-social-auth
+    # Currently leaving google oauth in staging, but TODO: get rid of it once tested
+    # i.e. move following two config settings under if settings==production
     if not contains(env_config, "social_auth_google_oauth2_key"):
         append(env_config, "social_auth_google_oauth2_key={0}".format(
-            social_auth_google_oauth2_key)
+            social_auth_google_oauth2_key))
 
     if not contains(env_config, "social_auth_google_oauth2_secret"):
         append(env_config, "social_auth_google_oauth2_secret={0}".format(
-            social_auth_google_oauth2_secret)
+            social_auth_google_oauth2_secret))
 
-    if not contains(env_config, "social_auth_facebook_key"):
-        append(env_config, "social_auth_facebook_key={0}".format(
-            social_auth_facebook_key)
+    if settings=='production':
+        if not contains(env_config, "social_auth_facebook_key"):
+            append(env_config, "social_auth_facebook_key={0}".format(
+                social_auth_facebook_key))
 
-    if not contains(env_config, "social_auth_facebook_secret"):
-        append(env_config, "social_auth_facebook_secret={0}".format(
-            social_auth_facebook_secret)
+        if not contains(env_config, "social_auth_facebook_secret"):
+            append(env_config, "social_auth_facebook_secret={0}".format(
+                social_auth_facebook_secret))
 
-    if not contains(env_config, "social_auth_facebook_scope"):
-        append(env_config, "social_auth_facebook_scope={0}".format(
-            social_auth_facebook_scope)
+        if not contains(env_config, "social_auth_facebook_scope"):
+            append(env_config, "social_auth_facebook_scope={0}".format(
+                social_auth_facebook_scope))
 
-    if not contains(env_config, "social_auth_twitter_key"):
-        append(env_config, "social_auth_twitter_key={0}".format(
-            social_auth_twitter_key)
+        if not contains(env_config, "social_auth_twitter_key"):
+            append(env_config, "social_auth_twitter_key={0}".format(
+                social_auth_twitter_key))
 
-    if not contains(env_config, "social_auth_twitter_secret"):
-        append(env_config, "social_auth_twitter_secret={0}".format(
-            social_auth_twitter_secret)
-
+        if not contains(env_config, "social_auth_twitter_secret"):
+            append(env_config, "social_auth_twitter_secret={0}".format(
+                social_auth_twitter_secret))
 
     #nb below, search for email_host=, trailing = excludes email_host_user etc.
     if not contains(env_config, "email_host="):
