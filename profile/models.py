@@ -75,7 +75,10 @@ class Profile(models.Model):
         if not(self.avatar):
             # Pull in the default avatar
             gip = get_image_path(self)
-            f = open(join(settings.MEDIA_ROOT, 'default-avatar.jpg'))
+            # Not using STATIC_ROOT below: 
+            # because this is a file open not webserver request
+            f = open(join(
+                settings.BASE_DIR, 'static/images/default-avatar.jpg'))
             self.avatar.save(
                 gip,
                 ContentFile(f.read()),

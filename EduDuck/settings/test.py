@@ -2,6 +2,7 @@
 from base import *
 
 DEBUG = True
+MEDIA_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'media'))
 TEMPLATE_DEBUG = DEBUG
 TEMPLATE_STRING_IF_INVALID = "INVALID_EXPRESSION: %s"
 
@@ -23,7 +24,6 @@ DATABASES = {
 SECRET_KEY = '$9(8c0@dl9^0m@jautyrv&amp;y92!-ae6ymo+sl=&amp;^3ptfiw*ot7j'
 
 FIXTURE_DIRS = (os.path.join(BASE_DIR, 'functional_tests/fixtures/'),)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
 SOCIAL_AUTH_PIPELINE += (
     'social.pipeline.debug.debug',
 )

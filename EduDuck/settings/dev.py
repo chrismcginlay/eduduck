@@ -2,6 +2,7 @@
 from base import *
 
 DEBUG = True
+MEDIA_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'media'))
 TEMPLATE_DEBUG = DEBUG
 TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
 

@@ -1,8 +1,10 @@
 #settings/staging.py
+import os.path
 from base import *
-import os
- 
+
 DEBUG = False 
+MEDIA_ROOT = os.path.normpath(os.path.join(BASE_DIR, '../media'))
+STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, '../static'))
 TEMPLATE_DEBUG = False
 TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
 
