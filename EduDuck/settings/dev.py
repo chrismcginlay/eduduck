@@ -29,7 +29,7 @@ INSTALLED_APPS += ("debug_toolbar", )
 # Fixture Directory - for development purposes, reloading test data
 # after changes to models.
 FIXTURE_DIRS = (
-    os.path.join(SITE_ROOT, 'fixtures/')
+    os.path.join(BASE_DIR, 'fixtures/')
 )
 
 SOCIAL_AUTH_PIPELINE += (

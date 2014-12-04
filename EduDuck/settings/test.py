@@ -11,7 +11,7 @@ EMAIL_FILE_PATH = '/tmp/eduduck-messages'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(SITE_ROOT, 'Testing.db'),
+        'NAME': os.path.join(BASE_DIR, 'Testing.db'),
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -22,8 +22,8 @@ DATABASES = {
 #Not very secret SECRET_KEY. Just for dev. Staging and prod. use env var.
 SECRET_KEY = '$9(8c0@dl9^0m@jautyrv&amp;y92!-ae6ymo+sl=&amp;^3ptfiw*ot7j'
 
-FIXTURE_DIRS = (os.path.join(SITE_ROOT, 'functional_tests/fixtures/'),)
-MEDIA_ROOT = os.path.join(SITE_ROOT, 'test_media')
+FIXTURE_DIRS = (os.path.join(BASE_DIR, 'functional_tests/fixtures/'),)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
 SOCIAL_AUTH_PIPELINE += (
     'social.pipeline.debug.debug',
 )

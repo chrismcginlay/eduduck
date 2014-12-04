@@ -8,7 +8,7 @@ def git_branch_render(request):
     """Obtain the active git branch and ensure it is present in template vars"""
     
     cmd_str = "cd {0}; git branch |grep '*' |cut -c 2-".format(
-        settings.SITE_ROOT)
+        settings.BASE_DIR)
     process = subprocess.Popen(cmd_str,
                                shell=True,
                                stdout=subprocess.PIPE,
