@@ -53,24 +53,23 @@
             <div class="pure-u-1-2" id="id_social_auth_area">
                 <h2>Login or Sign Up</h2>
                 <p>Login or sign up in seconds with your social media account.</p>
-                <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}" 
+                <a href="{% url 'social:begin' 'google-oauth2' %}" 
                     id="id_google_oauth2"><img 
                     src="{% static 'images/social_50/gplus.png' %}" 
                     height="50" width="50"></a>
-                <a href="{% url 'social:begin' 'dropbox' %}?next={{ request.path }}"
+                <a href=""
                     id="id_dropbox"><img 
-                    src="{% static 'images/social_50/dropbox.png' %}"
+                    src="{% static 'images/social_50/dropbox_grey.png' %}"
                     height="50" width="50"></a>
-                <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}"
+                <a href="{% url 'social:begin' 'twitter' %}"
                     id="id_twitter"><img 
                     src="{% static 'images/social_50/twitter.png' %}" 
                     height="50" width="50"></a>
-                <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"
+                <a href="{% url 'social:begin' 'facebook' %}"
                     id="id_facebook"><img 
                     src="{% static 'images/social_50/facebook.png' %}" 
                     height="50" width="50"></a>
-         
-                    </div>
+            </div>
         {% endif %}
 
         <div class="pure-u-1-2">
