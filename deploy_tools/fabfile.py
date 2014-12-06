@@ -394,7 +394,7 @@ def _prepare_environment_variables(settings, hostname):
         "verify email_host_password in {0}".format(env_config)))
  
     # pythonpath
-    append(env_config, "pythonpath={0}/{1}/source".format(sites_dir, hostname))
+    append(env_config, "pythonpath={0}/{1}/source".format(SITES_DIR, hostname))
     
     # Modify the virtualenv activate script, by adding an export command at the
     # end. (If the export already exists, do nothing other than warn
