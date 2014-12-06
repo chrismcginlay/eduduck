@@ -1,4 +1,5 @@
 # profile/utilities
+import json
 from os import remove
 from os.path import exists,join
 from urllib2 import urlopen
@@ -20,6 +21,13 @@ def get_user_avatar(backend, user, response, *args, **kwargs):
         if response.get('id'):
             url = "http://graph.facebook.com/{0}/picture?type=large".format(
                 response['id'])
+
+    if isinstance(backend, TwitterOAuth):
+        if response.get('id'):
+            user_json = "http://api.twitter.com/1.1/users/show.json?id={0}".format(
+                response['id'])
+            user_dict = json.loads(user_json)
+            url = user_dict['profile_image_url']
 
     try:
         url
