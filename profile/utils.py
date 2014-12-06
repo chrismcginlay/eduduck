@@ -9,6 +9,7 @@ from django.core.files.base import ContentFile
 from django.utils.text import slugify
 from social.backends.facebook import FacebookOAuth2
 from social.backends.google import GoogleOAuth2
+from social.backends.twitter import TwitterOAuth
 
 def get_user_avatar(backend, user, response, *args, **kwargs):
     """Used as part of social-auth pipeline"""

@@ -147,6 +147,7 @@ def git_update(settings):
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     _get_source(SOURCE_DIR)
+    _write_wsgi_file(SOURCE_DIR, settings)
     _update_static_files(SOURCE_DIR, settings)
     _restart_services(env.host, settings)
 
