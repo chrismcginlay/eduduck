@@ -1,6 +1,5 @@
 htmlcov/
-test_media/avatars/*
-media/avatars/*
+media/
 *.txt~
 *.py~
 *.py#

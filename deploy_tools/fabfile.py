@@ -354,44 +354,42 @@ def _prepare_environment_variables(settings, hostname):
         append(env_config, "EMAIL_HOST_PASSWORD={0}".format(email_host_password))
     
     # set up variables for python-social-auth
-    # Currently leaving google oauth in staging, but TODO: get rid of it once tested
-    # i.e. move following two config settings under if settings==production
-    if not contains(env_config, "social_auth_google_oauth2_key"):
-        append(env_config, "social_auth_google_oauth2_key={0}".format(
-            social_auth_google_oauth2_key))
-
-    if not contains(env_config, "social_auth_google_oauth2_secret"):
-        append(env_config, "social_auth_google_oauth2_secret={0}".format(
-            social_auth_google_oauth2_secret))
-
     if settings=='production':
-        if not contains(env_config, "social_auth_facebook_key"):
-            append(env_config, "social_auth_facebook_key={0}".format(
+        if not contains(env_config, "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY"):
+            append(env_config, "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY={0}".format(
+                social_auth_google_oauth2_key))
+
+        if not contains(env_config, "SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET"):
+            append(env_config, "SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET={0}".format(
+                social_auth_google_oauth2_secret))
+
+        if not contains(env_config, "SOCIAL_AUTH_FACEBOOK_KEY"):
+            append(env_config, "SOCIAL_AUTH_FACEBOOK_KEY={0}".format(
                 social_auth_facebook_key))
 
-        if not contains(env_config, "social_auth_facebook_secret"):
-            append(env_config, "social_auth_facebook_secret={0}".format(
+        if not contains(env_config, "SOCIAL_AUTH_FACEBOOK_SECRET"):
+            append(env_config, "SOCIAL_AUTH_FACEBOOK_SECRET={0}".format(
                 social_auth_facebook_secret))
 
-        if not contains(env_config, "social_auth_facebook_scope"):
-            append(env_config, "social_auth_facebook_scope={0}".format(
+        if not contains(env_config, "SOCIAL_AUTH_FACEBOOK_SCOPE"):
+            append(env_config, "SOCIAL_AUTH_FACEBOOK_SCOPE={0}".format(
                 social_auth_facebook_scope))
 
-        if not contains(env_config, "social_auth_twitter_key"):
-            append(env_config, "social_auth_twitter_key={0}".format(
+        if not contains(env_config, "SOCIAL_AUTH_TWITTER_KEY"):
+            append(env_config, "SOCIAL_AUTH_TWITTER_KEY={0}".format(
                 social_auth_twitter_key))
 
-        if not contains(env_config, "social_auth_twitter_secret"):
-            append(env_config, "social_auth_twitter_secret={0}".format(
+        if not contains(env_config, "SOCIAL_AUTH_TWITTER_SECRET"):
+            append(env_config, "SOCIAL_AUTH_TWITTER_SECRET={0}".format(
                 social_auth_twitter_secret))
 
     #nb below, search for email_host=, trailing = excludes email_host_user etc.
-    if not contains(env_config, "email_host="):
-        append(env_config, "email_host={0}".format(email_host))
-    if not contains(env_config, 'email_use_tls'):
-        append(env_config, "email_use_tls={0}".format(email_use_tls))
-    if not contains(env_config, 'email_port'):
-        append(env_config, "email_port={0}".format(email_port))
+    if not contains(env_config, "EMAIL_HOST="):
+        append(env_config, "EMAIL_HOST={0}".format(email_host))
+    if not contains(env_config, 'EMAIL_USE_TLS'):
+        append(env_config, "EMAIL_USE_TLS={0}".format(email_use_tls))
+    if not contains(env_config, 'EMAIL_PORT'):
+        append(env_config, "EMAIL_PORT={0}".format(email_port))
     warn(yellow("email password issues? "\
         "verify email_host_password in {0}".format(env_config)))
  
