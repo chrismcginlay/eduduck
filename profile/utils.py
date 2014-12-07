@@ -14,6 +14,7 @@ from social.backends.twitter import TwitterOAuth
 def get_user_avatar(backend, user, response, *args, **kwargs):
     """Used as part of social-auth pipeline"""
 
+    url = "http://www.eduduck.com/static/images/default-avatar.jpg"
     if isinstance(backend, GoogleOAuth2):
         if response.get('image') and response['image'].get('url'):
             url = response['image'].get('url')
@@ -22,13 +23,6 @@ def get_user_avatar(backend, user, response, *args, **kwargs):
         if response.get('id'):
             url = "http://graph.facebook.com/{0}/picture?type=large".format(
                 response['id'])
-
-    if isinstance(backend, TwitterOAuth):
-        if response.get('id'):
-            user_json = "http://api.twitter.com/1.1/users/show.json?id={0}".format(
-                response['id'])
-            user_dict = json.loads(user_json)
-            url = user_dict['profile_image_url']
 
     try:
         url
@@ -44,11 +38,6 @@ def get_user_avatar(backend, user, response, *args, **kwargs):
     except:
         raise
            
-#    if isinstance(backend, Twitter):
-#        if response.get('profile_image_url'):
-#            url = response.get('profile_image_url', '').replace('_normal','')
-
-
 def get_image_path(profile, filename=None):
     """Construct and return a filepath for user avatar images."""
 
