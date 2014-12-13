@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     #'haystack',
 
     'social.apps.django_app.default',
+    'south',
 
     #eduduck apps
     'attachment',
