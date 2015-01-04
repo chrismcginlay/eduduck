@@ -444,11 +444,11 @@ def _prepare_database(sdir, settings, hostname):
     # but the IDENTIFIED BY bit doesn't work on my local machine.
     
     # if the database user does not exist, create it
-    print(green("Does db user exist? MySQL root password"))
+    print(green("Does db user exist?"))
     out = run("mysql -u root -e 'select distinct User from mysql.user;'")
     if out.find(dbuser)==-1: # -1 on fail to find
         create_user_cmd = "create user {0}@localhost identified by '{1}';".format(dbuser, dbpass)
-        print(green("No, user doesn't exist. MySQL root password"))
+        print(green("No, user doesn't exist."))
         run('mysql -u root -e "{0}"'.format(create_user_cmd))
         
     # if database does not exist create it
