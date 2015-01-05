@@ -469,7 +469,7 @@ def _prepare_database(sdir, settings, hostname):
     print(green("Grant db permissions:"))
     run('mysql -u root -e "{0}"'.format(sql))
 
-    sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput --pythonpath='.'".format(
+    sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput --pythonpath='{0}/{1}/source'".format(
         SITES_DIR,
         env.host,
         settings
