@@ -81,7 +81,10 @@ def deploy(settings):
     
     Consider running restore() next.
     """
-    
+   
+    if settings=='dev':
+        print yellow("Use devbox command instead of deploy settings='dev'. Terminating")
+        exit()
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
 
