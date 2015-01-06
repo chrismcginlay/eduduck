@@ -1,7 +1,7 @@
 # Fabfile.py based on "Test Driven Web Development with Python, H. Percival, pp 144"
 from fabric.contrib.files import append, exists, sed, contains
 from fabric.api import env, local, run, sudo, warn
-from fabric.colors import yellow, green
+from fabric.colors import yellow, green, red
 from fabric.operations import prompt
 import random
 import os, sys
@@ -12,6 +12,24 @@ REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
 
 # Adjust the following to suit your taste. 
 SITES_DIR = "/home/chris/sites"
+
+def obliterate():
+    """ Wipe out an installation !"""
+    
+    warn(yellow("This will irreversibly destroy this EduDuck installation on {0}").format(env.host))
+    warn(red("Please type DESTROYITNOW to destroy, or hit enter to do nothing"))
+    response = prompt(yellow("Press Enter to do nothing"))
+    if response=="DESTROYITNOW":
+        response = prompt(red("Really? Same again please to confirm. Last chance."))
+        if response=="DESTROYITNOW":
+            path_to_activate = "{0}/{1}/virtualenv/bin/activate".format(SITES_DIR, env.host)
+            get_var = "source {0}; echo $DATABASE_USER;".format(path_to_activate)
+            dbuser = run(get_var)
+            drop_user_cmd = "drop user {0}@localhost;".format(dbuser)
+            run('mysql -u root -e "{0}"'.format(drop_user_cmd))
+            run("cd {0}/{1}; rm source -rf; rm virtualenv -rf".format(
+                SITES_DIR, env.host))
+            
 
 def provision():
     """ Install required software for EduDuck.
