@@ -490,6 +490,15 @@ def _prepare_database(sdir, settings, hostname):
     print(green("Grant db permissions:"))
     run('mysql -u root -e "{0}"'.format(sql))
 
+    # if this is a dev box, mysql user will require CREATE privilege. 
+    # https://github.com/chrismcginlay/eduduck/issues/118#issuecomment-68949956
+    # Essentially it's for testing when not testing with test settings (sqlite3)
+    # but testing with dev settings (msyql)
+    if settings=='dev':
+        sql = "GRANT ALL PRIVILEGES ON `test_{0}`.* TO {1}@localhost identified by '{2}';".format(dbname, dbuser, dbpass)
+        print(green("Dev box priviliges for testing with mysql"))
+        run('mysql -u root -e "{0}"'.format(sql))
+
     sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput --pythonpath='{0}/{1}/source'".format(
         SITES_DIR,
         env.host,
