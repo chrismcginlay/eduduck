@@ -495,7 +495,7 @@ def _prepare_database(sdir, settings, hostname):
     # Essentially it's for testing when not testing with test settings (sqlite3)
     # but testing with dev settings (msyql)
     if settings=='dev':
-        sql = "GRANT ALL PRIVILEGES ON `test_{0}`.* TO {1}@localhost identified by '{2}';".format(dbname, dbuser, dbpass)
+        sql = "GRANT ALL PRIVILEGES ON test_{0}.* TO {1}@localhost identified by '{2}';".format(dbname, dbuser, dbpass)
         print(green("Dev box priviliges for testing with mysql"))
         run('mysql -u root -e "{0}"'.format(sql))
 
