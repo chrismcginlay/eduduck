@@ -198,7 +198,7 @@ def _get_source(sdir):
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
     run("cd {0}; git checkout master".format(sdir))    
-    #run("cd {0}; git checkout 107-migrations".format(sdir))
+    #run("cd {0}; git checkout 118-test_db".format(sdir))
         
 def _config_nginx(site_name, sdir, settings):
     if settings=='dev':
@@ -509,7 +509,7 @@ def _prepare_database(sdir, settings, hostname):
 def _update_static_files(sdir, settings):
     if settings=='dev':
         return
-    run("source {0}/{1}/virtualenv/bin/activate; django-admin.py collectstatic  --settings=EduDuck.settings.{2} --noinput".format(
+    run("source {0}/{1}/virtualenv/bin/activate; django-admin.py collectstatic  --settings=EduDuck.settings.{2} --noinput --pythonpath='{0}/{1}/source'".format(
         SITES_DIR,
         env.host,
         settings
