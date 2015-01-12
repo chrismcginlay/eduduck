@@ -44,7 +44,7 @@ class FunctionalTest(LiveServerTestCase):
             self.browser.current_url,
             self.server_url + '/accounts/logout/')
         
-    def _logUserIn(self, user, passwd):
+    def _logUserIn(self, user, passwd, next_url='/accounts/profile/'):
         login_link = self.browser.find_element_by_id('id_login')
         self.assertTrue(login_link)
         login_link.find_element_by_tag_name('a').click()
@@ -59,7 +59,7 @@ class FunctionalTest(LiveServerTestCase):
         form.submit()
         self.assertEqual(
             self.browser.current_url,
-            self.server_url + '/accounts/profile/')
+            self.server_url + next_url)
 
     def _checkChildItemsPresent(self, items_expected, parent_element_id):
         """ Verify that the expected items are present in a parent element

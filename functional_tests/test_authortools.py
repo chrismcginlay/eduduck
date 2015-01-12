@@ -32,20 +32,20 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         
         # Urvasi logs in to the site...
         self.browser.get(self.server_url)
-        self._logUserIn('urvasi', 'hotel23')
+        self._logUserIn('urvasi', 'hotel23', next_url='/courses/create/')
         
-        # ...and then returns to the homepage.
-        self.browser.get(self.server_url)
+        # ...and is redirected to complete the course creation process.
+        target_url = self.server_url + '/courses/create/'
+        self.assertRegexpMatches(self.browser.current_url, target_url)
         
-        # There is a text-box inviting her to create a new course.
+        # There is a text-box inviting her to create the new course.
         text_box = self.browser.find_element_by_xpath(
             "//input[@id='id_course_name']")
         create = self.browser.find_element_by_xpath(
             "//button[@id='id_course_create']")
-        
-        # She begins by trying to create a course called
-        # 'The Art and Craft of Camping in a UK Summer'
-        text_box.send_keys('The Art and Craft of Camping in a UK Summer')
+       
+        # Her Origami course title is there
+        self.assertEqual('Origami', text_box.get_attribute('value'))
         create.click()
         
         # This is forwarded to a course create form with additional fields.
@@ -53,7 +53,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         course_name_box = self.browser.find_element_by_xpath(
             "//input[@id='id_name']")
         self.assertEqual(course_name_box.get_attribute('value'),
-                         'The Art and Craft of Camping in a UK Summer')
+                         'Origami')
         self.assertIn('id_abstract', self.browser.page_source)
         self.assertIn('id_code', self.browser.page_source)
         
