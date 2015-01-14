@@ -46,22 +46,27 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
                          'Origami')
         self.assertIn('id_abstract', self.browser.page_source)
         self.assertIn('id_code', self.browser.page_source)
-        
+        # For some reason she decides to change from Origami to Camping:
+        course_name_box.clear()
+        course_name_box.send_keys('The Art and Craft of Camping')
+
         # She tries to create the course, but has not given an abstract
-        # Also the course name is rejected as being too long
+        # Also the course name is truncated at 20 characters
         create = self.browser.find_element_by_xpath(
             "//button[@id='id_course_create']")
         create.click()
-        too_long_err = "Ensure this value has at most 20 characters"
-        self.assertIn(too_long_err, self.browser.page_source)
+        course_name_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_name']")
+        self.assertEqual(
+            course_name_box.get_attribute('value'), 'The Art and Craft of')
         self.assertIn(COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
             self.browser.page_source)
         
         # She renames her new course 'Camping'...
-        text_box = self.browser.find_element_by_xpath(
+        course_name_box = self.browser.find_element_by_xpath(
             "//input[@id='id_name']")
-        text_box.clear()
-        text_box.send_keys('Camping')
+        course_name_box.clear()
+        course_name_box.send_keys('Camping')
         
         # On completing and submitting the form, the course is created in the
         # database, she is then taken to a new URL with all the fields
