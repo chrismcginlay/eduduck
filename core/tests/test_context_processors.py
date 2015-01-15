@@ -14,7 +14,7 @@ class ContextProcessorsTests(TestCase):
 
     def test_git_current_branch(self):
         context_var = git_current_branch(self.client.request)
-        gcb = context_var['GIT_ACTIVE_BRANCH']
+        gcb = context_var['GIT_CURRENT_BRANCH']
         branch_regexp = "(master)|([0-9]+-[a-zA-Z0-9]+)"
         self.assertGreater(len(gcb), 3, "Branch name seems too short")
         self.assertRegexpMatches(gcb, branch_regexp, "Branch name looks wrong")
@@ -22,7 +22,7 @@ class ContextProcessorsTests(TestCase):
     def test_git_most_recent_tag(self):
         """Require git describe tag like mvp_0.1.0_rimmer-456-g22b45fc3"""
         context_var = git_most_recent_tag(self.client.request)
-        mr_t = context_var['MOST_RECENT_TAG']
+        mr_t = context_var['GIT_MOST_RECENT_TAG']
         tag_regexp = "^[a-zA-Z]{3}_([0-9][.])+[0-9]"\
             "((_[a-z]+-[0-9]+-g[0-9a-fA-F]{7})|$)"
         self.assertGreater(len(mr_t), 9, "Tag seems too short")
@@ -31,7 +31,7 @@ class ContextProcessorsTests(TestCase):
     def test_git_most_recent_deployed(self):
         """Require git describe like DEPLOYED-2014-08-23/2028-147-gf4bf722"""
         context_var = git_most_recent_deployed(self.client.request)
-        mr_d = context_var['MOST_RECENT_DEPLOYED']
+        mr_d = context_var['GIT_MOST_RECENT_DEPLOYED']
         tag_regexp = "^DEPLOYED-20[0-9]{2}-[0-9]{2}-[0-9]{2}/[0-9]{4}((-[0-9]+-g[0-9a-zA-Z]{7})|$)"
         self.assertGreater(len(mr_d), 24, "Tag seem too short")
         self.assertRegexpMatches(mr_d, tag_regexp, "Tag looks wrong")
