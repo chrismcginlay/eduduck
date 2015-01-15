@@ -19,3 +19,5 @@ def git_branch_render(request):
 
     return {'ACTIVE_GIT_BRANCH': agb}
 
+def git_most_recent_tag(request):
+    return "mvp_0.1.0_rimmer-456-g22b45fc3"
