@@ -80,7 +80,10 @@
     <!-- content start -->
     <div id="main" class="content">
         <div class="header">
-            <p id='id_branch'>Code Branch: {{ GIT_ACTIVE_BRANCH }}</p>
+            <div class="branch_tag">
+                <p>Branch: {{ GIT_CURRENT_BRANCH }}</p>
+                <p>Tag: {{ GIT_MOST_RECENT_DEPLOYED }}</p>
+            </div>
             <div class="pure-g-r">
                 <div class="pure-u-1-3"><h1>EduDuck</h1></div>
                 <div class="pure-u-2-3"><p id="strapline">

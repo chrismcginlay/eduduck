@@ -48,10 +48,13 @@ class CasualVisitorArrives(FunctionalTest):
         strapline = self.browser.find_element_by_id('strapline').text
         self.assertIn("Courses are free to make\nif they're free to take.",
                       strapline)
-        
-        # Whilst the site is in development, he sees the current branch
-        branch = self.browser.find_element_by_id('id_branch').text
-        self.assertIn('Code Branch:', branch)
+        # Whilst the site is in development, he sees the current branch and tag
+        branch = self.browser.find_element_by_xpath(
+            "//div[@class='branch_tag']/P[1]").text
+        tag = self.browser.find_element_by_xpath(
+            "//div[@class='branch_tag']/P[2]").text
+        self.assertIn('Branch:', branch)
+        self.assertIn('Tag:', tag)
 
         # He sees icons for signup/login... (but doesn't, yet)
         self.assertTrue(self.browser.find_element_by_id('id_social_auth_area'))

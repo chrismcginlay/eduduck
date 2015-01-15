@@ -66,7 +66,9 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    'core.context_processors.git_branch_render',
+    'core.context_processors.git_current_branch',
+    'core.context_processors.git_most_recent_tag',
+    'core.context_processors.git_most_recent_deployed',
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
 )

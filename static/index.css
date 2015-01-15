@@ -5,14 +5,19 @@
 
 /* http://designmodo.com/flat-design-colors/ */
 
-p#id_branch {
+div.branch_tag {
     position: absolute;
     top: 0.1em;
     left: auto;
     right: 0.1em;
     margin: 0;
     padding: 0;
-    color: lightgrey;
+    color: slategrey;
+}
+
+div.branch_tag P {
+    margin-top: 1px;
+    margin-bottom: 0px;
 }
 
 div#course_create_see_all a{
