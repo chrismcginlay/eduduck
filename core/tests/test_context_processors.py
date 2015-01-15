@@ -2,6 +2,7 @@
 
 from django.test import TestCase
 from ..context_processors import (
+    git_current_branch,
     git_most_recent_tag,
     git_most_recent_deployed
 )
@@ -10,7 +11,14 @@ class ContextProcessorsTests(TestCase):
     
     def setUp(self):
         pass
- 
+
+    def test_git_current_branch(self):
+        context_var = git_current_branch(self.client.request)
+        gcb = context_var['GIT_ACTIVE_BRANCH']
+        branch_regexp = "(master)|([0-9]+-[a-zA-Z0-9]+)"
+        self.assertGreater(len(gcb), 3, "Branch name seems too short")
+        self.assertRegexpMatches(gcb, branch_regexp, "Branch name looks wrong")
+
     def test_git_most_recent_tag(self):
         """Require git describe tag like mvp_0.1.0_rimmer-456-g22b45fc3"""
         context_var = git_most_recent_tag(self.client.request)
