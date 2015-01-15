@@ -1,4 +1,5 @@
 import sys
+from urllib import unquote
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -44,13 +45,17 @@ class FunctionalTest(LiveServerTestCase):
             self.browser.current_url,
             self.server_url + '/accounts/logout/')
         
-    def _logUserIn(self, user, passwd):
-        login_link = self.browser.find_element_by_id('id_login')
-        self.assertTrue(login_link)
-        login_link.find_element_by_tag_name('a').click()
-        self.assertEqual(
-            self.browser.current_url, 
-            self.server_url + '/accounts/login/')
+    def _logUserIn(self, user, passwd, next_url='/accounts/profile/'):
+        if self.server_url + '/accounts/login/' not in self.browser.current_url:
+            #Don't always click the login link; in case where a ?next redirect
+            #parameter has been set and we are already on the login page.
+            login_link = self.browser.find_element_by_id('id_login')
+            self.assertTrue(login_link)
+            login_link.find_element_by_tag_name('a').click()
+        #We should now be on login page, either with or without ?next param
+        self.assertIn(
+            self.server_url + '/accounts/login/', self.browser.current_url)
+
         username_textarea = self.browser.find_element_by_id('id_username')
         password_textarea = self.browser.find_element_by_id('id_password')
         form = self.browser.find_element_by_tag_name('form')
@@ -59,7 +64,7 @@ class FunctionalTest(LiveServerTestCase):
         form.submit()
         self.assertEqual(
             self.browser.current_url,
-            self.server_url + '/accounts/profile/')
+            self.server_url + unquote(next_url))
 
     def _checkChildItemsPresent(self, items_expected, parent_element_id):
         """ Verify that the expected items are present in a parent element

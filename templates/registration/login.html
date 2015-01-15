@@ -15,7 +15,7 @@
     <div class="pure-g-r">
     <div id="id_signup_login_area" class="pure-u-1-1">
         <h3>SignUp or Login</h3>
-        <a href="{% url 'social:begin' 'google-oauth2' %}" 
+        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}" 
             id="id_google_oauth2"><img 
             src="{% static 'images/social_150/gplus.png' %}" 
             height="150" width="150"></a>
@@ -27,7 +27,7 @@
             id="id_twitter_oauth2"><img 
             src="{% static 'images/social_150/twitter_grey.png' %}" 
             height="150" width="150"></a>
-        <a href="{% url 'social:begin' 'facebook' %}"
+        <a href="{% url 'social:begin' 'facebook' %}?next={{ next }}""
             id="id_facebook_oauth2"><img 
             src="{% static 'images/social_150/facebook.png' %}" 
             height="150" width="150"></a>

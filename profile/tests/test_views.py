@@ -146,3 +146,13 @@ class ProfileViewTests(TestCase):
         url = "/accounts/password_reset/done/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    #Following is slightly orphaned here. Testing next redirect parameter in 
+    #login view, which is otherwise not tested (part of django.contrib.auth)
+    def test_131_social_auth_has_next_param_to_course_create(self):
+        """Creating course when not authenticated redirects back to create"""
+        response = self.client.get('/accounts/login/?next=/courses/create/%3Fcourse_short_name%3DGardening')
+        needle1 = '<a href="/login/google-oauth2/?next=/courses/create/?course_short_name=Gardening"'
+        needle2 = '<a href="/login/facebook/?next=/courses/create/?course_short_name=Gardening"'
+        self.assertIn(needle1, response.content)
+        self.assertIn(needle2, response.content)        

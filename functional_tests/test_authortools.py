@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from unittest import skip
+from urllib import unquote
 
 from .base import FunctionalTest
 
@@ -15,7 +16,6 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
     def test_can_create_course_and_retrieve_it_later(self):
         # Urvasi visits the site and immediately decides to create a course
         self.browser.get(self.server_url)
-        
         # There is a text-box inviting her to create a new course.
         text_box = self.browser.find_element_by_xpath(
             "//input[@id='id_course_name']")
@@ -27,51 +27,46 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         create.click()
         
         # Since she has not logged in, she is invited to do so:
-        redirect_url = '/accounts/login/?next=/courses/create/'
+        course_finish_url = '/courses/create/%3Fcourse_short_name%3DOrigami'
+        redirect_url = '/accounts/login/?next='+course_finish_url
         self.assertIn(redirect_url, self.browser.current_url)
         
         # Urvasi logs in to the site...
-        self.browser.get(self.server_url)
-        self._logUserIn('urvasi', 'hotel23')
+        self._logUserIn('urvasi', 'hotel23', 
+            next_url=course_finish_url)
         
-        # ...and then returns to the homepage.
-        self.browser.get(self.server_url)
+        # ...and is redirected to complete the course creation process.
+        target_url = self.server_url + unquote(course_finish_url)
+        self.assertEqual(self.browser.current_url, target_url)
         
-        # There is a text-box inviting her to create a new course.
-        text_box = self.browser.find_element_by_xpath(
-            "//input[@id='id_course_name']")
-        create = self.browser.find_element_by_xpath(
-            "//button[@id='id_course_create']")
-        
-        # She begins by trying to create a course called
-        # 'The Art and Craft of Camping in a UK Summer'
-        text_box.send_keys('The Art and Craft of Camping in a UK Summer')
-        create.click()
-        
-        # This is forwarded to a course create form with additional fields.
-        self.assertRegexpMatches(self.browser.current_url, '/courses/create/')
+        # Her Origami course title is there
         course_name_box = self.browser.find_element_by_xpath(
             "//input[@id='id_name']")
         self.assertEqual(course_name_box.get_attribute('value'),
-                         'The Art and Craft of Camping in a UK Summer')
+                         'Origami')
         self.assertIn('id_abstract', self.browser.page_source)
         self.assertIn('id_code', self.browser.page_source)
-        
+        # For some reason she decides to change from Origami to Camping:
+        course_name_box.clear()
+        course_name_box.send_keys('The Art and Craft of Camping')
+
         # She tries to create the course, but has not given an abstract
-        # Also the course name is rejected as being too long
+        # Also the course name is truncated at 20 characters
         create = self.browser.find_element_by_xpath(
             "//button[@id='id_course_create']")
         create.click()
-        too_long_err = "Ensure this value has at most 20 characters"
-        self.assertIn(too_long_err, self.browser.page_source)
+        course_name_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_name']")
+        self.assertEqual(
+            course_name_box.get_attribute('value'), 'The Art and Craft of')
         self.assertIn(COURSE_ABSTRACT_FIELD_REQUIRED_ERROR,
             self.browser.page_source)
         
         # She renames her new course 'Camping'...
-        text_box = self.browser.find_element_by_xpath(
+        course_name_box = self.browser.find_element_by_xpath(
             "//input[@id='id_name']")
-        text_box.clear()
-        text_box.send_keys('Camping')
+        course_name_box.clear()
+        course_name_box.send_keys('Camping')
         
         # On completing and submitting the form, the course is created in the
         # database, she is then taken to a new URL with all the fields
