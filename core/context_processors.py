@@ -15,6 +15,7 @@ def git_branch_render(request):
                                stderr=subprocess.STDOUT
                                )
     agb = process.stdout.read()
+    agb = "fish"
 
     return {'ACTIVE_GIT_BRANCH': agb}
 
