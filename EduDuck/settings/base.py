@@ -237,10 +237,5 @@ LOGGING = {
             'propagate': False,
             'level': 'DEBUG',
         },
-        'eduduck': {
-            'handlers': ['log_file'],
-            'level': INFO,
-            'propagate': True,
-        }, 
     }
 }
