@@ -6,6 +6,9 @@ from video.utils import validate_youtube_url
 
 from core.eduduck_exceptions import CheckRepError
 
+import logging
+logger = logging.getLogger(__name__)
+
 class Video(models.Model):
     """ URLs and various meta data
     
@@ -33,8 +36,12 @@ class Video(models.Model):
         return self.url
     
     def _checkrep(self):
-        if self.name == "": return False
-        if self.url == "": return False
+        if self.name == "":
+            logger.warning("Video {0} lacks name".format(self.id))
+            return False
+        if self.url == "":
+            logger.warning("Video {0} lacks url".format(self.id))
+            return False
         # At least one of these should not be zero:
         if not (self.course or self.lesson): 
             logger.error("Orphaned video")
@@ -52,8 +59,11 @@ class Video(models.Model):
         
     def save(self, *args, **kwargs):
         if (self.lesson == None and self.course == None):
+            logger.error("Orphaned video, save failed")
             raise CheckRepError("Orphaned video: no course or lesson")
-        if (self.name == '' or self.url == ''): raise ValidationError
+        if (self.name == '' or self.url == ''): 
+            logger.warning("Video lacks name or url")
+            raise ValidationError
         
         super(Video, self).save(*args, **kwargs)
         
