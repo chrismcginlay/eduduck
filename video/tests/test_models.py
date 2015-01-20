@@ -2,10 +2,13 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.test import TestCase
 
+from core.eduduck_exceptions import CheckRepError
 from courses.models import Course
 from lesson.models import Lesson
 from ..models import Video
 
+import logging
+logger = logging.getLogger(__name__)
 
 class VideoTests(TestCase):
     """Test the models of the video app"""
@@ -35,7 +38,7 @@ class VideoTests(TestCase):
         )
     
     def test_video_must_have_one_FK(self):
-        with self.assertRaises(TypeError): 
+        with self.assertRaises(CheckRepError): 
             Video.objects.create(
                 name='Test', url=self.yt_test_url, 
                 lesson=None, course=None)
@@ -77,7 +80,7 @@ class VideoTests(TestCase):
         with self.assertRaises(TypeError):
             v2.url=''
             v2.save()
-        with self.assertRaises(TypeError):
+        with self.assertRaises(CheckRepError):
             v3.lesson = None
             v3.course = None
             v3.save()
@@ -87,18 +90,22 @@ class VideoTests(TestCase):
         lesson = Lesson.objects.get(pk=2)
 
         vOK1 = Video.objects.create(
-            name = 'Test', url = 'https://www.youtube.com/watch?v=-Hl74zWStxs',
+            name = 'Test',
+            url = 'https://www.youtube.com/watch?v=-Hl74zWStxs',
             course = course, lesson = None)
         vOK2 = Video.objects.create(
-            name = 'Test', url = 'https://www.youtube.com/watch?v=-Hl74zWStxs', 
+            name = 'Test',
+            url = 'https://www.youtube.com/watch?v=-Hl74zWStxs', 
             course = None, lesson = lesson)
-        with self.assertRaises(TypeError) as cm:
+        with self.assertRaises(CheckRepError) as cm:
             vDud1 = Video.objects.create(
-                name = 'Test', url = 'https://www.youtube.com/watch?v=-Hl74zWStxs', 
+                name = 'Test',
+                url = 'https://www.youtube.com/watch?v=-Hl74zWStxs', 
                 course = None, lesson = None)
         with self.assertRaises(TypeError) as cm:
             vDud2 = Video.objects.create(
-                name = '', url = 'https://www.youtube.com/watch?v=-Hl74zWStxs', 
+                name = '',
+                url = 'https://www.youtube.com/watch?v=-Hl74zWStxs', 
                 course = course, lesson = None)
         with self.assertRaises(TypeError) as cm:
             vDud3 = Video.objects.create(
