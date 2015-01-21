@@ -14,6 +14,9 @@ from django.utils.text import slugify
 from .storage import OverwriteFSStorage
 from .utils import get_image_path
 
+import logging
+logger = logging.getLogger(__name__)
+
 class Profile(models.Model):
     """Extend user module with additional data"""
     
@@ -50,11 +53,17 @@ class Profile(models.Model):
  
     def _checkrep(self):
         """Run checkrep on instantiation"""
-        assert self.user_tz
-        assert self.accepted_terms
+        if not self.user_tz:
+            logger.warning("User {0} has no timezone".format(self.user.pk))
+            return False
+        if not self.accepted_terms:
+            logger.warning(
+                "User {0} hasn't accepted terms".format(self.user.pk))
+            return False
         assert self.user
         path = join(settings.MEDIA_URL, get_image_path(self.user.profile))
         assert(self.avatar.url==path)
+        return True
 
     def __init__(self, *args, **kwargs):
         super (Profile, self).__init__(*args, **kwargs)

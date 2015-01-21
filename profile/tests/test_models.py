@@ -58,6 +58,20 @@ class ProfileModelTests(TestCase):
         self.user1.profile.save()
         pk = self.user1.profile.pk
             
+    def test__checkrep(self):
+        #assoc. user should exist 
+        p1 = Profile.objects.get(pk=1)
+        self.assertTrue(p1._checkrep())
+        with self.assertRaises(ValueError):
+            p1.user = None
+        tz = p1.user_tz
+        p1.user_tz = None
+        self.assertFalse(p1._checkrep())
+        p1.user_tz = tz
+        acc_terms = p1.accepted_terms
+        p1.accepted_terms = None
+        self.assertFalse(p1._checkrep())
+        
     def test_missing_requiredfield_chokes(self):
         """Check that missing fields are caught"""
         
