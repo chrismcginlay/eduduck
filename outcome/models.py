@@ -3,6 +3,8 @@ from django.db import models
 
 from lesson.models import Lesson
 
+import logging
+logger = logging.getLogger(__name__)
 
 class LearningIntention(models.Model):
     """Link Learning Intentions with individual lessons.
@@ -27,8 +29,16 @@ class LearningIntention(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.lesson
-            assert self.text
+            self._checkrep()
+
+    def _checkrep(self):
+        if not self.lesson:
+            logger.error("Learning Intention has no lesson")
+            raise(CheckRepError)
+        if not self.text:
+            logger.warn("Learning Intention has no text content")
+            return False
+        return True 
 
     def get_next(self):
         """Return the next learning intention in the lesson"""

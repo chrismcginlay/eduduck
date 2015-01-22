@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-
+from core.eduduck_exceptions import CheckRepError
 from courses.models import Course
 from lesson.models import Lesson
 from ..models import LearningIntention, LearningIntentionDetail
@@ -44,6 +44,17 @@ class OutcomeModelTests(TestCase):
         )
         self.lid2.save()    
                      
+    def test__checkrep_True_case(self):
+        self.learningintention1._checkrep()
+
+    def test__checkrep_False_case(self):
+        self.learningintention1.text = ""
+        self.assertFalse(self.learningintention1._checkrep())
+
+    def test__checkrep_Error_case(self):
+        with self.assertRaises(ValueError):
+            self.learningintention1.lesson = None
+
     def test_learningIntention_create(self):
         """LearningIntention instance attributes are created OK"""
         
