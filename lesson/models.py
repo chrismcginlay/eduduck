@@ -2,6 +2,9 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from courses.models import Course
 
+import logging
+logger = logging.getLogger(__name__)
+
 # Create your models here.
 
 class Lesson(models.Model):
@@ -21,6 +24,13 @@ class Lesson(models.Model):
     abstract = models.TextField(help_text="summary of the lesson "
                                 "in a couple of paragraphs")
     
+    def _checkrep(self):
+        if not self.name:
+            logger.warn("Lesson {0} name is empty".format(self.pk))
+            return False
+        assert self.course
+        return True
+
     def get_next(self):
         """Return the next lesson in the course"""
         assert self.course
@@ -45,8 +55,7 @@ class Lesson(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.name
-            assert self.course
+            self._checkrep()
     
     def __unicode__(self):
         return self.name
