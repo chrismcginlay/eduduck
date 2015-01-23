@@ -10,18 +10,20 @@ from django.test import TestCase
 from django.utils.timezone import is_aware
 from django.contrib.auth.models import User
 
+from core.eduduck_exceptions import CheckRepError
 from outcome.models import LearningIntention, LearningIntentionDetail
 from courses.models import Course
 from lesson.models import Lesson
 from attachment.models import Attachment
-from ..models import (UserCourse, 
-                      UserLesson,
-                      UserLearningIntention,
-                      UserLearningIntentionDetail, 
-                      ULIDConditions,
-                      UserAttachment,
-                      UAActions
-                      )
+from ..models import (
+    UserCourse, 
+    UserLesson,
+    UserLearningIntention,
+    UserLearningIntentionDetail, 
+    ULIDConditions,
+    UserAttachment,
+    UAActions
+)
 
 course1_data = {'code': 'EDU02',
                'name': 'A Course of Leeches',
@@ -75,39 +77,59 @@ class UserCourseModelTests(TestCase):
         self.uc3 = UserCourse(course=self.course3, user=self.user1)
         self.uc3.save()
 
-    def test_checkrep(self):
-        """Test the internal representation checker with course 1"""
+    # Test states of flags 'active' 'completed' 'withdrawn' or ACW
+    # ACW, AC-, A-W, -CW, --- Error
+    # A--, -C-, --W OK
+    def test__checkrep_register_flags_OK(self):
+        # new uc, activated by save() method
+        self.assertTrue(self.uc.active)
+        self.assertFalse(self.uc.completed)
+        self.assertFalse(self.uc.withdrawn)
+        self.assertTrue(self.uc._checkrep())
+       
+    def test__checkrep_complete_flags_OK(self):
+        self.uc.complete()
+        self.assertFalse(self.uc.active)
+        self.assertTrue(self.uc.completed)
+        self.assertFalse(self.uc.withdrawn)
+        self.assertTrue(self.uc._checkrep())
+    
+    def test__checkrep_withdrawn_flags_OK(self):
+        self.uc.withdraw()
+        self.assertFalse(self.uc.active)
+        self.assertFalse(self.uc.completed)
+        self.assertTrue(self.uc.withdrawn)
+        self.assertTrue(self.uc._checkrep())
 
-        self.assertTrue(self.uc._checkrep(), "New registration checkrep failed")
-        self.uc.active=False
-        self.uc.completed=False
-        self.uc.withdrawn=False
-        self.assertFalse(self.uc._checkrep(), 
-                         "Checkrep didn't pick up --- error state")
-        self.uc.active=True
-        self.uc.completed=True
-        self.uc.withdrawn=False
-        self.assertFalse(self.uc._checkrep(), 
-                         "Checkrep didn't pick up AC- error state")
-        self.uc.active=True
-        self.uc.completed=False
-        self.uc.withdrawn=True
-        self.assertFalse(self.uc._checkrep(), 
-                         "Checkrep didn't pick up A-W error state")
-        self.uc.active=False
-        self.uc.completed=True
-        self.uc.withdrawn=True
-        self.assertFalse(self.uc._checkrep(), 
-                         "Checkrep didn't pick up -CW error state")
-        self.uc.active=True
-        self.uc.completed=True
-        self.uc.withdrawn=True
-        self.assertFalse(self.uc._checkrep(), 
-                         "Checkrep didn't pick up ACW error state")
-        #put the flags back to normal
-        self.uc.active = True
-        self.uc.withdrawn = False
-        self.uc.completed = False
+    def test__checkrep_flags_Error(self):
+        with self.assertRaises(CheckRepError):
+            self.uc.active = True
+            self.uc.completed = True
+            self.uc.withdrawn = True
+            self.uc._checkrep()
+        with self.assertRaises(CheckRepError):
+            self.uc.active = True
+            self.uc.completed = True
+            self.uc.withdrawn = False
+            self.uc._checkrep()
+        with self.assertRaises(CheckRepError):
+            self.uc.active = True
+            self.uc.completed = False 
+            self.uc.withdrawn = True
+            self.uc._checkrep()
+        with self.assertRaises(CheckRepError):
+            self.uc.active = False
+            self.uc.completed = True
+            self.uc.withdrawn = True
+            self.uc._checkrep()
+        with self.assertRaises(CheckRepError):
+            self.uc.active = False
+            self.uc.completed = False
+            self.uc.withdrawn = False
+            self.uc._checkrep()
+
+    def test__checkrep_fails_naive_timezone(self):
+        self.fail("write")
 
     def test_usercourse_create(self):
         """Test creating new row with course 2"""

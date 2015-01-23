@@ -8,6 +8,7 @@ from django.utils.timezone import utc, is_naive
 from django.db import models
 from django.contrib.auth.models import User
 
+from core.eduduck_exceptions import CheckRepError
 from courses.models import Course
 from lesson.models import Lesson
 from outcome.models import LearningIntention, LearningIntentionDetail
@@ -80,8 +81,9 @@ class UserCourse(models.Model):
         if self.withdrawn:
             count += 1
         if count != 1:
-            logger.warning("UC _checkrep() detected errored state (could be a test?)")
-            return False
+            msg="UC {0} _checkrep() detected errored state".format(self.pk)
+            logger.error(msg)
+            raise CheckRepError(msg)
         
         #Second, compare action history with attributes
         decoded_history = self.hist2list()
