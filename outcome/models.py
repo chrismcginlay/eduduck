@@ -111,9 +111,21 @@ class LearningIntentionDetail(models.Model):
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
-            assert self.learning_intention
-            assert self.text
-            assert self.lid_type
+            self._checkrep()
+
+    def _checkrep(self):
+        if not self.learning_intention:
+            logger.error("LID {0} has no parent learning intention".format(
+                self.pk))
+            raise(CheckRepError)
+        if not self.text:
+            logger.warn("Recording LID {0} with no text detail".format(
+                self.pk))
+            return False
+        if not (self.lid_type in self.LID_DETAIL_CHOICES):
+            logger.warn("LID {0} has invalid type".format(self.pk))
+            return False
+        return True
 
     def __unicode__(self):
         return self.text

@@ -44,14 +44,14 @@ class OutcomeModelTests(TestCase):
         )
         self.lid2.save()    
                      
-    def test__checkrep_True_case(self):
+    def test_learningIntention_checkrep_True_case(self):
         self.learningintention1._checkrep()
 
-    def test__checkrep_False_case(self):
+    def test_learningIntention_checkrep_False_case(self):
         self.learningintention1.text = ""
         self.assertFalse(self.learningintention1._checkrep())
 
-    def test__checkrep_Error_case(self):
+    def test_learningIntention_checkrep_Error_case(self):
         with self.assertRaises(ValueError):
             self.learningintention1.lesson = None
 
@@ -68,6 +68,21 @@ class OutcomeModelTests(TestCase):
         target = u"/lesson/{0}/lint/{1}/".format(
             self.lesson1.pk, self.learningintention1.pk)
         self.assertEqual(target, url, "course URL error")
+
+    def test_learningIntentionDetail_checkrep_True_case(self):
+        self.lid1._checkrep()
+
+    def test_learningIntentionDetail_checkrep_False_case_text(self):
+        self.lid1.text = ""
+        self.assertFalse(self.lid1._checkrep())
+
+    def test_learningIntentionDetail_checkrep_False_case_lid_type(self):
+        self.lid1.lid_type = None
+        self.assertFalse(self.lid1._checkrep())
+
+    def test_learningIntentionDetail_checkrep_Error_case(self):
+        with self.assertRaises(ValueError):
+            self.lid1.learning_intention = None
 
     def test_successCriterion_create(self):
         """SuccessCriterion instance attributes are created OK"""
