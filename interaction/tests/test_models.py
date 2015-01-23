@@ -78,7 +78,7 @@ class UserCourseModelTests(TestCase):
     def test_checkrep(self):
         """Test the internal representation checker with course 1"""
 
-        self.assert_(self.uc._checkrep(), "New registration checkrep failed")
+        self.assertTrue(self.uc._checkrep(), "New registration checkrep failed")
         self.uc.active=False
         self.uc.completed=False
         self.uc.withdrawn=False
@@ -112,8 +112,8 @@ class UserCourseModelTests(TestCase):
     def test_usercourse_create(self):
         """Test creating new row with course 2"""
 
-        self.assert_(self.uc2.pk, "Failed to create new db entry")
-        self.assert_(self.uc2._checkrep(), "_checkrep failed")
+        self.assertTrue(self.uc2.pk, "Failed to create new db entry")
+        self.assertTrue(self.uc2._checkrep(), "_checkrep failed")
 
     def test_hist2list(self):
         """Test conversion of JSON encoded history to tuple list with course 3"""
@@ -272,7 +272,7 @@ class UserLessonModelTests(TestCase):
     def test_checkrep(self):
         """Test the internal representation checker with lesson 1"""
 
-        self.assert_(self.ul._checkrep(), 
+        self.assertTrue(self.ul._checkrep(), 
                      "First visit to lesson - checkrep failed")
         self.ul.visited = False
         self.ul.completed = False
@@ -299,8 +299,8 @@ class UserLessonModelTests(TestCase):
     def test_userlesson_create(self):
         """Test creating new row with lesson 2 and 4"""
 
-        self.assert_(self.ul2.pk, "Failed to create new db entry")
-        self.assert_(self.ul2._checkrep(), "_checkrep failed")
+        self.assertTrue(self.ul2.pk, "Failed to create new db entry")
+        self.assertTrue(self.ul2._checkrep(), "_checkrep failed")
 
         #userlesson for lesson 4 should fail, as not registered on course2
         ul4 = UserLesson(user=self.user1, lesson=self.lesson4)
@@ -555,7 +555,7 @@ class UserLearningIntentionDetailModelTests(TestCase):
     def test_checkrep(self):
         """Test the internal representation checker with LID interaction"""
 
-        self.assert_(self.ulid._checkrep(), 
+        self.assertTrue(self.ulid._checkrep(), 
                      "Failure: User begins interaction with sc")
         self.ulid.condition = ULIDConditions.green #errored state
         self.assertFalse(self.ulid._checkrep(), 
@@ -575,16 +575,16 @@ class UserLearningIntentionDetailModelTests(TestCase):
     def test_cycle(self):
         """Check that state cycling works"""
 
-        self.assert_(self.ulid._checkrep(), "Failure prior to cycle")
+        self.assertTrue(self.ulid._checkrep(), "Failure prior to cycle")
         self.assertEqual(self.ulid.condition, ULIDConditions.red)
         self.ulid.cycle()
-        self.assert_(self.ulid._checkrep(), "Fail after first cycle")
+        self.assertTrue(self.ulid._checkrep(), "Fail after first cycle")
         self.assertEqual(self.ulid.condition, ULIDConditions.amber)
         self.ulid.cycle()
-        self.assert_(self.ulid._checkrep(), "Fail after second cycle")
+        self.assertTrue(self.ulid._checkrep(), "Fail after second cycle")
         self.assertEqual(self.ulid.condition, ULIDConditions.green)
         self.ulid.cycle()
-        self.assert_(self.ulid._checkrep(), "Fail after third cycle")
+        self.assertTrue(self.ulid._checkrep(), "Fail after third cycle")
         self.assertEqual(self.ulid.condition, ULIDConditions.red)
 
     def test_cycle_history_timebar(self):
@@ -594,7 +594,7 @@ class UserLearningIntentionDetailModelTests(TestCase):
         have elapsed since the last event, otherwise replace last history.
         """
 
-        self.assert_(self.ulid._checkrep(), "Failure prior to cycle")
+        self.assertTrue(self.ulid._checkrep(), "Failure prior to cycle")
         #First check that rapid successive cycles don't append to history, 
         #intead, last entry should be replaced
         #NB: ulid.hist is JSON string. Count hist2list elements instead

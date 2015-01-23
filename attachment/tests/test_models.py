@@ -54,7 +54,7 @@ class AttachmentModelTests(TestCase):
         
     def test_checkrep(self):
         """Test the internal representation checker with attachments"""
-        self.assert_(self.uc._checkrep(), "New attachment checkrep failed")
+        self.assertTrue(self.uc._checkrep(), "New attachment checkrep failed")
                               
     def test___str__(self):
         """Test that the desired info is in the __str__ method"""
