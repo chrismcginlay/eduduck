@@ -45,7 +45,7 @@ class OutcomeModelTests(TestCase):
         self.lid2.save()    
                      
     def test_learningIntention_checkrep_True_case(self):
-        self.learningintention1._checkrep()
+        self.assertTrue(self.learningintention1._checkrep())
 
     def test_learningIntention_checkrep_False_case(self):
         self.learningintention1.text = ""
