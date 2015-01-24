@@ -128,9 +128,6 @@ class UserCourseModelTests(TestCase):
             self.uc.withdrawn = False
             self.uc._checkrep()
 
-    def test__checkrep_fails_naive_timezone(self):
-        self.fail("write")
-
     def test_usercourse_create(self):
         """Test creating new row with course 2"""
 
