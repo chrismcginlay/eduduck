@@ -292,28 +292,59 @@ class UserLessonModelTests(TestCase):
         """Test the internal representation checker with lesson 1"""
 
         self.assertTrue(self.ul._checkrep(), 
-                     "First visit to lesson - checkrep failed")
+            "First visit to lesson - checkrep failed")
         self.ul.visited = False
         self.ul.completed = False
-        self.assertFalse(self.ul._checkrep(),
-                         "Checkrep didn't pick up failing state")
+        with self.assertRaises(CheckRepError):
+            self.ul._checkrep()
+        
         self.ul.visited = False
         self.ul.completed = True
-        self.assertFalse(self.ul._checkrep(),
-                         "Checkrep didn't pick up failing state")
+        with self.assertRaises(CheckRepError):
+            self.ul._checkrep()
+
         self.ul.visited = True
         self.ul.completed = False
-        self.assertTrue(self.ul._checkrep(), "Checkrep failed")
+        self.assertTrue(self.ul._checkrep(), "Checkrep false failure")
+
         self.ul.visited = True
         self.ul.completed = True
-        self.assertTrue(self.ul._checkrep(), "Checkrep failed")
+        self.assertTrue(self.ul._checkrep(), "Checkrep false failure")
 
         self.ul.completed = False
         self.ul.complete()
-        self.assertTrue(self.ul2._checkrep(), "Checkrep failed")
+        self.assertTrue(self.ul2._checkrep(), "Checkrep false failure")
+
         self.ul.completed = False
         self.assertFalse(self.ul._checkrep(), 
-                         "Checkrep didn't pick up failing state")
+            "Checkrep didn't pick up failing state")
+
+    # Test states of flags 'visited' 'completed' or VC
+    # --, -C would be Error state
+    # VC, V- OK
+    def test__checkrep_VC_flags_OK(self):
+        # new ul, activated by save() method
+        self.ul.complete()
+        self.assertTrue(self.ul.completed)
+        self.assertTrue(self.ul.visited)
+        self.assertTrue(self.ul._checkrep())
+       
+    def test__checkrep_V_flags_OK(self):
+        self.assertTrue(self.ul.visited)
+        self.assertFalse(self.ul.completed)
+        self.assertTrue(self.ul._checkrep())
+    
+    def test__checkrep_False_flags_Error(self):
+        self.ul.visited = False
+        self.ul.completed = False
+        with self.assertRaises(CheckRepError):
+            self.ul._checkrep()
+
+    def test__checkrep_flags_Error(self):
+        self.ul.completed = True
+        self.ul.visited = False
+        with self.assertRaises(CheckRepError):
+            self.ul._checkrep()
 
     def test_userlesson_create(self):
         """Test creating new row with lesson 2 and 4"""

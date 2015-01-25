@@ -299,10 +299,11 @@ class UserLesson(models.Model):
         """Verify consistency of attributes and history"""
 
         #First, basic attributes.
-        if self.completed and not self.visited:
-            logger.warning("UL _checkrep() detected errored state")
-            return False
-        
+        if not self.visited:
+            msg = "UL {0} _checkrep() detected errored state".format(self.pk)
+            logger.error(msg)
+            raise CheckRepError(msg)
+
         #Second, compare action history with attributes
         decoded_history = self.hist2list()
         first = decoded_history[0]
