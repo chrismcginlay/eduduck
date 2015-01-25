@@ -572,9 +572,15 @@ class UserLearningIntentionDetail(models.Model):
         try:
             ULIDConditions[self.condition]
         except IndexError:
-            logger.warning("ULID _checkrep() detected errored state")
-            return False
-            
+            msg = "ULID {0} _checkrep() detected errored state".format(
+                self.pk)
+            logger.error(msg)
+            raise CheckRepError(msg)
+        except TypeError:
+            msg = "ULID {0} _checkrep() nonsense condition".format(self.pk)
+            logger.error(msg)
+            raise CheckRepError(msg)
+ 
         #compare history with state
         decoded_history = self.hist2list()
         last = decoded_history.pop()

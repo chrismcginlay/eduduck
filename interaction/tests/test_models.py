@@ -602,15 +602,25 @@ class UserLearningIntentionDetailModelTests(TestCase):
                                     learning_intention_detail=self.lid)
         self.ulid.save()
 
-    def test_checkrep(self):
+    def test__checkrep_passes_initial_state(self):
         """Test the internal representation checker with LID interaction"""
 
-        self.assertTrue(self.ulid._checkrep(), 
-                     "Failure: User begins interaction with sc")
+        self.assertTrue(self.ulid._checkrep(), "ULID _checkrep failed")
+        
+    def test__checkrep_picks_up_errored_initial_states(self):
+        self.ulid.condition = ULIDConditions.amber #errored state
+        self.assertFalse(self.ulid._checkrep())
         self.ulid.condition = ULIDConditions.green #errored state
-        self.assertFalse(self.ulid._checkrep(), 
-                         "Checkrep didn't pick up error state")
+        self.assertFalse(self.ulid._checkrep())
 
+    def test__checkrep_picks_up_nonsense_conditions(self):
+        self.ulid.condition = None
+        with self.assertRaises(CheckRepError):
+            self.ulid._checkrep()
+        self.ulid.condition = "topaz"
+        with self.assertRaises(CheckRepError):
+            self.ulid._checkrep()
+        
     def test_save(self):
         """Test the save functionality
 
