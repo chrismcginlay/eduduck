@@ -4,8 +4,8 @@
 It is easy to generate a coverage report:
 
 ```
-coverage run --source='./courses' manage.py test courses --settings=EduDuck.settings.tests
-coverage run --source='.' manage.py test --settings=EduDuck.settings.tests
+coverage run --source='./courses' manage.py test courses --settings=EduDuck.settings.test
+coverage run --source='.' manage.py test --settings=EduDuck.settings.test
 ```
 
 The first of the above will generate coverage data on the courses tests, 
