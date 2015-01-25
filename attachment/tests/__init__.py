@@ -1,3 +1,2 @@
-from test_models import *
-from test_views import *
-#from functional_tests import *
+import logging
+logging.disable(logging.CRITICAL)
