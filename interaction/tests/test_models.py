@@ -1,6 +1,4 @@
-"""
-Unit tests for Interaction app
-"""
+#interaction/tests/test_models.py
 
 import datetime
 import json
@@ -776,8 +774,8 @@ class UserAttachmentModelTests(TestCase):
         self.u_att1.save()
         self.u_att2.save()        
        
-        def test_hist2list(self):
-            """Test conversion of JSON encoded history to tuple list"""
+    def test_hist2list(self):
+        """Test conversion of JSON encoded history to tuple list"""
 
         #History will need some activity to test. Since model doesn't need a
         #download method, best to create this in views via client        
@@ -795,10 +793,15 @@ class UserAttachmentModelTests(TestCase):
             self.assertIn(row[1], UAActions, 
                           "Action should be DOWNLOADING etc")
                             
+    def test__checkrep(self):
+        #TODO test the history checking in _checkrep
+        pass
+
     def test___unicode__(self):
-        self.assertEqual(u"UA:%s, User:%s, Attachment:%s" % \
-                        (self.u_att1.pk, self.user1.pk, self.att1.pk), 
-                         self.u_att1.__unicode__())        
+        self.assertEqual(
+            u"UA:%s, User:%s, Attachment:%s" % \
+            (self.u_att1.pk, self.user1.pk, self.att1.pk), 
+            self.u_att1.__unicode__())        
        
     def test___str__(self):
         t = u"User {0}'s data for attachment: ...{1}" \
