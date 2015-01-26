@@ -228,9 +228,14 @@ LOGGING = {
             'propagate': True,
         },
         'django': {
-            'handlers': ['log_file', 'console'],
+            'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['log_file', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
         },
         'django.db.backends': {
             'handlers': ['log_filedb', 'console'],
