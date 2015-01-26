@@ -205,7 +205,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         f2 = self.browser.find_element_by_xpath("//input[@name='lesson_formset-2-name']")
         self.assertEqual('What is Blender for?', f0.get_attribute('value'))
         self.assertEqual('Basics of the User Interface', f1.get_attribute('value'))
-        self.assertEqual('Orientation in 3D Space', f2.get_attribute('value'))  
+        self.assertEqual('Orientation in 3D SpaceTest', f2.get_attribute('value'))  
         
         # And an area for the purpose of adding more lessons, containing a text box 
         # for a lesson title, another for an abstract.
