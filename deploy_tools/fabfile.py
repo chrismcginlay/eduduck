@@ -29,7 +29,7 @@ def obliterate():
             run('mysql -u root -e "{0}"'.format(drop_user_cmd))
             run("cd {0}/{1}; rm source -rf; rm virtualenv -rf".format(
                 SITES_DIR, env.host))
-            
+            sudo("rm /var/log/eduduck -r")            
 
 def provision():
     """ Install required software for EduDuck.
@@ -429,7 +429,7 @@ def _prepare_environment_variables(settings, hostname):
             "Just note that the virtualenv/bin/activate already had some exports"))
         
 def _ready_logfiles():
-    sudo("mkdir /var/log/eduduck/")
+    sudo("mkdir -p /var/log/eduduck/")
     sudo("touch /var/log/eduduck/eduduck.log")
     sudo("touch /var/log/eduduck/eduduck_db.log")
     sudo("chown "+env.user+" /var/log/eduduck")
