@@ -227,8 +227,8 @@ LOGGING = {
             'level': 'WARNING',
             'propagate': True,
         },
-        'django': {
-            'handlers': ['console'],
+        '': {
+            'handlers': ['console', 'log_file'],
             'level': 'DEBUG',
             'propagate': False,
         },
