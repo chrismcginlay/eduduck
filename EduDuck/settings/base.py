@@ -195,14 +195,14 @@ LOGGING = {
             'class': 'django.utils.log.NullHandler',
         },
         'mail_admins': {
-            'level': 'ERROR',
+            'level': 'WARNING',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'log_file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/eduduck.log',
+            'filename': '/var/log/eduduck/eduduck.log',
             'maxBytes': 10*2**20, #10 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -210,7 +210,7 @@ LOGGING = {
         'log_filedb': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/var/log/eduduck_db.log',
+            'filename': '/var/log/eduduck/eduduck_db.log',
             'maxBytes': 10*2**20, #10 MB
             'backupCount': 5,
             'formatter': 'standard',
@@ -224,13 +224,18 @@ LOGGING = {
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
-            'level': 'ERROR',
+            'level': 'WARNING',
             'propagate': True,
         },
         '': {
-            'handlers': ['log_file', 'console'],
+            'handlers': ['console', 'log_file'],
             'level': 'DEBUG',
-            'propagate': True,
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['log_file', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
         },
         'django.db.backends': {
             'handlers': ['log_filedb', 'console'],
