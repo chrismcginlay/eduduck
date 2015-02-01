@@ -483,7 +483,7 @@ def _prepare_database(sdir, settings, hostname):
         print(green("No, db doesn't exist."))
         run("mysqladmin -u root create {0}".format(dbname))
     # Grant required privileges. Idempotent.
-    perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX"
+    perms = "SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP"
     sql = "GRANT {0} ON {1}.* TO {2}@LOCALHOST IDENTIFIED BY '{3}';".format(
         perms,
         dbname,
