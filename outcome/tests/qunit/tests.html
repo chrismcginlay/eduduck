@@ -8,13 +8,37 @@
 
 <body>
 <div id="qunit"></div>
-<div id="qunit-fixture"></div>
+<div id="qunit-fixture">
+    <li class="criterion">
+        <img id="SC1" src="/static/images/img_trans.png" style="background-position: 0px 0px">
+            Spot 3D modelling tasks
+    </li>
+</div>
+<script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="http://code.jquery.com/qunit/qunit-1.17.1.js"></script>
 <script>
 /*global $, test, equal */
-test("smoke test", function () {
-equal(1, 1, "Maths works!");
+
+test("Traffic light has initial (red) background-position", function () {
+    equal($('img').css('background-position'), "0px 0px", "Correct red position");
 });
+
+test("Traffic light switches to amber position on click", function () {
+    $('img').trigger('click');
+    equal($('img').css('background-position'), "-17px 0px", "Correct amber position");
+});
+
+test("Traffic light switches to green position on 2nd click", function () {
+    $('img').trigger('click').trigger('click');
+    equal($('img').css('background-position'), "-34px 0px", "Correct green position");
+});
+
+test("Traffic light returns to red position on 3rd click", function () {
+    $('img').trigger('click').trigger('click');
+    equal($('img').css('background-position'), "0px 0px", "Correct red position");
+});
+
+
 </script>
 </body>
 </html>
