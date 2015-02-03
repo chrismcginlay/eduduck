@@ -100,7 +100,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         LO_area = resource_area.find_element_by_id('id_resource_LO')
         SC_area = resource_area.find_element_by_id('id_resource_SC')
         self.assertEqual(LI_area.size['width'], LO_area.size['width'])
-        
+
         # Gaby sees that the larger area on the left has a list of learning 
         # intentions, with a clickable icon next to each.
         
@@ -117,6 +117,41 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # ...and the right hand areas show the relevant outcomes/criteria.
         self.fail("write me")
         
+    def test_cycle_learning_intention_details(self):
+        """See that the 'traffic light' device cycles properly"""
+        # Gaby logs in to the site and heads to /lesson/1/lint/1
+        self.browser.get(self.server_url)
+        self._logUserIn('gaby', 'gaby5')
+        self.browser.get(self.server_url+'/lesson/1/lint/1')
+
+        # There she finds a traffic light device showing red status
+        criterion = self.browser.find_element_by_xpath("//li[@class='criterion'][1]")
+        device = self.browser.find_element_by_xpath("//li[@class='criterion'][1]/img")
+        import pdb; pdb.set_trace()
+        self.assertEqual(criterion.text, u'Spot 3D modelling tasks')
+        self.assertEqual(device.get_attribute('id'), u'SC1')
+        self.assertEqual(
+            device.value_of_css_property('background-position'), 
+            u'0px 0px')
+
+        # Clicking once, it changes to amber.
+        device.click()
+        self.assertEqual(
+            device.value_of_css_property('backroung-position'),
+            u'-17px 0px')
+
+        # Clicking again, the device changes to green.
+        device.click()
+        self.assertEqual(
+            device.value_of_css_property('background-position'),
+            u'-34px 0px')
+
+        # A further click, cycles the device round to red again
+        device.click()
+        self.assertEqual(
+            device.value_of_css_property('background-position'),
+            u'0px 0px')
+
     def test_peruse_lesson_when_not_enrolled(self):
         # Helmi has previously visited the site and knows that she can go 
         # directly to a lesson in one of the courses:
