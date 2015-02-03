@@ -137,7 +137,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # Clicking once, it changes to amber.
         device.click()
         self.assertEqual(
-            device.value_of_css_property('backroung-position'),
+            device.value_of_css_property('backround-position'),
             u'-17px 0px')
 
         # Clicking again, the device changes to green.
