@@ -88,8 +88,6 @@ def userlearningintentiondetail_single(request, user_id, lid_id):
 def userlearningintentiondetail_cycle(request, lid_id):
     """For AJAX use in cycling learning intention details (LID)"""
   
-    import pdb; pdb.set_trace()
-
     lid = LearningIntentionDetail.objects.get(pk=lid_id)
     course = lid.learning_intention.lesson.course
    
