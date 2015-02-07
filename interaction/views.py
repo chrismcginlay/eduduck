@@ -1,13 +1,14 @@
 #interaction/views.py
 
 import json
+
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
-from django.template import RequestContext
 from django.shortcuts import (render_to_response, 
                               get_object_or_404)
-from django.core.exceptions import ObjectDoesNotExist
+from django.template import RequestContext
 from django.utils import timezone    
-from django.contrib.auth.decorators import login_required
 
 from outcome.models import LearningIntentionDetail
 from attachment.models import Attachment
@@ -86,9 +87,20 @@ def userlearningintentiondetail_single(request, user_id, lid_id):
 @login_required
 def userlearningintentiondetail_cycle(request, lid_id):
     """For AJAX use in cycling learning intention details (LID)"""
-    
+  
+    import pdb; pdb.set_trace()
+
     lid = LearningIntentionDetail.objects.get(pk=lid_id)
+    course = lid.learning_intention.lesson.course
+   
+    # If user not enrolled, redirect to enrol on course homepage 
+    try:
+         UserCourse.objects.get(user=request.user.id, course=course)
+    except ObjectDoesNotExist:
+        return(HttpResponseRedirect("/courses/{0}/".format(course.id)))
+
     #Need to ensure the interaction object exists for user, LID
+
     ulid_set = UserLearningIntentionDetail.objects.get_or_create( 
                         user=request.user, 
                         learning_intention_detail=lid)

@@ -202,6 +202,20 @@ class UserLearningIntentionViewTests(TestCase):
                                     learning_intention_detail=self.lid3)
         self.ulid3.save()         
 
+
+    def test_userlearningintention_cycle_redirect_not_enrolled(self):
+        """If user not enrolled, can't cycle learning intentions"""
+
+        not_enrolled_user = self.user3
+        course = self.course1
+        lid = self.lid1
+        self.client.login(username='Chuck Norris', password='dontask')
+        
+        cycle_url = "/interaction/learningintentiondetail/{0}/cycle/" \
+            .format(lid.pk)
+        response = self.client.get(cycle_url)
+        self.assertRedirects(response, "/courses/{0}/".format(course.pk))
+    
 """ TODO Not working test of ajax view.
     def test_userlearningintention_progress_bar(self):
         View returns correct data for AJAX call
