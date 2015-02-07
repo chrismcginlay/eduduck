@@ -16,26 +16,27 @@
 </div>
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="http://code.jquery.com/qunit/qunit-1.17.1.js"></script>
+<script src="../../../static/traffic.js"></script>
 <script>
 /*global $, test, equal */
 
 test("Traffic light has initial (red) background-position", function () {
-    equal($('img').css('background-position'), "0px 0px", "Correct red position");
+    equal($('img#SC1').css('background-position'), "0px 0px", "Correct red position");
 });
 
 test("Traffic light switches to amber position on click", function () {
-    $('img').trigger('click');
-    equal($('img').css('background-position'), "-17px 0px", "Correct amber position");
+    $('img#SC1').trigger('click');
+    equal($('img#SC1').css('background-position'), "-17px 0px", "Correct amber position");
 });
 
 test("Traffic light switches to green position on 2nd click", function () {
-    $('img').trigger('click').trigger('click');
-    equal($('img').css('background-position'), "-34px 0px", "Correct green position");
+    $('img#SC1').trigger('click').trigger('click');
+    equal($('img#SC1').css('background-position'), "-34px 0px", "Correct green position");
 });
 
 test("Traffic light returns to red position on 3rd click", function () {
-    $('img').trigger('click').trigger('click');
-    equal($('img').css('background-position'), "0px 0px", "Correct red position");
+    $('img#SC1').trigger('click').trigger('click');
+    equal($('img#SC1').css('background-position'), "0px 0px", "Correct red position");
 });
 
 
