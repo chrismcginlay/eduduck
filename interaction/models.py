@@ -655,6 +655,8 @@ class UserLearningIntentionDetail(models.Model):
     def cycle(self):
         """3-state cyclic permutation of RAG state"""
 
+        if not self.pk:
+            self.save() #First click on LID? Create interaction in db.
         assert self._checkrep()
         logger.info("User:"+str(self.user.pk)+",SC:"+\
                 str(self.learning_intention_detail.pk)+" cycling")

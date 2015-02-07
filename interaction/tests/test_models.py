@@ -600,6 +600,24 @@ class UserLearningIntentionDetailModelTests(TestCase):
                                     learning_intention_detail=self.lid)
         self.ulid.save()
 
+    def test_cycling_first_click_on_a_LID_triggers_save(self):
+        """When user first clicks on a LID, a ULID needs a primary key
+
+        The first time a user clicks on a LID (learning intention detail),
+        a ULID interaction will be created in memory by the view
+        userlearningintentiondetail_cycle, having no PK. The model cycle()
+        should check and save to the database if this is the first click."""
+
+
+        # Enrol user on course 2:
+        UserCourse(course=self.course2, user=self.user1).save()
+        # Simulate first click on LID:
+        ulid_mem = UserLearningIntentionDetail(
+            user=self.user1, learning_intention_detail=self.lid2)
+        self.assertFalse(ulid_mem.pk)
+        ulid_mem.cycle()
+        self.assertTrue(ulid_mem.pk)   
+
     def test__checkrep_passes_initial_state(self):
         """Test the internal representation checker with LID interaction"""
 
