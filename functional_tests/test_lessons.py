@@ -1,5 +1,7 @@
+import time
 from os.path import join
 from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
 
 from .base import FunctionalTest
 
@@ -117,37 +119,49 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # ...and the right hand areas show the relevant outcomes/criteria.
         self.fail("write me")
         
-    def test_cycle_learning_intention_details(self):
+    def test_cycle_learning_intention_details_user_enrolled(self):
         """See that the 'traffic light' device cycles properly"""
+
         # Gaby logs in to the site and heads to /lesson/1/lint/1
         self.browser.get(self.server_url)
         self._logUserIn('gaby', 'gaby5')
+        self.browser.get(self.server_url+'/courses/1/')
+        enrol = self.browser.find_element_by_id('id_enrol_button')
+        enrol.click()
+ 
         self.browser.get(self.server_url+'/lesson/1/lint/1')
-
+        
         # There she finds a traffic light device showing red status
         criterion = self.browser.find_element_by_xpath("//li[@class='criterion'][1]")
         device = self.browser.find_element_by_xpath("//li[@class='criterion'][1]/img")
-        import pdb; pdb.set_trace()
+
+        actions = ActionChains(self.browser)
+        actions.double_click(device)
+        
         self.assertEqual(criterion.text, u'Spot 3D modelling tasks')
         self.assertEqual(device.get_attribute('id'), u'SC1')
         self.assertEqual(
             device.value_of_css_property('background-position'), 
             u'0px 0px')
 
-        # Clicking once, it changes to amber.
-        device.click()
+        # (DBL)Clicking once, it changes to amber.
+        actions.perform()
+        time.sleep(0.1)
         self.assertEqual(
-            device.value_of_css_property('backround-position'),
+            device.value_of_css_property('background-position'),
             u'-17px 0px')
 
-        # Clicking again, the device changes to green.
-        device.click()
+        # (DBL)Clicking again, the device changes to green.
+        
+        actions.perform()
+        time.sleep(0.1)
         self.assertEqual(
             device.value_of_css_property('background-position'),
             u'-34px 0px')
 
-        # A further click, cycles the device round to red again
-        device.click()
+        # A further (DBL)click, cycles the device round to red again
+        actions.perform()
+        time.sleep(0.1)
         self.assertEqual(
             device.value_of_css_property('background-position'),
             u'0px 0px')
