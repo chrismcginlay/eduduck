@@ -202,7 +202,6 @@ class UserLearningIntentionViewTests(TestCase):
                                     learning_intention_detail=self.lid3)
         self.ulid3.save()         
 
-
     def test_userlearningintention_cycle_redirect_not_enrolled(self):
         """If user not enrolled, can't cycle learning intentions"""
 

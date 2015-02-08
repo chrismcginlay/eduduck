@@ -1,4 +1,7 @@
+//static/traffic.js
+//https://docs.djangoproject.com/en/1.6/ref/contrib/csrf/#ajax
 var csrftoken = $.cookie('csrftoken');
+
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -13,7 +16,7 @@ $.ajaxSetup({
     }
 });
 
-function assert(cond, message){
+function assert(cond, message) {
     if (!cond) throw new Error(message);
 }
 
@@ -21,7 +24,8 @@ function cycle_and_progress(img) {
 	var lid = img;
 	var lid_pk = (lid.attr('id')).slice(2);
 	var path = "/interaction/learningintentiondetail/"+lid_pk+"/cycle/";
-	$.getJSON(path, lid, function(data){
+
+	$.getJSON(path, lid, function(data) {
 		var loc = lid.css("background-position");
 		var x_loc = loc.split(" ")[0];
 		assert(x_loc, "x position of background not properly parsed");
@@ -35,7 +39,7 @@ function cycle_and_progress(img) {
 		var bar_type = lid.attr('id').slice(0,2);
 		var bar_id = "prog" + bar_type;	//SC or LO?
 		path = "/interaction/learningintentiondetail/"+lid_pk+"/progress/";
-		$.getJSON(path, bar_id, function(data){
+		$.getJSON(path, bar_id, function(data) {
 			var prog_bar = document.getElementById(bar_id);
 			if (bar_type == 'SC') {			
 				completed = data.progress.SC[0];
@@ -63,9 +67,10 @@ function cycle_and_progress(img) {
 	return
 }
 
-$(document).ready(function(){
+
+$(document).ready(function() {
     $("input.traffic").remove();
-    $("img").dblclick(function(){
-	cycle_and_progress($(this))
+    $("img").dblclick(function() {
+	    cycle_and_progress($(this))
     });
 }); //ready
