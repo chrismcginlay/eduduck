@@ -21,12 +21,12 @@
 <script>
 /*global $, test, equal */
 
-test("Traffic light is bound to lid.cycle", function () {
+test("Traffic light is bound to cycle_and_progress", function () {
     var cycleWasCalled = false;
     var mockCycleFunction = function () { cycleWasCalled = true; };
     cycle_and_progress = mockCycleFunction; 
     $('img#SC1').dblclick()
-    equal(cycleWasCalled, true);
+    equal(cycleWasCalled, true, 'cycle_and_progress called after dblclick');
 });
 
 </script>
