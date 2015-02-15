@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Javascript tests</title>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.17.1.css">
+</head>
+
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture">
+    <li class="criterion">
+        <img id="SC1" src="/static/images/img_trans.png" style="background-position: 0px 0px">
+            Spot 3D modelling tasks
+    </li>
+</div>
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="http://code.jquery.com/qunit/qunit-1.17.1.js"></script>
+<script src="../../../static/jQplugins/carhartl-jquery-cookie-fedc4cb/jquery.cookie.js"></script>
+<script src="../../../static/traffic.js"></script>
+<script>
+/*global $, test, equal */
+
+test("Traffic light is bound to lid.cycle", function () {
+    var cycleWasCalled = false;
+    var mockCycleFunction = function () { cycleWasCalled = true; };
+    cycle_and_progress = mockCycleFunction; 
+    $('img#SC1').dblclick()
+    equal(cycleWasCalled, true);
+});
+
+</script>
+</body>
+</html>
+
