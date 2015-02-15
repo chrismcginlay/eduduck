@@ -9,10 +9,21 @@
 <body>
 <div id="qunit"></div>
 <div id="qunit-fixture">
+    <img id="logo" src="" width=100 height=100 alt="dummy logo">
+    <ol>
     <li class="criterion">
+        <img id="gfx" src="" width=100 height=100 alt="dummy graphic">
         <img id="SC1" src="/static/images/img_trans.png" style="background-position: 0px 0px">
             Spot 3D modelling tasks
     </li>
+    </ol>
+
+    <ol>
+    <li class="learning_outcome">
+        <img id="LO8" style="background-position: 0px 0px" src="/static/images/img_trans.png">
+            I can correctly...
+    </li>
+    </ol>
 </div>
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="http://code.jquery.com/qunit/qunit-1.17.1.js"></script>
@@ -23,10 +34,45 @@
 
 test("Traffic light is bound to cycle_and_progress", function () {
     var cycleWasCalled = false;
-    var mockCycleFunction = function () { cycleWasCalled = true; };
+    var mockCycleFunction = function () { 
+        cycleWasCalled = true; 
+        console.log('cycle called');
+    };
     cycle_and_progress = mockCycleFunction; 
-    $('img#SC1').dblclick()
-    equal(cycleWasCalled, true, 'cycle_and_progress called after dblclick');
+    $('img#SC1').dblclick();
+    equal(cycleWasCalled, true, 'c_and_p called after dblclick on SC');
+    
+    cycleWasCalled = false;
+    $('img#LO8').dblclick();
+    equal(cycleWasCalled, true, 'c_and_p called after dblclick on LO');
+
+    cycleWasCalled = false;
+    $('img#gfx').dblclick();
+    equal(cycleWasCalled, false,
+        'Non TL images inside <li> do not call cycle after dblclick');
+});
+
+test("Non-traffic light images not bound to cycle_and_progress", function () {
+    var cycleWasCalled = false;
+    var mockCycleFunction = function () {
+        cycleWasCalled = true;
+        console.log('cycle called');
+    };
+    cycle_and_progress = mockCycleFunction; 
+    cycleWasCalled = false;
+    $('img#SC1').dblclick();
+    equal(cycleWasCalled, true, 
+        'c_and_p called after dblclick on SC');
+
+    cycleWasCalled = false;
+    $('img#gfx').dblclick();
+    equal(cycleWasCalled, false,
+        'Non TL images inside <li> do not call cycle after dblclick');
+
+    cycleWasCalled = false;
+    $('img#logo').dblclick();
+    equal(cycleWasCalled, false,
+        'Non TL images outside <li> do not call cycle after dblclick');
 });
 
 </script>
