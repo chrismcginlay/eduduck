@@ -51,24 +51,6 @@ test("Traffic light is bound to cycle_and_progress", function () {
     $('img#gfx').dblclick();
     equal(cycleWasCalled, false,
         'Non TL images inside <li> do not call cycle after dblclick');
-});
-
-test("Non-traffic light images not bound to cycle_and_progress", function () {
-    var cycleWasCalled = false;
-    var mockCycleFunction = function () {
-        cycleWasCalled = true;
-        console.log('cycle called');
-    };
-    cycle_and_progress = mockCycleFunction; 
-    cycleWasCalled = false;
-    $('img#SC1').dblclick();
-    equal(cycleWasCalled, true, 
-        'c_and_p called after dblclick on SC');
-
-    cycleWasCalled = false;
-    $('img#gfx').dblclick();
-    equal(cycleWasCalled, false,
-        'Non TL images inside <li> do not call cycle after dblclick');
 
     cycleWasCalled = false;
     $('img#logo').dblclick();
