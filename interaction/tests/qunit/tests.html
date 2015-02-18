@@ -34,27 +34,22 @@
 /*global $, test, equal */
 
 test("Traffic light is bound to cycle_and_progress", function () {
-    var cycleWasCalled = false;
-    var mockCycleFunction = function () { 
-        cycleWasCalled = true; 
-        console.log('cycle called');
-    };
-    cycle_and_progress = mockCycleFunction; 
+    cycle_and_progress = sinon.mock();
     $('img#SC1').dblclick();
-    equal(cycleWasCalled, true, 'c_and_p called after dblclick on SC');
-    
-    cycleWasCalled = false;
+    equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on SC');
+   
+    cycle_and_progress = sinon.mock(); 
     $('img#LO8').dblclick();
-    equal(cycleWasCalled, true, 'c_and_p called after dblclick on LO');
+    equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on LO');
 
-    cycleWasCalled = false;
+    cycle_and_progress = sinon.mock();
     $('img#gfx').dblclick();
-    equal(cycleWasCalled, false,
+    equal(cycle_and_progress.notCalled, true,
         'Non TL images inside <li> do not call cycle after dblclick');
 
-    cycleWasCalled = false;
+    cycle_and_progress = sinon.mock();
     $('img#logo').dblclick();
-    equal(cycleWasCalled, false,
+    equal(cycle_and_progress.notCalled, true,
         'Non TL images outside <li> do not call cycle after dblclick');
 });
 
