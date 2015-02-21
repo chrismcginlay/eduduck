@@ -13,18 +13,19 @@
     <ol>
     <li class="criterion">
         <img id="gfx" src="" width=100 height=100 alt="dummy graphic">
-        <img id="SC1" src="/static/images/img_trans.png" style="background-position: 0px 0px">
-            Spot 3D modelling tasks
+        <img id="SC1" src="/static/images/img_trans.png" 
+            style="background-position: 0px 0px">Spot 3D modelling tasks
     </li>
     </ol>
 
     <ol>
     <li class="learning_outcome">
-        <img id="LO8" style="background-position: 0px 0px" src="/static/images/img_trans.png">
-            I can correctly...
+        <img id="LO8" src="/static/images/img_trans.png" 
+            style="background-position: 0px 0px">I can correctly...
     </li>
     </ol>
 </div>
+
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script src="http://code.jquery.com/qunit/qunit-1.17.1.js"></script>
 <script src="../../../static/sinon.js"></script>
@@ -33,21 +34,32 @@
 <script>
 /*global $, test, equal */
 
-test("Traffic light is bound to cycle_and_progress", function () {
-    cycle_and_progress = sinon.mock();
-    $('img#SC1').dblclick();
-    equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on SC');
-   
-    cycle_and_progress = sinon.mock(); 
+module("Traffic light is bound to cycle_and_progress", {
+    setup: function(assert) {
+        cycle_and_progress = sinon.mock();
+    },
+    teardown: function(assert) {
+        cycle_and_progress.reset();
+    }
+});
+
+test("Double click on LO triggers cycle_and_progress", function () {   
     $('img#LO8').dblclick();
     equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on LO');
+});
 
-    cycle_and_progress = sinon.mock();
+test("Double click an SC triggers cycle_and_progress", function () {
+    $('img#SC1').dblclick();
+    equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on SC');
+});
+
+test("Double click on adhoc image inside <li> doesn't trigger c_and_p", function () {
     $('img#gfx').dblclick();
     equal(cycle_and_progress.notCalled, true,
         'Non TL images inside <li> do not call cycle after dblclick');
+});
 
-    cycle_and_progress = sinon.mock();
+test("Double click on adhoc image outside <li> doesn't trigger c_and_p", function () {
     $('img#logo').dblclick();
     equal(cycle_and_progress.notCalled, true,
         'Non TL images outside <li> do not call cycle after dblclick');
