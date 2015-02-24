@@ -33,6 +33,14 @@ class UrlTests(TestCase):
         self.assertEqual(resolver.kwargs,
             {'user_id': '1', 'lid_id': '2'})
 
+    def test_ajax_userlearningintentiondetail_status(self):
+        url = reverse('ajax_learningintentiondetail_status', args=[1])
+        self.assertEqual(url, '/interaction/learningintentiondetail/1/status/')
+        resolver = resolve(url)
+        self.assertEqual(resolver.view_name, 'ajax_learningintentiondetail_status')
+        self.assertEqual(resolver.kwargs,
+            {'lid_id': '1'})
+
     def test_userlearningintentiondetail_cycle(self):
         url = reverse('userlearningintentiondetail_cycle', args=[1])
         self.assertEqual(url, '/interaction/learningintentiondetail/1/cycle/')
