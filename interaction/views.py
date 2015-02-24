@@ -4,9 +4,15 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import (render_to_response, 
-                              get_object_or_404)
+from django.http import (
+    HttpResponse, 
+    HttpResponseForbidden,
+    HttpResponseRedirect
+)
+from django.shortcuts import (
+    render_to_response, 
+    get_object_or_404
+)
 from django.template import RequestContext
 from django.utils import timezone    
 
@@ -60,6 +66,13 @@ def userlesson_single(request, user_id, lesson_id):
     context_data = {'ul': ul, 'history': history}
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
+
+@login_required
+def ajax_learningintentiondetail_status(request, lid_id):
+    if request.is_ajax():
+        return HttpResponse(mimetype="application/json")
+    else:
+        return HttpResponseForbidden()
     
 @login_required
 def userlearningintentiondetail_single(request, user_id, lid_id):

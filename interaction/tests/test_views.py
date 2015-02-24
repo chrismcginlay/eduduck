@@ -241,8 +241,28 @@ class UserLearningIntentionDetailViewTests(TestCase):
         'interactions.json',
     ]
 
-    def test_ajax_userlid_get_status_gives_correct_status(self):
-        self.fail("write me")
+    def test_ajax_lid_get_status_gives_correct_status(self):
+        user = User.objects.get(pk=1) # chris in fixture
+        self.client.login(username=user.username, password='chris')        
+        lid1 = UserLearningIntentionDetail.objects.get(pk=2)
+        lid2 = UserLearningIntentionDetail.objects.get(pk=3)
+        url1 = '/interaction/' \
+            'learningintentiondetail/{0}/status/'.format(lid1.pk)
+        url2 = '/interaction/' \
+            'learningintentiondetail/{0}/status/'.format(lid2.pk)
+        self.client.login(username='chris', password='chris')
+        
+        response1 = self.client.get(url1, CONTENT_TYPE='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response1.status_code, 200, "Valid call 200")
+
+        response1 = self.client.get(url1, CONTENT_TYPE='text/html')
+        self.assertEqual(response1.status_code, 403, "Invalid call gives 403")
+
+        response2 = self.client.get(url2, CONTENT_TYPE='application/json', 
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response2.status_code, 200, "Valid call 200")
+
 
 class UserAttachmentViewTests(TestCase):
     """Test view functions for user interaction with attachments"""
