@@ -215,11 +215,11 @@ class UserLearningIntentionViewTests(TestCase):
         response = self.client.get(cycle_url)
         self.assertRedirects(response, "/courses/{0}/".format(course.pk))
     
-""" TODO Not working test of ajax view.
+# TODO Not working test of ajax view.
     def test_userlearningintention_progress_bar(self):
-        View returns correct data for AJAX call
+        """View returns correct data for AJAX call"""
 
-        import pdb; pdb.set_trace()
+        self.fail("delete or fix");
         #Not logged in
         response = self.client.get('/interaction/learningintentiondetail'\
                                     '/1/progress/')
@@ -229,7 +229,20 @@ class UserLearningIntentionViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/interaction/learningintentiondetail/1/progress/', CONTENT_TYPE='application/json')
         self.assertEqual(response.status_code, 200)
-        """
+
+class UserLearningIntentionDetailViewTests(TestCase):
+    """View functions for success criteria and learning outcomes"""
+
+    fixtures = [
+        'auth_user.json',
+        'courses.json',
+        'lessons.json',
+        'outcome_lints.json',
+        'interactions.json',
+    ]
+
+    def test_ajax_userlid_get_status_gives_correct_status(self):
+        self.fail("write me")
 
 class UserAttachmentViewTests(TestCase):
     """Test view functions for user interaction with attachments"""

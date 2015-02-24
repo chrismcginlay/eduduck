@@ -1,0 +1,138 @@
+[
+{
+    "pk": 1, 
+    "model": "interaction.usercourse", 
+    "fields": {
+        "completed": false, 
+        "course": 3, 
+        "user": 1, 
+        "active": true, 
+        "withdrawn": false, 
+        "history": "[[1423311589.0, 0], [1423311589.0, 1]]"
+    }
+},
+{
+    "pk": 3, 
+    "model": "interaction.usercourse", 
+    "fields": {
+        "completed": false, 
+        "course": 1, 
+        "user": 1, 
+        "active": true, 
+        "withdrawn": false, 
+        "history": "[[1423357021.0, 0], [1423357021.0, 1]]"
+    }
+},
+{
+    "pk": 1, 
+    "model": "interaction.userlesson", 
+    "fields": {
+        "completed": false, 
+        "note": null, 
+        "user": 1, 
+        "visited": true, 
+        "lesson": 11, 
+        "history": "[[1423311596.0, 0]]"
+    }
+},
+{
+    "pk": 2, 
+    "model": "interaction.userlesson", 
+    "fields": {
+        "completed": false, 
+        "note": null, 
+        "user": 1, 
+        "visited": true, 
+        "lesson": 12, 
+        "history": "[[1423311602.0, 0]]"
+    }
+},
+{
+    "pk": 3, 
+    "model": "interaction.userlesson", 
+    "fields": {
+        "completed": false, 
+        "note": null, 
+        "user": 1, 
+        "visited": true, 
+        "lesson": 1, 
+        "history": "[[1423311622.0, 0], [1423357032.0, 0], [1424805046.0, 0]]"
+    }
+},
+{
+    "pk": 1, 
+    "model": "interaction.userlearningintention", 
+    "fields": {
+        "user": 1, 
+        "learning_intention": 1
+    }
+},
+{
+    "pk": 2, 
+    "model": "interaction.userlearningintention", 
+    "fields": {
+        "user": 1, 
+        "learning_intention": 2
+    }
+},
+{
+    "pk": 2, 
+    "model": "interaction.userlearningintentiondetail", 
+    "fields": {
+        "learning_intention_detail": 1, 
+        "user": 1, 
+        "condition": 0, 
+        "history": "[[1423357154.0, 0]]"
+    }
+},
+{
+    "pk": 3, 
+    "model": "interaction.userlearningintentiondetail", 
+    "fields": {
+        "learning_intention_detail": 2, 
+        "user": 1, 
+        "condition": 1, 
+        "history": "[[1424805056.0, 1]]"
+    }
+},
+{
+    "pk": 4, 
+    "model": "interaction.userlearningintentiondetail", 
+    "fields": {
+        "learning_intention_detail": 4, 
+        "user": 1, 
+        "condition": 2, 
+        "history": "[[1424805060.0, 2]]"
+    }
+},
+{
+    "pk": 5, 
+    "model": "interaction.userlearningintentiondetail", 
+    "fields": {
+        "learning_intention_detail": 8, 
+        "user": 1, 
+        "condition": 2, 
+        "history": "[[1424805067.0, 2]]"
+    }
+},
+{
+    "pk": 6, 
+    "model": "interaction.userlearningintentiondetail", 
+    "fields": {
+        "learning_intention_detail": 7, 
+        "user": 1, 
+        "condition": 2, 
+        "history": "[[1424805076.0, 2]]"
+    }
+},
+{
+    "pk": 7, 
+    "model": "interaction.userlearningintentiondetail", 
+    "fields": {
+        "learning_intention_detail": 6, 
+        "user": 1, 
+        "condition": 1, 
+        "history": "[[1424805079.0, 1]]"
+    }
+}
+]
