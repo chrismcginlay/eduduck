@@ -230,6 +230,7 @@ class UserLearningIntentionViewTests(TestCase):
         response = self.client.get('/interaction/learningintentiondetail/1/progress/', CONTENT_TYPE='application/json')
         self.assertEqual(response.status_code, 200)
 
+
 class UserLearningIntentionDetailViewTests(TestCase):
     """View functions for success criteria and learning outcomes"""
 
@@ -241,15 +242,21 @@ class UserLearningIntentionDetailViewTests(TestCase):
         'interactions.json',
     ]
 
-    def test_ajax_lid_get_status_gives_correct_status(self):
+    def test_ajax_learningintentiondetail_status_requires_ajax(self):
         user = User.objects.get(pk=1) # chris in fixture
         self.client.login(username=user.username, password='chris')        
-        lid1 = UserLearningIntentionDetail.objects.get(pk=2)
-        lid2 = UserLearningIntentionDetail.objects.get(pk=3)
+        lid1 = LearningIntentionDetail.objects.get(pk=1)
+        lid2 = LearningIntentionDetail.objects.get(pk=2)
+        lid3 = LearningIntentionDetail.objects.get(pk=3)
+        # url1 - record of user interaction exists
         url1 = '/interaction/' \
             'learningintentiondetail/{0}/status/'.format(lid1.pk)
+        # url2 - record of user interaction exists
         url2 = '/interaction/' \
             'learningintentiondetail/{0}/status/'.format(lid2.pk)
+        # url3 - no previous user interaction with lid3
+        url3 = '/interaction/' \
+            'learningintentiondetail/{0}/status/'.format(lid3.pk)
         self.client.login(username='chris', password='chris')
         
         response1 = self.client.get(url1, CONTENT_TYPE='application/json',
@@ -263,6 +270,49 @@ class UserLearningIntentionDetailViewTests(TestCase):
             HTTP_X_REQUESTED_WITH='XMLHttpRequest')
         self.assertEqual(response2.status_code, 200, "Valid call 200")
 
+        response3 = self.client.get(url3, CONTENT_TYPE='application/json', 
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response3.status_code, 200, "Valid call 200")
+
+    def test_ajax_learningintentiondetail_status_correct(self):
+        """Correctly return red, amber or green status"""
+        user = User.objects.get(pk=1) # chris in fixture
+        self.client.login(username=user.username, password='chris')        
+        lid1 = LearningIntentionDetail.objects.get(pk=1)
+        lid2 = LearningIntentionDetail.objects.get(pk=2)
+        lid3 = LearningIntentionDetail.objects.get(pk=3) 
+        lid4 = LearningIntentionDetail.objects.get(pk=4)
+        # url1 - record of user interaction exists
+        url1 = '/interaction/' \
+            'learningintentiondetail/{0}/status/'.format(lid1.pk)
+        # url2 - record of user interaction exists
+        url2 = '/interaction/' \
+            'learningintentiondetail/{0}/status/'.format(lid2.pk)
+        # url3 - no previous user interaction with lid3
+        url3 = '/interaction/' \
+            'learningintentiondetail/{0}/status/'.format(lid3.pk)
+        # url4 - record of user interaction exists
+        url4 = '/interaction/' \
+            'learningintentiondetail/{0}/status/'.format(lid4.pk)
+        self.client.login(username='chris', password='chris')
+        
+        response1 = self.client.get(url1, CONTENT_TYPE='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response2 = self.client.get(url2, CONTENT_TYPE='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response3 = self.client.get(url3, CONTENT_TYPE='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        response4 = self.client.get(url4, CONTENT_TYPE='application/json',
+            HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+       
+        self.assertEqual(response1.content, '{"status": "red"}', 
+            "Correct status returned")
+        self.assertEqual(response2.content, '{"status": "amber"}', 
+            "Correct status returned")
+        self.assertEqual(response3.content, '{"status": "red"}', 
+            "Correct status returned")
+        self.assertEqual(response4.content, '{"status": "green"}', 
+            "Correct status returned")
 
 class UserAttachmentViewTests(TestCase):
     """Test view functions for user interaction with attachments"""

@@ -70,7 +70,17 @@ def userlesson_single(request, user_id, lesson_id):
 @login_required
 def ajax_learningintentiondetail_status(request, lid_id):
     if request.is_ajax():
-        return HttpResponse(mimetype="application/json")
+        conditions = ['red', 'amber', 'green']
+        try:
+            ulid = UserLearningIntentionDetail.objects.get(
+                user__id=request.user.id, learning_intention_detail__id=lid_id)
+            status = ulid.get_status()
+        except ObjectDoesNotExist:
+            status = 'red'
+
+        result = {'status':status,}
+        jresult = json.dumps(result)
+        return HttpResponse(jresult, mimetype="application/json")
     else:
         return HttpResponseForbidden()
     
