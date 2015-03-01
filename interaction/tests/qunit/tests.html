@@ -43,14 +43,14 @@ module("Traffic light is bound to cycle_and_progress", {
     }
 });
 
-test("Double click on LO triggers cycle_and_progress", function () {   
+test("Double click on LO triggers cycle_and_progress", function (assert) {   
     $('img#LO8').dblclick();
-    equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on LO');
+    assert.equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on LO');
 });
 
-test("Double click an SC triggers cycle_and_progress", function () {
+test("Double click an SC triggers cycle_and_progress", function (assert) {
     $('img#SC1').dblclick();
-    equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on SC');
+    assert.equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on SC');
 });
 
 test("Double click on adhoc image inside <li> doesn't trigger c_and_p", function () {
@@ -65,6 +65,37 @@ test("Double click on adhoc image outside <li> doesn't trigger c_and_p", functio
         'Non TL images outside <li> do not call cycle after dblclick');
 });
 
+
+module("Get status of Traffic Light object", {});
+
+test("The get_lid function returns correct lid", function () {
+    img = $('img#LO8');
+    equal(get_lid(img),8,'get_lid working for LO');
+    img = $('img#SC1');
+    equal(get_lid(img),1, 'get_lid working for SC');
+});
+
+test("The get_lid function throws on incorrect arguments", function (assert) {
+    img = $('gfx');
+    assert.throws(function() {
+        get_lid(img)
+    }, 
+        TypeError,
+        'passing incorrect id throws TypeError');
+    assert.throws(function() {
+        get_lid()
+    }, 
+        /Assert Failed: no image supplied from DOM/,
+        'passing no image throws Error');
+});
+
+test("The get_status function exists", function () {
+    ok(get_status());
+});
+
+test("The SC1 traffic light has red status", function() {
+    ok(false);
+});
 </script>
 </body>
 </html>
