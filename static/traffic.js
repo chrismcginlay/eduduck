@@ -17,7 +17,25 @@ $.ajaxSetup({
 });
 
 function assert(cond, message) {
-    if (!cond) throw new Error(message);
+    if (!cond) {
+        if (!message) message = "no message defined";
+        message = "Assert Failed: " + message
+        console.log(message);
+        throw new Error(message);
+    }
+}
+
+function get_status(lid_pk) {
+    var path = '/interaction/learningintentiondetail/'+lid_pk+"/status/"
+    
+    return true;
+}
+
+function get_lid(img) {
+    assert(img, "no image supplied from DOM");
+    lid_pk = (img.attr('id')).slice(2);
+    assert(lid_pk, "no lid_pk extracted from img");
+    return lid_pk;
 }
 
 function cycle_and_progress(img) {
