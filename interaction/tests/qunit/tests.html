@@ -78,12 +78,12 @@ test("The get_lid function returns correct lid", function () {
 test("The get_lid function throws on incorrect arguments", function (assert) {
     img = $('gfx');
     assert.throws(function() {
-        get_lid(img)
+        get_lid(img);
     }, 
         TypeError,
         'passing incorrect id throws TypeError');
     assert.throws(function() {
-        get_lid()
+        get_lid();
     }, 
         /Assert Failed: no image supplied from DOM/,
         'passing no image throws Error');
@@ -93,9 +93,36 @@ test("The get_status function exists", function () {
     ok(get_status());
 });
 
-test("The SC1 traffic light has red status", function() {
-    ok(false);
+test("The LO8 traffic light has red status", function(assert) {
+    assert.equal(get_status($('img#LO8')), 'red');
 });
+
+module("Cycle function tests", {});
+
+test("The cycle function requires img argument", function (assert) {
+    assert.throws(function() {
+        cycle();
+    },
+        ReferenceError,
+        'passing no image throws ReferenceError');
+});
+
+test("The cycle function accepts img argument", function (assert) {
+    img = $('img#SC1');
+    ok(cycle(img));
+});
+
+test("The cycle function returns next state", function (assert) {
+    var stub_get_status = sinon.stub().returns('red');
+    get_status = stub_get_status;
+    img = $('img#SC1');
+    assert.equal(cycle(img), 'amber');
+});
+
+test("Cycle function stores new state", function (assert) {
+    assert.ok(false, "how to write this?");
+});
+
 </script>
 </body>
 </html>

@@ -27,8 +27,8 @@ function assert(cond, message) {
 
 function get_status(lid_pk) {
     var path = '/interaction/learningintentiondetail/'+lid_pk+"/status/"
-    
-    return true;
+    var cur_stat = $.getJSON(path, lid_pk, function () {); 
+    return cur_stat;
 }
 
 function get_lid(img) {
@@ -36,6 +36,25 @@ function get_lid(img) {
     lid_pk = (img.attr('id')).slice(2);
     assert(lid_pk, "no lid_pk extracted from img");
     return lid_pk;
+}
+
+function cycle(img) {
+    assert(img, "no image supplied from DOM");
+    var lid_pk = get_lid(img);
+    var current_status = get_status(lid_pk);
+    var next_status; 
+    switch(current_status) {
+        case 'red':
+            next_status = 'amber';
+            break;
+        case 'amber':
+            next_status = 'green';
+            break;
+        case 'green':
+            next_status = 'red';
+            break;
+    }
+    return next_status;
 }
 
 function cycle_and_progress(img) {
