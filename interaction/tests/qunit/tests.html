@@ -34,6 +34,7 @@
 <script>
 /*global $, test, equal */
 
+
 module("Traffic light is bound to cycle_and_progress", {
     setup: function(assert) {
         cycle_and_progress = sinon.mock();
@@ -89,13 +90,14 @@ test("The get_lid function throws on incorrect arguments", function (assert) {
         'passing no image throws Error');
 });
 
-test("The get_status function exists", function () {
-    ok(get_status());
+test("The get_status function gives correct status", function (assert) {
+    var stub_JSON = sinon.stub($, "getJSON");
+    stub_JSON.returns('red');
+    assert.ok(get_status(8), 'successfully called');
+    assert.equal(get_status(8), 'red', 'Red status is returned'); 
+    $.getJSON.restore()
 });
 
-test("The LO8 traffic light has red status", function(assert) {
-    assert.equal(get_status($('img#LO8')), 'red');
-});
 
 module("Cycle function tests", {});
 
@@ -103,8 +105,8 @@ test("The cycle function requires img argument", function (assert) {
     assert.throws(function() {
         cycle();
     },
-        ReferenceError,
-        'passing no image throws ReferenceError');
+        Error,
+        'passing no image throws Error');
 });
 
 test("The cycle function accepts img argument", function (assert) {

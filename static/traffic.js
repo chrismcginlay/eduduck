@@ -26,9 +26,11 @@ function assert(cond, message) {
 }
 
 function get_status(lid_pk) {
+    assert (lid_pk, "no lid_pk supplied");
     var path = '/interaction/learningintentiondetail/'+lid_pk+"/status/"
-    var cur_stat = $.getJSON(path, lid_pk, function () {); 
-    return cur_stat;
+    var jq_xhr = $.getJSON(path);
+    return jq_xhr;
+//        .done(function (data) { console.log(data); return data;})
 }
 
 function get_lid(img) {
