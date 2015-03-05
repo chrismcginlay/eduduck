@@ -44,6 +44,7 @@ function cycle(img) {
     assert(img, "no image supplied from DOM");
     var lid_pk = get_lid(img);
     var current_status = get_status(lid_pk);
+    assert(current_status, "no current status obtained");
     var next_status; 
     switch(current_status) {
         case 'red':

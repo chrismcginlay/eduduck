@@ -37,21 +37,18 @@
 
 module("Traffic light is bound to cycle_and_progress", {
     setup: function(assert) {
-        cycle_and_progress = sinon.mock();
+        cycle_and_progress = sinon.stub();
     },
     teardown: function(assert) {
         cycle_and_progress.reset();
     }
 });
 
-test("Double click on LO triggers cycle_and_progress", function (assert) {   
+test("Double clicks trigger cycle_and_progress", function (assert) {   
     $('img#LO8').dblclick();
     assert.equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on LO');
-});
-
-test("Double click an SC triggers cycle_and_progress", function (assert) {
     $('img#SC1').dblclick();
-    assert.equal(cycle_and_progress.calledOnce, true, 'c_and_p called after dblclick on SC');
+    assert.equal(cycle_and_progress.calledTwice, true, 'c_and_p called after dblclick on SC');
 });
 
 test("Double click on adhoc image inside <li> doesn't trigger c_and_p", function () {
@@ -110,15 +107,23 @@ test("The cycle function requires img argument", function (assert) {
 });
 
 test("The cycle function accepts img argument", function (assert) {
+    var stub_JSON = sinon.stub($, "getJSON");
+    stub_JSON.returns('red');
     img = $('img#SC1');
-    ok(cycle(img));
+    assert.ok(cycle(img));
+    $.getJSON.restore();
 });
 
 test("The cycle function returns next state", function (assert) {
-    var stub_get_status = sinon.stub().returns('red');
-    get_status = stub_get_status;
+    var stub_JSON = sinon.stub($, "getJSON");
+    stub_JSON.returns('red');
     img = $('img#SC1');
-    assert.equal(cycle(img), 'amber');
+    assert.equal(cycle(img), 'amber', 'Red to amber cycles');
+    stub_JSON.returns('amber');
+    assert.equal(cycle(img), 'green', 'Amber to green cycles');
+    stub_JSON.returns('green');
+    assert.equal(cycle(img), 'red', 'Green to red cycles');
+    $.getJSON.restore();
 });
 
 test("Cycle function stores new state", function (assert) {
