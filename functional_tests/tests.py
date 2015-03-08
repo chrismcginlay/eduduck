@@ -27,7 +27,7 @@ class GeneralLayoutAndStyle(FunctionalTest):
         script = """<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js">"""
         self.assertIn(script, self.browser.page_source)
         
-        script = "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js\">"
+        script = "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js\">"
         self.assertIn(script, self.browser.page_source)
         
 class CasualVisitorArrives(FunctionalTest):
