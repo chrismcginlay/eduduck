@@ -143,6 +143,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.assertEqual(
             device.value_of_css_property('background-position'), 
             u'0px 0px')
+        self.assertTrue('tl-red' in device.get_attribute('class'))
 
         # (DBL)Clicking once, it changes to amber.
         actions.perform()
@@ -150,6 +151,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.assertEqual(
             device.value_of_css_property('background-position'),
             u'-17px 0px')
+        self.assertTrue('tl-amber' in device.get_attribute('class'))
 
         # (DBL)Clicking again, the device changes to green.
         
@@ -158,6 +160,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.assertEqual(
             device.value_of_css_property('background-position'),
             u'-34px 0px')
+        self.assertTrue('tl-green' in device.get_attribute('class'))
 
         # A further (DBL)click, cycles the device round to red again
         actions.perform()
@@ -165,6 +168,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.assertEqual(
             device.value_of_css_property('background-position'),
             u'0px 0px')
+        self.assertTrue('tl-red' in device.get_attribute('class'))
 
     def test_peruse_lesson_when_not_enrolled(self):
         # Helmi has previously visited the site and knows that she can go 
