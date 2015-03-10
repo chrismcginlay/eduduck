@@ -11,7 +11,7 @@ class UrlTests(TestCase):
     
     def test_usercourse_single(self):
         url = reverse('usercourse_single', args=[1,2])
-        self.assertEqual(url, '/interaction/user/1/courses/2/')
+        self.assertEqual(url, '/interaction/user/1/course/2/')
         resolver = resolve(url)
         self.assertEqual(resolver.view_name, 'usercourse_single')
         self.assertEqual(resolver.kwargs, 
