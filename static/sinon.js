@@ -1,1 +1,1 @@
-sinon-1.12.2.js
+static/sinon-1.12.2.js
