@@ -93,6 +93,7 @@ class OutcomeViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 1)
+        self.assertInHTML("<img id='SC1' class='tl-red'>", response.content)
         self.assertEqual(response.context['progressSC'], (0,2,2,100)) #progress bar
         self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
 
