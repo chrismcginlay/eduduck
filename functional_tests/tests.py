@@ -15,19 +15,23 @@ class GeneralLayoutAndStyle(FunctionalTest):
         style = """<link href="/static/index.css" rel="stylesheet" />"""
         self.assertIn(style, self.browser.page_source)
         
-        style = """<link href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css" rel="stylesheet" />"""
+        style = """<link href="http://yui.yahooapis.com/pure/0.4.2/""" \
+            """pure-min.css" rel="stylesheet" />"""
         self.assertIn(style, self.browser.page_source)
         
-        style ="""<link href="/static/layouts/side-menu.css" rel="stylesheet" />"""
+        style ="""<link href="/static/layouts/side-menu.css" """ \
+            """rel="stylesheet" />"""
         self.assertIn(style, self.browser.page_source)
         
         script = """<script src="/static/js/ui.js">"""
         self.assertIn(script, self.browser.page_source)
         
-        script = """<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js">"""
+        script = """<script src="https://code.jquery.com/ui/""" \
+            """1.10.0/jquery-ui.js">"""
         self.assertIn(script, self.browser.page_source)
         
-        script = "<script src=\"http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js\">"
+        script = """<script src="https://code.jquery.com/""" \
+            """jquery-2.1.3.min.js">"""
         self.assertIn(script, self.browser.page_source)
         
 class CasualVisitorArrives(FunctionalTest):
