@@ -139,7 +139,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         actions.double_click(device)
         
         self.assertEqual(criterion.text, u'Spot 3D modelling tasks')
-        self.assertEqual(device.get_attribute('id'), u'SC1')
+        self.assertEqual(device.get_attribute('id'), u'id_SC1')
         self.assertEqual(
             device.value_of_css_property('background-position'), 
             u'0px 0px')

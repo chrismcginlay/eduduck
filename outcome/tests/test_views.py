@@ -90,10 +90,12 @@ class OutcomeViewTests(TestCase):
 
         #cycle to amber        
         response = self.client.post(url1, {cycle1:'Cycle'})
+        import pdb; pdb.set_trace()
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 1)
-        self.assertInHTML("<img id='SC1' class='tl-red'>", response.content)
+        self.assertInHTML("<img id='id_SC1' class='tl-amber'>", response.content)
+        self.assertInHTML("<li class='criterion' data-id='1'>", response.content)
         self.assertEqual(response.context['progressSC'], (0,2,2,100)) #progress bar
         self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
 
@@ -102,6 +104,7 @@ class OutcomeViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 2)
+        self.assertInHTML("<img id='id_SC1' class='tl-green'>", response.content)
         self.assertEqual(response.context['progressSC'], (1,1,2,100)) #progress bar
         self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
     
@@ -110,5 +113,6 @@ class OutcomeViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 0)
+        self.assertInHTML("<img id='id_SC1' class='tl-red'>", response.content)
         self.assertEqual(response.context['progressSC'], (0,2,2,100)) #progress bar
         self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
