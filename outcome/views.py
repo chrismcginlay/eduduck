@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 def learning_intention(request, lesson_id, learning_intention_id):
     """Prepare variables for learning intention template"""
-    
+   
     logger.info('Lesson id=' + str(lesson_id) + \
         ', Learn_Int id=' + str(learning_intention_id) + ' view')
     lesson = get_object_or_404(Lesson, id=lesson_id)

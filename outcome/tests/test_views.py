@@ -5,13 +5,36 @@ from profile.models import User, Profile
 from interaction.models import UserCourse
 from ..models import LearningIntention, LearningIntentionDetail
 
+class OutcomeViewTests_new(TestCase):
+    """Newer tests for outcome views using fixtures"""
+
+    fixtures = [
+        'auth_user.json', 
+        'courses.json', 
+        'lessons.json',
+        'outcome_lints.json',
+        'interactions.json',
+    ]
+
+    def test_learning_intention_has_correct_context_vars(self):
+        self.client.login(username='gaby', password='gaby5')
+        lesson = Lesson.objects.get(pk=1)
+        lint = LearningIntentionDetail.objects.get(pk=1)
+        url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
+        response = self.client.get(url1)
+        self.assertIn('progressSC', response.context,
+            'Missing context var: progressSC')               
+        self.assertIn('progressLO', response.context,
+            'Missing context var: progressLO')               
+        self.fail("check usc and ulo list contents now")
+ 
 class OutcomeViewTests(TestCase):
     """Test the outcome specific views"""
     
     course1_data = {'code': 'EDU02',
                    'name': 'A Course of Leeches',
                    'abstract': 'Learn practical benefits of leeches',
-                   }
+                   k
     lesson1_data = {
                     'name': 'Introduction to Music',
                     'abstract': 'A summary of what we cover',
@@ -90,7 +113,6 @@ class OutcomeViewTests(TestCase):
 
         #cycle to amber        
         response = self.client.post(url1, {cycle1:'Cycle'})
-        import pdb; pdb.set_trace()
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 1)
