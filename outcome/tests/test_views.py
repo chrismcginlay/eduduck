@@ -26,7 +26,18 @@ class OutcomeViewTests_new(TestCase):
             'Missing context var: progressSC')               
         self.assertIn('progressLO', response.context,
             'Missing context var: progressLO')               
-        self.fail("check usc and ulo list contents now")
+        self.assertIn('usc_list', response.context,
+            'Missing list of user interactions with SCs')
+        self.assertIn('ulo_list', response.context,
+            'Missing list of user interactions with LOs')
+        ulo_list = response.context['ulo_list']
+        usc_list = response.context['usc_list']
+        self.assertEqual(type(lint), type(ulo_list[0][0]))
+        self.assertEqual(type(lint), type(usc_list[0][0]))
+        self.assertEqual(ulo_list[0][1], 'red')
+        self.assertEqual(usc_list[0][1], 'red')
+        self.assertEqual(ulo_list[0][2], None)
+        self.assertEqual(usc_list[0][2], None)
  
 class OutcomeViewTests(TestCase):
     """Test the outcome specific views"""
@@ -34,7 +45,7 @@ class OutcomeViewTests(TestCase):
     course1_data = {'code': 'EDU02',
                    'name': 'A Course of Leeches',
                    'abstract': 'Learn practical benefits of leeches',
-                   k
+                   }
     lesson1_data = {
                     'name': 'Introduction to Music',
                     'abstract': 'A summary of what we cover',

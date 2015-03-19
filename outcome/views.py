@@ -25,8 +25,10 @@ def learning_intention(request, lesson_id, learning_intention_id):
                                            id=learning_intention_id) 
     context_data = dict()
     if request.user.is_authenticated():
-        #Construct two lists of tuples [(lid, condition)] where 
-        #lid = learningintentiondetail and condition = red etc. 
+        #Construct two lists of tuples [(lid, condition ulid)] where 
+        # lid = learningintentiondetail,
+        # condition = red,
+        # ulid = ID of of any pre-existing user interaction with lid | None  
         #List 'usc_list' is for user's success criteria
         #List 'ulo_list' is for user's learning outcomes
         usc_list = list()
