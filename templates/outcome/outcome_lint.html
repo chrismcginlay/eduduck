@@ -88,9 +88,9 @@ title='{{ lesson }}'>Lesson Home</a></li>
         {% for sc in usc_list %}
             <li class="criterion">
                 <img id="id_SC{{ sc.0.pk }}"
-                    class="tl-{{ sc.2.get_status|default_if_none:'red' }}" 
+                    class="tl-{{ sc.1 }}" 
                     src="{% static 'images/img_trans.png' %}" 
-                    style="background-position: {{ sc.1 }}px 0px" />
+                />
 <input class="traffic" type="submit" name="cycle{{ sc.0.pk }}" value="Cycle"
 title="Cycle status R->A->G->R">
                 {{ sc.0.text }}
@@ -130,9 +130,9 @@ title="Cycle status R->A->G->R">
         {% for lo in ulo_list %}
             <li class="learning_outcome">
                 <img id="id_LO{{ lo.0.pk }}"
-                    class="tl-{{ lo.2.get_status|default_if_none:'red' }}" 
+                    class="tl-{{ lo.1 }}" 
                     src="{% static 'images/img_trans.png' %}"
-                    style="background-position: {{ lo.1 }}px 0px" />
+                />
 <input class="traffic" type="submit" name="cycle{{ lo.0.pk }}" value="Cycle"
 title="Cycle status R->A->G->R">
                 {{ lo.0.text }}

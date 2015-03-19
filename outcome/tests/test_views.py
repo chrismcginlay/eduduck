@@ -123,6 +123,7 @@ class OutcomeViewTests(TestCase):
         uc.save() 
 
         #cycle to amber        
+        import pdb; pdb.set_trace()
         response = self.client.post(url1, {cycle1:'Cycle'})
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition

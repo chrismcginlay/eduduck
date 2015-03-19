@@ -27,7 +27,7 @@ def learning_intention(request, lesson_id, learning_intention_id):
     if request.user.is_authenticated():
         #Construct two lists of tuples [(lid, condition ulid)] where 
         # lid = learningintentiondetail,
-        # condition = red,
+        # condition = 'red' | 'amber' | 'green'
         # ulid = ID of of any pre-existing user interaction with lid | None  
         #List 'usc_list' is for user's success criteria
         #List 'ulo_list' is for user's learning outcomes
@@ -37,14 +37,14 @@ def learning_intention(request, lesson_id, learning_intention_id):
         for lid in learning_intention.learningintentiondetail_set.all():
             try:
                 match = userlids.get(learning_intention_detail = lid)
-                offset = match.condition * -17
+                condition = match.get_status()
             except ObjectDoesNotExist:
                 match = None
-                offset = 0
+                condition = ULIDConditions[0] # 'red'
             if lid.lid_type == LearningIntentionDetail.SUCCESS_CRITERION:
-                usc_list.append((lid, offset, match))
+                usc_list.append((lid, condition, match))
             else:
-                ulo_list.append((lid, offset, match))
+                ulo_list.append((lid, condition, match))
 
         if request.method == u"POST":
             #First see if a success_criterion type LID is cycled
@@ -54,8 +54,7 @@ def learning_intention(request, lesson_id, learning_intention_id):
                 if target in request.POST:  
                     if ulid[2]: #already in database
                         ulid[2].cycle()
-                        #magic 17 is pixel offset for traffic light CSS prop.
-                        newcond = ulid[2].condition * -17
+                        newcond = ulid[2].get_status() 
                         ulid = ((lid, newcond, ulid[2]))
                     else:
                         new_ulid = UserLearningIntentionDetail(
@@ -63,7 +62,7 @@ def learning_intention(request, lesson_id, learning_intention_id):
                             user=request.user)
                         new_ulid.save()
                         new_ulid.cycle()
-                        ulid = (( lid, -17, new_ulid))
+                        ulid = (( lid, ULIDConditions[1], new_ulid)) # amber
                     usc_list[idx] = ulid
             #Repeat, to see if a learning_outcome type LID is cycled
             for (idx, ulid) in enumerate(ulo_list):
@@ -72,8 +71,7 @@ def learning_intention(request, lesson_id, learning_intention_id):
                 if target in request.POST:  
                     if ulid[2]: #already in database
                         ulid[2].cycle()
-                        #magic 17 is pixel offset for traffic light CSS prop.
-                        newcond = ulid[2].condition * -17
+                        newcond = ulid[2].get_status()
                         ulid = ((lid, newcond, ulid[2]))
                     else:
                         new_ulid = UserLearningIntentionDetail(
@@ -81,7 +79,7 @@ def learning_intention(request, lesson_id, learning_intention_id):
                             user=request.user)
                         new_ulid.save()
                         new_ulid.cycle()
-                        ulid = (( lid, -17, new_ulid))
+                        ulid = (( lid, ULIDConditions[1], new_ulid))
                     ulo_list[idx] = ulid
         #Construct progress bar graph tuples (val, max-val, max, width)
         uli = UserLearningIntention.objects.get_or_create(
@@ -99,10 +97,10 @@ def learning_intention(request, lesson_id, learning_intention_id):
             'progressLO':  progressLO
         })
     else: #not authenticated
-        usc_list = [(lid, 0, None) for lid in 
+        usc_list = [(lid, ULIDConditions[0], None) for lid in 
             learning_intention.learningintentiondetail_set.filter(
                     lid_type = LearningIntentionDetail.SUCCESS_CRITERION)]
-        ulo_list = [(lid, 0, None) for lid in 
+        ulo_list = [(lid, ULIDConditions[0], None) for lid in 
             learning_intention.learningintentiondetail_set.filter(
                     lid_type = LearningIntentionDetail.LEARNING_OUTCOME)]
     context_data.update({
