@@ -52,7 +52,8 @@ class OutcomeViewTests(TestCase):
                    }
                    
     def setUp(self):
-        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
+        self.user1 = User.objects.create_user(
+            'bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
         self.course1 = Course(**self.course1_data)
@@ -61,8 +62,8 @@ class OutcomeViewTests(TestCase):
         self.course1.save()
         self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
         self.lesson1.save()        
-        self.learningintention1 = LearningIntention(lesson = self.lesson1, 
-                                                    text = "Practise")
+        self.learningintention1 = LearningIntention(
+            lesson = self.lesson1, text = "Practise")
         self.learningintention1.save()                                            
         self.lid1 = LearningIntentionDetail(
             learning_intention = self.learningintention1, 
@@ -123,30 +124,49 @@ class OutcomeViewTests(TestCase):
         uc.save() 
 
         #cycle to amber        
-        import pdb; pdb.set_trace()
         response = self.client.post(url1, {cycle1:'Cycle'})
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 1)
-        self.assertInHTML("<img id='id_SC1' class='tl-amber'>", response.content)
-        self.assertInHTML("<li class='criterion' data-id='1'>", response.content)
-        self.assertEqual(response.context['progressSC'], (0,2,2,100)) #progress bar
-        self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
+        self.assertInHTML(
+            "<img id='id_SC1' class='tl-amber' "\
+            "src='/static/images/img_trans.png'>",
+            response.content)
+        self.assertContains(
+            response,
+            '<li class="criterion" data-id="1">')
+        self.assertIn(
+            '<li class="learning_outcome" data-id="3">', 
+            response.content)
+        self.assertEqual(
+            response.context['progressSC'], (0,2,2,100)) #progress bar
+        self.assertEqual(
+            response.context['progressLO'], (0,1,1,100)) #progress bar
 
         #cycle to green
         response = self.client.post(url1, {cycle1:'Cycle'})
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 2)
-        self.assertInHTML("<img id='id_SC1' class='tl-green'>", response.content)
-        self.assertEqual(response.context['progressSC'], (1,1,2,100)) #progress bar
-        self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
+        self.assertInHTML(
+            "<img id='id_SC1' class='tl-green' "\
+            "src='/static/images/img_trans.png'>",
+            response.content)
+        self.assertEqual(
+            response.context['progressSC'], (1,1,2,100)) #progress bar
+        self.assertEqual(
+            response.context['progressLO'], (0,1,1,100)) #progress bar
     
         #cycle to red
         response = self.client.post(url1, {cycle1:'Cycle'})
         self.assertEqual(response.status_code, 200)
         trafficlight = response.context['usc_list'][0][2].condition
         self.assertEqual(trafficlight, 0)
-        self.assertInHTML("<img id='id_SC1' class='tl-red'>", response.content)
-        self.assertEqual(response.context['progressSC'], (0,2,2,100)) #progress bar
-        self.assertEqual(response.context['progressLO'], (0,1,1,100)) #progress bar
+        self.assertInHTML(
+            "<img id='id_SC1' class='tl-red' "\
+            "src='/static/images/img_trans.png'>",
+            response.content)
+        self.assertEqual(
+            response.context['progressSC'], (0,2,2,100)) #progress bar
+        self.assertEqual(
+            response.context['progressLO'], (0,1,1,100)) #progress bar

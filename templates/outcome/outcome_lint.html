@@ -80,13 +80,14 @@ title='{{ lesson }}'>Lesson Home</a></li>
         </progress>
         <div class="prog_status" id="progSC_status">
             <!--jQuery progress status or complete information-->
+            <!-- TODO: What was this div for? Use or delete -->
         </div>
 
         {% endif %}   
 <form action='' method='post'>{% csrf_token %}
         <ol>
         {% for sc in usc_list %}
-            <li class="criterion">
+            <li class="criterion" data-id="{{ sc.0.pk }}">
                 <img id="id_SC{{ sc.0.pk }}"
                     class="tl-{{ sc.1 }}" 
                     src="{% static 'images/img_trans.png' %}" 
@@ -123,12 +124,13 @@ title="Cycle status R->A->G->R">
         </progress>
         <div class="prog_status" id="progLO_status">
             <!--progress status or complete information-->
+            <!-- TODO: What was this div for? Use or delete -->
         </div>
         {% endif %}
 <form action='' method='post'>{% csrf_token %}        
         <ol>
         {% for lo in ulo_list %}
-            <li class="learning_outcome">
+            <li class="learning_outcome" data-id="{{ lo.0.pk }}">
                 <img id="id_LO{{ lo.0.pk }}"
                     class="tl-{{ lo.1 }}" 
                     src="{% static 'images/img_trans.png' %}"
