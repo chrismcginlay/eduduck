@@ -25,12 +25,10 @@ function assert(cond, message) {
     }
 }
 
-function get_status(lid_pk) {
-    assert (lid_pk, "no lid_pk supplied");
-    var path = '/interaction/learningintentiondetail/'+lid_pk+"/status/"
-    var jq_xhr = $.getJSON(path);
-    return jq_xhr;
-//        .done(function (data) { console.log(data); return data;})
+function get_status(img) {
+    assert (img, "no image supplied from DOM");
+    var status = (img.attr('class')).slice(3);
+    return status; 
 }
 
 function get_lid(img) {
@@ -43,7 +41,7 @@ function get_lid(img) {
 function cycle(img) {
     assert(img, "no image supplied from DOM");
     var lid_pk = get_lid(img);
-    var current_status = get_status(lid_pk);
+    var current_status = get_status(img);
     assert(current_status, "no current status obtained");
     var next_status; 
     switch(current_status) {

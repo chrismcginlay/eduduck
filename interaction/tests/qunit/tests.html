@@ -20,8 +20,8 @@
 
     <ol>
     <li class="learning_outcome">
-        <img id="LO8" src="/static/images/img_trans.png" 
-            style="background-position: 0px 0px">I can correctly...
+        <img id="LO8" class="tl-red"
+            src="/static/images/img_trans.png" >I can correctly...
     </li>
     </ol>
 </div>
@@ -90,8 +90,9 @@ test("The get_lid function throws on incorrect arguments", function (assert) {
 test("The get_status function gives correct status", function (assert) {
     var stub_JSON = sinon.stub($, "getJSON");
     stub_JSON.returns('red');
-    assert.ok(get_status(8), 'successfully called');
-    assert.equal(get_status(8), 'red', 'Red status is returned'); 
+    img = $('img#LO8');
+    assert.ok(get_status(img), 'successfully called');
+    assert.equal(get_status(img), 'red', 'Red status is returned'); 
     $.getJSON.restore()
 });
 

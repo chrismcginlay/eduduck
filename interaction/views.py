@@ -67,6 +67,7 @@ def userlesson_single(request, user_id, lesson_id):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 
+# TODO: possibly redundant view
 @login_required
 def ajax_learningintentiondetail_status(request, lid_id):
     if request.is_ajax():
