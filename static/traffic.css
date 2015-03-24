@@ -1,0 +1,13 @@
+/*static/traffic.css*/
+
+.tl-red {
+    background-position: 0px 0px;
+}
+
+.tl-amber {
+    background-position: -17px 0px;
+}
+
+.tl-green {
+    background-position: -34px 0px;
+}
