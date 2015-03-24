@@ -49,12 +49,18 @@ function cycle(img) {
     switch(current_status) {
         case 'red':
             next_status = 'amber';
+            img.removeClass('tl-red');
+            img.addClass('tl-amber');
             break;
         case 'amber':
             next_status = 'green';
+            img.removeClass('tl-amber');
+            img.addClass('tl-green');
             break;
         case 'green':
             next_status = 'red';
+            img.removeClass('tl-green');
+            img.addClass('tl-red');
             break;
     }
     return next_status;

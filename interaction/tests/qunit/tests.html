@@ -13,8 +13,8 @@
     <ol>
     <li class="criterion">
         <img id="gfx" src="" width=100 height=100 alt="dummy graphic">
-        <img id="SC1" src="/static/images/img_trans.png" 
-            style="background-position: 0px 0px">Spot 3D modelling tasks
+        <img id="SC1" class="tl-red" 
+            src="/static/images/img_trans.png">Spot 3D modelling tasks
     </li>
     </ol>
 
@@ -123,6 +123,22 @@ test("The cycle function returns next state", function (assert) {
     assert.equal(cycle(img), 'green', 'Amber to green cycles');
     stub_JSON.returns('green');
     assert.equal(cycle(img), 'red', 'Green to red cycles');
+    $.getJSON.restore();
+});
+
+test("Cycle function cycles tl-red|amber|green classes", function (assert) {
+    var stub_JSON = sinon.stub($, "getJSON");
+    stub_JSON.returns('red');
+    img = $('img#SC1');
+    ok(img.hasClass('tl-red'), 'Default tl-red class is OK');
+    cycle(img);
+    ok(img.hasClass('tl-amber'), 'First cycle to tl-amber class');
+    stub_JSON.returns('amber');
+    cycle(img);
+    ok(img.hasClass('tl-green'), 'Second cycle to tl-green class');
+    stub_JSON.returns('green');
+    cycle(img);
+    ok(img.hasClass('tl-red'), 'Third cycle to tl-red class');
     $.getJSON.restore();
 });
 

@@ -10,11 +10,11 @@
 <div id="qunit"></div>
 <div id="qunit-fixture">
     <li class="criterion">
-        <img id="SC1" src="/static/images/img_trans.png" style="background-position: 0px 0px">
+        <img id="SC1" class="tl-red" src="/static/images/img_trans.png" >
             Spot 3D modelling tasks
     </li>
 </div>
-<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="http://code.jquery.com/qunit/qunit-1.17.1.js"></script>
 <script src="../../../static/jQplugins/carhartl-jquery-cookie-fedc4cb/jquery.cookie.js"></script>
 <script src="../../../static/traffic.js"></script>
@@ -23,21 +23,25 @@
 
 test("Traffic light has initial (red) background-position", function () {
     equal($('img#SC1').css('background-position'), "0px 0px", "Correct red position");
+    ok($('img#SC1').hasClass('tl-red'), 'Has tl-red class');
 });
 
 test("Traffic light switches to amber position on dbl click", function () {
     $('img#SC1').trigger('dblclick');
     equal($('img#SC1').css('background-position'), "-17px 0px", "Correct amber position");
+    ok($('img#SC1').hasClass('tl-amber'), 'Has tl-amber class');
 });
 
 test("Traffic light switches to green position on 2nd click", function () {
     $('img#SC1').trigger('dblclick');
     equal($('img#SC1').css('background-position'), "-34px 0px", "Correct green position");
+    ok($('img#SC1').hasClass('tl-green'), 'Has tl-green class');
 });
 
 test("Traffic light returns to red position on 3rd click", function () {
     $('img#SC1').trigger('dblclick');
     equal($('img#SC1').css('background-position'), "0px 0px", "Correct red position");
+    ok($('img#SC1').hasClass('tl-red'), 'Has tl-red class');
 });
 
 
