@@ -115,6 +115,6 @@ function cycle_and_progress(img) {
 $(document).ready(function() {
     $("input.traffic").remove();
     $("img[id^='SC'], img[id^='LO']").dblclick(function() {
-	    cycle_and_progress($(this))
+	    cycle($(this))
     });
 }); //ready
