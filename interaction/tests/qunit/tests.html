@@ -44,7 +44,7 @@ test("Double click LO triggers cycle function", function (assert) {
     assert.equal(cycle.calledOnce, true, 'cycle called after dblclick on LO');
 });
 
-/*
+
 test("Double click SC triggers cycle function", function (assert) {
     cycle = sinon.stub();
     $('img#SC1').dblclick();
@@ -97,7 +97,7 @@ test("The get_status function gives correct status", function (assert) {
     assert.equal(get_status(img), 'red', 'Red status is returned'); 
     $.getJSON.restore()
 });
-*/
+
 
 module("Cycle function tests");
 
@@ -108,16 +108,12 @@ test("The cycle function requires img argument", function (assert) {
         Error,
         'passing no image throws Error');
 });
-/*
+
 test("The cycle function accepts img argument", function (assert) {
-    var done = assert.async();
     var stub_JSON = sinon.stub($, "getJSON");
     stub_JSON.returns('red');
     img = $('img#SC1');
-    setTimeout(function() {
-        assert.ok(cycle(img), 'Cycle accepts img argument');
-        done();
-    });
+    assert.ok(cycle(img), 'Cycle accepts img argument', 500);
     $.getJSON.restore();
 });
 
@@ -160,7 +156,7 @@ test( "assert.async() test", function( assert ) {
         assert.equal( document.activeElement, input[0], "Input was focused" );
         done();
     });
-});*/
+});
 </script>
 </body>
 </html>
