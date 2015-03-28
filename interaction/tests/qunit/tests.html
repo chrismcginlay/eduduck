@@ -39,30 +39,38 @@
 module("Traffic light is bound to cycle function");
 
 test("Double click LO triggers cycle function", function (assert) {
+    var origCycle = cycle;
     cycle = sinon.stub();
     $('img#LO8').dblclick();
     assert.equal(cycle.calledOnce, true, 'cycle called after dblclick on LO');
+    cycle = origCycle;
 });
 
 
 test("Double click SC triggers cycle function", function (assert) {
+    var origCycle = cycle;
     cycle = sinon.stub();
     $('img#SC1').dblclick();
     assert.equal(cycle.calledOnce, true, 'cycle called after dblclick on SC');
+    cycle = origCycle;
 });
 
 test("Double click on adhoc image inside <li> doesn't trigger cycle", function () {
+    var origCycle = cycle;
     cycle = sinon.stub();
     $('img#gfx').dblclick();
     equal(cycle.notCalled, true,
         'Non TL images inside <li> do not call cycle after dblclick');
+    cycle = origCycle;
 });
 
 test("Double click on adhoc image outside <li> doesn't trigger cycle", function () {
+    var origCycle = cycle;
     cycle = sinon.stub();
     $('img#logo').dblclick();
     equal(cycle.notCalled, true,
         'Non TL images outside <li> do not call cycle after dblclick');
+    cycle = origCycle;
 });
 
 
