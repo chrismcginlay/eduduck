@@ -149,14 +149,13 @@ test("Cycle function stores new state", function (assert) {
     assert.ok(false, "how to write this?");
 });
 
-test( "assert.async() test", function( assert ) {
-    var done = assert.async();
-    var input = $( "img#logo" ).focus();
-    setTimeout(function() {
-        assert.equal( document.activeElement, input[0], "Input was focused" );
-        done();
-    });
+
+module("write_status function of traffic light objects");
+
+test("write_status function exists", function(assert) {
+    assert.ok(write_status(), "write_status called");
 });
+
 </script>
 </body>
 </html>
