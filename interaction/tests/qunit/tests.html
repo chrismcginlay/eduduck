@@ -153,17 +153,31 @@ test("Cycle function cycles tl-red|amber|green classes", function (assert) {
     $.getJSON.restore();
 });
 
-test("Cycle function stores new state", function (assert) {
-    assert.ok(false, "how to write this?");
-});
-
 
 module("write_status function of traffic light objects");
 
-test("write_status function exists", function(assert) {
-    assert.ok(write_status(), "write_status called");
+test("cycle_status_indb function requires argument", function(assert) {
+    assert.throws(function() {
+        cycle_status_indb();
+    },
+        Error,
+        'passing no argument throws Error');
 });
 
+test("cycle_status_indb function accepts integer arg", function(assert) {
+    assert.ok(cycle_status_indb(3), "cycle_status_indb called");
+});
+
+test("cycle_status_indb_function rejects non-integer arg", function(assert) {
+    assert.throws(
+        function() {cycle_status_indb(2.4); },
+        Error,
+        'passing float throws Error');
+    assert.throws(
+        function() {cycle_status_indb("43"); },
+        Error,
+        'passing string throws Error');
+});
 </script>
 </body>
 </html>

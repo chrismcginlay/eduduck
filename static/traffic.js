@@ -31,6 +31,14 @@ function get_status(img) {
     return status; 
 }
 
+function cycle_status_indb(lid_id) {
+    assert(lid_id, "no lid_id supplied");
+    assert(typeof lid_id !== "string", "string argument: expect integer");
+    assert(lid_id%1 == 0, "float argument: expect integer");
+    var url = '/interaction/learningintentiondetail/'+lid_id+'cycle';
+    return true;
+}
+
 function get_lid(img) {
     assert(img, "no image supplied from DOM");
     lid_pk = (img.attr('id')).slice(2);
