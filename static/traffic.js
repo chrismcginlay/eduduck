@@ -129,7 +129,7 @@ function cycle_and_progress(img) {
 
 $(document).ready(function() {
     $("input.traffic").remove();
-    $("img[id^='SC'], img[id^='LO']").dblclick(function() {
-	    cycle($(this))
+    $("img[id^='id_SC'], img[id^='id_LO']").dblclick(function() {
+        cycle($(this))
     });
 }); //ready
