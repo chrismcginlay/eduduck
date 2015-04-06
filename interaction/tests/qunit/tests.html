@@ -13,14 +13,14 @@
     <ol>
     <li class="criterion">
         <img id="gfx" src="" width=100 height=100 alt="dummy graphic">
-        <img id="SC1" class="tl-red" 
+        <img id="id_SC1" class="tl-red" 
             src="../../../static/images/img_trans.png">Spot 3D modelling tasks
     </li>
     </ol>
 
     <ol>
     <li class="learning_outcome">
-        <img id="LO8" class="tl-red"
+        <img id="id_LO8" class="tl-red"
             src="../../../static/images/img_trans.png" >I can correctly...
     </li>
     </ol>
@@ -38,21 +38,33 @@
 
 module("Traffic light is bound to cycle function");
 
-test("Double click LO triggers cycle function", function (assert) {
+test("Double click LO triggers cycle functions", function (assert) {
     var origCycle = cycle;
+    var origCycle_status_indb = cycle_status_indb;
     cycle = sinon.stub();
-    $('img#LO8').dblclick();
-    assert.equal(cycle.calledOnce, true, 'cycle called after dblclick on LO');
+    cycle_status_indb = sinon.stub();
+    $('img#id_LO8').dblclick();
+    assert.equal(
+        cycle.calledOnce, true, 'cycle called after dblclick on LO');
+    assert.equal(
+        cycle_status_indb.calledOnce, true, 'cycle_status_indb called');
     cycle = origCycle;
+    cycle_status_indb = origCycle_status_indb;
 });
 
 
-test("Double click SC triggers cycle function", function (assert) {
+test("Double click SC triggers cycle functions", function (assert) {
     var origCycle = cycle;
+    var origCycle_status_indb = cycle_status_indb;
     cycle = sinon.stub();
-    $('img#SC1').dblclick();
-    assert.equal(cycle.calledOnce, true, 'cycle called after dblclick on SC');
+    cycle_status_indb = sinon.stub();
+    $('img#id_SC1').dblclick();
+    assert.equal(
+        cycle.calledOnce, true, 'cycle called after dblclick on SC');
+    assert.equal(
+        cycle_status_indb.calledOnce, true, 'cycle_status_indb called');
     cycle = origCycle;
+    cycle_status_indb = origCycle_status_indb;
 });
 
 test("Double click on adhoc image inside <li> doesn't trigger cycle", function () {
@@ -77,9 +89,9 @@ test("Double click on adhoc image outside <li> doesn't trigger cycle", function 
 module("Get status of Traffic Light object");
 
 test("The get_lid function returns correct lid", function () {
-    img = $('img#LO8');
+    img = $('img#id_LO8');
     equal(get_lid(img),8,'get_lid working for LO');
-    img = $('img#SC1');
+    img = $('img#id_SC1');
     equal(get_lid(img),1, 'get_lid working for SC');
 });
 
@@ -100,7 +112,7 @@ test("The get_lid function throws on incorrect arguments", function (assert) {
 test("The get_status function gives correct status", function (assert) {
     var stub_JSON = sinon.stub($, "getJSON");
     stub_JSON.returns('red');
-    img = $('img#LO8');
+    img = $('img#id_LO8');
     assert.ok(get_status(img), 'successfully called');
     assert.equal(get_status(img), 'red', 'Red status is returned'); 
     $.getJSON.restore()
@@ -120,7 +132,7 @@ test("The cycle function requires img argument", function (assert) {
 test("The cycle function accepts img argument", function (assert) {
     var stub_JSON = sinon.stub($, "getJSON");
     stub_JSON.returns('red');
-    img = $('img#SC1');
+    img = $('img#id_SC1');
     assert.ok(cycle(img), 'Cycle accepts img argument', 500);
     $.getJSON.restore();
 });
@@ -128,7 +140,7 @@ test("The cycle function accepts img argument", function (assert) {
 test("The cycle function returns next state", function (assert) {
     var stub_JSON = sinon.stub($, "getJSON");
     stub_JSON.returns('red');
-    img = $('img#SC1');
+    img = $('img#id_SC1');
     assert.equal(cycle(img), 'amber', 'Red to amber cycles');
     stub_JSON.returns('amber');
     assert.equal(cycle(img), 'green', 'Amber to green cycles');
@@ -140,7 +152,7 @@ test("The cycle function returns next state", function (assert) {
 test("Cycle function cycles tl-red|amber|green classes", function (assert) {
     var stub_JSON = sinon.stub($, "getJSON");
     stub_JSON.returns('red');
-    img = $('img#SC1');
+    img = $('img#id_SC1');
     ok(img.hasClass('tl-red'), 'Default tl-red class is OK');
     cycle(img);
     ok(img.hasClass('tl-amber'), 'First cycle to tl-amber class');

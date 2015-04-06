@@ -48,7 +48,7 @@ function cycle_status_indb(lid_id) {
 
 function get_lid(img) {
     assert(img, "no image supplied from DOM");
-    lid_pk = (img.attr('id')).slice(2);
+    lid_pk = (img.attr('id')).slice(5);
     assert(lid_pk, "no lid_pk extracted from img");
     return lid_pk;
 }
@@ -130,6 +130,8 @@ function cycle_and_progress(img) {
 $(document).ready(function() {
     $("input.traffic").remove();
     $("img[id^='id_SC'], img[id^='id_LO']").dblclick(function() {
-        cycle($(this))
+        cycle($(this));
+        var lid_pk = parseInt(get_lid($(this)));
+        cycle_status_indb(lid_pk);
     });
 }); //ready
