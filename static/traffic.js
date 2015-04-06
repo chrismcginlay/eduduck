@@ -35,8 +35,15 @@ function cycle_status_indb(lid_id) {
     assert(lid_id, "no lid_id supplied");
     assert(typeof lid_id !== "string", "string argument: expect integer");
     assert(lid_id%1 == 0, "float argument: expect integer");
-    var url = '/interaction/learningintentiondetail/'+lid_id+'cycle';
-    return true;
+    var url = '/interaction/learningintentiondetail/'+lid_id+'/cycle/';
+    var cycle_request = $.ajax({
+        type:'POST',
+        url: url, 
+        data: {},
+        dataType: 'json',
+    }).done(function(data) {
+        return data;
+    });
 }
 
 function get_lid(img) {

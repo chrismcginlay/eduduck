@@ -165,10 +165,12 @@ test("cycle_status_indb function requires argument", function(assert) {
 });
 
 test("cycle_status_indb function accepts integer arg", function(assert) {
-    assert.ok(cycle_status_indb(3), "cycle_status_indb called");
+    assert.expect(1);
+    cycle_status_indb(3);
+    assert.ok(true, "Cycle accepted integer arg");
 });
 
-test("cycle_status_indb_function rejects non-integer arg", function(assert) {
+test("cycle_status_indb function rejects non-integer arg", function(assert) {
     assert.throws(
         function() {cycle_status_indb(2.4); },
         Error,
@@ -178,7 +180,27 @@ test("cycle_status_indb_function rejects non-integer arg", function(assert) {
         Error,
         'passing string throws Error');
 });
+
+test("cycle_status_indb function makes POST request on url", function(assert) {
+    var stub_AJAX = sinon.stub($, "ajax");
+    
+    function okResponse() {
+        var d = $.Deferred();
+        d.resolve( {dummy:'data'});
+        return d.promise();
+    }
+
+    stub_AJAX.returns(okResponse());
+    var url = "/interaction/learningintentiondetail/1/cycle/";
+    cycle_status_indb(1);
+    assert.equal(stub_AJAX.calledOnce, true, "$.ajax used");
+    assert.equal(stub_AJAX.getCall(0).args[0]['type'], 'POST', "Post method used");
+    assert.equal(stub_AJAX.getCall(0).args[0]['url'], url, "Correct url used");    
+    assert.equal(stub_AJAX.getCall(0).args[0]['dataType'], 'json', "JSON expected");
+    $.ajax.restore();
+});
+
+
 </script>
 </body>
 </html>
-
