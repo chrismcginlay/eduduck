@@ -35,15 +35,16 @@ function cycle_status_indb(lid_id) {
     assert(lid_id, "no lid_id supplied");
     assert(typeof lid_id !== "string", "string argument: expect integer");
     assert(lid_id%1 == 0, "float argument: expect integer");
+    var r = $.Deferred();    
     var url = '/interaction/learningintentiondetail/'+lid_id+'/cycle/';
-    var cycle_request = $.ajax({
+    var jqXHR = $.ajax({
         type:'POST',
         url: url, 
         data: {},
         dataType: 'json',
-    }).done(function(data) {
-        return data;
     });
+    r.resolve();
+    return r,data;
 }
 
 function get_lid(img) {
@@ -77,6 +78,14 @@ function cycle(img) {
             break;
     }
     return next_status;
+}
+
+function refresh_progress(data) {
+    assert(data, "data argument not supplied");
+    progressLO_data = data['progress']['LO'];
+    progressSC_data = data['progress']['SC'];
+    progressLO_element = $('progress#progLO');
+    progressSC_element = $('progress#progSC');
 }
 
 function cycle_and_progress(img) {
@@ -131,7 +140,9 @@ $(document).ready(function() {
     $("input.traffic").remove();
     $("img[id^='id_SC'], img[id^='id_LO']").dblclick(function() {
         cycle($(this));
+        
         var lid_pk = parseInt(get_lid($(this)));
-        cycle_status_indb(lid_pk);
+        data = cycle_status_indb(lid_pk);
+        refresh_progress(data);
     });
 }); //ready

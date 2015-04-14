@@ -212,7 +212,18 @@ test("cycle_status_indb function makes POST request on url", function(assert) {
     $.ajax.restore();
 });
 
+module("refresh_progress function for updating progress bars");
 
+test("refresh_progress function exists", function(assert) {
+    refresh_progress();
+    assert.ok("refresh_progress called ok");
+});
+
+test("refresh_progress accepts data object argument", function(assert) {
+    data = {dud:'data'};
+    refresh_progress(data);
+    assert.ok("refresh_progress called with data object");
+});
 </script>
 </body>
 </html>
