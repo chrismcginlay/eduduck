@@ -8,9 +8,8 @@ function csrfSafeMethod(method) {
 }
 
 $.ajaxSetup({
-    crossDomain: false, // obviates need for sameOrigin test
     beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type)) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
     }
@@ -35,16 +34,24 @@ function cycle_status_indb(lid_id) {
     assert(lid_id, "no lid_id supplied");
     assert(typeof lid_id !== "string", "string argument: expect integer");
     assert(lid_id%1 == 0, "float argument: expect integer");
-    var r = $.Deferred();    
     var url = '/interaction/learningintentiondetail/'+lid_id+'/cycle/';
     var jqXHR = $.ajax({
         type:'POST',
         url: url, 
-        data: {},
+        data: {'csrf_token':csrftoken},
         dataType: 'json',
     });
-    r.resolve();
-    return r,data;
+    jqXHR.done(function(json) {
+        if (json.authenticated==false) {
+            alert('You are not logged in');
+            return false;
+        }
+        if (json.enrolled==false) {
+            alert('You are not enrolled');
+            return false;
+        }
+        return jqXHR.responseJSON;
+    });
 }
 
 function get_lid(img) {
@@ -140,9 +147,10 @@ $(document).ready(function() {
     $("input.traffic").remove();
     $("img[id^='id_SC'], img[id^='id_LO']").dblclick(function() {
         cycle($(this));
-        
+        //http://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call
         var lid_pk = parseInt(get_lid($(this)));
-        data = cycle_status_indb(lid_pk);
-        refresh_progress(data);
+        cycle_status_indb(lid_pk, function(data) {
+            refresh_progress(data);
+        });
     });
 }); //ready

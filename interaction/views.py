@@ -15,6 +15,7 @@ from django.shortcuts import (
 )
 from django.template import RequestContext
 from django.utils import timezone    
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from outcome.models import LearningIntentionDetail
 from attachment.models import Attachment
@@ -108,39 +109,50 @@ def userlearningintentiondetail_single(request, user_id, lid_id):
     context_instance = RequestContext(request)
     return render_to_response(template, context_data, context_instance)
 
-@login_required
+@ensure_csrf_cookie
 def userlearningintentiondetail_cycle(request, lid_id):
     """For AJAX use in cycling learning intention details (LID)"""
   
-    lid = LearningIntentionDetail.objects.get(pk=lid_id)
-    course = lid.learning_intention.lesson.course
-   
-    # If user not enrolled, redirect to enrol on course homepage 
-    try:
-         UserCourse.objects.get(user=request.user.id, course=course)
-    except ObjectDoesNotExist:
-        return(HttpResponseRedirect("/courses/{0}/".format(course.id)))
+    if request.user.is_authenticated():
+        lid = LearningIntentionDetail.objects.get(pk=lid_id)
+        course = lid.learning_intention.lesson.course
+      
+        # If user not enrolled, redirect to enrol on course homepage 
+        try:
+             UserCourse.objects.get(user=request.user.id, course=course)
+        except ObjectDoesNotExist:
+            jsonr = json.dumps({'enrolled':False})
+            return HttpResponse(jsonr, mimetype='application/json')
 
-    #Need to ensure the interaction object exists for user, LID
+        #Need to ensure the interaction object exists for user, LID
 
-    ulid_set = UserLearningIntentionDetail.objects.get_or_create( 
-                        user=request.user, 
-                        learning_intention_detail=lid)
-    ulid = ulid_set[0]
+        ulid_set = UserLearningIntentionDetail.objects.get_or_create( 
+                            user=request.user, 
+                            learning_intention_detail=lid)
+        ulid = ulid_set[0]
 
-    #Need now to ensure that an interaction object exists for user, LI
-    uli_set = UserLearningIntention.objects.get_or_create(
-        user = request.user,
-        learning_intention = lid.learning_intention)
-    uli = uli_set[0]
-    logger.info("Cycling learning intention detail ULID: "+str(ulid))
-    ulid.cycle()
+        #Need now to ensure that an interaction object exists for user, LI
+        uli_set = UserLearningIntention.objects.get_or_create(
+            user = request.user,
+            learning_intention = lid.learning_intention)
+        uli = uli_set[0]
+        logger.info("Cycling learning intention detail ULID: "+str(ulid))
+        ulid.cycle()
 
-    #Update progress for the entire Learning Intention
-    #uli.progress() is combined SC and LO progress
-    result = {'condition':ulid.condition, 'progress':uli.progress()}
-    jresult = json.dumps(result)
-    return HttpResponse(jresult, mimetype='application/json')
+        #Update progress for the entire Learning Intention
+        #uli.progress() is combined SC and LO progress
+        result = {
+            'enrolled': True,
+            'authenticated': True,
+            'condition':ulid.condition,
+            'progress':uli.progress()
+        }
+        jresult = json.dumps(result)
+        return HttpResponse(jresult, mimetype='application/json')
+
+    else: #not authenticated
+        jsonr = json.dumps({'authenticated': False, 'enrolled':False})
+        return HttpResponse(jsonr, mimetype='application/json')
     
 @login_required
 def userlearningintention_progress_bar(request, lid_id):
