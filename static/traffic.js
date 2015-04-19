@@ -35,22 +35,11 @@ function cycle_status_indb(lid_id) {
     assert(typeof lid_id !== "string", "string argument: expect integer");
     assert(lid_id%1 == 0, "float argument: expect integer");
     var url = '/interaction/learningintentiondetail/'+lid_id+'/cycle/';
-    var jqXHR = $.ajax({
+    return $.ajax({
         type:'POST',
         url: url, 
         data: {'csrf_token':csrftoken},
         dataType: 'json',
-    });
-    jqXHR.done(function(json) {
-        if (json.authenticated==false) {
-            alert('You are not logged in');
-            return false;
-        }
-        if (json.enrolled==false) {
-            alert('You are not enrolled');
-            return false;
-        }
-        return jqXHR.responseJSON;
     });
 }
 
@@ -149,8 +138,20 @@ $(document).ready(function() {
         cycle($(this));
         //http://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call
         var lid_pk = parseInt(get_lid($(this)));
-        cycle_status_indb(lid_pk, function(data) {
-            refresh_progress(data);
+        cycle_status_indb(lid_pk).done(function(json) {
+            if (json.authenticated==false) {
+                alert('You are not logged in');
+                return false;
+            }
+            if (json.enrolled==false) {
+                alert('You are not enrolled');
+                return false;
+            }
+            refresh_progress(json.progress);
+            return true;
+        }).fail(function() {
+            alert('Something went wrong whilst trying to update this traffic light');
+            return false;
         });
     });
 }); //ready
