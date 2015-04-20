@@ -78,10 +78,14 @@ function cycle(img) {
 
 function refresh_progress(data) {
     assert(data, "data argument not supplied");
-    progressLO_data = data['progress']['LO'];
-    progressSC_data = data['progress']['SC'];
+    progressLO_data = data['LO'];
+    progressSC_data = data['SC'];
     progressLO_element = $('progress#progLO');
     progressSC_element = $('progress#progSC');
+    progressLO_element[0].value = progressLO_data[0];
+    progressLO_element[0].max = progressLO_data[1];
+    progressSC_element[0].value = progressSC_data[0];
+    progressSC_element[0].max = progressSC_data[1];
 }
 
 function cycle_and_progress(img) {
