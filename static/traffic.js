@@ -86,6 +86,27 @@ function refresh_progress(data) {
     progressLO_element[0].max = progressLO_data[1];
     progressSC_element[0].value = progressSC_data[0];
     progressSC_element[0].max = progressSC_data[1];
+
+    var fallback = document.getElementById("progLO_fb");
+    var status = document.getElementById("progLO_status");
+    $(fallback).append("Browser lacks support for progress bar");
+    $(fallback).css("display", "block");
+    var LO_prog = progressLO_data[0];
+    var LO_max = progressLO_data[1];
+    $(status).empty().append(LO_prog + "/" + LO_max + " completed. ");
+    if (LO_prog == LO_max) {
+        $(status).append("Well done!");
+    }
+    fallback = document.getElementById("progSC_fb");
+    var status = document.getElementById("progSC_status");
+    var SC_prog = progressSC_data[0];
+    var SC_max = progressSC_data[1];
+    $(fallback).append("Browser lacks support for progress bar");
+    $(fallback).css("display", "block");
+    $(status).empty().append(SC_prog + "/" + SC_max + " completed. ");
+    if (SC_prog == SC_max) {
+        $(status).append("Well done!");
+    }
 }
 
 function cycle_and_progress(img) {
