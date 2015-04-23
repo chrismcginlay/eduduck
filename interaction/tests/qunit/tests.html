@@ -36,53 +36,46 @@
 /*global $, test, equal */
 
 
-module("Traffic light is bound to cycle function");
+module("Traffic light is bound to cycle function", {
+    beforeEach: function() {
+        this.origCycle = cycle;
+        this.origCycle_status_indb = cycle_status_indb;
+        cycle = sinon.stub();
+        cycle_status_indb = sinon.stub();
+    },
+    afterEach: function() {
+        cycle = this.origCycle;
+        cycle_status_indb = this.origCycle_status_indb;
+    }
+});
 
 test("Double click LO triggers cycle functions", function (assert) {
-    var origCycle = cycle;
-    var origCycle_status_indb = cycle_status_indb;
-    cycle = sinon.stub();
-    cycle_status_indb = sinon.stub();
     $('img#id_LO8').dblclick();
     assert.equal(
         cycle.calledOnce, true, 'cycle called after dblclick on LO');
     assert.equal(
         cycle_status_indb.calledOnce, true, 'cycle_status_indb called');
-    cycle = origCycle;
-    cycle_status_indb = origCycle_status_indb;
 });
 
 
 test("Double click SC triggers cycle functions", function (assert) {
-    var origCycle = cycle;
-    var origCycle_status_indb = cycle_status_indb;
-    cycle = sinon.stub();
-    cycle_status_indb = sinon.stub();
     $('img#id_SC1').dblclick();
     assert.equal(
         cycle.calledOnce, true, 'cycle called after dblclick on SC');
     assert.equal(
         cycle_status_indb.calledOnce, true, 'cycle_status_indb called');
-    cycle = origCycle;
-    cycle_status_indb = origCycle_status_indb;
 });
 
 test("Double click on adhoc image inside <li> doesn't trigger cycle", function () {
-    var origCycle = cycle;
-    cycle = sinon.stub();
     $('img#gfx').dblclick();
     equal(cycle.notCalled, true,
         'Non TL images inside <li> do not call cycle after dblclick');
-    cycle = origCycle;
 });
 
 test("Double click on adhoc image outside <li> doesn't trigger cycle", function () {
-    var origCycle = cycle;
-    cycle = sinon.stub();
     $('img#logo').dblclick();
     equal(cycle.notCalled, true,
         'Non TL images outside <li> do not call cycle after dblclick');
-    cycle = origCycle;
 });
 
 
