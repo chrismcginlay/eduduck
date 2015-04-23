@@ -10,6 +10,8 @@
 <div id="qunit"></div>
 <div id="qunit-fixture">
     <img id="logo" src="" width=100 height=100 alt="dummy logo">
+    <progress value="3" max="4" id="progSC">
+    <progress value="1" max="2" id="progLO">
     <ol>
     <li class="criterion">
         <img id="gfx" src="" width=100 height=100 alt="dummy graphic">
@@ -208,12 +210,14 @@ test("cycle_status_indb function makes POST request on url", function(assert) {
 module("refresh_progress function for updating progress bars");
 
 test("refresh_progress function exists", function(assert) {
-    refresh_progress();
-    assert.ok("refresh_progress called ok");
+    assert.throws(
+        function() { refresh_progress(); },
+        Error,
+        "refresh_progress asserts when no data passed");
 });
 
 test("refresh_progress accepts data object argument", function(assert) {
-    data = {dud:'data'};
+    data = {dud:'data', LO:[1,2], SC:[3,4]};
     refresh_progress(data);
     assert.ok("refresh_progress called with data object");
 });
