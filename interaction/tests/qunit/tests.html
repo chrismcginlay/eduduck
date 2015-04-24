@@ -30,6 +30,7 @@
 
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="http://code.jquery.com/qunit/qunit-1.17.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mockjax/1.6.2/jquery.mockjax.min.js"></script>
 <script src="../../../static/sinon.js"></script>
 <script src="http://sinonjs.org/releases/sinon-qunit-1.0.0.js"></script>
 <script src="../../../static/jQplugins/carhartl-jquery-cookie-fedc4cb/jquery.cookie.js"></script>
@@ -43,7 +44,7 @@ module("Traffic light is bound to cycle function", {
         this.origCycle = cycle;
         this.origCycle_status_indb = cycle_status_indb;
         cycle = sinon.stub();
-        cycle_status_indb = sinon.stub();
+        spy_cycle_status_indb = sinon.spy(cycle_status_indb);
     },
     afterEach: function() {
         cycle = this.origCycle;
@@ -52,20 +53,30 @@ module("Traffic light is bound to cycle function", {
 });
 
 test("Double click LO triggers cycle functions", function (assert) {
+    $.mockjax({    
+        url:'/interaction/learningintentiondetail/8/cycle/',
+        responseJSON: {"authenticated":"true"}
+    });
+
     $('img#id_LO8').dblclick();
     assert.equal(
         cycle.calledOnce, true, 'cycle called after dblclick on LO');
     assert.equal(
-        cycle_status_indb.calledOnce, true, 'cycle_status_indb called');
+        spy_cycle_status_indb.calledOnce, true, 'cycle_status_indb called');
 });
 
 
 test("Double click SC triggers cycle functions", function (assert) {
+    $.mockjax({    
+        url:'/interaction/learningintentiondetail/1/cycle/',
+        responseJSON: {"authenticated":"true"}
+    });
+
     $('img#id_SC1').dblclick();
     assert.equal(
         cycle.calledOnce, true, 'cycle called after dblclick on SC');
     assert.equal(
-        cycle_status_indb.calledOnce, true, 'cycle_status_indb called');
+        spy_cycle_status_indb.calledOnce, true, 'cycle_status_indb called');
 });
 
 test("Double click on adhoc image inside <li> doesn't trigger cycle", function () {
