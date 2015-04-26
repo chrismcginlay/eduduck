@@ -52,7 +52,6 @@ function get_lid(img) {
 
 function cycle(img) {
     assert(img, "no image supplied from DOM");
-    var lid_pk = get_lid(img);
     var current_status = get_status(img);
     assert(current_status, "no current status obtained");
     var next_status; 
@@ -113,8 +112,8 @@ $(document).ready(function() {
     $("input.traffic").remove();
     $("img[id^='id_SC'], img[id^='id_LO']").dblclick(function() {
         //http://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call
-        var lid_pk = parseInt(get_lid($(this)));
         var tl_image = $(this);
+        var lid_pk = parseInt(get_lid(tl_image));
         cycle_status_indb(lid_pk).done(function(json) {
             if (json.authenticated==false) {
                 alert('You are not logged in');
