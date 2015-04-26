@@ -114,6 +114,7 @@ $(document).ready(function() {
     $("img[id^='id_SC'], img[id^='id_LO']").dblclick(function() {
         //http://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call
         var lid_pk = parseInt(get_lid($(this)));
+        var tl_image = $(this);
         cycle_status_indb(lid_pk).done(function(json) {
             if (json.authenticated==false) {
                 alert('You are not logged in');
@@ -123,7 +124,7 @@ $(document).ready(function() {
                 alert('You are not enrolled');
                 return false;
             }
-            cycle($(this));
+            cycle(tl_image);
             refresh_progress(json.progress);
             return true;
         }).fail(function() {

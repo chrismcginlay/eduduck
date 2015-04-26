@@ -137,7 +137,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
 
         actions = ActionChains(self.browser)
         actions.double_click(device)
-        
+       
         self.assertEqual(criterion.text, u'Spot 3D modelling tasks')
         self.assertEqual(device.get_attribute('id'), u'id_SC1')
         self.assertEqual(
