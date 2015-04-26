@@ -55,7 +55,10 @@ module("Traffic light is bound to cycle function", {
 test("Double click LO triggers cycle functions", function (assert) {
     $.mockjax({    
         url:'/interaction/learningintentiondetail/8/cycle/',
-        responseJSON: {"authenticated":"true"}
+        responseJSON: {
+            "authenticated":"true",
+            "enrolled":"true"
+        }
     });
 
     $('img#id_LO8').dblclick();
