@@ -17,6 +17,7 @@ or for staging or production servers.
 
 1. Software on local machine
 
+$local: sudo apt-get install pip python-dev
 $local: pip-2.7 install fabric
 $local: sudo apt-get install openssh-client
 You just need to get a copy of deploy_tools/fabfile.py in your home directory.
