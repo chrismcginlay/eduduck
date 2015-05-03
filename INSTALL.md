@@ -15,28 +15,32 @@ or for staging or production servers.
     * Root access or at least a user in sudoers group on target server.
     * SSH access to the server
 
-1. Software on local machine
-
+###1. Software on local machine
+```
 $local: sudo apt-get install pip python-dev
+$local: source /etc/profile  (check: may not be necessary)
 $local: pip-2.7 install fabric
 $local: sudo apt-get install openssh-client
-You just need to get a copy of deploy_tools/fabfile.py in your home directory.
+```
 
-2. Preparations of target machine
+Then you just need to get a copy of deploy_tools/fabfile.py in your home directory.
+
+###2. Preparations of target machine
 
 Tested on a fresh installation of Ubuntu 13.04.
 Everything will be set up via the useraccount for user 'roberta' etc.
-
+```
 $server: sudo adduser roberta
 $server: sudo usermod -a -G sudo roberta
-
+```
 Likely that server will already have ssh provision:
+```
 $server: sudo apt-get install openssh-server
-
+```
 Copy your local public SSH key from $local ~/.ssh/id_rsa.pub up to 
 $server's /home/roberta/.ssh/authorized_keys
 
-3. Server provisioning
+###3. Server provisioning
 
 The fabfile provision() function will install the requisite system-wide 
 applications. NB: other packages will be installed into virtualenvs later.
@@ -56,7 +60,7 @@ will be generated for you (which you should note down).
 
 If everything installed OK, proceed to deployment.
 
-4. Instance deployment
+###4. Instance deployment
 
 It's super-easy to use the deploy() function now to put development, staging
 and production instances of EduDuck onto the target machine. Be ready to give
@@ -79,7 +83,7 @@ After confirming the URL functions, make sure that their is a django admin user 
 the SITES variable is set up correctly:
 $local:~/deploy_tools fab minimal_production_data:host=billy@www.example.com:7822,settings=production
 
-5. Updating source code to latest git code.
+###5. Updating source code to latest git code.
 
 If all that is required is to pull the latest code from github, the use the 
 git_update() command. This will pull the latest code, collectstatic files and
