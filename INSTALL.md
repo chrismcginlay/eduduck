@@ -66,22 +66,19 @@ It's super-easy to use the deploy() function now to put development, staging
 and production instances of EduDuck onto the target machine. Be ready to give
 github credentials, server sudo password, MySQL root as the script runs.
 
-$local:~/deploy_tools fab deploy:host=sue@localhost,settings=dev
+```fab devbox:host=sue@localhost```
 
 or 
-
-$local:~/deploy_tools fab deploy:host=roberta@staging.example.com:7822,settings=staging
-
+```$local:~/deploy_tools fab deploy:host=roberta@staging.example.com:7822,settings=staging```
 or 
-
-$local:~/deploy_tools fab deploy:host=roberta@www.example.com:7822,settings=production
+```$local:~/deploy_tools fab deploy:host=roberta@www.example.com:7822,settings=production```
 
 MySQL, nginx and gunicorn should be configured and services started at the end.
-To test, simply visit the URL.
+To test, simply visit the URL (run the server and visit 127.0.0.1:8000 for devbox)
 
-After confirming the URL functions, make sure that their is a django admin user and that
+After confirming the URL functions, make sure that there is a django admin user and that
 the SITES variable is set up correctly:
-$local:~/deploy_tools fab minimal_production_data:host=billy@www.example.com:7822,settings=production
+```$local:~/deploy_tools fab minimal_production_data:host=billy@www.example.com:7822,settings=production```
 
 ###5. Updating source code to latest git code.
 
