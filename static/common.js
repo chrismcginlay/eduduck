@@ -1,5 +1,20 @@
 // Shadable class. To use specify 'shadable' class on an element.
 // The next sibling element will shade or toggle.
+
+var csrftoken = $.cookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
 $(document).ready(function(){    
     $( ".shadable" ).prepend('<span class="shade" title="Show/Hide">&darr;</span>');
     $( ".shade" ).click(function(){
