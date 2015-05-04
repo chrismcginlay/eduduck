@@ -160,6 +160,23 @@ def minimal_production_data():
         " python manage.py loaddata fixtures/minimal_production.json"\
         " --settings=EduDuck.settings.production".format(SOURCE_DIR))
 
+def full_test_data():
+    """ Load full test data with pretend courses and users.
+
+    Intended for use when setting up a development box"""
+
+    SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
+    run("cd {0}; source ../virtualenv/bin/activate;"\
+        " python manage.py loaddata"\
+        " functional_tests/fixtures/auth_user.json"\
+        " functional_tests/fixtures/courses.json"\
+        " functional_tests/fixtures/lessons.json"\
+        " functional_tests/fixtures/outcome_lints.json"\
+        " functional_tests/fixtures/attachments.json"\
+        " functional_tests/fixtures/videos.json"\
+        " functional_tests/fixtures/interactions.json"\
+        " --settings=EduDuck.settings.dev".format(SOURCE_DIR))
+
 def git_update(settings):
     """ Git pull the latest code from github, then run collectstatic,  
     and restart services just in case 
