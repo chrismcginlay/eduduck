@@ -47,16 +47,19 @@ applications. NB: other packages will be installed into virtualenvs later.
 
 From the deploy_tools directory, on your local machine (ssh on 7822):
 
-$local:~/deploy_tools fab provision:host=roberta@example.com:7822
+```$local:~/deploy_tools fab provision:host=roberta@example.com:7822```
 
 or, if this is a development box you are preparing 
 (but note, this script installs stuff not needed for dev such as nginx)
 
-$local:~/deploy_tools fab provision:host=sue@localhost
+```$local:~/deploy_tools fab provision:host=sue@localhost```
 
 If mysql-server has not previously been installed, you will be asked to provide
 a root mysql password (which should be secure). If you just hit enter a password 
 will be generated for you (which you should note down).
+
+The last step in this section is to apply any database migrations:
+```$local:~/ python manage.py migrate
 
 If everything installed OK, proceed to deployment.
 
@@ -78,7 +81,12 @@ To test, simply visit the URL (run the server and visit 127.0.0.1:8000 for devbo
 
 After confirming the URL functions, make sure that there is a django admin user and that
 the SITES variable is set up correctly:
+
+*For production or staging*
 ```$local:~/deploy_tools fab minimal_production_data:host=billy@www.example.com:7822,settings=production```
+
+*For development boxes*
+```$local:~/deploy_tools fab full_test_data:host=sue@localhost```
 
 ###5. Updating source code to latest git code.
 
@@ -86,11 +94,11 @@ If all that is required is to pull the latest code from github, the use the
 git_update() command. This will pull the latest code, collectstatic files and
 restart services.
 
-$local:~/deploy_tools fab git_update:host=roberta@staging.example.com,settings=staging
+```$local:~/deploy_tools fab git_update:host=roberta@staging.example.com,settings=staging```
 
 
 ## Things not taken care of yet.
-*The real database is not migrated (South)
+*The real database is not migrated in the fabfile
 *Search index is not rebuilt
 *Media files are not copied from backup for production
 
