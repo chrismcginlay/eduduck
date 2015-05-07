@@ -117,7 +117,11 @@ def userlearningintentiondetail_cycle(request, lid_id):
         try:
              UserCourse.objects.get(user=request.user.id, course=course)
         except ObjectDoesNotExist:
-            jsonr = json.dumps({'enrolled':False})
+            jsonr = json.dumps({
+                'authenticated':True,
+                'enrolled':False,
+                'course_pk':course.pk,
+            })
             return HttpResponse(jsonr, mimetype='application/json')
 
         #Need to ensure the interaction object exists for user, LID

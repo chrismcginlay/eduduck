@@ -214,7 +214,10 @@ class UserLearningIntentionViewTests(TestCase):
         cycle_url = "/interaction/learningintentiondetail/{0}/cycle/" \
             .format(lid.pk)
         response = self.client.get(cycle_url)
-        self.assertRedirects(response, "/courses/{0}/".format(course.pk))
+        parsed_json = json.loads(response.content)
+        self.assertEqual(parsed_json['authenticated'], True)
+        self.assertEqual(parsed_json['enrolled'], False)
+        self.assertEqual(parsed_json['course_pk'], 1)
    
     def test_userlearningintention_cycle_context(self):
         """Ensure correct context variables present for enrolled user"""
@@ -226,7 +229,6 @@ class UserLearningIntentionViewTests(TestCase):
         cycle_url = "/interaction/learningintentiondetail/{0}/cycle/" \
             .format(lid.pk)
         response = self.client.get(cycle_url)
-        import pdb; pdb.set_trace()
         self.assertEqual(response.status_code, 200)
         parsed_json = json.loads(response.content)
         self.assertEqual(parsed_json['authenticated'], True)
@@ -239,7 +241,7 @@ class UserLearningIntentionViewTests(TestCase):
     def test_userlearningintention_progress_bar(self):
         """View returns correct data for AJAX call"""
 
-        self.fail("delete or fix");
+        self.fail("fix");
         #Not logged in
         response = self.client.get('/interaction/learningintentiondetail'\
                                     '/1/progress/')
@@ -247,7 +249,10 @@ class UserLearningIntentionViewTests(TestCase):
 
         #Now logged in
         self.client.login(username='bertie', password='bertword')
-        response = self.client.get('/interaction/learningintentiondetail/1/progress/', CONTENT_TYPE='application/json')
+        ulid = self.ulid1
+        response = self.client.get(
+            '/interaction/learningintentiondetail/{0}/progress/'\
+            .format(ulid.pk))
         self.assertEqual(response.status_code, 200)
 
 

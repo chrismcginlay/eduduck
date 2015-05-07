@@ -117,11 +117,16 @@ $(document).ready(function() {
         cycle_status_indb(lid_pk).done(function(json) {
             if (json.authenticated==false) {
                 alert('You are not logged in');
+                $(location).attr(
+                    'href', '/accounts/login/');
                 return false;
             }
             if (json.enrolled==false) {
                 alert('You are not enrolled');
-                $(location).attr('href', 'http://www.eduduck.com/courses/');
+                $(location).attr(
+                    'href',
+                    '/courses/'+json.course_pk+'/'
+                );
                 return false;
             }
             cycle(tl_image);
