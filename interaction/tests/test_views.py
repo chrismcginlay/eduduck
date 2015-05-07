@@ -2,6 +2,7 @@
 Unit tests for Interaction views
 """
 
+import json
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -214,7 +215,26 @@ class UserLearningIntentionViewTests(TestCase):
             .format(lid.pk)
         response = self.client.get(cycle_url)
         self.assertRedirects(response, "/courses/{0}/".format(course.pk))
-    
+   
+    def test_userlearningintention_cycle_context(self):
+        """Ensure correct context variables present for enrolled user"""
+
+        enrolled_user = self.user1
+        course = self.course1
+        lid = self.lid1
+        self.client.login(username="bertie", password="bertword")
+        cycle_url = "/interaction/learningintentiondetail/{0}/cycle/" \
+            .format(lid.pk)
+        response = self.client.get(cycle_url)
+        import pdb; pdb.set_trace()
+        self.assertEqual(response.status_code, 200)
+        parsed_json = json.loads(response.content)
+        self.assertEqual(parsed_json['authenticated'], True)
+        self.assertEqual(parsed_json['enrolled'], True)
+        self.assertEqual(parsed_json['progress'], {u'SC': [0, 2], u'LO': [0, 1]})
+        self.assertEqual(parsed_json['condition'], 1)
+        
+
 # TODO Not working test of ajax view.
     def test_userlearningintention_progress_bar(self):
         """View returns correct data for AJAX call"""
