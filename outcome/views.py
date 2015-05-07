@@ -1,6 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import (render_to_response, 
-                              get_object_or_404)
+from django.shortcuts import (
+    get_object_or_404,
+    render
+)
                               
 from django.template import RequestContext
 from lesson.models import Lesson
@@ -110,6 +112,5 @@ def learning_intention(request, lesson_id, learning_intention_id):
                     'ulo_list':             ulo_list
                     })
     template = 'outcome/outcome_lint.html'
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
    

@@ -121,6 +121,7 @@ $(document).ready(function() {
             }
             if (json.enrolled==false) {
                 alert('You are not enrolled');
+                $(location).attr('href', 'http://www.eduduck.com/courses/');
                 return false;
             }
             cycle(tl_image);

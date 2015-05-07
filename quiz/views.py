@@ -1,6 +1,9 @@
-from django.template import RequestContext
-from django.shortcuts import (redirect, render_to_response, get_object_or_404,
-    get_list_or_404)
+from django.shortcuts import (
+    get_object_or_404,
+    get_list_or_404,
+    redirect, 
+    render,
+)
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
@@ -21,9 +24,7 @@ def questions(request):
     
     template = 'quiz/questions.html'
     context_data = { 'question_list': question_list,}
-    context_instance = RequestContext(request)
-    
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
     
 def question_add(request):
@@ -39,9 +40,8 @@ def question_add(request):
         
     template = 'quiz/question_add.html'
     context_data = { 'form_add': form, }
-    context_instance = RequestContext(request)
     assert form
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
 
 def question_edit(request, question_id):
@@ -60,9 +60,8 @@ def question_edit(request, question_id):
     context_data = {'form_edit':        form,
                     'question_id':      question_id,
                     }
-    context_instance = RequestContext(request)
     assert form
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
 #TODO implement confirmation prior to deletion
 def question_delete(request, question_id):
@@ -82,9 +81,7 @@ def answers(request):
     
     template = 'quiz/answers.html'
     context_data = { 'answer_list': answer_list,}
-    context_instance = RequestContext(request)
-    
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
     
 def answer_add(request):
@@ -100,9 +97,8 @@ def answer_add(request):
         
     template = 'quiz/answer_add.html'
     context_data = { 'form_add': form, }
-    context_instance = RequestContext(request)
     assert form
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
 
 def answer_edit(request, answer_id):
@@ -120,9 +116,8 @@ def answer_edit(request, answer_id):
     context_data = {'form_edit':        form,
                     'answer_id':      answer_id,
                     }
-    context_instance = RequestContext(request)
     assert form
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
 #TODO implement confirmation prior to deletion
 def answer_delete(request, answer_id):
@@ -140,9 +135,8 @@ def quizzes(request):
     
     template = 'quiz/quizzes.html'
     context_data = { 'quiz_list': quiz_list,}
-    context_instance = RequestContext(request)
     
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
     
 def quiz_add(request):
@@ -158,9 +152,8 @@ def quiz_add(request):
         
     template = 'quiz/quiz_add.html'
     context_data = { 'form_add': form, }
-    context_instance = RequestContext(request)
     assert form
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
 
 def quiz_edit(request, quiz_id):
@@ -178,9 +171,8 @@ def quiz_edit(request, quiz_id):
     context_data = {'form_edit':    form,
                     'quiz_id':      quiz_id,
                     }
-    context_instance = RequestContext(request)
     assert form
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
 #TODO implement confirmation prior to deletion
 def quiz_delete(request, quiz_id):
@@ -205,10 +197,12 @@ def quiz_take(request, quiz_id):
                 selected_answer[qstring] = question.answers.get(pk=request.POST[qstring])
         except (KeyError, Answer.DoesNotExist):
             #Redisplay quiz form
-            return render_to_response('quiz/quiz_take.html', 
-                                      {'quiz': quiz,
-                                       'error_message': "Please answer all of the questions.",},
-                                      context_instance=RequestContext(request))
+            return render(
+                request,
+                'quiz/quiz_take.html',
+                {'quiz': quiz,
+                 'error_message': "Please answer all of the questions.",},
+            )
         #form is submitted and complete, process it
         #save the quiz attempt, display results.
         quiz_attempt = QuizAttempt(user = request.user, quiz = quiz)
@@ -228,10 +222,11 @@ def quiz_take(request, quiz_id):
         return HttpResponseRedirect(reverse('quiz.views.quiz_results', args=(quiz_id,)))
 
     else: #unbound
-        return render_to_response('quiz/quiz_take.html',
-                                  {'quiz': quiz,},
-                                    context_instance=RequestContext(request))
-
+        return render(
+            request,
+            'quiz/quiz_take.html',
+            {'quiz': quiz,},
+        )
             
 def quiz_results(request, quiz_id):
     """Show the results of the quiz attempt"""
@@ -248,9 +243,9 @@ def quiz_results(request, quiz_id):
 #        question_attempts = QuestionAttempt.objects.filter(quiz_attempt=qa)
 #        attempt_digest.append(question_attempts)
         
-    return render_to_response('quiz/quiz_results.html',
-                              {'quiz_attempts': quiz_attempts,
-                               },
-                              context_instance=RequestContext(request))
-
+    return render(
+        request, 
+        'quiz/quiz_results.html',
+        {'quiz_attempts': quiz_attempts,},
+    )
 

@@ -10,10 +10,9 @@ from django.http import (
     HttpResponseRedirect
 )
 from django.shortcuts import (
-    render_to_response, 
+    render, 
     get_object_or_404
 )
-from django.template import RequestContext
 from django.utils import timezone    
 from django.views.decorators.csrf import ensure_csrf_cookie
 
@@ -45,9 +44,8 @@ def usercourse_single(request, user_id, course_id):
         timezone.activate(timezone.utc)
         
     template = 'interaction/usercourse_single.html'
-    context_data = {'uc': uc, 'history': history}
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    context = {'uc': uc, 'history': history}
+    return render(request, template, context)
 
 @login_required
 def userlesson_single(request, user_id, lesson_id):
@@ -64,9 +62,8 @@ def userlesson_single(request, user_id, lesson_id):
         timezone.activate(timezone.utc)
     
     template = 'interaction/userlesson_single.html'
-    context_data = {'ul': ul, 'history': history}
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    context = {'ul': ul, 'history': history}
+    return render(request, template, context)
 
 # TODO: possibly redundant view
 @login_required
@@ -105,9 +102,8 @@ def userlearningintentiondetail_single(request, user_id, lid_id):
         timezone.activate(timezone.utc)
     
     template = 'interaction/userlearningintentiondetail_single.html'
-    context_data = {'ulid': ulid, 'history': history}
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    context = {'ulid': ulid, 'history': history}
+    return render(request, template, context)
 
 @ensure_csrf_cookie
 def userlearningintentiondetail_cycle(request, lid_id):

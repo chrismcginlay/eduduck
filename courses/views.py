@@ -11,7 +11,6 @@ from django.forms.models import inlineformset_factory
 from django.shortcuts import (
     redirect,
     render,
-    render_to_response, 
     get_object_or_404, 
     get_list_or_404,
 )
@@ -154,7 +153,8 @@ def create(request):
         data = {'name': name_desired}
         course_form = CourseFullForm(initial=data)
     t = 'courses/course_create.html'
-    return render(request, t, {'form': course_form})
+    c = { 'form': course_form }
+    return render(request, t, c)
 
 def index(request):
     """Prepare variables for list of all courses"""
@@ -164,11 +164,11 @@ def index(request):
     course_count = Course.objects.count
     template = 'courses/course_index.html'
     cn24ths = _courses_n_24ths(course_list)
-    context_data = { 'course_list':  cn24ths,
-                     'course_count': course_count,
-                   }
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    c = {
+        'course_list':  cn24ths,
+        'course_count': course_count, 
+    }
+    return render(request, template, c)
 
 def iterNone(): 
     """Make None type iterable for zip function used below"""
@@ -284,6 +284,5 @@ def single(request, course_id):
 
     logger.debug('courses.single request context: status='+context_data['status']) 
     template = 'courses/course_single.html'        
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance) 
+    return render(request, template, context_data) 
 

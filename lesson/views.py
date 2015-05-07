@@ -11,7 +11,6 @@ from django.shortcuts import (
     redirect,
     render, 
     get_object_or_404, 
-    render_to_response
 )
 from django.template import RequestContext
 from django.utils import timezone
@@ -135,8 +134,7 @@ def visit(request, course_id, lesson_id):
     else:
         context_data.update({'user_can_edit_lesson': False})
 
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    return render(request, template, context_data)
     
 @login_required
 def edit(request, lesson_id, course_id):

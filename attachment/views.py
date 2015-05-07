@@ -1,6 +1,5 @@
 #attachment/views.py
-from django.shortcuts import get_object_or_404, render_to_response
-from django.template import RequestContext
+from django.shortcuts import get_object_or_404, render
 
 from .models import Attachment
 
@@ -13,6 +12,5 @@ def metadata(request, att_id):
     att = get_object_or_404(Attachment, pk=att_id)
     logger.info("User ID:%s, attachment ID:%s; accessing metadata")
     template = 'attachment/attachment_metadata.html'
-    context_data = {'att':  att}
-    context_instance = RequestContext(request)
-    return render_to_response(template, context_data, context_instance)
+    context = {'att':  att}
+    return render(request, template, context)

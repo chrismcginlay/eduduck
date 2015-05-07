@@ -1,7 +1,7 @@
 from django.core.mail import send_mail
 
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 
 from .forms import SupportForm
@@ -26,7 +26,8 @@ def support(request):
     else:
         form = SupportForm()
         
-    context_instance = RequestContext(request)
-    return render_to_response('support/support.html', 
-                              {'support_form': form}, 
-                              context_instance)
+    return render(
+        request, 
+        'support/support.html',
+        {'support_form': form}, 
+    )
