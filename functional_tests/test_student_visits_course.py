@@ -1,5 +1,9 @@
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from unittest import skip
 
 from .base import FunctionalTest
@@ -9,12 +13,21 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
     def test_collapsible_blocks_expand_or_collapse(self):
         self.browser.get(self.server_url+'/courses/1/')
         shadables = self.browser.find_elements_by_class_name('shade')
+        import pdb; pdb.set_trace()
         for shadable in shadables:
             ## parent, then sibling element (*)
             shady_bit = shadable.find_element_by_xpath('../following-sibling::*')
-            self.assertTrue(shady_bit.is_displayed())
+            try:
+                element = WebDriverWait(self.browser, 10).until(
+                    EC.visibility_of(shady_bit))
+            finally:
+                pass
             shadable.click()
-            self.assertFalse(shady_bit.is_displayed())
+            try:
+                element = WebDriverWait(self.browser, 10).until(
+                    EC.visibility_of(shady_bit))
+            except TimeoutException:
+                pass
     
     def test_user_enrols_on_course(self):
         # User Chris logs in.
