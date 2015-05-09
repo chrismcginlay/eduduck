@@ -1,5 +1,4 @@
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -10,24 +9,25 @@ from .base import FunctionalTest
 
 class RegisteredUserInteractsWithCourse(FunctionalTest):
 
+    class wait_for_element_to_be_invisible(object):
+        def __init__(self, element):
+            self.element = element
+ 
+        def __call__(self, driver):
+            return not(self.element.is_displayed())
+
     def test_collapsible_blocks_expand_or_collapse(self):
         self.browser.get(self.server_url+'/courses/1/')
         shadables = self.browser.find_elements_by_class_name('shade')
-        import pdb; pdb.set_trace()
         for shadable in shadables:
             ## parent, then sibling element (*)
             shady_bit = shadable.find_element_by_xpath('../following-sibling::*')
-            try:
-                element = WebDriverWait(self.browser, 10).until(
-                    EC.visibility_of(shady_bit))
-            finally:
-                pass
+            element = WebDriverWait(self.browser, 10).until(
+                EC.visibility_of(shady_bit))
             shadable.click()
-            try:
-                element = WebDriverWait(self.browser, 10).until(
-                    EC.visibility_of(shady_bit))
-            except TimeoutException:
-                pass
+            element = WebDriverWait(self.browser, 10).until(
+                self.wait_for_element_to_be_invisible(shady_bit))
+
     
     def test_user_enrols_on_course(self):
         # User Chris logs in.
