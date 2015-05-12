@@ -181,13 +181,11 @@ def attachment_download(request, att_id):
     """
 
     #Some implementation notes:
-    #If using login_required decorator the request.user.usercourse_set ORM call
-    #will work or throw ObjectDoesNotExist
-    #If not using login_required decorator (ie anon user can download) then 
-    #request.user.usercourse_set will throw AttributeError due to AnonymousUser
-    #not having a usercourse_set attribute.
-    #So catch it. Just NB that if using login_required, then the exception will
-    #never be thrown.
+    #3 use cases:
+    #   1. User not logged in. Forbidden. 
+    #   2. User logged in but not enrolled on course. Redirect to enrol page 
+    #   3. User logged in and enrollled. Download, log it.
+
     attachment = get_object_or_404(Attachment, id=att_id)    
     try:
         course_record = request.user.usercourse_set.get(course=attachment.course)
@@ -196,18 +194,20 @@ def attachment_download(request, att_id):
     except ObjectDoesNotExist:
         try:
             course_record = request.user.usercourse_set.get(course=attachment.lesson.course)
-        except ObjectDoesNotExist:
+        except (AttributeError, ObjectDoesNotExist) as err:
             course_record = None
     if course_record:
         #get_or_create return tuple (object, success_state)
         uad = UserAttachment.objects.get_or_create(user=request.user, attachment=attachment)
         #newly created record will automatically record download
         if (uad[1]==False): uad[0].record_download()
-        dl_link = uad[0].attachment.get_absolute_url()               
+        redir_link = uad[0].attachment.get_absolute_url()               
     else:
-        dl_link = attachment.get_absolute_url()
-    logger.debug('Absolute download URI for redirect is ' + dl_link)	
-    redir_resp = HttpResponseRedirect(dl_link)
-    return redir_resp
-
+        try:
+            parent_course_id = attachment.course.id
+        except AttributeError:
+            parent_course_id = attachment.lesson.course.id
+        redir_link = '/courses/{0}/enrol/'.format(parent_course_id)
+    logger.debug('Absolute download URI for redirect is ' + redir_link)	
+    return HttpResponseRedirect(redir_link)
 

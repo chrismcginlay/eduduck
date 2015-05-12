@@ -195,11 +195,13 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # The next lesson has a different url from the first
         second_url = self.browser.current_url
         self.assertNotEqual(first_url, second_url)
-        
         # and Helmi sees that the lesson navigation updates to show links to 
-        # both the previous lesson as well as a third lesson. She clicks on 
-        # the previous lesson and returns to the former url
-        self.browser.find_element_by_xpath("//span/a[@id='id_nav_next']")
-        self.browser.find_element_by_xpath(
-            "//span/a[@id='id_nav_prev']").click()
-        self.assertEqual(self.browser.current_url, first_url)
+        # both the previous lesson as well as a third lesson. 
+        # The previous lesson link refers to the former url
+        linkforw = self.browser.find_element_by_xpath(
+            "//span/a[@id='id_nav_next']")
+        linkback = self.browser.find_element_by_xpath(
+            "//span/a[@id='id_nav_prev']")
+        self.assertTrue('/courses/1/lesson/1' in linkback.get_attribute('href'))
+        self.assertTrue('/courses/1/lesson/3' in linkforw.get_attribute('href'))
+

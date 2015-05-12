@@ -19,6 +19,8 @@ from django.template import RequestContext
 from django.utils import timezone
 from django.utils.html import escape
 
+from attachment.models import Attachment
+from attachment.forms import AttachmentForm
 from interaction.models import UserCourse, UserLesson
 from lesson.forms import LessonEditForm
 from lesson.models import Lesson
@@ -34,6 +36,8 @@ LessonInlineFormset = inlineformset_factory(
     Course, Lesson, form=LessonEditForm, extra=3)
 VideoInlineFormset = inlineformset_factory(
     Course, Video, form=VideoForm, extra=1, exclude=('lesson',))
+AttachmentInlineFormset = inlineformset_factory(
+    Course, Attachment, form=AttachmentForm, extra=1, exclude=('lesson',))
 
 def _courses_n_24ths(clist):
     """ Take a list of courses cl, 3 courses at a time. Set their widths to 
@@ -87,6 +91,12 @@ def edit(request, course_id):
                 request.POST, prefix='lesson_formset', instance=course)
             video_formset = VideoInlineFormset(
                 request.POST, prefix='video_formset', instance=course)
+            attachment_formset = AttachmentInlineFormset(
+                request.POST, 
+                request.FILES,
+                prefix='attachment_formset',
+                instance=course
+            )
             if course_form.is_valid():
                 course_form.save()
                 logger.info("Course (id={0}) edited".format(course.pk))
@@ -96,9 +106,13 @@ def edit(request, course_id):
             if video_formset.is_valid():
                 video_formset.save()
                 logger.info("Video for course id {0} saved".format(course.pk))
+            if attachment_formset.is_valid():
+                attachment_formset.save()
+                logger.info("Attachment for course id {0} saved".format(course.pk))
             if (course_form.is_valid() 
                 and lesson_formset.is_valid()
-                and video_formset.is_valid()):
+                and video_formset.is_valid()
+                and attachment_formset.is_valid()):
                 logger.info("course (id={0}) edited".format(course.pk))
                 return redirect(course)
             else:
@@ -106,6 +120,7 @@ def edit(request, course_id):
                 c = { 'course_form': course_form,
                       'lesson_formset': lesson_formset,
                       'video_formset': video_formset, 
+                      'attachment_formset': attachment_formset,
                       'course': course,
                 }
                 return render(request, t, c)
@@ -116,10 +131,13 @@ def edit(request, course_id):
                 prefix='lesson_formset', instance=course)
             video_formset = VideoInlineFormset(
                 prefix='video_formset', instance=course)
+            attachment_formset = AttachmentInlineFormset(
+                prefix='attachment_formset', instance = course)
             t = 'courses/course_edit.html'
             c = { 'course_form': course_form,
                   'lesson_formset': lesson_formset,
                   'video_formset': video_formset, 
+                  'attachment_formset': attachment_formset,
                   'course': course,
             }
             return render(request, t, c)
@@ -155,6 +173,23 @@ def create(request):
     t = 'courses/course_create.html'
     c = { 'form': course_form }
     return render(request, t, c)
+
+@login_required
+def enrol(request,course_id):
+    """View to encourage enrolment when non-enrolled user tries to access
+    certain resources"""
+    
+    course = get_object_or_404(Course, pk=course_id)
+    if request.user.is_authenticated():
+        status='auth_noreg'
+        if request.user.usercourse_set.filter(course=course).exists():
+            status='auth_reg'
+    else:
+        status='anon'
+
+    t = 'courses/course_enrol.html'
+    c = { 'course': course, 'status': status }
+    return render(request, t, c) 
 
 def index(request):
     """Prepare variables for list of all courses"""

@@ -1,3 +1,5 @@
+import os
+from django.core.files.uploadedfile import TemporaryUploadedFile
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from unittest import skip
@@ -130,9 +132,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
     def test_can_delete_course(self):
         self.fail("not implemented")
  
-    def test_can_populate_course_with_resources(self):
-        """Author is able to create attachments, videos, LOs etc for course"""
- 
+    def test_can_populate_course_with_video_resources(self):
         # Chris wants to have a nice intro video on course 4
         # embedded on the course home page. He goes to the edit page
         self.browser.get(self.server_url)
@@ -179,7 +179,60 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self.browser.get(self.server_url+'/courses/4/')
         self.assertNotIn('My Intro Video', self.browser.page_source)
        
+    def test_can_populate_course_with_attachments(self):
+        # Chris now wishes to add some attachments to the course 4 page.
+        self.browser.get(self.server_url)
+        self._logUserIn('chris', 'chris')
+        self.browser.get(self.server_url+'/courses/4/edit/')
+
+        # On the edit page he sees an area for adding attachments.
+        afs = self.browser.find_element_by_id('id_attachment_formset_area')
+        attachment_name_widget = afs.find_element_by_name(
+            'attachment_formset-0-name')
+        attachment_file_widget = afs.find_element_by_name(
+            'attachment_formset-0-attachment')
+        afs.find_element_by_id('id_attachment_formset-0-desc')
+
+        # He uploads a course intro (maybe a PDF).
+        with TemporaryUploadedFile('atest.txt', 'text/plain', None, None) as fp:
+            attachment_file_widget.send_keys(fp.temporary_file_path())
+            attachment_name_widget.send_keys("A test file")
+            btn=self.browser.find_element_by_id('id_submit_attachment_edits')
+            btn.click()
+        
+        # This is scanned for virus payload, clear.
+        self.fail("Write me")
+
+        # The course page reloads, showing the attachment
+        url = self.browser.current_url
+        self.assertEqual(url, self.server_url+'/courses/4/')
+        self.assertIn('A test file', self.browser.page_source)
+
+        # Chris then revisits the edit page, uploads a second attachment.
+        self.browser.get(self.server_url+'/courses/4/')
+        with TemporaryUploadedFile('atest2.txt', 'text.plain', None, None) as fp2:
+            attachment_file_widget.send_keys(fp2.temporary_file_path())
+            attachment_name_widget.send_keys("Another test file")
+            btn=self.browser.find_element_by_id('id_submit_attachment_edits')
+            btn.click()
+
+        # This is visible on the course page
+        self.assertIn('Another test file', self.browser.page_source)
+
+        # Chris finally decides to delete the course intro attachment.
+        self.browser.get(self.server_url+'/courses/4/edit/')
+        delete_check = self.browser.find_element_by_id('id_attachment_formset-0-DELETE')
+        delete_check.click()
+        btn_submit = self.browser.find_element_by_id('id_submit_attachment_edits')
+        btn_submit.click()
  
+        # It no longer shows up on the course page but the second attachment 
+        # is still there.
+        self.browser.get(self.server_url+'/courses/4/')
+        self.assertNotIn('Another test file', self.browser.page_source)
+        self.assertIn('A test file', self.browser.page_source)
+
+        
 class AuthorCreatesAndEditsLessons(FunctionalTest):
 
     def test_can_create_retrieve_edit_lessons_associated_with_course(self):
@@ -237,8 +290,8 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
             self.browser.page_source)
                   
    
-    def test_can_populate_lesson_with_resources(self):
-        """Author can create attachments, videos, LOs etc for lesson"""
+    def test_can_populate_lesson_with_videos(self):
+        """Author can create videos for lesson"""
     
         # Chris logs in and heads to the first course page.
         self.browser.get(self.server_url)
@@ -300,4 +353,32 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self._logUserOut()
         self.browser.get(self.server_url+'/courses/1/lesson/1/')
         self.browser.find_element_by_id('id_video_1') 
+
+    def test_author_can_populate_lesson_with_attachments(self):
+        # Chris now wishes to add some attachments to course 1 lesson 4.
+        # On the edit page he sees an area for adding attachments.
+        self.browser.get(self.server_url)
+        self._logUserIn('chris', 'chris')
+        self.browser.get(self.server_url+'/courses/1/lesson/4/edit/')
+        afs = self.browser.find_element_by_id('id_attachment_formset_area')
+        
+        # There are suitable fields for a name and description of the file
+        attachment_name_widget = afs.find_element_by_name(
+            'attachment_formset-0-name')
+        attachment_file_widget = afs.find_element_by_name(
+            'attachment_formset-0-attachment')
+        afs.find_element_by_id('id_attachment_formset-0-desc')
+
+        # He uploads a lesson summary (maybe a PDF).
+        self.fail("Write this test, if it's possible")
+        # This is scanned for virus payload, clear.
+        #TODO scan
+        
+        # Having saved the edits, the lesson page reloads, showing the attachment
+        # This downloads successfully.
+        self.fail("Write the virus payload scan test referred above")
+
+    def test_author_can_populate_course_with_outcomes_etc(self):
+        self.fail("Write me")
+
 

@@ -15,6 +15,8 @@ from django.shortcuts import (
 from django.template import RequestContext
 from django.utils import timezone
 
+from attachment.forms import AttachmentForm
+from attachment.models import Attachment
 from interaction.models import UserLesson
 from video.forms import VideoForm
 from video.models import Video
@@ -26,6 +28,8 @@ import logging; logger = logging.getLogger(__name__)
 
 VideoInlineFormset = inlineformset_factory(
     Lesson, Video, form=VideoForm, extra=1, exclude=('course',))
+AttachmentInlineFormset = inlineformset_factory(
+    Lesson, Attachment, form=AttachmentForm, extra=1, exclude=('course',))
 
 def iterNone(): 
     """Make None type iterable for zip function used below"""
@@ -153,13 +157,24 @@ def edit(request, lesson_id, course_id):
                 request.POST, prefix='lesson_form', instance=lesson)
             video_formset = VideoInlineFormset(
                 request.POST, prefix='video_formset', instance=lesson)
+            attachment_formset = AttachmentInlineFormset(
+                request.POST, 
+                request.FILES, 
+                prefix='attachment_formset', 
+                instance=lesson
+            )
             if lesson_form.is_valid():
                 lesson_form.save()
                 logger.info("Lesson (id={0}) edited".format(lesson.pk))
             if video_formset.is_valid():
                 video_formset.save()
                 logger.info("Video for lesson id {0} saved".format(lesson.pk))
-            if (lesson_form.is_valid() and video_formset.is_valid()):
+            if attachment_formset.is_valid():
+                attachment_formset.save()
+                logger.info("Attachment for lesson id {0} saved".format(lesson.pk))
+            if (lesson_form.is_valid() 
+                and video_formset.is_valid()
+                and attachment_formset.is_valid()):
                 logger.info("Lesson (id={0}) edited".format(lesson.pk))
                 return redirect(lesson)
             else:
@@ -169,6 +184,7 @@ def edit(request, lesson_id, course_id):
                     'course': lesson.course,
                     'lesson_form': lesson_form,
                     'video_formset': video_formset,
+                    'attachment_formset': attachment_formset,
                 }
                 return render(request, t, c)
         else: #not post
@@ -176,11 +192,14 @@ def edit(request, lesson_id, course_id):
                 prefix='lesson_form', instance=lesson)
             video_formset = VideoInlineFormset(
                 prefix='video_formset', instance=lesson)
+            attachment_formset = AttachmentInlineFormset(
+                prefix='attachment_formset', instance=lesson)
             t = 'lesson/lesson_edit.html'
             c = { 
                 'lesson': lesson,
                 'lesson_form': lesson_form,
                 'video_formset': video_formset, 
+                'attachment_formset': attachment_formset,
                 'course': lesson.course,
             }
             return render(request, t, c)
