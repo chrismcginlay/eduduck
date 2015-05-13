@@ -7,7 +7,6 @@ from ..forms import (
     ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR, 
     AttachmentForm
 )
-from ..utils import generate_file
 
 class AttachmentFormTest(TestCase):
     
