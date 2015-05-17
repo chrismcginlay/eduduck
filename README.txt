@@ -7,11 +7,11 @@ by Chris McGinlay
 When ready to push a new tag release (e.g MVP0.3) on to production site, tag the codebase as follows
 
 1. git tag LIVE
-1. export TAG=`date +DEPLOYED-%F/%H%M`
-1. expport MVPTAG=mvp_x.y.z_name
-1. git tag $TAG
-1. git tag $MVPTAG
-1. git push origin LIVE $TAG $MVPTAG
+2. export TAG=`date +DEPLOYED-%F/%H%M`
+3. expport MVPTAG=mvp_x.y.z_name
+4. git tag $TAG
+5. git tag $MVPTAG
+6. git push origin LIVE $TAG $MVPTAG
 
 #Create Fixtures with DumpData#
 
