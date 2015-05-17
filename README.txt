@@ -2,30 +2,17 @@ EduDuck experimental course delivery platform.
 Coded with Django
 by Chris McGinlay
 
-#Dev Database Deletion and ReSync#
-If, in the course of development work, you alter the database structure, 
-you will of course want to bring the development database back into sync:
+#Git tag releases
 
-1. mysql -u root -p 
-Log in on the dev box. 
+When ready to push a new tag release (e.g MVP0.3) on to production site, tag the codebase as follows
 
-2. drop database ed_dev; 
-*CAUTION*
+1. git tag LIVE
+1. export TAG=`date +DEPLOYED-%F/%H%M`
+1. expport MVPTAG=mvp_x.y.z_name
+1. git tag $TAG
+1. git tag $MVPTAG
+1. git push origin LIVE $TAG $MVPTAG
 
-3. create database ed_dev;
-
-4. used ed_dev;
-
-5. GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX on ed_dev to ed_dev@localhost identified by 'quickquackquock';
-
-6. quit
-
-7. ~/.virtualenvs/blanket/bin/activate
-
-8. python manage.py loaddata functional_tests/fixtures/auth_user.json
-	Repeat the above for each json model required
-	
-	
 #Create Fixtures with DumpData#
 
 Do it thusly:
@@ -56,13 +43,3 @@ django-admin.py dumpdata --settings=EduDuck.settings --indent=4
 directory/eduduck_ddmmyy.json file required
 2. Run syncdb to stamp on existing data and replace with initial_data
 
-OR
-
-0. This is for schema alteration
-1. mv EduDuck.db EduDuck.db.bak
-2. python manage.py syncdb
-3. Edit JSON files to suit new schema
-4. django-admin.py loaddata --settings=EduDuck.settings 
-	--pythonpath='/home/chris/eduduck/' 
-	fixtures/ddmmyy/auth_user_data_ddmmyy.json
-5. repeat 4 for each JSON
