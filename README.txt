@@ -6,11 +6,12 @@ by Chris McGinlay
 
 When ready to push a new tag release (e.g MVP0.3) on to production site, tag the codebase as follows
 
-1. git tag LIVE
+1. git tag -f LIVE #force re-use of LIVE tag on local repo
 2. export TAG=`date +DEPLOYED-%F/%H%M`
 3. expport MVPTAG=mvp_x.y.z_name
 4. git tag $TAG
 5. git tag $MVPTAG
+5. git push origin :refs/tags/LIVE #delete LIVE tag from remote repo
 6. git push origin LIVE $TAG $MVPTAG
 
 #Create Fixtures with DumpData#
