@@ -36,6 +36,7 @@
         <article>
         <fieldset id='id_course_basics_area'>
             {% for field in course_form %}
+                {% markdown_allowed %}
                 <div class='pure-control-group'>
                     {{ field.errors }}
                     {{ field.label_tag }}{{ field }}
