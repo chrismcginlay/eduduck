@@ -163,7 +163,9 @@ def minimal_production_data():
 def full_test_data():
     """ Load full test data with pretend courses and users.
 
-    Intended for use when setting up a development box"""
+    Intended for use when setting up a development box.
+
+    $:~ fab full_test_data:host=chris@localhost """
 
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     run("cd {0}; source ../virtualenv/bin/activate;"\
