@@ -70,20 +70,31 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         course_name_box.clear()
         course_name_box.send_keys('Camping')
         
-        # On completing and submitting the form, the course is created in the
-        # database, she is then taken to a new URL with all the fields
-        # re-presented to her. 
+        # She completes and submits the form
         code_box = self.browser.find_element_by_xpath(
             "//input[@id='id_code']")
         abstract_box = self.browser.find_element_by_xpath(
             "//textarea[@id='id_abstract']")
         code_box.send_keys('CAMP01')
-        abstract_box.send_keys('Being organised is the key to a happy camp')
+        # She uses some markdown on the abstract
+        abstract_box.send_keys('Being *organised* is the key to a happy camp')
         create = self.browser.find_element_by_xpath(
             "//button[@id='id_course_create']")
         create.click()
+
+        # The course is created in the database, 
+        # she is then taken to a new URL with all the fields 
+        # re-presented to her. 
         target_url = self.server_url + '/courses/\d+/'
         self.assertRegexpMatches(self.browser.current_url, target_url)
+        abstract_box =  self.browser.find_element_by_xpath(
+            "//div[@id='id_abstract']/p[3]")
+        # The abstract correctly displays markdown
+        self.assertEqual(
+            abstract_box.get_attribute('innerHTML'), 
+            u'Being <em>organised</em> is the key to a happy camp'
+        )
+ 
         # She notices that there is an 'edit' button on this course page
         btn_edit = self.browser.find_element_by_id('id_edit_course')
         edit_target_url = self.server_url + '/courses/\d+/edit/'
