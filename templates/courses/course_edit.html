@@ -41,7 +41,7 @@
                     {{ field.errors }}
                     {{ field.label_tag }}
                     {% if field.name == 'abstract' %}
-                        {% markdown_ok %}
+                        <p class='markdown'>{% markdown_ok %}</p>
                     {% endif %}
                     {{ field }}<br>{{ field.help_text }}
                 </div>

@@ -1,6 +1,7 @@
 {% extends "courses/base_course.html" %}
 {% load staticfiles %}
 {% load tz %}
+{% load markdown_deux_tags %}
 
 {% block extra_style %}
     <link rel="stylesheet" href="{% static 'form.css' %}">
@@ -36,13 +37,22 @@
         </div>
     {% endif %}
     <form method='post' action='/courses/create/'>
-        {{ form.as_p }}
         {% csrf_token %}
+        {% for field in form %}
+            <div class='pure-control-group'>
+                {{ field.errors }}
+                {{ field.label_tag }}
+                {% if field.name == 'abstract' %}
+                    <p class='markdown'>{% markdown_ok %}</p>
+                {% endif %}
+                {{ field }}<br>{{ field.help_text }}
+            </div>
+        {% endfor %}
         <button 
-        id="id_course_create" 
-        type="submit" 
-        class="pure-button pure-button-primary">
-        Create a Course
+            id="id_course_create" 
+            type="submit" 
+            class="pure-button pure-button-primary">
+            Create a Course
         </button>
     </form>
 {% endblock content %}

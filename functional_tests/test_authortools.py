@@ -76,7 +76,13 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         abstract_box = self.browser.find_element_by_xpath(
             "//textarea[@id='id_abstract']")
         code_box.send_keys('CAMP01')
-        # She uses some markdown on the abstract
+        
+        # There is a a message indicating Markdown can be used on abstracts
+        info = self.browser.find_element_by_xpath(
+            "//p[@class='markdown']")
+        self.assertEqual(info.text, 'Use Markdown!')
+
+        # So, she uses some markdown on the abstract
         abstract_box.send_keys('Being *organised* is the key to a happy camp')
         create = self.browser.find_element_by_xpath(
             "//button[@id='id_course_create']")
@@ -98,14 +104,23 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         # She notices that there is an 'edit' button on this course page
         btn_edit = self.browser.find_element_by_id('id_edit_course')
         edit_target_url = self.server_url + '/courses/\d+/edit/'
-        # She decides to improve the abstract:
+
+        
+        # She decides to improve the abstract, so edits the page:
         btn_edit.click()
         self.assertRegexpMatches(self.browser.current_url, edit_target_url)
         self.assertIn('<h2 id="id_page_title">Editing: Camping</h2>', 
             self.browser.page_source)
+
+        # There is a message indicating Markdown can be used on abstracts
+        info = self.browser.find_element_by_xpath(
+            "//p[@class='markdown']")
+        self.assertEqual(info.text, 'Use Markdown!')
+
+        # ...and makes the edit...
         abstract_box = self.browser.find_element_by_id('id_course_form-abstract')
         abstract_box.send_keys(". Wibble.")
-        # and delete the course code
+        # ...and delete the course code
         code_box = self.browser.find_element_by_xpath("//input[@id='id_course_form-code']")
         code_box.clear()
         # she submits the changes
