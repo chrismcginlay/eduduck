@@ -39,6 +39,7 @@
             {% for field in course_form %}
                 <div class='pure-control-group'>
                     {{ field.errors }}
+                    {{ field.label_tag }}
                     {% if field.name == 'abstract' %}
                         {% markdown_ok %}
                     {% endif %}
