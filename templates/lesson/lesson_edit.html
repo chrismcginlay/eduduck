@@ -1,6 +1,7 @@
 {% extends "lesson/base_lesson.html" %}
 {% load staticfiles %}
 {% load tz %}
+{% load markdown_deux_tags %}
 
 {% block extra_style %}
     <link rel="stylesheet" href="{% static 'form.css' %}">
@@ -43,8 +44,11 @@
             {% for field in lesson_form %}
                 <div class='pure-control-group'>
                     {{ field.errors }}
-                    {{ field.label_tag }}{{ field }}
-                    <br>{{ field.help_text }}
+                    {{ field.label_tag }}
+                    {% if 'abstract' in field.name %} 
+                        <p class='markdown'>{% markdown_ok %}</p>
+                    {% endif %}
+                    <{{ field }}br>{{ field.help_text }}
                 </div>
             {% endfor %}
             <div class='pure-controls'>
@@ -94,7 +98,11 @@
                 {% for field in form.visible_fields %}
                     <div class='pure-control-group'>
                         {{ field.errors }}
-                        {{ field.label_tag }}{{ field }}
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if 'desc' in field.name %} 
+                            <p class='markdown'>{% markdown_ok %}</p>
+                        {% endif %}
                         <br>{{ field.help_text }}
                     </div>
                 {% endfor %}

@@ -219,6 +219,11 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
             'attachment_formset-0-attachment')
         afs.find_element_by_id('id_attachment_formset-0-desc')
 
+        # There is a message indicating Markdown can be used on descriptions 
+        info = afs.find_element_by_xpath(
+            "div/p[@class='markdown']")
+        self.assertEqual(info.text, 'Use Markdown!')
+
         # He uploads a course intro (maybe a PDF).
         with TemporaryUploadedFile('atest.txt', 'text/plain', None, None) as fp:
             attachment_file_widget.send_keys(fp.temporary_file_path())
@@ -297,6 +302,10 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         # with a suitable abstract.
         new_lesson_name.send_keys('Materials')
         new_lesson_abstract.send_keys('How to create, use share and delete materials')
+        # There is a message indicating Markdown can be used on abstracts
+        info = lessons_area.find_element_by_xpath(
+            "div/p[@class='markdown']")
+        self.assertEqual(info.text, 'Use Markdown!')
 
         # He can edit any of the titles and abstracts of the lessons,
         # with the updates saved on hitting submit as before.
@@ -394,6 +403,11 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         attachment_file_widget = afs.find_element_by_name(
             'attachment_formset-0-attachment')
         afs.find_element_by_id('id_attachment_formset-0-desc')
+
+        # There is a message indicating Markdown can be used on descriptions 
+        info = afs.find_element_by_xpath(
+            "div/p[@class='markdown']")
+        self.assertEqual(info.text, 'Use Markdown!')
 
         # He uploads a lesson summary (maybe a PDF).
         self.fail("Write this test, if it's possible")

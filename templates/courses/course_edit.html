@@ -93,6 +93,9 @@
                 {% for field in form.visible_fields %}
                     <div class='pure-control-group'>
                         {{ field.errors }}
+                        {% if 'abstract' in field.name %} 
+                            <p class='markdown'>{% markdown_ok %}</p>
+                        {% endif %}
                         {{ field.label_tag }}{{ field }}
                         <br>{{ field.help_text }}
                     </div>
@@ -119,6 +122,9 @@
                 {% for field in form.visible_fields %}
                     <div class='pure-control-group'>
                         {{ field.errors }}
+                        {% if 'desc' in field.name %} 
+                            <p class='markdown'>{% markdown_ok %}</p>
+                        {% endif %}
                         {{ field.label_tag }}{{ field }}
                         <br>{{ field.help_text }}
                     </div>
