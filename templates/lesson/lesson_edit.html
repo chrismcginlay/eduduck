@@ -48,7 +48,7 @@
                     {% if 'abstract' in field.name %} 
                         <p class='markdown'>{% markdown_ok %}</p>
                     {% endif %}
-                    <{{ field }}br>{{ field.help_text }}
+                    {{ field }}<br>{{ field.help_text }}
                 </div>
             {% endfor %}
             <div class='pure-controls'>
@@ -99,10 +99,10 @@
                     <div class='pure-control-group'>
                         {{ field.errors }}
                         {{ field.label_tag }}
-                        {{ field }}
                         {% if 'desc' in field.name %} 
                             <p class='markdown'>{% markdown_ok %}</p>
                         {% endif %}
+                        {{ field }}
                         <br>{{ field.help_text }}
                     </div>
                 {% endfor %}

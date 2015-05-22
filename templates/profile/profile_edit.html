@@ -1,4 +1,5 @@
 {% extends "profile/base_profile.html" %}
+{% load markdown_deux_tags %}
 
 {% block contentheading %}
     <h2>Edit Bio: {{ user.get_full_name }}</h2>
@@ -10,7 +11,20 @@
 
     <h3>Edit Your Details</h3>
     <form action='' method='post'>{% csrf_token %}
-    {{ form.as_p }}
-    <input type='submit' value='Submit' />
+    {% for hf in form.hidden_fields %}
+        {{ hf }}
+    {% endfor %}
+    {% for field in form.visible_fields %}
+        <div class='pure-control-group'>
+            {{ field.errors }}
+            {{ field.label_tag }}
+            {% if 'description' in field.name %} 
+                <p class='markdown'>{% markdown_ok %}</p>
+            {% endif %}
+            {{ field }}
+            <br>{{ field.help_text }}
+        </div>
+    {% endfor %}
+     <input type='submit' value='Submit' />
     </form>
 {% endblock content %}
