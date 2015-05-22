@@ -207,3 +207,6 @@ class RegisteredUserEditsProfile(FunctionalTest):
         p_d_widget.send_keys('This should be *bold*');
         self.browser.find_element_by_xpath("//input[@type='submit']").click()
 
+        import pdb; pdb.set_trace()
+
+
