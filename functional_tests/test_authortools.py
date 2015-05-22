@@ -78,8 +78,9 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         code_box.send_keys('CAMP01')
         
         # There is a a message indicating Markdown can be used on abstracts
-        info = self.browser.find_element_by_xpath(
-            "//p[@class='markdown']")
+        course_area = self.browser.find_element_by_xpath(
+            "//div[@id='id_course_basics_area']")
+        info = course_area.find_element_by_xpath("//p[@class='markdown']")
         self.assertEqual(info.text, 'Use Markdown!')
 
         # So, she uses some markdown on the abstract
@@ -121,7 +122,8 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         abstract_box = self.browser.find_element_by_id('id_course_form-abstract')
         abstract_box.send_keys(". Wibble.")
         # ...and delete the course code
-        code_box = self.browser.find_element_by_xpath("//input[@id='id_course_form-code']")
+        code_box = self.browser.find_element_by_xpath(
+            "//input[@id='id_course_form-code']")
         code_box.clear()
         # she submits the changes
         btn_submit = self.browser.find_element_by_id('id_submit_course_edits')
@@ -217,7 +219,8 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
             'attachment_formset-0-name')
         attachment_file_widget = afs.find_element_by_name(
             'attachment_formset-0-attachment')
-        afs.find_element_by_id('id_attachment_formset-0-desc')
+        attachment_desc_widget = afs.find_element_by_id(
+            'id_attachment_formset-0-desc')
 
         # There is a message indicating Markdown can be used on descriptions 
         info = afs.find_element_by_xpath(
@@ -228,8 +231,17 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         with TemporaryUploadedFile('atest.txt', 'text/plain', None, None) as fp:
             attachment_file_widget.send_keys(fp.temporary_file_path())
             attachment_name_widget.send_keys("A test file")
+            attachment_desc_widget.send_keys("A **test** description")
             btn=self.browser.find_element_by_id('id_submit_attachment_edits')
             btn.click()
+        
+        attachment_desc =  self.browser.find_element_by_xpath(
+            "//div[@id='id_resource_attachments']")
+        # The abstract correctly displays markdown
+        self.assertIn(
+            u'A <strong>test</strong> description',
+            attachment_desc.get_attribute('outerHTML'), 
+        )
         
         # This is scanned for virus payload, clear.
         self.fail("Write me")
