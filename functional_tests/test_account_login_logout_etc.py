@@ -202,11 +202,20 @@ class RegisteredUserEditsProfile(FunctionalTest):
         profile_description_para = self.browser.find_element_by_xpath(
             "//label[@for='id_description']/..")
         self.assertIn("Use Markdown!", profile_description_para.text)
+        signature_line = self.browser.find_element_by_xpath(
+            "//input[@id='id_signature_line']")
+        signature_line.send_keys('Fubar')
         p_d_widget = self.browser.find_element_by_xpath(
             "//textarea[@name='description']")
-        p_d_widget.send_keys('This should be *bold*');
+        p_d_widget.send_keys('This should be *italic*');
         self.browser.find_element_by_xpath("//input[@type='submit']").click()
-
-        import pdb; pdb.set_trace()
-
+        self.assertEqual(
+            self.browser.current_url,
+            self.server_url + '/accounts/profile/'
+        )
+        profile_info = self.browser.find_element_by_id('id_personal_details')
+        self.assertIn(
+            'This should be <em>italic</em>',
+            profile_info.get_attribute('outerHTML')
+        )
 

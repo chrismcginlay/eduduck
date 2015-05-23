@@ -1,5 +1,6 @@
 {% extends "profile/base_profile.html" %}
 {% load url from future %}
+{% load markdown_deux_tags %}
 
 {% block contentheading %}
     <h2 id='id_profile_title'>Hello {{ user.get_full_name }}</h2>
@@ -58,7 +59,7 @@ You are currently logged in via {{ auth_via }}.</p>
         <div class='pure-u-1-2' id='id_personal_details'>
             <h3>Your Details</h3>
             <a href="{%url 'profile.views.edit' %}">Edit Details</a>
-            <table class="pure-table pure-table-horizontal">
+            <table class="pure-table pure-table-horizontal" >
                 <tr><td>Name</td><td>{{ user.get_full_name }}</td></tr>
                 <tr><td>Email</td><td>{{ user.email }}</td></tr>
                 <tr><td>Motto</td><td>
@@ -73,7 +74,10 @@ You are currently logged in via {{ auth_via }}.</p>
                     {% filter force_escape %}{{ profile.webpage }}{% endfilter %}
                     '>{{ profile.webpage }}</a></td>
                 </tr>
-                <tr><td>Description</td><td>{{ profile.description }}</td></tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{ profile.description | markdown}}</td>
+                </tr>
             </table>
         </div>
     </div>
