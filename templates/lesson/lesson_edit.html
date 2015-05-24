@@ -46,9 +46,15 @@
                     {{ field.errors }}
                     {{ field.label_tag }}
                     {% if 'abstract' in field.name %} 
-                        <p class='markdown'>{% markdown_ok %}</p>
+                        <div class='markdown'>
+                            <p class='markdown'>{% markdown_ok %}</p>
+                            {{ field }}
+                            <br>{{ field.help_text }}
+                        </div>
+                    {% else %}
+                        {{ field }}
+                        <br>{{ field.help_text }}
                     {% endif %}
-                    {{ field }}<br>{{ field.help_text }}
                 </div>
             {% endfor %}
             <div class='pure-controls'>
@@ -100,10 +106,15 @@
                         {{ field.errors }}
                         {{ field.label_tag }}
                         {% if 'desc' in field.name %} 
-                            <p class='markdown'>{% markdown_ok %}</p>
+                            <div class='markdown'>
+                                <p class='markdown'>{% markdown_ok %}</p>
+                                {{ field }}
+                                <br>{{ field.help_text }}
+                            </div>
+                        {% else %}
+                            {{ field }}
+                            <br>{{ field.help_text }}
                         {% endif %}
-                        {{ field }}
-                        <br>{{ field.help_text }}
                     </div>
                 {% endfor %}
                 <hr>

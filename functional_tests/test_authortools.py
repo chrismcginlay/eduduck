@@ -76,11 +76,10 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         abstract_box = self.browser.find_element_by_xpath(
             "//textarea[@id='id_abstract']")
         code_box.send_keys('CAMP01')
-        
         # There is a a message indicating Markdown can be used on abstracts
-        course_area = self.browser.find_element_by_xpath(
-            "//div[@id='id_course_basics_area']")
-        info = course_area.find_element_by_xpath("//p[@class='markdown']")
+        info = self.browser.find_element_by_xpath(
+            "//label[@for='id_abstract']/following-sibling::"\
+            "div[@class='markdown']/p[@class='markdown']")
         self.assertEqual(info.text, 'Use Markdown!')
 
         # So, she uses some markdown on the abstract
@@ -224,7 +223,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
 
         # There is a message indicating Markdown can be used on descriptions 
         info = afs.find_element_by_xpath(
-            "div/p[@class='markdown']")
+            "descendant::div[@class='markdown']/p[@class='markdown']")
         self.assertEqual(info.text, 'Use Markdown!')
 
         # He uploads a course intro (maybe a PDF).
@@ -316,7 +315,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         new_lesson_abstract.send_keys('How to create, use share and delete materials')
         # There is a message indicating Markdown can be used on abstracts
         info = lessons_area.find_element_by_xpath(
-            "div/p[@class='markdown']")
+            "descendant::div[@class='markdown']/p[@class='markdown']")
         self.assertEqual(info.text, 'Use Markdown!')
 
         # He can edit any of the titles and abstracts of the lessons,
@@ -336,7 +335,26 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self.assertIn('How to create, use share and delete materials', 
             self.browser.page_source)
                   
-   
+    def test_lesson_renders_markdown_in_abstract(self):
+        """Markdown used in lesson abstract is rendered"""
+
+        # Chris logs in and heads to the first course page.
+        self.browser.get(self.server_url)
+        self._logUserIn('chris', 'chris')
+        self.browser.get(self.server_url+'/courses/1/lesson/1/edit/')
+
+        basics_area = self.browser.find_element_by_id(
+            'id_lesson_basics_area')
+        abstract_text_box = self.browser.find_element_by_id(
+            'id_lesson_form-abstract')
+        abstract_text_box.send_keys("Some *bold* markdown")
+        
+        btn_submit = self.browser.find_element_by_id('id_submit_lesson_edits')
+        btn_submit.click()
+
+        #The markdown is rendered to HTML
+        self.assertIn("Some <em>bold</em> markdown", self.browser.page_source)
+
     def test_can_populate_lesson_with_videos(self):
         """Author can create videos for lesson"""
     
@@ -418,7 +436,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
 
         # There is a message indicating Markdown can be used on descriptions 
         info = afs.find_element_by_xpath(
-            "div/p[@class='markdown']")
+            "descendant::div[@class='markdown']/p[@class='markdown']")
         self.assertEqual(info.text, 'Use Markdown!')
 
         # He uploads a lesson summary (maybe a PDF).

@@ -112,7 +112,7 @@
                 <a href='{{ lesson.get_absolute_url }}'>{{ lesson.name }}</a>
             </h4>
             <article class="abstract">
-                <p>{{ lesson.abstract}} 
+                <p>{{ lesson.abstract | markdown}} 
                 <a href='{{ lesson.get_absolute_url }}'>Go to lesson</a>
                 </p>
             </article>

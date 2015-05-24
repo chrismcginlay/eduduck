@@ -42,10 +42,16 @@
             <div class='pure-control-group'>
                 {{ field.errors }}
                 {{ field.label_tag }}
-                {% if field.name == 'abstract' %}
-                    <p class='markdown'>{% markdown_ok %}</p>
+                {% if 'abstract' in field.name %} 
+                    <div class='markdown'>
+                        <p class='markdown'>{% markdown_ok %}</p>
+                        {{ field }}
+                        <br>{{ field.help_text }}
+                    </div>
+                {% else %}
+                    {{ field }}
+                    <br>{{ field.help_text }}
                 {% endif %}
-                {{ field }}<br>{{ field.help_text }}
             </div>
         {% endfor %}
         <button 

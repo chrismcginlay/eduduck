@@ -19,10 +19,15 @@
             {{ field.errors }}
             {{ field.label_tag }}
             {% if 'description' in field.name %} 
-                <p class='markdown'>{% markdown_ok %}</p>
+                <div class='markdown'>
+                    <p class='markdown'>{% markdown_ok %}</p>
+                    {{ field }}
+                    <br>{{ field.help_text }}
+                </div>
+            {% else %}
+                {{ field }}
+                <br>{{ field.help_text }}
             {% endif %}
-            {{ field }}
-            <br>{{ field.help_text }}
         </div>
     {% endfor %}
      <input type='submit' value='Submit' />

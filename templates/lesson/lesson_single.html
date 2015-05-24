@@ -1,6 +1,7 @@
 {% extends "courses/base_course.html" %}
 {% load staticfiles %}
 {% load tz %}
+{% load markdown_deux_tags %}
 
 {% block menu_override %}
 <li class='menu-item-divided'><a href='{{ course.get_absolute_url }}'>{{ course.name }} Home</a></li>
@@ -60,7 +61,7 @@
     </div>
  
     <div id='id_abstract' class='pure-u-1-1'>
-        <p>{{ lesson.abstract }}</p>
+        <p>{{ lesson.abstract |markdown}}</p>
     </div>
 </div>
 
@@ -91,7 +92,7 @@
         Not Downloaded
         {% endif %} 
         <a href='{{ a.1.get_loggable_url }}'>{{ a.1.name }}</a>
-        : {{ a.1.attachment.size }} bytes, {{ a.1.desc }}
+        : {{ a.1.attachment.size }} bytes, {{ a.1.desc |markdown}}
         <a href='{{ a.1.get_metadata_url }}'>(View MetaData here)</a>
         </li>
         {% empty %}
