@@ -179,3 +179,43 @@ class RegisteredUserLogsIn(FunctionalTest):
         profile_link = self.browser.find_element_by_id('id_profile')
         self.assertTrue(profile_link)
 
+class RegisteredUserEditsProfile(FunctionalTest):
+    """ Some basic checks for editing profile """
+
+    def test_authenticated_user_can_edit_profile(self):
+        # Chris visits site and logs in
+        self.browser.get(self.server_url)
+        self._logUserIn('chris', 'chris')
+
+        #Profile edit is reachable:
+        self.browser.get(self.server_url + '/accounts/profile/edit')
+        self.assertEqual(
+            self.browser.current_url, 
+            self.server_url+'/accounts/profile/edit/'
+        )
+
+    def test_markdown_enabled_on_description_field(self):
+        # Chris visits site and logs in
+        self.browser.get(self.server_url)
+        self._logUserIn('chris', 'chris')
+        self.browser.get(self.server_url + '/accounts/profile/edit')
+        profile_description_para = self.browser.find_element_by_xpath(
+            "//label[@for='id_description']/..")
+        self.assertIn("Use Markdown!", profile_description_para.text)
+        signature_line = self.browser.find_element_by_xpath(
+            "//input[@id='id_signature_line']")
+        signature_line.send_keys('Fubar')
+        p_d_widget = self.browser.find_element_by_xpath(
+            "//textarea[@name='description']")
+        p_d_widget.send_keys('This should be *italic*');
+        self.browser.find_element_by_xpath("//input[@type='submit']").click()
+        self.assertEqual(
+            self.browser.current_url,
+            self.server_url + '/accounts/profile/'
+        )
+        profile_info = self.browser.find_element_by_id('id_personal_details')
+        self.assertIn(
+            'This should be <em>italic</em>',
+            profile_info.get_attribute('outerHTML')
+        )
+

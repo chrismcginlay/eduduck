@@ -163,7 +163,9 @@ def minimal_production_data():
 def full_test_data():
     """ Load full test data with pretend courses and users.
 
-    Intended for use when setting up a development box"""
+    Intended for use when setting up a development box.
+
+    $:~ fab full_test_data:host=chris@localhost """
 
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     run("cd {0}; source ../virtualenv/bin/activate;"\
@@ -214,8 +216,8 @@ def _get_source(sdir):
     
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
-    #run("cd {0}; git checkout master".format(sdir))    
-    run("cd {0}; git checkout 69-csrf".format(sdir))
+    run("cd {0}; git checkout master".format(sdir))    
+    #run("cd {0}; git checkout 69-csrf".format(sdir))
         
 def _config_nginx(site_name, sdir, settings):
     if settings=='dev':

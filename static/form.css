@@ -5,3 +5,16 @@ div.errorlist p, ul.errorlist li {
     color:  black;
 }
 
+div.markdown {
+    border:     1px solid grey;
+    background: rgb(200,200,200); 
+}
+
+div.markdown p {
+    margin-bottom:  0px;
+}
+
+div.markdown textarea {
+    width: 95%;
+}
+

@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     #django-haystack via elasticsearch backend
     #'haystack',
 
+    'markdown_deux',
     'social.apps.django_app.default',
     'south',
 

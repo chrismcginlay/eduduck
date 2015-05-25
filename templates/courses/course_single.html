@@ -1,6 +1,7 @@
 {% extends "courses/base_course.html" %}
 {% load staticfiles %}
 {% load tz %}
+{% load markdown_deux_tags %}
 {% block extra_script %}
     <script src="{% static 'common.js' %}" ></script>
 {% endblock extra_script %}
@@ -73,7 +74,7 @@
     
     <div id='id_abstract' class='pure-u-1-2'>
         <p>Hi, and welcome to {{ course.name }}</p>
-        <p>{{ course.abstract }}</p>
+        <p>{{ course.abstract|markdown }}</p>
         <p>Course organiser <a href="{{ course.organiser.profile.get_profile_url}}">{% firstof course.organiser.get_full_name course.organiser.username %}</a></p>
         <p>Course instructor <a href="{{course.instructor.profile.get_profile_url}}">{% firstof course.instructor.get_full_name course.instructor %}</a></p>
     </div>
@@ -111,7 +112,7 @@
                 <a href='{{ lesson.get_absolute_url }}'>{{ lesson.name }}</a>
             </h4>
             <article class="abstract">
-                <p>{{ lesson.abstract}} 
+                <p>{{ lesson.abstract | markdown}} 
                 <a href='{{ lesson.get_absolute_url }}'>Go to lesson</a>
                 </p>
             </article>
@@ -144,7 +145,7 @@
                 Not Downloaded
                 {% endif %}]&nbsp;   
             <a href='{{ a.1.get_loggable_url }}'>{{ a.1.name }}</a>
-            : {{ a.1.attachment.size }} bytes, {{ a.1.desc }}
+            : {{ a.1.attachment.size }} bytes, {{ a.1.desc|markdown }}
             <a href='{{ a.1.get_metadata_url }}'>(View MetaData here)</a>
         </li>
         {% endfor %}
