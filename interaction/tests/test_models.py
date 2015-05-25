@@ -59,11 +59,13 @@ class UserCourseModelTests_2(TestCase):
     def test__checkrep_flags_enrolled_user_also_organiser(self):
         """Course organiser or instructor shouldn't be enrolling in course!"""
 
-        course = Course.objects.get(pk=1)
-        instructor = User.objects.get(pk=1)
+        # Detect conflicted enrollment
         interaction = UserCourse.objects.get(pk=3)
         self.assertFalse(interaction._checkrep())
 
+        # Allow non-conflicted enrollment:
+        interaction = UserCourse.objects.get(pk=1)
+        self.assertTrue(interaction._checkrep())
          
 class UserCourseModelTests(TestCase):
     """Test models user interaction with courses"""
