@@ -115,7 +115,13 @@ class UserCourse(models.Model):
             if last[1] != 'DEACTIVATION' or last2[1] != 'COMPLETION':
                 logger.warning("UC _checkrep() detected errored state")
                 return False       
-        
+       
+        #Third, ensure that the user enrolled isn't organiser or instructor
+        if self.course.organiser == self.user:
+            return False
+        if self.course.instructor == self.user:
+            return False
+
         return True
              
     def hist2list(self):

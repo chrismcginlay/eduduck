@@ -74,6 +74,10 @@ class UserCourseModelTests(TestCase):
         self.user1.is_active = True
         self.user1.save()
 
+        self.user2 = User.objects.create_user('flo', 'flo@example.com', 'flo')
+        self.user2.is_active = True
+        self.user2.save()
+
         self.course1 = Course(**course1_data)
         self.course1.organiser = self.user1
         self.course1.instructor = self.user1
@@ -91,11 +95,11 @@ class UserCourseModelTests(TestCase):
         self.course4.organiser = self.user1
         self.course4.save()
 
-        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc = UserCourse(course=self.course1, user=self.user2)
         self.uc.save()
-        self.uc2 = UserCourse(course=self.course2, user=self.user1)
+        self.uc2 = UserCourse(course=self.course2, user=self.user2)
         self.uc2.save()
-        self.uc3 = UserCourse(course=self.course3, user=self.user1)
+        self.uc3 = UserCourse(course=self.course3, user=self.user2)
         self.uc3.save()
 
     # Test states of flags 'active' 'completed' 'withdrawn' or ACW
