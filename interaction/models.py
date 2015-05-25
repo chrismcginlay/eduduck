@@ -118,10 +118,15 @@ class UserCourse(models.Model):
        
         #Third, ensure that the user enrolled isn't organiser or instructor
         if self.course.organiser == self.user:
+            logger.warning("UC _checkrep() detected error. Organiser can't "\
+                "enrol.")
             return False
         if self.course.instructor == self.user:
+            logger.warning("UC _checkrep() detected error. Instructor can't "\
+                "enrol.")
             return False
-
+    
+        #We're good!
         return True
              
     def hist2list(self):
