@@ -41,7 +41,30 @@ course4_data = {'code': 'EDU05',
                'abstract': 'The Contact Sport',
                }
 
+class UserCourseModelTests_2(TestCase):
+    """Test model representing user interaction with courses.
 
+    This class uses fixtures, unlike the original one below.
+    Add new tests here.
+    """
+
+    fixtures = [
+        'auth_user.json', 
+        'courses.json',
+        'lessons.json',
+        'outcome_lints.json',
+        'interactions.json',
+    ]
+
+    def test__checkrep_flags_enrolled_user_also_organiser(self):
+        """Course organiser or instructor shouldn't be enrolling in course!"""
+
+        course = Course.objects.get(pk=1)
+        instructor = User.objects.get(pk=1)
+        interaction = UserCourse.objects.get(pk=3)
+        self.assertFalse(interaction._checkrep())
+
+         
 class UserCourseModelTests(TestCase):
     """Test models user interaction with courses"""
 
