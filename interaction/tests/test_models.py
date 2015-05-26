@@ -498,18 +498,23 @@ class UserLearningIntentionModelTests(TestCase):
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
                                               'bertword')
         self.user1.is_active = True
-        self.user1.save()    
+        self.user1.save()   
+
+        self.user2 = User.objects.create_user('flo', 'flo@example.com', 'flo')
+        self.user2.is_active = True
+        self.user2.save()
+ 
         self.course1 = Course(**course1_data)
         self.course1.instructor = self.user1
         self.course1.organiser = self.user1
         self.course1.save() 
-        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc = UserCourse(course=self.course1, user=self.user2)
         self.uc.save()
         self.lesson = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson.save() 
         self.li = LearningIntention(lesson=self.lesson, text="Intend...")
         self.li.save()
-        self.uli = UserLearningIntention(user=self.user1, 
+        self.uli = UserLearningIntention(user=self.user2, 
                                          learning_intention = self.li)
         self.lid1 = LearningIntentionDetail(
             learning_intention=self.li, 
@@ -541,32 +546,32 @@ class UserLearningIntentionModelTests(TestCase):
         self.lid4.save()
         self.lid5.save()
         self.lid6.save()
-        self.ulid1 = UserLearningIntentionDetail(user=self.user1,
+        self.ulid1 = UserLearningIntentionDetail(user=self.user2,
                                     learning_intention_detail=self.lid1)
         self.ulid1.save()    
-        self.ulid2 = UserLearningIntentionDetail(user=self.user1,
+        self.ulid2 = UserLearningIntentionDetail(user=self.user2,
                                     learning_intention_detail=self.lid2)
         self.ulid2.save()
-        self.ulid3 = UserLearningIntentionDetail(user=self.user1,
+        self.ulid3 = UserLearningIntentionDetail(user=self.user2,
                                     learning_intention_detail=self.lid3)
         self.ulid3.save()
-        self.ulid4 = UserLearningIntentionDetail(user=self.user1,
+        self.ulid4 = UserLearningIntentionDetail(user=self.user2,
                                     learning_intention_detail=self.lid4)
         self.ulid4.save()
-        self.ulid5 = UserLearningIntentionDetail(user=self.user1,
+        self.ulid5 = UserLearningIntentionDetail(user=self.user2,
                                     learning_intention_detail=self.lid5)
         self.ulid5.save()
-        self.ulid6 = UserLearningIntentionDetail(user=self.user1,
+        self.ulid6 = UserLearningIntentionDetail(user=self.user2,
                                     learning_intention_detail=self.lid6)
         self.ulid6.save()
 
     def test___unicode__(self):
         self.assertEqual(u"ULI:%s, User:%s, LI:%s" % \
-            (self.uli.pk, self.user1.pk, self.li.pk), self.uli.__unicode__())        
+            (self.uli.pk, self.user2.pk, self.li.pk), self.uli.__unicode__())        
 
     def test___str__(self):
         self.assertEqual(u"User %s's data for LI:%s..." % \
-            (self.user1.username, self.li.text[:10]), self.uli.__str__())
+            (self.user2.username, self.li.text[:10]), self.uli.__str__())
 
     def test_progress(self):
         self.assertEqual(self.uli.progress(), {u'SC':(0,3), u'LO':(0,3)})
@@ -602,6 +607,11 @@ class UserLearningIntentionDetailModelTests(TestCase):
                                               'bertword')
         self.user1.is_active = True
         self.user1.save()    
+        
+        self.user2 = User.objects.create_user('flo', 'flo@example.com', 'flo')
+        self.user2.is_active = True
+        self.user2.save()
+        
         self.course1 = Course(**course1_data)
         self.course1.instructor = self.user1
         self.course1.organiser = self.user1
@@ -610,7 +620,7 @@ class UserLearningIntentionDetailModelTests(TestCase):
         self.course2.instructor = self.user1
         self.course2.organiser = self.user1
         self.course2.save()
-        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc = UserCourse(course=self.course1, user=self.user2)
         self.uc.save()
         self.lesson = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson.save()
@@ -630,8 +640,8 @@ class UserLearningIntentionDetailModelTests(TestCase):
             lid_type=LearningIntentionDetail.SUCCESS_CRITERION)
         self.lid.save()
         self.lid2.save()
-        self.ulid = UserLearningIntentionDetail(user=self.user1,
-                                    learning_intention_detail=self.lid)
+        self.ulid = UserLearningIntentionDetail(
+            user=self.user2, learning_intention_detail=self.lid)
         self.ulid.save()
 
     def test_cycling_first_click_on_a_LID_triggers_save(self):
@@ -644,10 +654,10 @@ class UserLearningIntentionDetailModelTests(TestCase):
 
 
         # Enrol user on course 2:
-        UserCourse(course=self.course2, user=self.user1).save()
+        UserCourse(course=self.course2, user=self.user2).save()
         # Simulate first click on LID:
         ulid_mem = UserLearningIntentionDetail(
-            user=self.user1, learning_intention_detail=self.lid2)
+            user=self.user2, learning_intention_detail=self.lid2)
         self.assertFalse(ulid_mem.pk)
         ulid_mem.cycle()
         self.assertTrue(ulid_mem.pk)   
@@ -797,6 +807,11 @@ class UserAttachmentModelTests(TestCase):
                                              'bertword')
         self.user1.is_active = True
         self.user1.save()    
+
+        self.user2 = User.objects.create_user('flo', 'flo@example.com', 'flo')
+        self.user2.is_active = True
+        self.user2.save()
+
         self.course1 = Course(**course1_data)
         self.course1.instructor = self.user1
         self.course1.organiser = self.user1
@@ -805,7 +820,7 @@ class UserAttachmentModelTests(TestCase):
         self.course2.instructor = self.user1
         self.course2.organiser = self.user1
         self.course2.save()
-        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc = UserCourse(course=self.course1, user=self.user2)
         self.uc.save()
         self.lesson1 = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson1.save()
@@ -821,8 +836,8 @@ class UserAttachmentModelTests(TestCase):
         self.att3 = Attachment(lesson=self.lesson2, **self.att1_data)
         self.att3.save()
 
-        self.u_att1 = UserAttachment(attachment=self.att1, user=self.user1)
-        self.u_att2 = UserAttachment(attachment=self.att2, user=self.user1)
+        self.u_att1 = UserAttachment(attachment=self.att1, user=self.user2)
+        self.u_att2 = UserAttachment(attachment=self.att2, user=self.user2)
         self.u_att1.save()
         self.u_att2.save()        
        
@@ -831,7 +846,7 @@ class UserAttachmentModelTests(TestCase):
 
         #History will need some activity to test. Since model doesn't need a
         #download method, best to create this in views via client        
-        self.client.login(username='bertie', password='bertword')
+        self.client.login(username='flo', password='flo')
         response = self.client.get('/interaction/attachment/1/download')
         assert(response)
         response = self.client.get('/interaction/attachment/1/download')
@@ -847,18 +862,18 @@ class UserAttachmentModelTests(TestCase):
                             
     def test__checkrep(self):
         #TODO test the history checking in _checkrep
-        pass
+        self.fail("write me") 
 
     def test___unicode__(self):
         self.assertEqual(
             u"UA:%s, User:%s, Attachment:%s" % \
-            (self.u_att1.pk, self.user1.pk, self.att1.pk), 
-            self.u_att1.__unicode__())        
+            (self.u_att2.pk, self.user2.pk, self.att2.pk), 
+            self.u_att2.__unicode__())        
        
     def test___str__(self):
         t = u"User {0}'s data for attachment: ...{1}" \
-            .format(self.user1.username, str(self.att1.attachment)[-10:])
-        s = self.u_att1.__str__()
+            .format(self.user2.username, str(self.att1.attachment)[-10:])
+        s = self.u_att2.__str__()
         self.assertEqual(s, t)
    
     def test_get_absolute_url(self):
@@ -869,6 +884,6 @@ class UserAttachmentModelTests(TestCase):
     def test_save(self):
         """Test that save only saves when user is registered on course"""
         
-        u_att3 = UserAttachment(attachment=self.att3, user=self.user1)
+        u_att3 = UserAttachment(attachment=self.att3, user=self.user2)
         u_att3.save()
         self.assertIsNone(u_att3.pk)
