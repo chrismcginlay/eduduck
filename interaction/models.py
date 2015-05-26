@@ -228,6 +228,14 @@ class UserCourse(models.Model):
     def save(self, *args, **kwargs):
         """Perform history save steps"""
 
+        #Check that user isn't organiser or instructor
+        if self.course.organiser == self.user:
+            logger.error("Save failed. Organiser can't enrol.")
+            raise AssertionError("Save failed")
+        if self.course.instructor == self.user:
+            logger.error("Save failed. Instructor can't enrol.")
+            raise AssertionError("Save failed")
+
         existing_row = self.pk
         super(UserCourse, self).save(*args, **kwargs)
         if not existing_row:

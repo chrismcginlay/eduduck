@@ -66,6 +66,7 @@ class UserCourseModelTests_2(TestCase):
         # Allow non-conflicted enrollment:
         interaction = UserCourse.objects.get(pk=1)
         self.assertTrue(interaction._checkrep())
+
          
 class UserCourseModelTests(TestCase):
     """Test models user interaction with courses"""
@@ -288,6 +289,10 @@ class UserLessonModelTests(TestCase):
                                               'bertword')
         self.user1.is_active = True
         self.user1.save()
+
+        self.user2 = User.objects.create_user('flo', 'flo@example.com', 'flo')
+        self.user2.is_active = True
+        self.user2.save()
         self.course1 = Course(**course1_data)
         self.course1.organiser = self.user1
         self.course1.instructor = self.user1
@@ -296,19 +301,19 @@ class UserLessonModelTests(TestCase):
         self.course2.organiser = self.user1
         self.course2.instructor = self.user1
         self.course2.save()
-        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc = UserCourse(course=self.course1, user=self.user2)
         self.uc.save()
         self.lesson1 = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson1.save()
-        self.ul = UserLesson(user=self.user1, lesson=self.lesson1)
+        self.ul = UserLesson(user=self.user2, lesson=self.lesson1)
         self.ul.save()
         self.lesson2 = Lesson(name="Test Lesson 2", course = self.course1)
         self.lesson2.save()
-        self.ul2 = UserLesson(user=self.user1, lesson=self.lesson2)
+        self.ul2 = UserLesson(user=self.user2, lesson=self.lesson2)
         self.ul2.save()
         self.lesson3 = Lesson(name="Test Lesson 3", course = self.course1)
         self.lesson3.save()
-        self.ul3 = UserLesson(user=self.user1, lesson=self.lesson3)
+        self.ul3 = UserLesson(user=self.user2, lesson=self.lesson3)
         self.ul3.save()
 
         self.lesson4 = Lesson(name="Test Lesson 4, in course 2", course = self.course2)
