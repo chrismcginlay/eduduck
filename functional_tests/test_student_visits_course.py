@@ -28,7 +28,6 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
             element = WebDriverWait(self.browser, 10).until(
                 self.wait_for_element_to_be_invisible(shady_bit))
 
-    
     def test_user_enrols_on_course(self):
         # User Chris logs in.
         self.browser.get(self.server_url)
@@ -94,6 +93,48 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         # course or to mark it as 'complete'.
         progress.find_element_by_xpath("//input[@name='course_withdraw']")
         progress.find_element_by_xpath("//input[@name='course_complete']")
+    
+    def test_author_cannot_enrol_on_own_course(self):
+        # User Chris logs in.
+        self.browser.get(self.server_url)
+        self._logUserIn('chris', 'chris')
         
+        # ...goes straight to a course page
+        self.browser.get(self.server_url+'/courses/2')
+        # We note here that Chris is actually the course organiser
+        org = self.browser.find_element_by_xpath(
+            "//div[@id='id_abstract']/p[5]")
+        self.assertIn("Course organiser Chris", org.text)
+
+        # As such, Chris does NOT see an enrol button.
+        try:
+            self.browser.find_element_by_id('id_enrol_button')
+            self.browser.find_element_by_id('id_enrol_button2')
+        except NoSuchElementException:
+            pass
+        else:
+            self.fail("The enrol buttons should NOT be present, but are!")
+
+    def test_instructor_cannot_enrol_on_own_course(self):
+        # User Chris logs in.
+        self.browser.get(self.server_url)
+        self._logUserIn('chris', 'chris')
+        
+        # ...goes straight to a course page
+        self.browser.get(self.server_url+'/courses/2')
+        # We note here that Chris is actually the course organiser
+        org = self.browser.find_element_by_xpath(
+            "//div[@id='id_abstract']/p[6]")
+        self.assertIn("Course instructor Chris", org.text)
+
+        # As such, Chris does NOT see an enrol button.
+        try:
+            self.browser.find_element_by_id('id_enrol_button')
+            self.browser.find_element_by_id('id_enrol_button2')
+        except NoSuchElementException:
+            pass
+        else:
+            self.fail("The enrol buttons should NOT be present, but are!")   
+ 
     def test_user_can_complete_or_withdraw_from_course(self):
         self.fail("Write test")
