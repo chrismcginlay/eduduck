@@ -220,9 +220,11 @@ def single(request, course_id):
 
     There are 3 distinct pathways through this view as regards 'Progress' area:
     1. User is not authenticated. (Not logged in). Simplest case, present 
-        'login to register' type message in course area.
-    2. Authenticated, but not registered on this course. Provide 'register'.
-    3. Authenticated and registered. Provide full context variables.
+        'login to enrol' type message in course area.
+    2. Authenticated, but not enrolled on this course. 
+        a. User is not organiser/instructor Provide 'enrol'.
+        b. User is organiser/instructor. No enrol facility. auth_bar_enrol
+    3. Authenticated and enrolled. Provide full context variables.
     """
 
     logger.info('Course id=' + str(course_id) + ' view')
@@ -271,19 +273,24 @@ def single(request, course_id):
                              'lessons': lessons,
                              'status': 'auth_enrolled'}    
         else:
-            #Here we provide for case 2, user registers
+            #Here we provide for case 2, user enrolment
             context_data = { 'course': course,
                              'status': 'auth_notenrolled'}
             if request.method == 'POST':
                 if 'course_register' in request.POST:
-                    uc = UserCourse(user=request.user, course=course)
-                    uc.save()
-                    history = uc.hist2list()
-                    context_data = { 'course': course,
-                                     'uc': uc,
-                                     'history': history,
-                                     'status': 'auth_enrolled'}
-                    logger.info(str(uc) + 'registers')
+                    if (request.user != course.organiser and 
+                            request.user != course.instructor):
+                        uc = UserCourse(user=request.user, course=course)
+                        uc.save()
+                        history = uc.hist2list()
+                        context_data = { 'course': course,
+                                         'uc': uc,
+                                         'history': history,
+                                         'status': 'auth_enrolled'}
+                        logger.info(str(uc) + 'enrols')
+                    else:
+                        context_data = { 'course': course,
+                                         'status': 'auth_bar_enrol'}
                     
     else:
         context_data = { 'course': course,
@@ -318,7 +325,8 @@ def single(request, course_id):
     if request.user.is_authenticated():
         if request.user.pk == course.organiser_id  \
                 or request.user.pk == course.instructor_id:
-            context_data.update({'user_can_edit': True})
+            context_data.update(
+                {'user_can_edit': True, 'status': 'auth_bar_enrol'})
         else:
             context_data.update({'user_can_edit': False})
 

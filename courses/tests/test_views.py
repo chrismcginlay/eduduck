@@ -541,10 +541,12 @@ class CourseViewTests(TestCase):
         url1 = '/courses/{0}/'.format(c1)
         c2 = self.course2.pk
         url2 = '/courses/{0}/'.format(c2)
+        c3 = self.course3.pk
+        url3 = '/courses/{0}/'.format(c3)
 
         #First, when the user is not registered on course
         self.client.login(username='bertie', password='bertword')
-        response = self.client.get(url1)
+        response = self.client.get(url3)
         self.assertEqual(response.status_code, 200)
         #check template variables present as approp
         self.assertIn('course', response.context, 
@@ -566,6 +568,7 @@ class CourseViewTests(TestCase):
         #check template variables present and correct
         self.assertIn('course', response.context, \
             "Missing template var: course")
+        import pdb; pdb.set_trace()
         self.assertIn('uc', response.context, \
             "Missing template var: uc")
         self.assertIn('attachments', response.context, \
