@@ -356,18 +356,23 @@ class UserAttachmentViewTests(TestCase):
     }
 
     def setUp(self):
-        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
-                                              'bertword')
+        self.user1 = User.objects.create_user(
+            'bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()    
-        self.user3 = User.objects.create_user('Chuck Norris', 'chuck@tree.far', 'dontask')
+        self.user2 = User.objects.create_user('dave', 'dave@dave.com', 'dave')
+        self.user2.is_active = True
+        self.user2.save()
+
+        self.user3 = User.objects.create_user(
+            'Chuck Norris', 'chuck@tree.far', 'dontask')
         self.user3.is_active = True
         self.user3.save()
         self.course1 = Course(**course1_data)
         self.course1.organiser = self.user1
         self.course1.instructor = self.user1
         self.course1.save() 
-        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc = UserCourse(course=self.course1, user=self.user2)
         self.uc.save()
         self.lesson1 = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson1.save()
@@ -425,18 +430,18 @@ class UserAttachmentViewTests(TestCase):
         url2 = "/interaction/attachment/{0}/download/".format(a2)
 
         #First, try attachment linked to course page
-        self.client.login(username='bertie', password='bertword')
+        self.client.login(username='dave', password='dave')
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 302)      
         u_att1 = UserAttachment.objects.get(
-            user=self.user1.id,
+            user=self.user2.id,
             attachment=self.att1.id
         )
         self.assertEqual(len(u_att1.hist2list()),1)
         #Calling get(url1) again, history should grow by one log entry
         response = self.client.get(url1)
         u_att1 = UserAttachment.objects.get(
-            user=self.user1.id,
+            user=self.user2.id,
             attachment=a1
         )
         self.assertEqual(len(u_att1.hist2list()),2)
@@ -445,14 +450,14 @@ class UserAttachmentViewTests(TestCase):
         response = self.client.get(url2)
         self.assertEqual(response.status_code, 302)      
         u_att2 = UserAttachment.objects.get(
-            user=self.user1.id,
+            user=self.user2.id,
             attachment=a2
         )
         self.assertEqual(len(u_att2.hist2list()),1)
         #Calling get(url2) again, history should grow by one log entry
         response = self.client.get(url2)
         u_att2 = UserAttachment.objects.get(
-            user=self.user1.id,
+            user=self.user2.id,
             attachment=a2
         )
         self.assertEqual(len(u_att2.hist2list()),2)
