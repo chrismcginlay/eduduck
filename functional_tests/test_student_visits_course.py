@@ -74,12 +74,11 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         resource_area = self.browser.find_element_by_id('id_resource_area')
         progress = resource_area.find_element_by_id('id_resource_progress')
         try:
-        progress.find_element_by_id('id_erol_button2')
-        except:
+            progress.find_element_by_id('id_enrol_button2')
+        except NoSuchElementException:
             pass
         self.assertEqual(
             progress.find_element_by_tag_name('h3').text, "Your Progress")
-        self.fail("Above should fail right now") 
         # Also, on investigating the site menu, he notices that new options
         # are there for the Personal Development home, lessons, assessments
         menu = self.browser.find_element_by_id('menu')
