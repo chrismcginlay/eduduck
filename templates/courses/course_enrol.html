@@ -27,10 +27,13 @@
             {% if course.code %}{{ course.code }}
             {% else %}{{ course.pk }}
             {% endif %}: {{ course.name }} Course Enrol</h3>
-            {% if status == "auth_noreg" %}
+            {% if status == "auth_bar_enrol" %}
+                <p>You've been redirected here, since probably you tried to access a course resource requiring enrollment.</p>
+                <p>However, since you are organising or instructing this course, it doesn't make sense for you to enrol.</p>
+            {% elif status == "auth_notenrolled" %}
                 <p>You've been redirected here, encouraging you to enrol on this course</p>
                 <p>Probably, you tried to access a course resource which requires you to be enrolled!</p>
-            {% elif status == "auth_reg" %}
+            {% elif status == "auth_enrolled" %}
                 <p>You're enrolled on this course already. If you were trying to access a resource (such as an attachment download) and you keep seeing this page could, their could an error. <a href="{% url 'support.views.support' %}">Please feel free to contact us if there is a problem!</a></p>
             {% else %}
                 <p>You've possibly tried to access a part of this course, but you aren't logged in. Please register for an account first</p>

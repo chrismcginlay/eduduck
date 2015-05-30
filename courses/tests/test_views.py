@@ -474,7 +474,7 @@ class CourseViewTests(TestCase):
     
     def test_course_enrol_page_has_enrol_button(self):
         self.client.login(username='bertie', password='bertword')
-        response = self.client.get('/courses/1/enrol/')
+        response = self.client.get('/courses/3/enrol/')
         target = "id='id_enrol_button'"
         self.assertIn(target, response.content)
    
@@ -502,16 +502,16 @@ class CourseViewTests(TestCase):
         uc = UserCourse(user=self.user2, course=self.course3)
         uc.save()
         response = self.client.get('/courses/3/enrol/')
-        self.assertEqual('auth_enrol', response.context['status'],
-            "Registration status should be auth_enrol")
+        self.assertEqual('auth_enrolled', response.context['status'],
+            "Registration status should be auth_enrolled")
 
     def test_course_enrol_page_status_noenrol(self):
-        """Course instructor or organiser noenrol status passed to template"""
+        """Course instructor/organiser bar_enrol status passed to template"""
         self.client.login(username='bertie', password='bertword')
         #bert is course organiser
         response = self.client.get('/courses/1/enrol/')
-        self.assertEqual('auth_enrol', response.context['status'],
-            "Registration status should be auth_noenrol")
+        self.assertEqual('auth_bar_enrol', response.context['status'],
+            "Registration status should be auth_bar_enrol")
 
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
@@ -701,9 +701,9 @@ class CourseViewTests(TestCase):
         """ User is enrolled, hide both enrol areas """
 
         self.client.login(username='bertie', password='bertword')
-        uc = UserCourse(user=self.user1, course=self.course1)
+        #Enrol bert in course 3 (he's not the instructor etc for course 3)
+        uc = UserCourse(user=self.user1, course=self.course3)
         uc.save()
-        c1 = self.course1
-        response = self.client.get(c1.get_absolute_url())
+        response = self.client.get(self.course3.get_absolute_url())
         self.assertNotIn('id_enrol_button', response.content)
         self.assertNotIn('id_enrol_area', response.content)

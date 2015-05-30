@@ -183,9 +183,12 @@ def enrol(request,course_id):
     
     course = get_object_or_404(Course, pk=course_id)
     if request.user.is_authenticated():
-        status='auth_noreg'
+        status='auth_notenrolled'
         if request.user.usercourse_set.filter(course=course).exists():
-            status='auth_reg'
+            status='auth_enrolled'
+        if (request.user == course.organiser or 
+                request.user == course.instructor):
+            status='auth_bar_enrol'         
     else:
         status='anon'
 
