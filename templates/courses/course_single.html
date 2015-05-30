@@ -197,6 +197,7 @@
             </tbody>
             </table>
         {% elif status == "auth_notenrolled" %}
+            <h3>Enrol Here</h3>
             <div id='id_enrol_area'>
                 <form   class='pure-form' 
                 action='' 
@@ -210,7 +211,7 @@
                 </button>
                 </form>
             </div>
-        {% else %}
+        {% elif status == "anon" %}
             <div id="id_signup_area">
             <h3>Sign Up Here</h3>
                 <form   class='pure-form' 
@@ -224,6 +225,16 @@
                 Sign Up!
                 </button>
             </div>
+        {% elif status == "auth_bar_enrol" %}
+            <h3>TODO Title</h3>
+            {% if user_can_edit %}
+                <a  href = "{% url 'course_edit' course_id=course.id %}"
+                    id='id_edit_course'
+                    class='pure-button pure-button-primary'>
+                        Edit Course
+                </a>
+            {% endif %}
+            <p>You are involved in running this course.</p>
         {% endif %}
     </div>
 </div><!-- id_resource_area -->

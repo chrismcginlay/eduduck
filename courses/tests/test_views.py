@@ -633,7 +633,17 @@ class CourseViewTests(TestCase):
         self.assertIn('course_reopen', response.content)
         self.assertEqual(response.context['uc'].active, False)                
         self.assertEqual(response.context['uc'].completed, True)        
-        
+       
+    def test_course_single_organiser_no_enrol(self):
+        """See that organiser doesn't get enrol facilities"""
+
+        c1 = self.course1.pk
+        url1 = '/courses/{0}/'.format(c1)
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get(url1)
+        self.assertNotIn('id_enrol_button', response.content)
+        self.assertNotIn('id_enrol_button2', response.content)
+
     def test_course_single_unauth(self):        
         """Check individual course page loads for unauth user"""
 
@@ -720,4 +730,4 @@ class CourseViewTests(TestCase):
         uc.save()
         response = self.client.get(self.course3.get_absolute_url())
         self.assertNotIn('id_enrol_button', response.content)
-        self.assertNotIn('id_enrol_area', response.content)
+        self.assertNotIn('id_enrol_button2', response.content)
