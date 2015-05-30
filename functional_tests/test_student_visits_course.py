@@ -40,12 +40,13 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         # a selection of courses.
         courses_area = self.browser.find_element_by_id('id_course_selection') 
 
-        # He selects the Fishing course and is taken to that course's homepage
-        # where he can view an intro video, see an invitation to enrol
-        # see a list of lessons, assessments and resources in the main course
-        # resource area
+        # He selects the Personal Development course and is taken to that 
+        # course's homepage where he can view an intro video, see an
+        # invitation to enrol see a list of lessons, assessments and resources
+        # in the main course resource area
 
-        fishing_course = self.browser.find_element_by_id('id_Line Fishing_course')
+        fishing_course = self.browser.find_element_by_id(
+            'id_Personal Development_course')
         fishing_course.click()
         self.assertTrue(self.browser.find_element_by_id('id_course_title'))
         enrol = self.browser.find_element_by_id('id_enrol_button')
@@ -53,10 +54,14 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         self.assertTrue(course_intro.find_element_by_id('id_abstract'))
         self.assertTrue(course_intro.find_element_by_tag_name('iframe'))
         resource_area = self.browser.find_element_by_id('id_resource_area')
-        self.assertTrue(resource_area.find_element_by_id('id_resource_lessons'))
-        self.assertTrue(resource_area.find_element_by_id('id_resource_assessments'))
-        self.assertTrue(resource_area.find_element_by_id('id_resource_attachments'))
-        self.assertTrue(resource_area.find_element_by_id('id_resource_study'))
+        self.assertTrue(resource_area.find_element_by_id(
+            'id_resource_lessons'))
+        self.assertTrue(resource_area.find_element_by_id(
+            'id_resource_assessments'))
+        self.assertTrue(resource_area.find_element_by_id(
+            'id_resource_attachments'))
+        self.assertTrue(resource_area.find_element_by_id(
+            'id_resource_study'))
 
         # He notices further down the page, that the 'Progress' area offers 
         # yet another opportunity to enrol on the course.
@@ -69,17 +74,20 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         resource_area = self.browser.find_element_by_id('id_resource_area')
         progress = resource_area.find_element_by_id('id_resource_progress')
         try:
-            progress.find_element_by_id('id_enrol_button2')
+        progress.find_element_by_id('id_erol_button2')
         except:
             pass
-        self.assertEqual(progress.find_element_by_tag_name('h3').text, "Your Progress")
-        
+        self.assertEqual(
+            progress.find_element_by_tag_name('h3').text, "Your Progress")
+        self.fail("Above should fail right now") 
         # Also, on investigating the site menu, he notices that new options
-        # are there for the fishing home, lessons, assessments
+        # are there for the Personal Development home, lessons, assessments
         menu = self.browser.find_element_by_id('menu')
-        items_expected = ['Line Fishing', 'Lessons', 'Assessments',
-                          'Intro Videos', 'Study Group', 'Course Docs',
-                          'Progress']
+        items_expected = [
+            'Personal Development', 'Lessons', 'Assessments',
+            'Intro Videos', 'Study Group', 'Course Docs',
+            'Progress'
+        ]
         anchors = menu.find_elements_by_tag_name('a')
         a_list = [a.text for a in anchors]
         for item in items_expected:
@@ -89,7 +97,7 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
                 print "{0} not in menu".format(item)
                 raise
         
-        # On the course homepage, Chris also sees buttons to withdraw from the 
+        # On the course homepage, Chris also sees buttons to withdraw from the
         # course or to mark it as 'complete'.
         progress.find_element_by_xpath("//input[@name='course_withdraw']")
         progress.find_element_by_xpath("//input[@name='course_complete']")

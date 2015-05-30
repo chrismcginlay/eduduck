@@ -99,6 +99,12 @@ class CourseViewTests(TestCase):
         self.assertIs(type(cn24[0]), tuple)    #entry should be 2-tuple
         self.assertEqual(len(course_list), len(cn24))
         
+    def test_course_page_has_no_enrol_button_for_organiser_instructor(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/')
+        self.assertNotIn("id='id_enrol_button'", response.content)
+        self.assertNotIn("id='id_enrol_button2'", response.content)
+
     def test_course_page_has_edit_button_for_organiser_instructor(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/')
@@ -534,7 +540,7 @@ class CourseViewTests(TestCase):
             "Registration status should be auth_noreg")
             
         #Register the user and repeat
-        uc = UserCourse(user=self.user1, course=self.course1)
+        uc = UserCourse(user=self.user2, course=self.course1)
         uc.save()
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
