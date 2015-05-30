@@ -176,8 +176,10 @@ def create(request):
 
 @login_required
 def enrol(request,course_id):
-    """View to encourage enrolment when non-enrolled user tries to access
-    certain resources"""
+    """View to encourage enrolment.
+
+    Suggest user enrols when non-enrolled user tries to access certain 
+    resources. Course instructor or organiser gets error message"""
     
     course = get_object_or_404(Course, pk=course_id)
     if request.user.is_authenticated():

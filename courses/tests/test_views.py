@@ -477,22 +477,41 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/enrol/')
         target = "id='id_enrol_button'"
         self.assertIn(target, response.content)
-    
+   
+    def test_course_enrol_page_no_enrol_button_if_author(self):
+        """Course organiser or instructor can't enrol!"""
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/1/enrol/')
+        target1 = "id='id_enrol_button'"
+        self.assertNotIn(target1, response.content)
+        target2 = "You can't enrol since you are involved in running "\
+            "this course."
+        self.assertIn(target2, response.content)
+
     def test_course_enrol_page_has_correct_context_vars(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/enrol/')
         self.assertIn('course', response.context)
         self.assertIn('status', response.context)
 
-    def test_course_enrol_page_status_auth_reg(self):
+    def test_course_enrol_page_status_auth_enrolled(self):
         """An authenticated and enrolled user status is passed to template"""
+
         self.client.login(username='hank', password='hankdo')
-        #Register the user on the course
-        uc = UserCourse(user=self.user2, course=self.course1)
+        #Enrol the user on the course (hank is not organiser)
+        uc = UserCourse(user=self.user2, course=self.course3)
         uc.save()
+        response = self.client.get('/courses/3/enrol/')
+        self.assertEqual('auth_enrol', response.context['status'],
+            "Registration status should be auth_enrol")
+
+    def test_course_enrol_page_status_noenrol(self):
+        """Course instructor or organiser noenrol status passed to template"""
+        self.client.login(username='bertie', password='bertword')
+        #bert is course organiser
         response = self.client.get('/courses/1/enrol/')
-        self.assertEqual('auth_reg', response.context['status'],
-            "Registration status should be auth_reg")
+        self.assertEqual('auth_enrol', response.context['status'],
+            "Registration status should be auth_noenrol")
 
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
