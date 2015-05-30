@@ -269,11 +269,11 @@ def single(request, course_id):
                              'uc': uc,
                              'history': history,
                              'lessons': lessons,
-                             'status': 'auth_reg'}    
+                             'status': 'auth_enrolled'}    
         else:
             #Here we provide for case 2, user registers
             context_data = { 'course': course,
-                             'status': 'auth_noreg'}
+                             'status': 'auth_notenrolled'}
             if request.method == 'POST':
                 if 'course_register' in request.POST:
                     uc = UserCourse(user=request.user, course=course)
@@ -282,7 +282,7 @@ def single(request, course_id):
                     context_data = { 'course': course,
                                      'uc': uc,
                                      'history': history,
-                                     'status': 'auth_reg'}
+                                     'status': 'auth_enrolled'}
                     logger.info(str(uc) + 'registers')
                     
     else:

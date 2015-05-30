@@ -35,7 +35,7 @@
             {% endif %}: {{ course.name }} Course Homepage</h3>
     </div>
     <div class='pure-u-1-5'>
-        {% if status == "auth_reg" or status == "auth_noreg" %}
+        {% if status != "anon" %}
         {% if user_can_edit %}
         <a  href = "{% url 'course_edit' course_id=course.id %}"
         id='id_edit_course'
@@ -43,7 +43,7 @@
                     Edit Course
         </a>
         {% endif %}{% endif %}
-        {% if status == "auth_noreg" %}
+        {% if status == "auth_notenrolled" %}
             <form   class='pure-form' 
                     action='' 
                     method='post'>
@@ -55,7 +55,7 @@
                     Enrol
                 </button>
             </form>
-        {% elif status == "auth_reg" %}
+        {% elif status == "auth_enrolled" %}
             <p>You're enrolled on this course</p>
         {% else %}
             <form   class='pure-form' 
@@ -163,7 +163,7 @@
         {% endfor %}
     </div>
     <div class='pure-u-1-3' id='id_resource_progress'>
-        {% if status == "auth_reg" %}
+        {% if status == "auth_enrolled" %}
         <h3>Your Progress</h3>
         <p>Current status: {{ uc.get_status }}</p>
         {% if uc.get_status == 'active' %}
@@ -195,7 +195,7 @@
             {% endfor %}
             </tbody>
             </table>
-        {% elif status == "auth_noreg" %}
+        {% elif status == "auth_notenrolled" %}
             <div id='id_enrol_area'>
                 <form   class='pure-form' 
                 action='' 
