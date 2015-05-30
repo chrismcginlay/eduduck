@@ -29,7 +29,7 @@
             {% endif %}: {{ course.name }} Course Enrol</h3>
             {% if status == "auth_bar_enrol" %}
                 <p>You've been redirected here, since probably you tried to access a course resource requiring enrollment.</p>
-                <p>However, since you are organising or instructing this course, it doesn't make sense for you to enrol.</p>
+                <p>However, you can't enrol since you are involved in running this course.</p>
             {% elif status == "auth_notenrolled" %}
                 <p>You've been redirected here, encouraging you to enrol on this course</p>
                 <p>Probably, you tried to access a course resource which requires you to be enrolled!</p>
@@ -40,7 +40,7 @@
             {% endif %}
     </div>
     <div class='pure-u-1-5'>
-       {% if status == "auth_noreg" %}
+       {% if status == "auth_notenrolled" %}
            <form   class='pure-form' 
                     action='{{ course.get_absolute_url }}' 
                     method='post'>
@@ -50,19 +50,6 @@
                         type='submit' 
                         name='course_register'>
                     Enrol
-                </button>
-            </form>
-        {% elif status == "auth_reg" %}
-        {% else %}
-            <form   class='pure-form' 
-                    action='/accounts/register/' 
-                    method='post'>
-                {% csrf_token %}
-                <button id='id_signup_button' 
-                        class='pure-button pure-button-primary' 
-                        type='submit' 
-                        name='signup'>
-                    Sign Up!
                 </button>
             </form>
         {% endif %}

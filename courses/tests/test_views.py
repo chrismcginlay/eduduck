@@ -484,7 +484,7 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/enrol/')
         target1 = "id='id_enrol_button'"
         self.assertNotIn(target1, response.content)
-        target2 = "You can't enrol since you are involved in running "\
+        target2 = "you can't enrol since you are involved in running "\
             "this course."
         self.assertIn(target2, response.content)
 
