@@ -166,7 +166,7 @@ class UserLearningIntentionViewTests(TestCase):
         self.user3.is_active = True
         self.user3.save()
         self.course1 = Course(**course1_data)
-        self.course1.instructor = self.user1
+        self.course1.instructor = self.user2
         self.course1.organiser = self.user2
         self.course1.save() 
 
