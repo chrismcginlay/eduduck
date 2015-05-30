@@ -462,8 +462,8 @@ class CourseViewTests(TestCase):
             'name': 'Test',
             'abstract': 'A test course'
         })
-        self.assertRedirects(response, '/courses/4/', 302, 200)
-        response = self.client.get('/courses/4/')
+        self.assertRedirects(response, '/courses/5/', 302, 200)
+        response = self.client.get('/courses/5/')
         self.assertIn('T01', response.content)
         self.assertIn('Test', response.content)
         self.assertIn('A test course', response.content)
