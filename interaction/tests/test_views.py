@@ -69,7 +69,7 @@ class UserCourseViewTests(TestCase):
         self.course4.organiser = self.user4
         self.course4.save()
 
-        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc = UserCourse(course=self.course1, user=self.user2)
         self.uc.save()
         self.uc2 = UserCourse(course=self.course2, user=self.user1)
         self.uc2.save()
@@ -79,15 +79,15 @@ class UserCourseViewTests(TestCase):
     def test_usercourse_single(self):
         """Test that the view contains the correct context vars"""
 
-        u1 = self.user1.id
+        u2 = self.user2.id
         c1 = self.course1.id
-        url1 = "/interaction/user/{0}/course/{1}/".format(u1, c1)
+        url1 = "/interaction/user/{0}/course/{1}/".format(u2, c1)
         #Not logged in
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 302)
 
         #Now logged in
-        self.client.login(username='bertie', password='bertword')
+        self.client.login(username='Van Gogh', password='vancode')
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
