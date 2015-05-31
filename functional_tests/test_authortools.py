@@ -225,9 +225,11 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         info = afs.find_element_by_xpath(
             "descendant::div[@class='markdown']/p[@class='markdown']")
         self.assertEqual(info.text, 'Use Markdown!')
-
+        
         # He uploads a course intro (maybe a PDF).
         with TemporaryUploadedFile('atest.txt', 'text/plain', None, None) as fp:
+            fp.write("Write some bytes")
+            fp.flush()
             attachment_file_widget.send_keys(fp.temporary_file_path())
             attachment_name_widget.send_keys("A test file")
             attachment_desc_widget.send_keys("A **test** description")
@@ -253,6 +255,8 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         # Chris then revisits the edit page, uploads a second attachment.
         self.browser.get(self.server_url+'/courses/4/')
         with TemporaryUploadedFile('atest2.txt', 'text.plain', None, None) as fp2:
+            fp2.write("Write some bytes")
+            fp.flush()
             attachment_file_widget.send_keys(fp2.temporary_file_path())
             attachment_name_widget.send_keys("Another test file")
             btn=self.browser.find_element_by_id('id_submit_attachment_edits')
