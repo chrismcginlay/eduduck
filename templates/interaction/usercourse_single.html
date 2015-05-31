@@ -16,7 +16,7 @@ Useful breadcrumb?
 {% endblock contentheading %}
 
 {% block content %}
-    <h3>When You Registered on this Course</h3>
+    <h3>When You Enrolled on this Course</h3>
     <ol>
     {% for event in history %}
         <li>{{ event.1 }} on {{ event.0|localtime }}</li>
@@ -24,6 +24,6 @@ Useful breadcrumb?
     </ol>
 
     <h3>Actions</h3>
-    <p>You can register/de-register or mark the course complete. 
+    <p>You can enrol, withdraw, or mark the course complete. 
     <a href='{{ uc.course.get_absolute_url }}'>Follow this link</a></p>
 {% endblock content %}

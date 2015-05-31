@@ -108,7 +108,7 @@ class UserCourseModelTests(TestCase):
     # Test states of flags 'active' 'completed' 'withdrawn' or ACW
     # ACW, AC-, A-W, -CW, --- Error
     # A--, -C-, --W OK
-    def test__checkrep_register_flags_OK(self):
+    def test__checkrep_enrol_flags_OK(self):
         # new uc, activated by save() method
         self.assertTrue(self.uc.active)
         self.assertFalse(self.uc.completed)
@@ -284,7 +284,7 @@ class UserLessonModelTests(TestCase):
     """Test models user interaction with lessons"""
 
     def setUp(self):
-        #set up courses, one user, register the user on course1, but not course2
+        #set up courses, one user, enrol the user on course1, but not course2
         self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
                                               'bertword')
         self.user1.is_active = True
@@ -384,7 +384,7 @@ class UserLessonModelTests(TestCase):
         self.assertTrue(self.ul2.pk, "Failed to create new db entry")
         self.assertTrue(self.ul2._checkrep(), "_checkrep failed")
 
-        #userlesson for lesson 4 should fail, as not registered on course2
+        #userlesson for lesson 4 should fail, as not enrolled on course2
         ul4 = UserLesson(user=self.user1, lesson=self.lesson4)
         ul4.save()
         self.assertIsNone(ul4.pk)
@@ -447,7 +447,7 @@ class UserLessonModelTests(TestCase):
         self.assertEqual(self.ul.visited, True, "Visited should be set")
 
         #The following should not produce a database record.
-        #The user is not registered on the corresponding course.
+        #The user is not enrolled on the corresponding course.
         #ul4 = UserLesson(user=self.user1, lesson=self.lesson4)
         #ul4.visit() #can't run test, visit() asserts on failed _checkrep (as it should)
         #self.assertIsNone(ul4.pk)
@@ -684,7 +684,7 @@ class UserLearningIntentionDetailModelTests(TestCase):
     def test_save(self):
         """Test the save functionality
 
-        Principally, it should not save unless the user is registered
+        Principally, it should not save unless the user is enrolled
         on the corresponding course"""
         ulid2 = UserLearningIntentionDetail(user=self.user1,
                                     learning_intention_detail=self.lid2)
@@ -882,7 +882,7 @@ class UserAttachmentModelTests(TestCase):
         self.assertEqual(t,url) 
                          
     def test_save(self):
-        """Test that save only saves when user is registered on course"""
+        """Test that save only saves when user is enrolled on course"""
         
         u_att3 = UserAttachment(attachment=self.att3, user=self.user2)
         u_att3.save()

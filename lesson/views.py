@@ -86,14 +86,14 @@ def visit(request, course_id, lesson_id):
                     ul.visit() 
                 history = ul.hist2list()                    
         else:
-            #first visit. Must be registered on course
+            #first visit. Must be enrolled on course
             try:
                 request.user.usercourse_set.get(course=course)
                 ul = UserLesson(user=request.user, lesson=lesson)
                 ul.save()
                 history = ul.hist2list()
             except ObjectDoesNotExist:
-                #not registered on course, do nothing quietly, no need to log
+                #not enrolled on course, do nothing quietly, no need to log
                 history = None
     else:
         #User is not even authenticated, don't record anything

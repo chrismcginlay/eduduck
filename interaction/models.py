@@ -45,7 +45,7 @@ class UserCourse(models.Model):
         withdrawn   User withdrew after registration, prior to completion. T/F
         completed   User marked course complete. 
         history     History list (datetime, action) taken. JSON coded. 
-                    eg register/complete/withdraw/reopen). Order by date.
+                    eg enrol/complete/withdraw/reopen). Order by date.
 
     Methods:
         save        Overrides base class save. For new row, 
@@ -451,7 +451,7 @@ class UserLesson(models.Model):
         existing_row = self.pk
         try:
             course_record = self.user.usercourse_set.get(course=self.lesson.course)
-	#model should not try to record lesson unless registered on course
+	#model should not try to record lesson unless enrolled on course
         except ObjectDoesNotExist:
             return False       #don't save anything.
 
@@ -638,7 +638,7 @@ class UserLearningIntentionDetail(models.Model):
             #a long and winding ORM hop.
             usercourse = self.learning_intention_detail.learning_intention.lesson.course
             course_record = self.user.usercourse_set.get(course=usercourse)
-            #model should not try to record lesson unless registered on course
+            #model should not try to record lesson unless enrolled on course
         except ObjectDoesNotExist:
             return False	#don't save anything.
 
@@ -823,7 +823,7 @@ class UserAttachment(models.Model):
         
         existing_row = self.pk
         #Model should not try to record download unless user is 
-        #registered on relevant course. Attachment can be linked to course
+        #enrolled on relevant course. Attachment can be linked to course
         #or to individual lesson, either way, we need to get to the course
         try:
             course_record = self.user.usercourse_set.get(course=self.attachment.course)

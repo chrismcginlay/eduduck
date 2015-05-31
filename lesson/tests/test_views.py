@@ -102,9 +102,9 @@ class LessonViewTests(TestCase):
         self.assertIn('attachments', response.context, \
             "Missing template var: attachments")
         self.assertEqual(response.context['history'], None, 
-                         "There should be no history - unregistered")
+                         "There should be no history - not enrolled")
         self.assertEqual(response.context['ul'], None, 
-                         "There should be no userlesson - unregistered")  
+                         "There should be no userlesson - not enrolled")  
 
     def test_lesson_page_has_edit_button_for_organiser_instructor(self):
         self.client.login(username='chris', password='chris')

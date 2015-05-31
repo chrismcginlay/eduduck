@@ -8,7 +8,7 @@ from unittest import skip
 
 from .base import FunctionalTest
 
-class RegisteredUserInteractsWithCourse(FunctionalTest):
+class LoggedInUserInteractsWithCourse(FunctionalTest):
 
     class wait_for_element_to_be_invisible(object):
         def __init__(self, element):
@@ -37,7 +37,7 @@ class RegisteredUserInteractsWithCourse(FunctionalTest):
         # he goes back to the homepage
         self.browser.find_element_by_id('id_homelink').click()
         
-        # Given that he has not registered on any courses, the homepage shows
+        # Given that he has not enrolled on any courses, the homepage shows
         # a selection of courses.
         courses_area = self.browser.find_element_by_id('id_course_selection') 
 

@@ -277,7 +277,7 @@ def single(request, course_id):
             context_data = { 'course': course,
                              'status': 'auth_notenrolled'}
             if request.method == 'POST':
-                if 'course_register' in request.POST:
+                if 'course_enrol' in request.POST:
                     if (request.user != course.organiser and 
                             request.user != course.instructor):
                         uc = UserCourse(user=request.user, course=course)

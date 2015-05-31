@@ -587,7 +587,7 @@ class CourseViewTests(TestCase):
         c4 = self.course4.pk
         url4 = '/courses/{0}/'.format(c4)
     
-        #First, when the user is not registered on course
+        #First, when the user is not enrolled on course
         self.client.login(username='bertie', password='bertword')
         response = self.client.get(url3)
         self.assertEqual(response.status_code, 200)
@@ -603,7 +603,7 @@ class CourseViewTests(TestCase):
         self.assertEqual('auth_notenrolled', response.context['status'],
             "Registration status should be auth_notenrolled")
             
-        #Register the user and repeat
+        #Enrol the user and repeat
         uc = UserCourse(user=self.user1, course=self.course3)
         uc.save()
         response = self.client.get(url3)
@@ -631,18 +631,18 @@ class CourseViewTests(TestCase):
 
         #see that unenrolled user gets the enrol button
         response = self.client.get(url4)
-        self.assertIn('course_register', response.content)
+        self.assertIn('course_enrol', response.content)
         self.assertEqual(response.context['status'], 'auth_notenrolled')
         
-        #see that registration button works (user registers)
-        response = self.client.post(url4, {'course_register':'Register'})
+        #see that enrol button works (user enrols)
+        response = self.client.post(url4, {'course_enrol':'Enrol'})
         self.assertEqual(response.context['status'], 'auth_enrolled')
         self.assertEqual(response.context['course'], self.course4)
         self.assertIn('course_complete', response.content)
         self.assertIn('course_withdraw', response.content)
         self.assertEqual(response.context['uc'].active, True)        
         
-        #see that a registered user can withdraw
+        #see that a enrolled user can withdraw
         response = self.client.post(url4, {'course_withdraw':'Withdraw'})
         self.assertEqual(response.context['status'], 'auth_enrolled')
         self.assertIn('course_reopen', response.content)
@@ -657,7 +657,7 @@ class CourseViewTests(TestCase):
         self.assertEqual(response.context['uc'].active, True)
         self.assertEqual(response.context['uc'].withdrawn, False)                
 
-        #see that a registered user can complete
+        #see that a enrolled user can complete
         response = self.client.post(url4, {'course_complete':'Complete'})
         self.assertEqual(response.context['status'], 'auth_enrolled')
         self.assertIn('course_reopen', response.content)
