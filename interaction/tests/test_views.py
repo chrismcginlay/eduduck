@@ -122,33 +122,33 @@ class UserLessonViewTests(TestCase):
         self.course2.organiser = self.user2
         self.course2.instructor = self.user2
         self.course2.save()     
-        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc = UserCourse(course=self.course1, user=self.user2)
         self.uc.save()
         self.lesson1 = Lesson(name="Test Lesson 1", course = self.course1)
         self.lesson1.save()
-        self.ul = UserLesson(user=self.user1, lesson=self.lesson1)
+        self.ul = UserLesson(user=self.user2, lesson=self.lesson1)
         self.ul.save()
 
     def test_userlesson_single(self):
         """View contains correct context variables"""
 
-        u1 = self.user1.id
+        u2 = self.user2.id
         l1 = self.lesson1.id
-        url1 = "/interaction/user/{0}/lesson/{1}/".format(u1,l1)
+        url1 = "/interaction/user/{0}/lesson/{1}/".format(u2,l1)
 
         #Not logged in
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 302)
 
         #Now logged in
-        self.client.login(username='bertie', password='bertword')
+        self.client.login(username='Van Gogh', password='vancode')
         response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(x in response.context
             for x in ['ul', 'history'])
 
         #non existent record
-        response = self.client.get('/interaction/user/1/lesson/4000/')
+        response = self.client.get('/interaction/user/2/lesson/4000/')
         self.assertEqual(response.status_code, 404)
 
 class UserLearningIntentionViewTests(TestCase):
@@ -237,11 +237,10 @@ class UserLearningIntentionViewTests(TestCase):
         self.assertEqual(parsed_json['condition'], 1)
         
 
-# TODO Not working test of ajax view.
     def test_userlearningintention_progress_bar(self):
         """View returns correct data for AJAX call"""
 
-        self.fail("fix");
+        #self.fail("fix");
         #Not logged in
         response = self.client.get('/interaction/learningintentiondetail'\
                                     '/1/progress/')
@@ -249,10 +248,13 @@ class UserLearningIntentionViewTests(TestCase):
 
         #Now logged in
         self.client.login(username='bertie', password='bertword')
-        ulid = self.ulid1
+        #current implementation will not record progress without an 
+        #initial cycle
+        self.client.get('/interaction/learningintentiondetail/{0}/cycle/'\
+            .format(self.lid1.pk))
         response = self.client.get(
             '/interaction/learningintentiondetail/{0}/progress/'\
-            .format(ulid.pk))
+            .format(self.lid1.pk))
         self.assertEqual(response.status_code, 200)
 
 
