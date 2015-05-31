@@ -139,7 +139,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         # The abstract correctly displays markdown as before
         self.assertEqual(
             abstract_box.get_attribute('innerHTML'), 
-            u'Being <em>organised</em> is the key to a happy camp'
+            u'Being <em>organised</em> is the key to a happy camp. Wibble.'
         )
 
         # Before Urvasi has time to add lessons, she has to go out, so logs out.
