@@ -226,7 +226,7 @@
                 </button>
             </div>
         {% elif status == "auth_bar_enrol" %}
-            <h3>TODO Title</h3>
+            <h3>Edit Course</h3>
             {% if user_can_edit %}
                 <a  href = "{% url 'course_edit' course_id=course.id %}"
                     id='id_edit_course'
