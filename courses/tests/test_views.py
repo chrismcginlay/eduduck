@@ -524,6 +524,31 @@ class CourseViewTests(TestCase):
         self.assertEqual('auth_bar_enrol', response.context['status'],
             "Registration status should be auth_bar_enrol")
 
+    def test_enrol_page_has_organiser_instructor_links(self):
+        """Course enrol template has correct links to instructor etc"""
+
+        self.client.login(username='bertie', password='bertword')
+        # Load up a course enrol page
+        c2 = self.course2
+        c2.instructor.first_name="Hank"
+        c2.instructor.last_name="Rancho"
+        c2.instructor.save()
+        url2 = '/courses/{0}/enrol/'.format(c2.pk)
+        response = self.client.get(url2)
+
+        # Check username appears for organiser
+        org = c2.organiser
+        t = '<p>Course organiser <a href="/accounts/profile/{1}/public/">{0}</a>'
+        target = t.format(org.username, org.pk)
+        resp = response.content.replace("\n", "").replace("\t", "")
+        self.assertIn(target, resp)
+        
+        # Check full name appears for instructor
+        inst = c2.instructor
+        t = '<p>Course instructor <a href="/accounts/profile/{1}/public/">{0}</a>'
+        target = t.format(inst.get_full_name(), inst.pk)
+        self.assertIn(target, resp)
+
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
 
