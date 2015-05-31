@@ -104,7 +104,6 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         # She notices that there is an 'edit' button on this course page
         btn_edit = self.browser.find_element_by_id('id_edit_course')
         edit_target_url = self.server_url + '/courses/\d+/edit/'
-
         
         # She decides to improve the abstract, so edits the page:
         btn_edit.click()
@@ -130,7 +129,19 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         
         target_url = self.server_url + '/courses/\d+/'
         self.assertRegexpMatches(self.browser.current_url, target_url)
-        
+       
+        # Urvasi knows that there is a course enrol page and quickly
+        # checks that the markdown is rendered in the abstracts
+        enrol_url = self.browser.current_url + 'enrol/'
+        self.browser.get(enrol_url)
+        abstract_box =  self.browser.find_element_by_xpath(
+            "//div[@id='id_abstract']/p[3]")
+        # The abstract correctly displays markdown as before
+        self.assertEqual(
+            abstract_box.get_attribute('innerHTML'), 
+            u'Being <em>organised</em> is the key to a happy camp'
+        )
+
         # Before Urvasi has time to add lessons, she has to go out, so logs out.
         self._logUserOut()
         

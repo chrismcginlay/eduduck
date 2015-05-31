@@ -52,7 +52,7 @@ class CourseViewTests(TestCase):
     course4_data = {
         'code': 'W1',
         'name': 'Washing',
-        'abstract': 'How to wash a cat',
+        'abstract': 'How to *wash* a cat',
     }
     lesson1_data = {
         'name': 'Introduction to Music',
@@ -523,6 +523,11 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/enrol/')
         self.assertEqual('auth_bar_enrol', response.context['status'],
             "Registration status should be auth_bar_enrol")
+
+    def test_enrol_page_abstract_renders_markdown(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/4/enrol/')
+        self.assertIn('How to <em>wash</em> a cat', response.content)
 
     def test_enrol_page_has_organiser_instructor_links(self):
         """Course enrol template has correct links to instructor etc"""
