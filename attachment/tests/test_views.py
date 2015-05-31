@@ -33,11 +33,13 @@ class AttachmentViewTests(TestCase):
     }
 
     def setUp(self):
-        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 
-                                              'bertword')
+        self.user1 = User.objects.create_user(
+            'bertie', 'bertie@example.com', 'bertword')
         self.user1.is_active = True
         self.user1.save()
-
+        self.user2 = User.objects.create_user('dave', 'dave@dave.com', 'dave')
+        self.user2.is_active = True
+        self.user2.save()
         self.course1 = Course(**self.course1_data)
         self.course1.organiser = self.user1
         self.course1.instructor = self.user1
@@ -45,7 +47,7 @@ class AttachmentViewTests(TestCase):
         self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
         self.lesson1.save()
         
-        self.uc = UserCourse(course=self.course1, user=self.user1)
+        self.uc = UserCourse(course=self.course1, user=self.user2)
         self.uc.save()
         
         self.att1 = Attachment(course=self.course1, **self.att1_data)
