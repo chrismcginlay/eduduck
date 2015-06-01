@@ -88,5 +88,41 @@
     "email": "helmi@example.com", 
     "date_joined": "2014-03-02T08:47:50Z"
   }
+},
+{
+  "pk": 6, 
+  "model": "auth.user", 
+  "fields": {
+    "username": "helen",
+    "first_name": "Helen", 
+    "last_name": "helen", 
+    "is_active": true, 
+    "is_superuser": false, 
+    "is_staff": false, 
+    "last_login": "2014-03-02T08:49:25Z", 
+    "groups": [], 
+    "user_permissions": [], 
+    "password": "pbkdf2_sha256$12000$Gn3pdqGwXVIX$s8n5ko1Dju7nh6CEkBD9AZamDZJKdaXf44efVxr7Klk=", 
+    "email": "helen@example.com", 
+    "date_joined": "2014-03-02T08:47:50Z"
+  }
+},
+{
+  "pk": 7, 
+  "model": "auth.user", 
+  "fields": {
+    "username": "sven",
+    "first_name": "Sven", 
+    "last_name": "sven", 
+    "is_active": true, 
+    "is_superuser": false, 
+    "is_staff": false, 
+    "last_login": "2014-03-02T08:49:25Z", 
+    "groups": [], 
+    "user_permissions": [], 
+    "password": "pbkdf2_sha256$12000$0ncbjyhzdWdC$nZHj71hg9hLh5iqZYa9mV7+o8BxdJfgFGsVKSokb47A=", 
+    "email": "sven@example.com", 
+    "date_joined": "2014-03-02T08:47:50Z"
+  }
 }
 ]
