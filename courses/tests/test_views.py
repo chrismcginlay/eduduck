@@ -761,3 +761,72 @@ class CourseViewTests(TestCase):
         response = self.client.get(self.course3.get_absolute_url())
         self.assertNotIn('id_enrol_button', response.content)
         self.assertNotIn('id_enrol_button2', response.content)
+
+class CourseViewSingleTests(TestCase):
+    """Test courses.views.single"""
+
+    fixtures = [
+        'auth_user.json', 
+        'courses.json', 
+        'lessons.json', 
+        'outcome_lints.json', 
+        'videos.json',
+        'attachments.json'
+    ]
+    
+    def test_200_not_logged_in(self):
+        response = self.client.get('/courses/1/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_context_variable_not_logged_in(self):
+        course_pk = 1
+        response = self.client.get('/courses/{0}/'.format(course_pk))
+        self.assertIn(
+            'course', response.context, "Missing template var: course")
+        self.assertIn(
+            'attachments', response.context,
+            "Missing template var: attachments"
+        )
+        self.assertNotIn(
+            'uc', response.context, "Template var uc shouldn't be there")
+        self.assertNotIn(
+            'history', 
+            response.context,
+            "Template var history shouldn't be there"
+        )
+        self.assertEqual(
+            'anon', response.context['status'],
+            "Registration status should be anon"
+        )
+        self.assertEqual(response.context['course'].pk, course_pk)
+ 
+    def test_no_enrol_buttons_yes_signup_button_if_not_loggedin(self):
+        response = self.client.get('/courses/1/')
+        self.assertNotIn('id_enrol_button', response.content)
+        self.assertNotIn('id_enrol_button2', response.content)
+        resp = response.content.replace("\n", "").replace("\t", "")
+        self.assertIn('id_signup_button', resp)
+         
+    def test_organiser_instructor_links_working(self):
+        response = self.client.get('/courses/1/')
+        organiser = response.context['course'].organiser
+        instructor = response.context['course'].instructor
+        t = '<p>Course organiser <a href="/accounts/profile/{1}/public/">{0}</a>'
+        target = t.format(organiser.get_full_name(), organiser.pk)
+        resp = response.content.replace("\n", "").replace("\t", "")
+        self.assertIn(target, resp)
+        
+        t = '<p>Course instructor <a href="/accounts/profile/{1}/public/">{0}</a>'
+        target = t.format(instructor.get_full_name(), instructor.pk)
+        self.assertIn(target, resp)
+
+    def test_200_logged_in_not_enrolled(self):
+        self.client.login(username='helmi', password='plate509')
+        response = self.client.get('/courses/1/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_200_enrolled_not_author(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/1/')
+        self.assertEqual(response.status_code, 200)
+
