@@ -786,7 +786,7 @@ class CourseViewSingleTests(TestCase):
         response = self.client.get('/courses/1/') 
         self.assertTemplateUsed(response, 'courses/course_single.html')
 
-    def test_context_variable_not_logged_in(self):
+    def test_context_not_logged_in(self):
         course_pk = 1
         response = self.client.get('/courses/{0}/'.format(course_pk))
         self.assertIn(
@@ -807,6 +807,7 @@ class CourseViewSingleTests(TestCase):
             "Registration status should be anon"
         )
         self.assertEqual(response.context['course'].pk, course_pk)
+        self.assertFalse(response.context['user_can_edit'])
  
     def test_no_enrol_buttons_yes_signup_button_if_not_loggedin(self):
         response = self.client.get('/courses/1/')
@@ -904,9 +905,41 @@ class CourseViewSingleTests(TestCase):
 
     def test_200_enrolled(self):
         self.client.login(username='chris', password='chris')
-        response = self.client.get('/courses/1/')
+        response = self.client.get('/courses/3/')
         self.assertEqual(response.status_code, 200)
 
+    def test_correct_template_enrolled(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/3/') 
+        self.assertTemplateUsed(response, 'courses/course_single.html')
+
+    def test_context_enrolled(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/3/')
+        self.assertEqual(response.context['course'].pk, 3)
+        self.assertEqual(response.context['status'], 'auth_enrolled')
+        self.assertIn(
+            'attachments', response.context,
+            "Missing template var: attachments"
+        )
+        self.assertIn('uc', response.context)
+        self.assertIn('history', response.context)
+        self.assertIn('lessons', response.context)
+        self.assertFalse(response.context['user_can_edit'])
+
+    def test_no_enrol_buttons_when_enrolled(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/3/')
+        self.assertNotIn('id_enrol_button', response.content)
+        self.assertNotIn('id_enrol_button2', response.content)
+
+    def test_enrolled_message_when_enrolled(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/3/')
+        self.assertIn('You are enrolled on this course', response.content)
+
+    def test_POST_withdraw_when_enrolled(self):
+        self.fail("write")
     #
     # The logged-in but can't enroll situation 'cos instructor/organiser 
     #
