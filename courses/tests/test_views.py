@@ -773,7 +773,11 @@ class CourseViewSingleTests(TestCase):
         'videos.json',
         'attachments.json'
     ]
-    
+
+    #
+    # The not-logged-in situation
+    #
+
     def test_200_not_logged_in(self):
         response = self.client.get('/courses/1/')
         self.assertEqual(response.status_code, 200)
@@ -807,7 +811,7 @@ class CourseViewSingleTests(TestCase):
         resp = response.content.replace("\n", "").replace("\t", "")
         self.assertIn('id_signup_button', resp)
          
-    def test_organiser_instructor_links_working(self):
+    def test_organiser_instructor_links_working_when_not_logged_in(self):
         response = self.client.get('/courses/1/')
         organiser = response.context['course'].organiser
         instructor = response.context['course'].instructor
@@ -819,14 +823,57 @@ class CourseViewSingleTests(TestCase):
         t = '<p>Course instructor <a href="/accounts/profile/{1}/public/">{0}</a>'
         target = t.format(instructor.get_full_name(), instructor.pk)
         self.assertIn(target, resp)
+    
+    #
+    # The logged-in but not enrolled situation for non-instructors/organisers
+    #
 
-    def test_200_logged_in_not_enrolled(self):
+    def test_200_logged_in_not_yet_enrolled(self):
+        self.client.login(username='gaby', password='gaby5')
+        response = self.client.get('/courses/1/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_context_logged_in_not_enrolled(self):
+        self.client.login(username='gaby', password='gaby5')
+        response = self.client.get('/courses/1/')
+        self.assertEqual(response.context['course'].pk, 1)
+        self.assertEqual(
+            response.context['status'], 'auth_notenrolled') 
+        self.assertIn(
+            'attachments', response.context,
+            "Missing template var: attachments"
+        )
+        self.assertNotIn(
+            'uc', response.context, "Template var uc shouldn't be there")
+        self.assertNotIn(
+            'history', 
+            response.context,
+            "Template var history shouldn't be there"
+        )
+    
+    def test_enrol_buttons_logged_in_not_enrolled_not_instructor(self):
+        self.client.login(username='gaby', password='gaby5')
+        response = self.client.get('/courses/1/')
+        self.assertIn('id_enrol_button', response.content)
+        self.assertIn('id_enrol_button2', response.content)
+
+    #
+    # The logged-in and enrolled situation
+    #
+
+    def test_200_enrolled(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/1/')
+        self.assertEqual(response.status_code, 200)
+
+    #
+    # The logged-in but can't enroll situation 'cos instructor/organiser 
+    #
+    
+    def test_200_logged_in_cant_enrol(self):
         self.client.login(username='helmi', password='plate509')
         response = self.client.get('/courses/1/')
         self.assertEqual(response.status_code, 200)
 
-    def test_200_enrolled_not_author(self):
-        self.client.login(username='chris', password='chris')
-        response = self.client.get('/courses/1/')
-        self.assertEqual(response.status_code, 200)
+
 
