@@ -782,6 +782,10 @@ class CourseViewSingleTests(TestCase):
         response = self.client.get('/courses/1/')
         self.assertEqual(response.status_code, 200)
 
+    def test_correct_template_not_logged_in(self):
+        response = self.client.get('/courses/1/') 
+        self.assertTemplateUsed(response, 'courses/course_single.html')
+
     def test_context_variable_not_logged_in(self):
         course_pk = 1
         response = self.client.get('/courses/{0}/'.format(course_pk))
@@ -833,12 +837,16 @@ class CourseViewSingleTests(TestCase):
         response = self.client.get('/courses/1/')
         self.assertEqual(response.status_code, 200)
 
+    def test_correct_template_not_yet_enrolled(self):
+        self.client.login(username='gaby', password='gaby5')
+        response = self.client.get('/courses/1/') 
+        self.assertTemplateUsed(response, 'courses/course_single.html')
+
     def test_context_logged_in_not_enrolled(self):
         self.client.login(username='gaby', password='gaby5')
         response = self.client.get('/courses/1/')
         self.assertEqual(response.context['course'].pk, 1)
-        self.assertEqual(
-            response.context['status'], 'auth_notenrolled') 
+        self.assertEqual(response.context['status'], 'auth_notenrolled')
         self.assertIn(
             'attachments', response.context,
             "Missing template var: attachments"
@@ -850,12 +858,45 @@ class CourseViewSingleTests(TestCase):
             response.context,
             "Template var history shouldn't be there"
         )
-    
+        self.assertFalse(response.context['user_can_edit'])
+
     def test_enrol_buttons_logged_in_not_enrolled_not_instructor(self):
         self.client.login(username='gaby', password='gaby5')
         response = self.client.get('/courses/1/')
         self.assertIn('id_enrol_button', response.content)
         self.assertIn('id_enrol_button2', response.content)
+
+    def test_POST_course_enrol_200(self):
+        """POSTing form course_enrol reloads page with 200 OK"""
+        self.client.login(username='gaby', password='gaby5')
+        form_data = {'course_enrol':'Enrol'}
+        response = self.client.post('/courses/1/', form_data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_POST_course_enrol_correct_template(self):
+        """POSTing form course_enrol reloads page with correct template"""
+        self.client.login(username='gaby', password='gaby5')
+        form_data = {'course_enrol':'Enrol'}
+        response = self.client.post('/courses/1/', form_data)
+        self.assertTemplateUsed(response, 'courses/course_single.html')
+
+    def test_POST_course_enrol_context(self):
+        """POSTing form course_enrol reloads with proper context variables"""
+        self.client.login(username='gaby', password='gaby5')
+        form_data = {'course_enrol':'Enrol'}
+        response = self.client.post('/courses/1/', form_data)
+        self.assertIn('uc', response.context)
+        self.assertIn('history', response.context)
+        self.assertEqual(response.context['course'].pk, 1)
+        self.assertEqual(response.context['status'], 'auth_enrolled')
+        self.assertFalse(response.context['user_can_edit'])
+    
+    def test_POST_course_enrol_no_enrol_buttons(self):
+        self.client.login(username='gaby', password='gaby5')
+        form_data = {'course_enrol':'Enrol'}
+        response = self.client.post('/courses/1/', form_data)
+        self.assertNotIn('id_enrol_button', response.content)
+        self.assertNotIn('id_enrol_button2', response.content)
 
     #
     # The logged-in and enrolled situation
