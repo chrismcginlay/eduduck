@@ -771,7 +771,8 @@ class CourseViewSingleTests(TestCase):
         'lessons.json', 
         'outcome_lints.json', 
         'videos.json',
-        'attachments.json'
+        'attachments.json',
+        'interactions.json',
     ]
 
     #
@@ -936,7 +937,7 @@ class CourseViewSingleTests(TestCase):
     def test_enrolled_message_when_enrolled(self):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/3/')
-        self.assertIn('You are enrolled on this course', response.content)
+        self.assertIn('You\'re enrolled on this course', response.content)
 
     def test_POST_withdraw_when_enrolled(self):
         self.fail("write")

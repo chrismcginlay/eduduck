@@ -229,7 +229,6 @@ def single(request, course_id):
 
     logger.info('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
-
     if request.user.is_authenticated():
         uc_set = request.user.usercourse_set.filter(course=course)
         if uc_set.exists():
@@ -322,13 +321,12 @@ def single(request, course_id):
     
     #Add a flag if the current user is the organiser or instructor for the 
     #course, so template can display edit button
+    context_data.update({'user_can_edit': False})
     if request.user.is_authenticated():
         if request.user.pk == course.organiser_id  \
                 or request.user.pk == course.instructor_id:
             context_data.update(
                 {'user_can_edit': True, 'status': 'auth_bar_enrol'})
-        else:
-            context_data.update({'user_can_edit': False})
 
     logger.debug('courses.single request context: status='+context_data['status']) 
     template = 'courses/course_single.html'        
