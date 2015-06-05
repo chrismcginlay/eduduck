@@ -751,17 +751,6 @@ class CourseViewTests(TestCase):
         self.assertIn('id_enrol_button', response.content)
         self.assertIn('id_enrol_area', response.content)
         
-    def test_90_logged_in_and_enrolled(self):
-        """ User is enrolled, hide both enrol areas """
-
-        self.client.login(username='bertie', password='bertword')
-        #Enrol bert in course 3 (he's not the instructor etc for course 3)
-        uc = UserCourse(user=self.user1, course=self.course3)
-        uc.save()
-        response = self.client.get(self.course3.get_absolute_url())
-        self.assertNotIn('id_enrol_button', response.content)
-        self.assertNotIn('id_enrol_button2', response.content)
-
 class CourseViewSingleTests(TestCase):
     """Test courses.views.single"""
 
@@ -865,6 +854,7 @@ class CourseViewSingleTests(TestCase):
     def test_enrol_buttons_logged_in_not_enrolled_not_instructor(self):
         self.client.login(username='gaby', password='gaby5')
         response = self.client.get('/courses/1/')
+        self.assertIn('id_enrol_area', response.content)
         self.assertIn('id_enrol_button', response.content)
         self.assertIn('id_enrol_button2', response.content)
 
@@ -969,8 +959,17 @@ class CourseViewSingleTests(TestCase):
     
     def test_200_logged_in_cant_enrol(self):
         self.client.login(username='sven', password='sven')
-        response = self.client.get('/courses/1/')
+        response = self.client.get('/courses/3/')
         self.assertEqual(response.status_code, 200)
+
+    def test_correct_template_logged_in_cant_enrol(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/courses/3/') 
+        self.assertTemplateUsed(response, 'courses/course_single.html')
+    
+    def test_context_logged_in_cant_enrol(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/courses/3/') 
         self.assertEqual(response.context['status'], 'auth_bar_enrol')
         self.assertTrue(response.context['user_can_edit'])
         self.assertIn('attachments', response.context)
