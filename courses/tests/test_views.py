@@ -919,13 +919,11 @@ class CourseViewSingleTests(TestCase):
         response = self.client.get('/courses/3/')
         self.assertEqual(response.context['course'].pk, 3)
         self.assertEqual(response.context['status'], 'auth_enrolled')
-        self.assertIn(
-            'attachments', response.context,
-            "Missing template var: attachments"
-        )
+        self.assertIn('attachments', response.context)
         self.assertIn('uc', response.context)
         self.assertIn('history', response.context)
         self.assertIn('lessons', response.context)
+        self.assertIn('attachments', response.context)
         self.assertFalse(response.context['user_can_edit'])
 
     def test_no_enrol_buttons_when_enrolled(self):
@@ -940,15 +938,47 @@ class CourseViewSingleTests(TestCase):
         self.assertIn('You\'re enrolled on this course', response.content)
 
     def test_POST_withdraw_when_enrolled(self):
-        self.fail("write")
+        self.client.login(username='chris', password='chris')
+        form_data = {'course_withdraw':'withdraw'} 
+        response = self.client.post('/courses/3/', form_data)
+        self.assertIn('<p>Current status: withdrawn</p>', response.content)
+        self.assertIn(
+            '<input type="submit" name="course_reopen"', response.content)
+        self.assertEqual(response.context['status'], 'auth_withdrawn')
+
+    def test_POST_reopen_when_withdrawn(self):
+        self.client.login(username='chris', password='chris')
+        form_data = {'course_withdraw':'withdraw'} 
+        response = self.client.post('/courses/3/', form_data)
+        form_data = {'course_reopen':'reopen'} 
+        response = self.client.post('/courses/3/', form_data)
+        self.assertEqual(response.context['status'], 'auth_enrolled')
+
+    def test_POST_complete_when_enrolled(self):
+        self.client.login(username='chris', password='chris')
+        form_data = {'course_complete':'complete'} 
+        response = self.client.post('/courses/3/', form_data)
+        self.assertIn('<p>Current status: completed</p>', response.content)
+        self.assertIn(
+            '<input type="submit" name="course_reopen"', response.content)
+        self.assertEqual(response.context['status'], 'auth_completed')
+
     #
     # The logged-in but can't enroll situation 'cos instructor/organiser 
     #
     
     def test_200_logged_in_cant_enrol(self):
-        self.client.login(username='helmi', password='plate509')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/')
         self.assertEqual(response.status_code, 200)
-
+        self.assertEqual(response.context['status'], 'auth_bar_enrol')
+        self.assertTrue(response.context['user_can_edit'])
+        self.assertIn('attachments', response.context)
+        self.assertNotIn('uc', response.context)
+        self.assertNotIn('history', response.context)
+        self.assertNotIn('lessons', response.context)
+        self.assertIn('attachments', response.context)
+        self.assertIn(
+            'You are involved in running this course', response.content)
 
 
