@@ -591,7 +591,7 @@ class CourseViewSingleTests(TestCase):
     ]
     
     #
-    # Redirects and 404s
+    # Redirects and 404s etc.
     #
     
     def test_404_for_non_existent_course(self):    
@@ -756,6 +756,13 @@ class CourseViewSingleTests(TestCase):
         self.assertIn('lessons', response.context)
         self.assertIn('attachments', response.context)
         self.assertFalse(response.context['user_can_edit'])
+
+    def test_uc_context_keys_for_activity(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/3/')
+        self.assertEqual(response.context['uc'].active, True)
+        self.assertEqual(response.context['uc'].withdrawn, False)
+        self.assertEqual(response.context['uc'].completed, False)
 
     def test_no_enrol_buttons_when_enrolled(self):
         self.client.login(username='chris', password='chris')

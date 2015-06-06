@@ -216,6 +216,38 @@ def iterNone():
     yield None
 
 def single(request, course_id):
+    """View for detail of a single course"""
+    
+    logger.debug('Course id=' + str(course_id) + ' view')
+    course = get_object_or_404(Course, pk=course_id)
+    user_can_edit = False
+    if request.user.is_authenticated():
+        try:
+            uc = request.user.usercourse_set.get(course__id = course_id)
+            status = 'auth_enrolled'
+        except ObjectDoesNotExist:
+            uc = None
+            if (request.user == course.organiser or 
+                    request.user == course.instructor):
+                status = 'auth_bar_enrol'
+                user_can_edit = True
+            else:
+                status = 'auth_not_enrolled'
+    else:
+        uc = None
+        status = 'noauth'
+    context = {
+        'attachments':'',
+        'history':'',
+        'status':status,
+        'course':course,
+        'uc':uc,
+        'user_can_edit':user_can_edit,
+    }
+    template = 'courses/course_single.html'
+    return render(request, template, context) 
+
+def old_single(request, course_id):
     """Prepare variables for detail of a single course
 
     There are 3 distinct pathways through this view as regards 'Progress' area:
