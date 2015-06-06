@@ -674,50 +674,6 @@ class CourseViewTests(TestCase):
         self.assertNotIn('id_enrol_button', response.content)
         self.assertNotIn('id_enrol_button2', response.content)
 
-    def test_course_single_unauth(self):        
-        """Check individual course page loads for unauth user"""
-
-        c1 = self.course1.pk
-        url1 = '/courses/{0}/'.format(c1)
-        response = self.client.get(url1)
-        self.assertEqual(response.status_code, 200)
-        #check template variables present and correct
-        self.assertIn('course', response.context, \
-            "Missing template var: course")
-        self.assertIn('attachments', response.context, \
-            "Missing template var: attachments")
-        self.assertNotIn('uc', response.context, \
-            "Missing template var: uc")
-        self.assertNotIn('history', response.context, \
-            "Missing template var: history")
-        self.assertEqual('anon', response.context['status'], \
-            "Registration status should be anon")
-        self.assertEqual(response.context['course'].pk, c1)   
-
-    def test_86_organiser_instructor_name(self):
-        """Course single template show full name or username of instructor"""
-
-        # Load up a course single page
-        c2 = self.course2
-        c2.instructor.first_name="Hank"
-        c2.instructor.last_name="Rancho"
-        c2.instructor.save()
-        url2 = '/courses/{0}/'.format(c2.pk)
-        response = self.client.get(url2)
-
-        # Check username appears for organiser
-        org = c2.organiser
-        t = '<p>Course organiser <a href="/accounts/profile/{1}/public/">{0}</a>'
-        target = t.format(org.username, org.pk)
-        resp = response.content.replace("\n", "").replace("\t", "")
-        self.assertIn(target, resp)
-        
-        # Check full name appears for instructor
-        inst = c2.instructor
-        t = '<p>Course instructor <a href="/accounts/profile/{1}/public/">{0}</a>'
-        target = t.format(inst.get_full_name(), inst.pk)
-        self.assertIn(target, resp)
-        
     def test_87_course_with_no_lessons_shows_template_error(self):
         """Should show 'course organiser hasn't added any lessons yet"""
 
@@ -735,21 +691,7 @@ class CourseViewTests(TestCase):
         t = escape("{0} hasn't added any lessons yet!".format(organiser))
         self.assertIn(t, resp)
                
-    def test_90_not_logged_in_shows_sign_up_button_and_form(self):
-        """ If not logged in, invite to sign up """
         
-        c1 = self.course1
-        response = self.client.get(c1.get_absolute_url())
-        self.assertIn('id_signup_button', response.content)
-        self.assertIn('id_signup_area', response.content)
-        
-    def test_90_logged_in_but_not_enrolled(self):
-        """ User not enrolled, invite to enrol x2 areas """
-        
-        self.client.login(username='bertie', password='bertword')
-        response = self.client.get(self.course3.get_absolute_url())
-        self.assertIn('id_enrol_button', response.content)
-        self.assertIn('id_enrol_area', response.content)
         
 class CourseViewSingleTests(TestCase):
     """Test courses.views.single"""
@@ -777,26 +719,13 @@ class CourseViewSingleTests(TestCase):
         self.assertTemplateUsed(response, 'courses/course_single.html')
 
     def test_context_not_logged_in(self):
-        course_pk = 1
-        response = self.client.get('/courses/{0}/'.format(course_pk))
-        self.assertIn(
-            'course', response.context, "Missing template var: course")
-        self.assertIn(
-            'attachments', response.context,
-            "Missing template var: attachments"
-        )
-        self.assertNotIn(
-            'uc', response.context, "Template var uc shouldn't be there")
-        self.assertNotIn(
-            'history', 
-            response.context,
-            "Template var history shouldn't be there"
-        )
-        self.assertEqual(
-            'anon', response.context['status'],
-            "Registration status should be anon"
-        )
-        self.assertEqual(response.context['course'].pk, course_pk)
+        response = self.client.get('/courses/1/')
+        self.assertIn('course', response.context)
+        self.assertIn('attachments', response.context)
+        self.assertNotIn('uc', response.context)
+        self.assertNotIn('history', response.context)
+        self.assertEqual('anon', response.context['status'])
+        self.assertEqual(response.context['course'].pk, 1)
         self.assertFalse(response.context['user_can_edit'])
  
     def test_no_enrol_buttons_yes_signup_button_if_not_loggedin(self):
@@ -804,6 +733,7 @@ class CourseViewSingleTests(TestCase):
         self.assertNotIn('id_enrol_button', response.content)
         self.assertNotIn('id_enrol_button2', response.content)
         resp = response.content.replace("\n", "").replace("\t", "")
+        self.assertIn('id_signup_area', resp)
         self.assertIn('id_signup_button', resp)
          
     def test_organiser_instructor_links_working_when_not_logged_in(self):
@@ -980,4 +910,9 @@ class CourseViewSingleTests(TestCase):
         self.assertIn(
             'You are involved in running this course', response.content)
 
+    def test_no_enrol_buttons_when_cant_enrol(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/courses/1/')
+        self.assertNotIn('id_enrol_button', response.content)
+        self.assertNotIn('id_enrol_button2', response.content)
 
