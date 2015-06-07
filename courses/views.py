@@ -256,9 +256,21 @@ def single(request, course_id):
                 logger.info(str(uc) + 'completes')
             else: 
                 logger.error("Can't complete course, reason: not active")
+        if 'course_withdraw' in request.POST and status == 'auth_enrolled':
+            if uc.active:
+                uc.withdraw()
+                logger.info(str(uc) + 'withdraws')
+            else:
+                logger.error("Can't withdraw, reason: not active")
+        if 'course_reopen' in request.POST and status == 'auth_enrolled':
+            if not uc.active:
+                uc.reopen()
+                logger.info(str(uc) + 'reopens')
+            else:
+                logger.error("Can't reopen, reason: already active")
 
-    
     context.update({
+        'lessons': None,
         'status': status,
         'user_can_edit': user_can_edit,
         'uc': uc,

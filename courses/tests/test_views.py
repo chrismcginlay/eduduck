@@ -608,10 +608,10 @@ class CourseViewSingleTests(TestCase):
         course5 = Course.objects.get(pk=5)
         course5.lesson_set.all().delete()
         organiser = course5.organiser.get_full_name()
-        target = escape("{0} hasn't added any lessons yet!".format(organiser))
+        target = escape("{0} hasn\'t added any lessons yet!".format(organiser))
         response = self.client.get('/courses/5/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(target, response)
+        self.assertIn(target, response.content)
 
 
     #
@@ -641,7 +641,6 @@ class CourseViewSingleTests(TestCase):
         self.assertNotIn('id_enrol_button', response.content)
         self.assertNotIn('id_enrol_button2', response.content)
         resp = response.content.replace("\n", "").replace("\t", "")
-        self.assertIn('id_signup_area', resp)
         self.assertIn('id_signup_button', resp)
          
     def test_organiser_instructor_links_working_when_not_logged_in(self):
