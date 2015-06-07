@@ -11,7 +11,10 @@ from django.utils.html import escape
 
 from courses.models import Course
 from profile.models import Profile
-from interaction.models import UserCourse
+from interaction.models import (
+    UserCourse,
+    UserLesson,
+)
 from attachment.forms import (
     ATTACHMENT_NAME_FIELD_REQUIRED_ERROR,
     ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR,
@@ -755,10 +758,10 @@ class CourseViewSingleTests(TestCase):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/3/')
         expected_list_of_tuples = [
-            (Lesson.objects.get(pk=11), True),
-            (Lesson.objects.get(pk=12), True),
-            (Lesson.objects.get(pk=13), False),
-            (Lesson.objects.get(pk=14), False),
+            (Lesson.objects.get(pk=11), UserLesson.objects.get(pk=1)),
+            (Lesson.objects.get(pk=12), UserLesson.objects.get(pk=2)),
+            (Lesson.objects.get(pk=13), None),
+            (Lesson.objects.get(pk=14), None),
         ]
         self.assertEqual(expected_list_of_tuples, response.context['lessons'])
 

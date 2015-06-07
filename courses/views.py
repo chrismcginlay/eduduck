@@ -273,13 +273,14 @@ def single(request, course_id):
     if uc:
         history = uc.hist2list()
 
-    lessons_visited = [userlesson.lesson for userlesson in 
-        uc.user.userlesson_set.filter(lesson__course__pk=course_id)]
+    user_lessons = uc.user.userlesson_set.filter(lesson__course__pk=course_id)
     lessons_in_course = uc.course.lesson_set.all() #all lessons in course
-    lessons = [(lesson, (lesson in lessons_visited)) 
-        for lesson in lessons_in_course]
+    lessons = [(
+        alesson, 
+        next((lessonv for lessonv in 
+            uc.user.userlesson_set.filter(lesson__pk=alesson.pk)), None)
+    ) for alesson in lessons_in_course]
 
-    import pdb; pdb.set_trace()
     context.update({
         'history': history,
         'lessons': lessons,
