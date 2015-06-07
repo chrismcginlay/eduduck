@@ -221,10 +221,11 @@ def single(request, course_id):
     logger.debug('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
     user_can_edit = False
+    history = None
+    lessons = None
 
     context = {
         'attachments':None,
-        'history':None,
         'course':course,
     }
 
@@ -269,8 +270,19 @@ def single(request, course_id):
             else:
                 logger.error("Can't reopen, reason: already active")
 
+    if uc:
+        history = uc.hist2list()
+
+    lessons_visited = [userlesson.lesson for userlesson in 
+        uc.user.userlesson_set.filter(lesson__course__pk=course_id)]
+    lessons_in_course = uc.course.lesson_set.all() #all lessons in course
+    lessons = [(lesson, (lesson in lessons_visited)) 
+        for lesson in lessons_in_course]
+
+    import pdb; pdb.set_trace()
     context.update({
-        'lessons': None,
+        'history': history,
+        'lessons': lessons,
         'status': status,
         'user_can_edit': user_can_edit,
         'uc': uc,

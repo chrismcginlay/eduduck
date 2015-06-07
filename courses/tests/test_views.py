@@ -748,8 +748,19 @@ class CourseViewSingleTests(TestCase):
         self.assertIsNotNone(response.context['uc'])
         self.assertIsNotNone(response.context['history'])
         self.assertIsNotNone(response.context['lessons'])
-        self.assertIn('attachments', response.context)
         self.assertFalse(response.context['user_can_edit'])
+
+    def test_context_enrolled_lesson_list(self):
+        """Tuple (lessons, visited_flag) in lesson context variable"""
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/3/')
+        expected_list_of_tuples = [
+            (Lesson.objects.get(pk=11), True),
+            (Lesson.objects.get(pk=12), True),
+            (Lesson.objects.get(pk=13), False),
+            (Lesson.objects.get(pk=14), False),
+        ]
+        self.assertEqual(expected_list_of_tuples, response.context['lessons'])
 
     def test_uc_context_keys_for_activity(self):
         self.client.login(username='chris', password='chris')
