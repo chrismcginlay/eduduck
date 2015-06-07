@@ -785,7 +785,7 @@ class CourseViewSingleTests(TestCase):
         self.assertEqual(response.context['uc'].active, False)        
         self.assertEqual(response.context['uc'].withdrawn, True)        
         self.assertEqual(response.context['uc'].completed, False)        
-        self.assertEqual(response.context['status'], 'auth_withdrawn')
+        self.assertEqual(response.context['status'], 'auth_enrolled')
 
     def test_POST_reopen_when_withdrawn(self):
         self.client.login(username='chris', password='chris')
@@ -808,7 +808,7 @@ class CourseViewSingleTests(TestCase):
         self.assertEqual(response.context['uc'].active, False)        
         self.assertEqual(response.context['uc'].withdrawn, False)
         self.assertEqual(response.context['uc'].completed, True)        
-        self.assertEqual(response.context['status'], 'auth_completed')
+        self.assertEqual(response.context['status'], 'auth_enrolled')
 
     #
     # The logged-in but can't enroll situation 'cos instructor/organiser 

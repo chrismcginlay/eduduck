@@ -254,7 +254,6 @@ def single(request, course_id):
             if uc.active:
                 uc.complete()
                 logger.info(str(uc) + 'completes')
-                status = 'auth_completed'
             else: 
                 logger.error("Can't complete course, reason: not active")
 
