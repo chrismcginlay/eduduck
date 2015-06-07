@@ -630,9 +630,10 @@ class CourseViewSingleTests(TestCase):
         response = self.client.get('/courses/1/')
         self.assertIn('course', response.context)
         self.assertIn('attachments', response.context)
-        self.assertNotIn('uc', response.context)
-        self.assertNotIn('history', response.context)
-        self.assertEqual('anon', response.context['status'])
+        self.assertIsNone(response.context['uc'])
+        self.assertIsNone(response.context['history'])
+        self.assertIsNotNone(response.context['lessons'])
+        self.assertEqual('noauth', response.context['status'])
         self.assertEqual(response.context['course'].pk, 1)
         self.assertFalse(response.context['user_can_edit'])
  
@@ -675,17 +676,10 @@ class CourseViewSingleTests(TestCase):
         response = self.client.get('/courses/1/')
         self.assertEqual(response.context['course'].pk, 1)
         self.assertEqual(response.context['status'], 'auth_not_enrolled')
-        self.assertIn(
-            'attachments', response.context,
-            "Missing template var: attachments"
-        )
-        self.assertNotIn(
-            'uc', response.context, "Template var uc shouldn't be there")
-        self.assertNotIn(
-            'history', 
-            response.context,
-            "Template var history shouldn't be there"
-        )
+        self.assertIn('attachments', response.context)
+        self.assertIsNone(response.context['uc'])
+        self.assertIsNone(response.context['history'])
+        self.assertIsNotNone(response.context['lessons'])
         self.assertFalse(response.context['user_can_edit'])
 
     def test_enrol_buttons_logged_in_not_enrolled_not_instructor(self):
@@ -715,7 +709,8 @@ class CourseViewSingleTests(TestCase):
         form_data = {'course_enrol':'Enrol'}
         response = self.client.post('/courses/1/', form_data)
         self.assertIn('uc', response.context)
-        self.assertIn('history', response.context)
+        self.assertIsNotNone(response.context['lessons'])
+        self.assertIsNotNone(response.context['history'])
         self.assertEqual(response.context['course'].pk, 1)
         self.assertEqual(response.context['status'], 'auth_enrolled')
         self.assertFalse(response.context['user_can_edit'])
@@ -750,9 +745,9 @@ class CourseViewSingleTests(TestCase):
         self.assertEqual(response.context['course'].pk, 3)
         self.assertEqual(response.context['status'], 'auth_enrolled')
         self.assertIn('attachments', response.context)
-        self.assertIn('uc', response.context)
-        self.assertIn('history', response.context)
-        self.assertIn('lessons', response.context)
+        self.assertIsNotNone(response.context['uc'])
+        self.assertIsNotNone(response.context['history'])
+        self.assertIsNotNone(response.context['lessons'])
         self.assertIn('attachments', response.context)
         self.assertFalse(response.context['user_can_edit'])
 
@@ -829,9 +824,9 @@ class CourseViewSingleTests(TestCase):
         self.assertEqual(response.context['status'], 'auth_bar_enrol')
         self.assertTrue(response.context['user_can_edit'])
         self.assertIn('attachments', response.context)
-        self.assertNotIn('uc', response.context)
-        self.assertNotIn('history', response.context)
-        self.assertNotIn('lessons', response.context)
+        self.assertIsNone(response.context['uc'])
+        self.assertIsNone(response.context['history'])
+        self.assertIsNone(response.context['lessons'])
         self.assertIn('attachments', response.context)
         self.assertIn(
             'You are involved in running this course', response.content)

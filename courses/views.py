@@ -223,8 +223,8 @@ def single(request, course_id):
     user_can_edit = False
 
     context = {
-        'attachments':'',
-        'history':'',
+        'attachments':None,
+        'history':None,
         'course':course,
     }
 
