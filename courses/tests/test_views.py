@@ -635,7 +635,7 @@ class CourseViewSingleTests(TestCase):
         self.assertIn('attachments', response.context)
         self.assertIsNone(response.context['uc'])
         self.assertIsNone(response.context['history'])
-        self.assertIsNotNone(response.context['lessons'])
+        self.assertIsNone(response.context['lessons'])
         self.assertEqual('noauth', response.context['status'])
         self.assertEqual(response.context['course'].pk, 1)
         self.assertFalse(response.context['user_can_edit'])
@@ -682,7 +682,7 @@ class CourseViewSingleTests(TestCase):
         self.assertIn('attachments', response.context)
         self.assertIsNone(response.context['uc'])
         self.assertIsNone(response.context['history'])
-        self.assertIsNotNone(response.context['lessons'])
+        self.assertIsNone(response.context['lessons'])
         self.assertFalse(response.context['user_can_edit'])
 
     def test_enrol_buttons_logged_in_not_enrolled_not_instructor(self):

@@ -273,13 +273,13 @@ def single(request, course_id):
     if uc:
         history = uc.hist2list()
 
-    user_lessons = uc.user.userlesson_set.filter(lesson__course__pk=course_id)
-    lessons_in_course = uc.course.lesson_set.all() #all lessons in course
-    lessons = [(
-        alesson, 
-        next((lessonv for lessonv in 
-            uc.user.userlesson_set.filter(lesson__pk=alesson.pk)), None)
-    ) for alesson in lessons_in_course]
+        user_lessons = uc.user.userlesson_set.filter(
+            lesson__course__pk=course_id)
+        lessons_in_course = uc.course.lesson_set.all() #all lessons in course
+        lessons = [(
+            alesson, next((lessonv for lessonv in 
+                uc.user.userlesson_set.filter(lesson__pk=alesson.pk)), None)
+        ) for alesson in lessons_in_course]
 
     context.update({
         'history': history,
