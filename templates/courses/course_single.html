@@ -44,7 +44,7 @@
                 </a>
             {% endif %}
             <p>You are involved in running this course.</p>
-        {% elif status == "auth_notenrolled" %}
+        {% elif status == "auth_not_enrolled" %}
             <form   class='pure-form' 
                     action='' 
                     method='post'>
@@ -196,7 +196,7 @@
             {% endfor %}
             </tbody>
             </table>
-        {% elif status == "auth_notenrolled" %}
+        {% elif status == "auth_not_enrolled" %}
             <h3>Enrol Here</h3>
             <div id='id_enrol_area'>
                 <form   class='pure-form' 

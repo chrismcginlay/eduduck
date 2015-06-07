@@ -675,7 +675,7 @@ class CourseViewSingleTests(TestCase):
         self.client.login(username='gaby', password='gaby5')
         response = self.client.get('/courses/1/')
         self.assertEqual(response.context['course'].pk, 1)
-        self.assertEqual(response.context['status'], 'auth_notenrolled')
+        self.assertEqual(response.context['status'], 'auth_not_enrolled')
         self.assertIn(
             'attachments', response.context,
             "Missing template var: attachments"

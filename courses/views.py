@@ -221,6 +221,13 @@ def single(request, course_id):
     logger.debug('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
     user_can_edit = False
+
+    context = {
+        'attachments':'',
+        'history':'',
+        'course':course,
+    }
+
     if request.user.is_authenticated():
         try:
             uc = request.user.usercourse_set.get(course__id = course_id)
@@ -236,14 +243,28 @@ def single(request, course_id):
     else:
         uc = None
         status = 'noauth'
-    context = {
-        'attachments':'',
-        'history':'',
-        'status':status,
-        'course':course,
-        'uc':uc,
-        'user_can_edit':user_can_edit,
-    }
+            
+    if request.method == 'POST':
+        if 'course_enrol' in request.POST and status == 'auth_not_enrolled':
+            uc = UserCourse(user=request.user, course=course)
+            uc.save()
+            logger.info(str(uc) + 'enrols')
+            status = 'auth_enrolled'
+        if 'course_complete' in request.POST and status == 'auth_enrolled':
+            if uc.active:
+                uc.complete()
+                logger.info(str(uc) + 'completes')
+                status = 'auth_completed'
+            else: 
+                logger.error("Can't complete course, reason: not active")
+
+    
+    context.update({
+        'status': status,
+        'user_can_edit': user_can_edit,
+        'uc': uc,
+    })
+
     template = 'courses/course_single.html'
     return render(request, template, context) 
 
