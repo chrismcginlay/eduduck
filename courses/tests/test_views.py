@@ -12,9 +12,11 @@ from django.utils.html import escape
 from courses.models import Course
 from profile.models import Profile
 from interaction.models import (
+    UserAttachment,
     UserCourse,
     UserLesson,
 )
+from attachment.models import Attachment
 from attachment.forms import (
     ATTACHMENT_NAME_FIELD_REQUIRED_ERROR,
     ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR,
@@ -686,7 +688,15 @@ class CourseViewSingleTests(TestCase):
         self.assertFalse(response.context['user_can_edit'])
 
     def test_context_attachment_got_something(self):
-        self.fail("attachment list to do")
+        self.client.login(username='gaby', password='gaby5')
+        response = self.client.get('/courses/1/')
+        expected_list_of_tuples = [
+            (None, Attachment.objects.get(pk=1)),
+            (None, Attachment.objects.get(pk=2)),
+            (None, Attachment.objects.get(pk=3)),
+        ]
+        self.assertEqual(
+            expected_list_of_tuples, response.context['attachments'])
 
     def test_enrol_buttons_logged_in_not_enrolled_not_instructor(self):
         self.client.login(username='gaby', password='gaby5')
@@ -769,7 +779,18 @@ class CourseViewSingleTests(TestCase):
         self.assertEqual(expected_list_of_tuples, response.context['lessons'])
 
     def test_context_enrolled_attachment_list(self):
-        self.fail("downloadable/recorded")
+        """Tuple (user_attachment|None, attachment) in context variable"""
+        self.client.login(username='chris', password='chris')
+        self.client.get('/interaction/attachment/1/download/')
+        self.client.get('/interaction/attachment/3/download/')
+        response = self.client.get('/courses/1/')
+        expected_list_of_tuples = [
+            (UserAttachment.objects.get(pk=1), Attachment.objects.get(pk=1)),
+            (None, Attachment.objects.get(pk=2)),
+            (UserAttachment.objects.get(pk=2), Attachment.objects.get(pk=3)),
+        ]
+        self.assertEqual(
+            expected_list_of_tuples, response.context['attachments'])
 
     def test_uc_context_keys_for_activity(self):
         self.client.login(username='chris', password='chris')

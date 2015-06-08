@@ -223,9 +223,9 @@ def single(request, course_id):
     user_can_edit = False
     history = None
     lessons = None
+    attachments = None
 
     context = {
-        'attachments':None,
         'course':course,
     }
 
@@ -276,12 +276,14 @@ def single(request, course_id):
         user_lessons = uc.user.userlesson_set.filter(
             lesson__course__pk=course_id)
         lessons_in_course = uc.course.lesson_set.all() #all lessons in course
+        #lessonv - lesson visited
         lessons = [(
             alesson, next((lessonv for lessonv in 
                 uc.user.userlesson_set.filter(lesson__pk=alesson.pk)), None)
         ) for alesson in lessons_in_course]
 
     context.update({
+        'attachments': attachments,
         'history': history,
         'lessons': lessons,
         'status': status,
