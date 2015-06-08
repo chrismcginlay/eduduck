@@ -685,6 +685,9 @@ class CourseViewSingleTests(TestCase):
         self.assertIsNone(response.context['lessons'])
         self.assertFalse(response.context['user_can_edit'])
 
+    def test_context_attachment_got_something(self):
+        self.fail("attachment list to do")
+
     def test_enrol_buttons_logged_in_not_enrolled_not_instructor(self):
         self.client.login(username='gaby', password='gaby5')
         response = self.client.get('/courses/1/')
@@ -764,6 +767,9 @@ class CourseViewSingleTests(TestCase):
             (Lesson.objects.get(pk=14), None),
         ]
         self.assertEqual(expected_list_of_tuples, response.context['lessons'])
+
+    def test_context_enrolled_attachment_list(self):
+        self.fail("downloadable/recorded")
 
     def test_uc_context_keys_for_activity(self):
         self.client.login(username='chris', password='chris')
