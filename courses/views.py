@@ -282,6 +282,16 @@ def single(request, course_id):
                 uc.user.userlesson_set.filter(lesson__pk=alesson.pk)), None)
         ) for alesson in lessons_in_course]
 
+        user_attachments = uc.user.userattachment_set.filter(
+            attachment__course__pk=course_id)
+        attachments_in_course = uc.course.attachment_set.all()
+        #attd - attachments downloaded
+        attachments = [(
+            next((attd for attd in uc.user.userattachment_set.filter(attachment__pk=anattachment.pk)), None), anattachment) for anattachment in attachments_in_course]
+
+    else: #no uc
+        attachments = [(None, att) for att in course.attachment_set.all()]
+
     context.update({
         'attachments': attachments,
         'history': history,
