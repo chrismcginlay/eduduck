@@ -90,8 +90,10 @@ class LessonViewTests(TestCase):
         self.assertIn('lesson_complete', response.content)
         self.assertEqual(response.context['ul'].completed, False)        
 
-    def test_lesson_loggedin_and_but_not_enrolled_on_course(self):
+    def test_lesson_loggedin_but_not_enrolled_on_course(self):
 
+        user = User.objects.get(pk=4) # gaby in fixture
+        self.client.login(username=user.username, password='hotel23')        
         l1 = Lesson.objects.get(pk=1)
         url1 = '/courses/{0}/lesson/{1}/'.format(l1.course.pk, l1.pk)
         l2 = Lesson.objects.get(pk=8)
@@ -107,7 +109,7 @@ class LessonViewTests(TestCase):
                          "There should be no userlesson - not enrolled")  
 
     def test_lesson_page_has_edit_button_for_organiser_instructor(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/')
         self.assertIn("id='id_edit_lesson'", response.content)
         self.assertEqual(response.context['user_can_edit_lesson'], True)
@@ -119,7 +121,7 @@ class LessonViewTests(TestCase):
         self.assertEqual(response.context['user_can_edit_lesson'], False)
 
     def test_lesson_edits_actually_saved(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='helen', password='helen')
         fp = SimpleUploadedFile('atest.txt', 'A simple test file')
         mod_data = {
             'lesson_form-code': 'F1', 
@@ -159,12 +161,12 @@ class LessonViewTests(TestCase):
         self.assertIsInstance(response, HttpResponseForbidden)
 
     def test_lesson_edit_200_if_user_permitted(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/') 
         self.assertEqual(response.status_code, 200)
 
     def test_lesson_edit_page_has_correct_title_and_breadcrumb(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/')
         needle = "<h2 id='id_page_title'>Editing: What is Blender for?</h2>"
         self.assertIn(needle, response.content)
@@ -183,17 +185,17 @@ class LessonViewTests(TestCase):
             html=True)
 
     def test_lesson_edit_uses_correct_template(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/') 
         self.assertTemplateUsed(response, 'lesson/lesson_edit.html')
 
     def test_lesson_edit_page_uses_correct_form(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/')
         self.assertIsInstance(response.context['lesson_form'], LessonEditForm)
 
     def test_lesson_edit_page_uses_correct_formsets(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/')
         self.assertIsInstance(
             response.context['video_formset'], VideoInlineFormset)
@@ -205,7 +207,7 @@ class LessonViewTests(TestCase):
             hasattr(response.context['attachment_formset'], 'management_form'))
 
     def test_lesson_edit_page_validation_errors_sent_to_template(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         fp = SimpleUploadedFile('atest.txt', 'A simple test file')
         mod_data = {
             'lesson_form-code': '', 
@@ -226,7 +228,7 @@ class LessonViewTests(TestCase):
         self.assertTemplateUsed(response, 'lesson/lesson_edit.html')
 
     def test_lesson_edit_page_validation_errors_generate_error_msg(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         mod_data = {
             'lesson_form-code': '', 
             'lesson_form-name': '', 
@@ -252,7 +254,7 @@ class LessonViewTests(TestCase):
             escape(ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR), response.content)
  
     def test_lesson_edit_page_has_lesson_basics_area(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/')
         self.assertIn('id_lesson_basics_area', response.content)
         self.assertIn('value="What is Blender for?"', response.content)
@@ -260,17 +262,17 @@ class LessonViewTests(TestCase):
             'Be clear what Blender is', response.content)
 
     def test_lesson_edit_page_has_video_area(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/')
         self.assertIn('id_video_formset_area', response.content)
 
     def test_lesson_edit_page_has_attachment_area(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/')
         self.assertIn('id_attachment_formset_area', response.content)
 
     def test_lesson_edit_page_attachments_saved(self):
-        self.client.login(username='chris', password='chris')
+        self.client.login(username='sven', password='sven')
         fp = SimpleUploadedFile('atest.txt', 'A simple test file')
         mod_data = {
             'lesson_form-code': 'T1', 
