@@ -171,10 +171,10 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self.fail("not implemented")
  
     def test_can_populate_course_with_video_resources(self):
-        # Chris wants to have a nice intro video on course 4
+        # sven wants to have a nice intro video on course 4
         # embedded on the course home page. He goes to the edit page
         self.browser.get(self.server_url)
-        self._logUserIn('chris', 'chris')
+        self._logUserIn('sven', 'sven')
         self.browser.get(self.server_url+'/courses/4/edit/')
 
         # he sees an area on the course form for adding a youtube intro video.
@@ -182,7 +182,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         video_name_widget = vfs.find_element_by_name('video_formset-0-name')
         video_url_widget = vfs.find_element_by_id('id_video_formset-0-url')
 
-        # Chris thinks that he has the desired url in clipboard and pastes 
+        # sven thinks that he has the desired url in clipboard and pastes 
         # but unfortunately the clipboard just pastes garbage which he submits
         video_name_widget.send_keys("My Intro Video")
         video_url_widget.send_keys("httttp://yotub.com/notvalid")
@@ -191,7 +191,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
 
         # The invalid url is picked up and an error message is displayed.
         self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, self.browser.page_source)
-        # Chris now puts in the correct url and resubmits.
+        # sven now puts in the correct url and resubmits.
         vfs = self.browser.find_element_by_id('id_video_formset_area')
         video_name_widget = vfs.find_element_by_name('video_formset-0-name')
         video_name_widget.clear()
@@ -218,9 +218,9 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self.assertNotIn('My Intro Video', self.browser.page_source)
        
     def test_can_populate_course_with_attachments(self):
-        # Chris now wishes to add some attachments to the course 4 page.
+        # Helen now wishes to add some attachments to the course 4 page.
         self.browser.get(self.server_url)
-        self._logUserIn('chris', 'chris')
+        self._logUserIn('helen', 'helen')
         self.browser.get(self.server_url+'/courses/4/edit/')
 
         # On the edit page he sees an area for adding attachments.
@@ -237,7 +237,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
             "descendant::div[@class='markdown']/p[@class='markdown']")
         self.assertEqual(info.text, 'Use Markdown!')
         
-        # He uploads a course intro (maybe a PDF).
+        # She uploads a course intro (maybe a PDF).
         with TemporaryUploadedFile('atest.txt', 'text/plain', None, None) as fp:
             fp.write("Write some bytes")
             fp.flush()
@@ -263,7 +263,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self.assertEqual(url, self.server_url+'/courses/4/')
         self.assertIn('A test file', self.browser.page_source)
 
-        # Chris then revisits the edit page, uploads a second attachment.
+        # Helen then revisits the edit page, uploads a second attachment.
         self.browser.get(self.server_url+'/courses/4/')
         with TemporaryUploadedFile('atest2.txt', 'text.plain', None, None) as fp2:
             fp2.write("Write some bytes")
@@ -276,7 +276,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         # This is visible on the course page
         self.assertIn('Another test file', self.browser.page_source)
 
-        # Chris finally decides to delete the course intro attachment.
+        # Helen finally decides to delete the course intro attachment.
         self.browser.get(self.server_url+'/courses/4/edit/')
         delete_check = self.browser.find_element_by_id('id_attachment_formset-0-DELETE')
         delete_check.click()
@@ -296,9 +296,9 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         """ Starting from an existing course page """
     
         self.browser.get(self.server_url)
-        self._logUserIn('chris', 'chris')
+        self._logUserIn('sven', 'sven')
         self.browser.get(self.server_url+'/courses/1')
-        # Chris sees the edit course button and clicks it
+        # sven sees the edit course button and clicks it
         btn_edit = self.browser.find_element_by_id('id_edit_course')
         lesson_set_target_url = self.server_url + '/courses/1/edit'
         btn_edit.click()
@@ -324,7 +324,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         new_lesson_abstract = self.browser.find_element_by_xpath(
             "//textarea[@name='lesson_formset-3-abstract']")
 
-        # Chris decides to add a lesson called 'Materials'
+        # sven decides to add a lesson called 'Materials'
         # with a suitable abstract.
         new_lesson_name.send_keys('Materials')
         new_lesson_abstract.send_keys('How to create, use share and delete materials')
@@ -353,9 +353,9 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
     def test_lesson_renders_markdown_in_abstract(self):
         """Markdown used in lesson abstract is rendered"""
 
-        # Chris logs in and heads to the first course page.
+        # sven logs in and heads to the first course page.
         self.browser.get(self.server_url)
-        self._logUserIn('chris', 'chris')
+        self._logUserIn('sven', 'sven')
         self.browser.get(self.server_url+'/courses/1/lesson/1/edit/')
 
         basics_area = self.browser.find_element_by_id(
@@ -373,9 +373,9 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
     def test_can_populate_lesson_with_videos(self):
         """Author can create videos for lesson"""
     
-        # Chris logs in and heads to the first course page.
+        # Sven logs in and heads to the first course page.
         self.browser.get(self.server_url)
-        self._logUserIn('chris', 'chris')
+        self._logUserIn('sven', 'sven')
         self.browser.get(self.server_url+'/courses/1/')
 
         # He visits a lesson page,
@@ -399,7 +399,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         outcome_area = self.browser.find_element_by_id(
             'id_outcome_formset_area')
 
-        # Chris tries to add a video to the lesson page, 
+        # sven tries to add a video to the lesson page, 
         # but he enters a duff url.
         video_name_widget = self.browser.find_element_by_xpath(
             "//input[@name='video_formset-0-name']")
@@ -428,18 +428,18 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
             self.browser.current_url, self.server_url+'/courses/1/lesson/1/')
         vid = self.browser.find_element_by_id('id_video_1')
 
-        # Chris logs out and finds that the resources are of course still available
+        # sven logs out and finds that the resources are of course still available
         # to casual site visitors.
         self._logUserOut()
         self.browser.get(self.server_url+'/courses/1/lesson/1/')
         self.browser.find_element_by_id('id_video_1') 
 
     def test_author_can_populate_lesson_with_attachments(self):
-        # Chris now wishes to add some attachments to course 1 lesson 4.
+        # sven now wishes to add some attachments to course 1 lesson 3.
         # On the edit page he sees an area for adding attachments.
         self.browser.get(self.server_url)
-        self._logUserIn('chris', 'chris')
-        self.browser.get(self.server_url+'/courses/1/lesson/4/edit/')
+        self._logUserIn('sven', 'sven')
+        self.browser.get(self.server_url+'/courses/1/lesson/3/edit/')
         afs = self.browser.find_element_by_id('id_attachment_formset_area')
         
         # There are suitable fields for a name and description of the file
