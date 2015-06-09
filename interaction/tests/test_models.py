@@ -61,6 +61,7 @@ class UserCourseModelTests_2(TestCase):
 
         # Detect conflicted enrollment
         interaction = UserCourse.objects.get(pk=3)
+        interaction.user = interaction.course.organiser #conflicts 
         self.assertFalse(interaction._checkrep())
 
         # Allow non-conflicted enrollment:

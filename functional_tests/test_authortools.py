@@ -171,11 +171,11 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self.fail("not implemented")
  
     def test_can_populate_course_with_video_resources(self):
-        # sven wants to have a nice intro video on course 4
+        # sven wants to have a nice intro video on course 3
         # embedded on the course home page. He goes to the edit page
         self.browser.get(self.server_url)
         self._logUserIn('sven', 'sven')
-        self.browser.get(self.server_url+'/courses/4/edit/')
+        self.browser.get(self.server_url+'/courses/3/edit/')
 
         # he sees an area on the course form for adding a youtube intro video.
         vfs = self.browser.find_element_by_id('id_video_formset_area')
@@ -202,19 +202,19 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         btn_submit = vfs.find_element_by_id('id_submit_video_edits')
         btn_submit.click()
         # All is well, the video shows up on the course homepage.
-        self.assertEqual(self.browser.current_url, self.server_url+'/courses/4/')
+        self.assertEqual(self.browser.current_url, self.server_url+'/courses/3/')
         vid = self.browser.find_element_by_id('id_intro_video')
         self.assertIn('My Intro Video', vid.text)
 
         # Finally he decides to delete introductory video entirely.
-        self.browser.get(self.server_url+'/courses/4/edit/')
+        self.browser.get(self.server_url+'/courses/3/edit/')
         delete_check = self.browser.find_element_by_id('id_video_formset-0-DELETE')
         delete_check.click()
         btn_submit = self.browser.find_element_by_id('id_submit_video_edits')
         btn_submit.click()
  
         # It no longer appears on the course page.
-        self.browser.get(self.server_url+'/courses/4/')
+        self.browser.get(self.server_url+'/courses/3/')
         self.assertNotIn('My Intro Video', self.browser.page_source)
        
     def test_can_populate_course_with_attachments(self):

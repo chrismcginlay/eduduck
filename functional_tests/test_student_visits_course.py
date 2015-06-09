@@ -103,18 +103,18 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
         progress.find_element_by_xpath("//input[@name='course_complete']")
     
     def test_author_cannot_enrol_on_own_course(self):
-        # User Chris logs in.
+        # User Helen logs in.
         self.browser.get(self.server_url)
-        self._logUserIn('chris', 'chris')
+        self._logUserIn('helen', 'helen')
         
         # ...goes straight to a course page
         self.browser.get(self.server_url+'/courses/2')
         # We note here that Chris is actually the course organiser
         org = self.browser.find_element_by_xpath(
             "//div[@id='id_abstract']/p[5]")
-        self.assertIn("Course organiser Chris", org.text)
+        self.assertIn("Course organiser Helen", org.text)
 
-        # As such, Chris does NOT see an enrol button.
+        # As such, Helen does NOT see an enrol button.
         try:
             self.browser.find_element_by_id('id_enrol_button')
             self.browser.find_element_by_id('id_enrol_button2')
@@ -124,16 +124,16 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
             self.fail("The enrol buttons should NOT be present, but are!")
 
     def test_instructor_cannot_enrol_on_own_course(self):
-        # User Chris logs in.
+        # User Helen logs in.
         self.browser.get(self.server_url)
-        self._logUserIn('chris', 'chris')
+        self._logUserIn('helen', 'helen')
         
         # ...goes straight to a course page
         self.browser.get(self.server_url+'/courses/2')
-        # We note here that Chris is actually the course organiser
+        # We note here that Helen is actually the course organiser
         org = self.browser.find_element_by_xpath(
             "//div[@id='id_abstract']/p[6]")
-        self.assertIn("Course instructor Chris", org.text)
+        self.assertIn("Course instructor Helen", org.text)
 
         # As such, Chris does NOT see an enrol button.
         try:
