@@ -205,6 +205,8 @@ class LessonViewTests(TestCase):
             hasattr(response.context['video_formset'], 'management_form'))
         self.assertTrue(
             hasattr(response.context['attachment_formset'], 'management_form'))
+        self.assertTrue(hasattr(
+            response.context['learning_intention_formset'], 'management_form'))
 
     def test_lesson_edit_page_validation_errors_sent_to_template(self):
         self.client.login(username='sven', password='sven')
@@ -222,6 +224,8 @@ class LessonViewTests(TestCase):
             'attachment_formset-0-attachment':fp,
             'attachment_formset-TOTAL_FORMS':u'1',
             'attachment_formset-INITIAL_FORMS':u'0',
+            'learning_intention_formset-TOTAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'5',
         }
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         self.assertEqual(response.status_code, 200)
@@ -242,6 +246,8 @@ class LessonViewTests(TestCase):
             'attachment_formset-0-attachment':None,
             'attachment_formset-TOTAL_FORMS':u'1',
             'attachment_formset-INITIAL_FORMS':u'0',
+            'learning_intention_formset-TOTAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'5',
         }
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         self.assertEqual(response.status_code, 200)
@@ -271,6 +277,11 @@ class LessonViewTests(TestCase):
         response = self.client.get('/courses/1/lesson/1/edit/')
         self.assertIn('id_attachment_formset_area', response.content)
 
+    def test_lesson_edit_page_has_learning_intention_area(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/courses/1/lesson/1/edit/')
+        self.assertIn('id_learning_intention_formset_area', response.content)
+
     def test_lesson_edit_page_attachments_saved(self):
         self.client.login(username='sven', password='sven')
         fp = SimpleUploadedFile('atest.txt', 'A simple test file')
@@ -285,6 +296,8 @@ class LessonViewTests(TestCase):
             'attachment_formset-0-attachment':fp,
             'attachment_formset-TOTAL_FORMS':u'1',
             'attachment_formset-INITIAL_FORMS':u'0',
+            'learning_intention_formset-TOTAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'5',
         }
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         self.assertRedirects(response, '/courses/1/lesson/1/', 302, 200)
@@ -295,3 +308,24 @@ class LessonViewTests(TestCase):
             response.content
         )
 
+    def test_lesson_edit_page_learning_intentions_saved(self):
+        self.client.login(username='sven', password='sven')
+        fp = SimpleUploadedFile('atest.txt', 'A simple test file')
+        mod_data = {
+            'lesson_form-code': 'T1', 
+            'lesson_form-name': 'Test Lesson', 
+            'lesson_form-abstract': 'Not much',
+            'video_formset-TOTAL_FORMS':u'0',
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0',
+            'learning_intention_formset-0-text':u'Speed',
+            'learning_intention_formset-0-text':u'Acceleration',
+            'learning_intention_formset-TOTAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'5',
+        }
+        response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
+        self.assertRedirects(response, '/courses/1/lesson/1/', 302, 200)
+        response = self.client.get('/courses/1/lesson/1/')
+        self.assertIn('Speed', response.content)
+        self.assertIn('Acceleration', response.content)
