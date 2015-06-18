@@ -463,7 +463,41 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         # This downloads successfully.
         self.fail("Write the virus payload scan test referred above")
 
-    def test_author_can_populate_course_with_outcomes_etc(self):
-        self.fail("Write me")
+    def test_author_can_populate_lesson_with_outcomes_etc(self):
+        # Sven wants to set up a few learning intentions (aka key areas) 
+        # and associated specific learning outcomes (aka capacities, facts)
+        # and success criteria (aka assessable activities).
 
+        # There is an area on the lesson edit page for LIs.
+        self.browser.get(self.server_url)
+        self._logUserIn('sven', 'sven')
+        self.browser.get(self.server_url+'/courses/1/lesson/3/edit/')
+        lifs = self.browser.find_element_by_id(
+            'id_learning_intention_formset_area')
 
+        # There are text areas for adding learning intentions 
+        li_text0_widget = lifs.find_element_by_name(
+            'learning_intention_formset-0-text')
+        li_text1_widget = lifs.find_element_by_name(
+            'learning_intention_formset-1-text')
+
+        # Sven puts in a couple of key areas (learning intentions)
+        li_text0_widget.clear()
+        li_text1_widget.clear()
+        li_text0_widget.send_keys('Learn about average speed')
+        li_text1_widget.send_keys('Learn about instantaneous speed')
+
+        btn_submit = self.browser.find_element_by_id('id_submit_LI_edits')
+        btn_submit.click()
+
+        # He is able to save the LIs and view the lesson page
+        self.assertEqual(
+            self.browser.current_url, self.server_url+'/courses/1/lesson/1/')
+    
+        # Sven's learning intentions are present:
+        self.assertIn(
+            'Learn about average speed', self.browser.page_source)
+        self.assertIn(
+            'Learn about instantaneous speed', self.browser.page_source)
+
+        self.fail("mechanism for SCs and LOs")
