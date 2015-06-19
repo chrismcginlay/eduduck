@@ -18,6 +18,8 @@ from django.utils import timezone
 from attachment.forms import AttachmentForm
 from attachment.models import Attachment
 from interaction.models import UserLesson
+from outcome.forms import LearningIntentionForm
+from outcome.models import LearningIntention
 from video.forms import VideoForm
 from video.models import Video
 from .forms import LessonEditForm
@@ -30,6 +32,13 @@ VideoInlineFormset = inlineformset_factory(
     Lesson, Video, form=VideoForm, extra=1, exclude=('course',))
 AttachmentInlineFormset = inlineformset_factory(
     Lesson, Attachment, form=AttachmentForm, extra=1, exclude=('course',))
+LearningIntentionInlineFormset = inlineformset_factory(
+    Lesson, 
+    LearningIntention, 
+    form=LearningIntentionForm, 
+    extra=4, 
+    exclude=('course',)
+)
 
 def iterNone(): 
     """Make None type iterable for zip function used below"""
@@ -194,12 +203,15 @@ def edit(request, lesson_id, course_id):
                 prefix='video_formset', instance=lesson)
             attachment_formset = AttachmentInlineFormset(
                 prefix='attachment_formset', instance=lesson)
+            learning_intention_formset = LearningIntentionInlineFormset(
+                prefix='learning_intention_formset', instance=lesson)
             t = 'lesson/lesson_edit.html'
             c = { 
                 'lesson': lesson,
                 'lesson_form': lesson_form,
                 'video_formset': video_formset, 
                 'attachment_formset': attachment_formset,
+                'learning_intention_formset': learning_intention_formset,
                 'course': lesson.course,
             }
             return render(request, t, c)

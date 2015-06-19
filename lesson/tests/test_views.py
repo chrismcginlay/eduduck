@@ -25,6 +25,7 @@ from ..views import (
     LessonEditForm,
     VideoInlineFormset,
     AttachmentInlineFormset,
+    LearningIntentionInlineFormset,
     )
 
 
@@ -197,10 +198,15 @@ class LessonViewTests(TestCase):
     def test_lesson_edit_page_uses_correct_formsets(self):
         self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/')
+        import pdb; pdb.set_trace()
         self.assertIsInstance(
             response.context['video_formset'], VideoInlineFormset)
         self.assertIsInstance(
             response.context['attachment_formset'], AttachmentInlineFormset)
+        self.assertIsInstance(
+            response.context['learning_intention_formset'], 
+            LearningIntentionInlineFormset
+        )
         self.assertTrue(
             hasattr(response.context['video_formset'], 'management_form'))
         self.assertTrue(
