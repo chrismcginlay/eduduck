@@ -137,6 +137,8 @@ class LessonViewTests(TestCase):
             'attachment_formset-0-attachment':fp,
             'attachment_formset-TOTAL_FORMS':u'1',
             'attachment_formset-INITIAL_FORMS':u'0',
+            'learning_intention_formset-TOTAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'0',
         }
  
         ##This should trigger modification of the lesson
@@ -198,7 +200,6 @@ class LessonViewTests(TestCase):
     def test_lesson_edit_page_uses_correct_formsets(self):
         self.client.login(username='sven', password='sven')
         response = self.client.get('/courses/1/lesson/1/edit/')
-        import pdb; pdb.set_trace()
         self.assertIsInstance(
             response.context['video_formset'], VideoInlineFormset)
         self.assertIsInstance(
@@ -207,6 +208,36 @@ class LessonViewTests(TestCase):
             response.context['learning_intention_formset'], 
             LearningIntentionInlineFormset
         )
+        self.assertTrue(
+            hasattr(response.context['video_formset'], 'management_form'))
+        self.assertTrue(
+            hasattr(response.context['attachment_formset'], 'management_form'))
+        self.assertTrue(hasattr(
+            response.context['learning_intention_formset'], 'management_form'))
+
+    def test_lesson_edit_page_POST_uses_correct_formsets(self):
+        self.client.login(username='sven', password='sven')
+        mod_data = {
+            'video_formset-TOTAL_FORMS':u'1',
+            'video_formset-INITIAL_FORMS':u'0',
+            'attachment_formset-TOTAL_FORMS':u'1',
+            'attachment_formset-INITIAL_FORMS':u'0',
+            'learning_intention_formset-TOTAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'0',
+        }
+        response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
+        self.assertIsInstance(
+            response.context['video_formset'], VideoInlineFormset)
+        self.assertIsInstance(
+            response.context['attachment_formset'], AttachmentInlineFormset)
+        self.assertIsInstance(
+            response.context['learning_intention_formset'], 
+            LearningIntentionInlineFormset
+        )
+        self.assertEqual(
+            response.context['learning_intention_formset'].prefix,
+            'learning_intention_formset'
+        ) 
         self.assertTrue(
             hasattr(response.context['video_formset'], 'management_form'))
         self.assertTrue(
@@ -231,7 +262,7 @@ class LessonViewTests(TestCase):
             'attachment_formset-TOTAL_FORMS':u'1',
             'attachment_formset-INITIAL_FORMS':u'0',
             'learning_intention_formset-TOTAL_FORMS':u'5',
-            'learning_intention_formset-INITIAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'0',
         }
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         self.assertEqual(response.status_code, 200)
@@ -253,7 +284,7 @@ class LessonViewTests(TestCase):
             'attachment_formset-TOTAL_FORMS':u'1',
             'attachment_formset-INITIAL_FORMS':u'0',
             'learning_intention_formset-TOTAL_FORMS':u'5',
-            'learning_intention_formset-INITIAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'0',
         }
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         self.assertEqual(response.status_code, 200)
@@ -303,7 +334,7 @@ class LessonViewTests(TestCase):
             'attachment_formset-TOTAL_FORMS':u'1',
             'attachment_formset-INITIAL_FORMS':u'0',
             'learning_intention_formset-TOTAL_FORMS':u'5',
-            'learning_intention_formset-INITIAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'0',
         }
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         self.assertRedirects(response, '/courses/1/lesson/1/', 302, 200)
@@ -326,9 +357,9 @@ class LessonViewTests(TestCase):
             'attachment_formset-TOTAL_FORMS':u'1',
             'attachment_formset-INITIAL_FORMS':u'0',
             'learning_intention_formset-0-text':u'Speed',
-            'learning_intention_formset-0-text':u'Acceleration',
+            'learning_intention_formset-1-text':u'Acceleration',
             'learning_intention_formset-TOTAL_FORMS':u'5',
-            'learning_intention_formset-INITIAL_FORMS':u'5',
+            'learning_intention_formset-INITIAL_FORMS':u'0',
         }
         response = self.client.post('/courses/1/lesson/1/edit/', mod_data)
         self.assertRedirects(response, '/courses/1/lesson/1/', 302, 200)

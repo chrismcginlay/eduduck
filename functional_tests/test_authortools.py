@@ -396,8 +396,8 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
             'id_video_formset_area')
         attachments_area = self.browser.find_element_by_id(
             'id_attachment_formset_area')
-        outcome_area = self.browser.find_element_by_id(
-            'id_outcome_formset_area')
+        learning_intention_area = self.browser.find_element_by_id(
+            'id_learning_intention_formset_area')
 
         # sven tries to add a video to the lesson page, 
         # but he enters a duff url.
@@ -487,12 +487,13 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         li_text0_widget.send_keys('Learn about average speed')
         li_text1_widget.send_keys('Learn about instantaneous speed')
 
-        btn_submit = self.browser.find_element_by_id('id_submit_LI_edits')
+        btn_submit = self.browser.find_element_by_id(
+            'id_submit_learning_intention_edits')
         btn_submit.click()
 
         # He is able to save the LIs and view the lesson page
         self.assertEqual(
-            self.browser.current_url, self.server_url+'/courses/1/lesson/1/')
+            self.browser.current_url, self.server_url+'/courses/1/lesson/3/')
     
         # Sven's learning intentions are present:
         self.assertIn(

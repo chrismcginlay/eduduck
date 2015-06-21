@@ -36,7 +36,7 @@ LearningIntentionInlineFormset = inlineformset_factory(
     Lesson, 
     LearningIntention, 
     form=LearningIntentionForm, 
-    extra=4, 
+    extra=5, 
     exclude=('course',)
 )
 
@@ -172,6 +172,11 @@ def edit(request, lesson_id, course_id):
                 prefix='attachment_formset', 
                 instance=lesson
             )
+            learning_intention_formset = LearningIntentionInlineFormset(
+                request.POST,
+                prefix='learning_intention_formset',
+                instance=lesson
+            ) 
             if lesson_form.is_valid():
                 lesson_form.save()
                 logger.info("Lesson (id={0}) edited".format(lesson.pk))
@@ -181,9 +186,12 @@ def edit(request, lesson_id, course_id):
             if attachment_formset.is_valid():
                 attachment_formset.save()
                 logger.info("Attachment for lesson id {0} saved".format(lesson.pk))
+            if learning_intention_formset.is_valid():
+                learning_intention_formset.save()
             if (lesson_form.is_valid() 
                 and video_formset.is_valid()
-                and attachment_formset.is_valid()):
+                and attachment_formset.is_valid()
+                and learning_intention_formset.is_valid()):
                 logger.info("Lesson (id={0}) edited".format(lesson.pk))
                 return redirect(lesson)
             else:
@@ -194,6 +202,7 @@ def edit(request, lesson_id, course_id):
                     'lesson_form': lesson_form,
                     'video_formset': video_formset,
                     'attachment_formset': attachment_formset,
+                    'learning_intention_formset': learning_intention_formset,
                 }
                 return render(request, t, c)
         else: #not post
