@@ -11,8 +11,11 @@ def get_youtube_id_from_url(url):
     """Extract the video ID code from various youtube URLs"""
 
     yt_url = urlparse(url)
-    if not(yt_url.netloc == r'youtu.be' or yt_url.netloc == r'www.youtube.com'):
-        return None
+    if not(
+        yt_url.netloc == r'youtu.be' or 
+        yt_url.netloc == r'www.youtube.com' or
+        yt_url.netloc == r'youtube.com'):
+            return None
     if yt_url.netloc == r'youtu.be':
         id = yt_url.path[1:]
         if not len(id) == 11:

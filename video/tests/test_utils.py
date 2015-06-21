@@ -61,6 +61,7 @@ class VideoUtilTest(TestCase):
             r"http://www.youtube.com/e/dQw4w9WgXcQ",
             r"http://www.youtube.com/watch?feature=player_embedded&v=dQw4w9WgXcQ",
             r"http://www.youtube.com/?feature=player_embedded&v=dQw4w9WgXcQ",
+            r"http://youtube.com/embed/1uKZmb1O-os",
         ]
         for url in urls_2_pass:
             validate_youtube_url(url)
