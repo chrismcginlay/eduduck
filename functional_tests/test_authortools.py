@@ -501,4 +501,49 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self.assertIn(
             'Learn about instantaneous speed', self.browser.page_source)
 
-        self.fail("mechanism for SCs and LOs")
+        # Sven can navigate to the detail page for each learning intention.
+        # From there, he can see associated items about the LI, namely
+        # a few success criteria and some learning outcomes.
+        LIdetail_link = self.browser.find_element_by_id('id_LI1')
+        LIdetail_link.click()
+        self.assertEqual(
+            self.browser.current_url, self.server_url+'/lesson/3/lint/3/')
+
+        # Since Sven is a course author, he gets an 'Edit' button.
+        edit_button = self.browser.find_element_by_id('id_edit_button')
+
+        # This leads to an edit page where he can edit the main LI itself,
+        edit_button.click()
+        self.assertEqual(
+            self.browser.current_url, self.server_url+'/lesson/3/lint/3/edit/')
+        LI_text_input = self.browser.find_element_by_id('id_LI_text')
+        LI_text_input.send_keys('Learn how to fry fish')
+
+        # as well as add new or edit existing success criteria or outcomes.
+        # (SCs and LOs being organised into two separate areas).
+        SCarea = self.browser.find_element_by_id('id_SC_edit_area')
+        LOarea = self.browser.find_element_by_id('id_LO_edit_area')
+        SC1_text_input = SCarea.find_element_by_id('id_sc_formset-0-text')
+        SC2_text_input = SCarea.find_element_by_id('id_sc_formset-1-text')
+        LO1_text_input = LOarea.find_element_by_id('id_lo_formset-0-text')
+        LO2_text_input = LOarea.find_element_by_id('id_lo_formset-1-text')
+        SC1_text_input.send_keys('Test A')
+        SC2_text_input.send_keys('Test B')
+        LO1_text_input.send_keys('Test C')
+        LO2_text_input.send_keys('Test D')
+
+        # There is a button to save edits, which he clicks
+        save_button = self.browser.find_element_by_id('id_submit_edits')
+        save_button.click()
+
+        # This returns him to the learning intention detail page
+        self.assertEqual(
+            self.browser.current_url, self.server_url+'/lesson/3/lint/3/')
+
+        # where he can see the altered and new SCs and LOs.
+        outcomes = self.browser.find_elements_by_class_name('outcome')
+        criteria = self.browser.find_elements_by_class_name('criterion')
+        self.assertIn('Test A', criteria)
+        self.assertIn('Test B', criteria)
+        self.assertIn('Test C', outcome)
+        self.assertIn('Test D', outcome)
