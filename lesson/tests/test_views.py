@@ -1,4 +1,4 @@
-# Unit tests for lesson views
+# lesson/tests/test_views.py
 
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -115,10 +115,19 @@ class LessonViewTests(TestCase):
         self.assertIn("id='id_edit_lesson'", response.content)
         self.assertEqual(response.context['user_can_edit_lesson'], True)
 
-    def test_lesson_page_has_no_edit_button_if_not_organiser_instructor(self):
+    def test_no_enrol_buttons_for_organiser_instructor(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/courses/1/lesson/1/')
+        self.assertNotIn('id_enrol_button', response.content)
+        self.assertNotIn('id_enrol_button2', response.content)
+        self.assertIn(
+            'You are involved in running this course', response.content)
+
+    def test_lesson_page_has_no_edit_buttons_if_not_organiser_instructor(self):
         self.client.login(username='helmi', password='plate509')
         response = self.client.get('/courses/1/lesson/1/')
-        self.assertNotIn("id='id_edit_course'", response.content)
+        self.assertNotIn("id='id_edit_lesson'", response.content)
+        self.assertNotIn("id='id_edit_lesson2'", response.content)
         self.assertEqual(response.context['user_can_edit_lesson'], False)
 
     def test_lesson_edits_actually_saved(self):

@@ -1,4 +1,4 @@
-# Unit tests for courses views
+#courses/tests/test_views.py
 
 import json
 import os

@@ -127,12 +127,22 @@
                 </form>
             {% endif %}
         {% else %}
-            <h3>Progress Record</h3>
-            <p>Log in and/or enrol on this course, then you get to build up
-            a detailed log of your awesomeness here.</p>
-            <form id='id_enrol' class='pure-form' action='' method='post'>{% csrf_token %}
-                <button id='id_enrol_button' class='pure-button pure-button-primary' type='submit' name='course_enrol'>Enrol</button>
-            </form>
+            <h3>Edit Lesson</h3>
+            {% if user_can_edit_lesson %}
+                <a  href = "{% url 'lesson_edit' lesson_id=lesson.id course_id=course.id %}"
+                    id='id_edit_lesson2'
+                    class='pure-button pure-button-primary'>
+                        Edit Lesson
+                </a>
+                <p>You are involved in running this course.</p>
+            {% else %}
+                <h3>Progress Record</h3>
+                <p>Log in and/or enrol on this course, then you get to build up
+                a detailed log of your awesomeness here.</p>
+                <form id='id_enrol' class='pure-form' action='' method='post'>{% csrf_token %}
+                    <button id='id_enrol_button' class='pure-button pure-button-primary' type='submit' name='course_enrol'>Enrol</button>
+                </form>
+            {% endif %}
         {% endif %}
     </div>
     <div id='id_resource_survey' class='pure-u-1-2'>
