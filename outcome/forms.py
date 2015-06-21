@@ -9,3 +9,4 @@ class LearningIntentionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(LearningIntentionForm, self).__init__(*args, **kwargs)
         self.fields['text'].widget.attrs['id'] = 'id_learning_intention_text'
+        #self.fields['text'].widget.attrs['size'] = '40'
