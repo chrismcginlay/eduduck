@@ -27,5 +27,5 @@ class LearningIntentionFormTest(TestCase):
     def test_form_renders_correct_fields(self):
         form = LearningIntentionForm()
         self.assertIn('id_learning_intention_text', form.as_p())
-        self.assertIn("size='40'", form.as_p())
+        self.assertIn('size="40"', form.as_p())
 
