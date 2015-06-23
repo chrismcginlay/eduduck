@@ -510,7 +510,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
             self.browser.current_url, self.server_url+'/lesson/3/lint/3/')
 
         # Since Sven is a course author, he gets an 'Edit' button.
-        edit_button = self.browser.find_element_by_id('id_edit_button')
+        edit_button = self.browser.find_element_by_id('id_edit_lint')
 
         # This leads to an edit page where he can edit the main LI itself,
         edit_button.click()

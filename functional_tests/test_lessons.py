@@ -101,7 +101,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         LI_area = resource_area.find_element_by_id('id_resource_lint')
         LO_area = resource_area.find_element_by_id('id_resource_LO')
         SC_area = resource_area.find_element_by_id('id_resource_SC')
-        self.assertEqual(LI_area.size['width'], LO_area.size['width'])
+        self.assertEqual(SC_area.size['width'], LO_area.size['width'])
 
         # Gaby sees that the larger area on the left has a list of learning 
         # intentions, with a clickable icon next to each.
