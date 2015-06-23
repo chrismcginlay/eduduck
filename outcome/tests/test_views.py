@@ -52,19 +52,18 @@ class OutcomeViewTests_new(TestCase):
         lesson = Lesson.objects.get(pk=1)
         lint = LearningIntention.objects.get(pk=1)
         url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
-        import pdb; pdb.set_trace()
         response = self.client.get(url1)
         self.assertIsNone(response.context['progressSC'])               
         self.assertIsNone(response.context['progressLO'])               
         self.assertTrue(response.context['user_can_edit'])
 
-    def test_learning_intention_has_edit_button(self):
-        self.client.login(username='gaby', password='gaby5')
+    def test_learning_intention_has_edit_button_is_author(self):
+        self.client.login(username='sven', password='sven')
         lesson = Lesson.objects.get(pk=1)
         lint = LearningIntention.objects.get(pk=1)
         url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
         response = self.client.get(url1)
-        self.assertIn('id_edit_button', response.content)
+        self.assertIn('id_edit_lint', response.content)
 
 class OutcomeViewTests(TestCase):
     """Test the outcome specific views"""

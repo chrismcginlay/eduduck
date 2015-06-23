@@ -62,12 +62,13 @@ title='{{ lesson }}'>Lesson Home</a></li>
             <a  href = "{% url 'lint_edit' 
             lesson = lesson.id 
             learning_intention_id=outcome.id %}"
-                id='id_edit_course'
+                id='id_edit_lint'
                 class='pure-button pure-button-primary'>
                     Edit Learning Intention 
             </a>
+            <p>You are involved in running this course.</p>
         {% endif %}
-        <p>You are involved in running this course.</p>
+    </div>
 
     <div id='id_resource_LO_SC' class='pure-g-r'>
     <div id='id_resource_LO' class='pure-u-1-2'>
@@ -159,4 +160,6 @@ title='{{ lesson }}'>Lesson Home</a></li>
                 </ol>  
             </form> 
     </div> <!-- id_sc -->
+    </div> <!-- id_LO_SC container -->
+</div> <!-- id_resource_area -->
 {% endblock content %}
