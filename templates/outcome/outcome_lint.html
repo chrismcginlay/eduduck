@@ -52,13 +52,67 @@ title='{{ lesson }}'>Lesson Home</a></li>
 
 {% block content %}
 <div id='id_resource_area' class='pure-g-r'>
-    <div id='id_resource_lint' class='pure-u-1-2'>
+    <div id='id_resource_lint' class='pure-u-4-5'>
         <h3>Learning Intention {{ learning_intention.id }}</h3>
         <p>{{ learning_intention.text }}</p>
     </div>
     
-    <div id='id_resource_LO_SC' class='pure-u-1-2'>
-    <div id='id_resource_SC'>
+    <div class='pure-u-1-5'>
+        {% if user_can_edit %}
+            <a  href = "{% url 'lint_edit' outcome_id=outcome.id %}"
+                id='id_edit_course'
+                class='pure-button pure-button-primary'>
+                    Edit Learning Intention 
+            </a>
+        {% endif %}
+        <p>You are involved in running this course.</p>
+
+    <div id='id_resource_LO_SC' class='pure-g-r'>
+    <div id='id_resource_LO' class='pure-u-1-2'>
+        <h3>Learning Outcome{{ ulo_list|length|pluralize:",s"}}</h3>
+        <p class="FYI">A learning outcome is a particular capacity 
+        or skill acquired or enhanced. Think of an 'I can...' statement.</p>
+        {% if progressLO %}
+
+        <progress value="{{progressLO.0}}" max="{{progressLO.2}}" id="progLO">
+            <span class="prog_fb" id="progLO_fb">
+            <!-- No HTML5 progress bar support? Fall back here-->
+            <p class="progress" id="loprog">Progress
+            <img src="{% static 'images/bar2.png' %}" alt="Progress Bar"  
+                width="{% widthratio progressLO.0 progressLO.2 progressLO.3 %}" 
+                height="20"/>
+            <img src="{% static 'images/bar_back.png' %}" alt="Progress Bar"  
+                width="{% widthratio progressLO.1 progressLO.2 progressLO.3 %}" 
+                height="20"/>
+            </p>
+            </span>
+        </progress>
+        <div class="prog_status" id="progLO_status">
+            <!--progress status or complete information-->
+            <!-- TODO: What was this div for? Use or delete -->
+        </div>
+        {% endif %}
+            <form action='' method='post'>{% csrf_token %}        
+                <ol>
+                    {% for lo in ulo_list %}
+                        <li class="learning_outcome" data-id="{{ lo.0.pk }}">
+                            <img id="id_LO{{ lo.0.pk }}"
+                                class="tl-{{ lo.1 }}" 
+                                src="{% static 'images/img_trans.png' %}"
+                            />
+                            <input class="traffic" type="submit" 
+                            name="cycle{{ lo.0.pk }}" value="Cycle"
+                            title="Cycle status R->A->G->R">
+                                {{ lo.0.text }}
+                        </li>
+                    {% empty %}
+                        <li>Not a single learning outcome specified!</li>
+                    {% endfor %}
+                </ol>
+            </form>
+    </div> <!-- id_lo -->
+
+    <div id='id_resource_SC' class='pure-u-1-2'>
         <h3>Success Criteri{{ usc_list|length|pluralize:"on,a"}}</h3>
         <p class="FYI">A success criterion is an activity you 
         would do that would demonstrate mastery of 
@@ -84,65 +138,23 @@ title='{{ lesson }}'>Lesson Home</a></li>
         </div>
 
         {% endif %}   
-<form action='' method='post'>{% csrf_token %}
-        <ol>
-        {% for sc in usc_list %}
-            <li class="criterion" data-id="{{ sc.0.pk }}">
-                <img id="id_SC{{ sc.0.pk }}"
-                    class="tl-{{ sc.1 }}" 
-                    src="{% static 'images/img_trans.png' %}" 
-                />
-<input class="traffic" type="submit" name="cycle{{ sc.0.pk }}" value="Cycle"
-title="Cycle status R->A->G->R">
-                {{ sc.0.text }}
-            </li>
-        {% empty %}
-            <li>No success criteria for this learning intention</li>
-        {% endfor %}
-        </ol>  
-</form> 
+            <form action='' method='post'>{% csrf_token %}
+                <ol>
+                {% for sc in usc_list %}
+                    <li class="criterion" data-id="{{ sc.0.pk }}">
+                        <img id="id_SC{{ sc.0.pk }}"
+                            class="tl-{{ sc.1 }}" 
+                            src="{% static 'images/img_trans.png' %}" 
+                        />
+                        <input class="traffic" type="submit" 
+                        name="cycle{{ sc.0.pk }}" value="Cycle"
+                        title="Cycle status R->A->G->R">
+                        {{ sc.0.text }}
+                    </li>
+                {% empty %}
+                    <li>No success criteria for this learning intention</li>
+                {% endfor %}
+                </ol>  
+            </form> 
     </div> <!-- id_sc -->
-
-    <div id='id_resource_LO'>
-        <h3>Learning Outcome{{ ulo_list|length|pluralize:",s"}}</h3>
-        <p class="FYI">A learning outcome is a particular capacity 
-        or skill acquired or enhanced. Think of an 'I can...' statement.</p>
-        {% if progressLO %}
-
-        <progress value="{{progressLO.0}}" max="{{progressLO.2}}" id="progLO">
-            <span class="prog_fb" id="progLO_fb">
-            <!-- No HTML5 progress bar support? Fall back here-->
-            <p class="progress" id="loprog">Progress
-            <img src="{% static 'images/bar2.png' %}" alt="Progress Bar"  
-                width="{% widthratio progressLO.0 progressLO.2 progressLO.3 %}" 
-                height="20"/>
-            <img src="{% static 'images/bar_back.png' %}" alt="Progress Bar"  
-                width="{% widthratio progressLO.1 progressLO.2 progressLO.3 %}" 
-                height="20"/>
-            </p>
-            </span>
-        </progress>
-        <div class="prog_status" id="progLO_status">
-            <!--progress status or complete information-->
-            <!-- TODO: What was this div for? Use or delete -->
-        </div>
-        {% endif %}
-<form action='' method='post'>{% csrf_token %}        
-        <ol>
-        {% for lo in ulo_list %}
-            <li class="learning_outcome" data-id="{{ lo.0.pk }}">
-                <img id="id_LO{{ lo.0.pk }}"
-                    class="tl-{{ lo.1 }}" 
-                    src="{% static 'images/img_trans.png' %}"
-                />
-<input class="traffic" type="submit" name="cycle{{ lo.0.pk }}" value="Cycle"
-title="Cycle status R->A->G->R">
-                {{ lo.0.text }}
-            </li>
-        {% empty %}
-            <li>Not a single learning outcome specified!</li>
-        {% endfor %}
-        </ol>
-</form>
-    </div> <!-- id_lo -->
 {% endblock content %}

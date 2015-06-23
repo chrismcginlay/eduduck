@@ -71,7 +71,6 @@ def _courses_n_24ths(clist):
     return courses_n_24ths
 
 def _user_permitted_to_edit_course(user, course_id):
-    
     course = get_object_or_404(Course, pk=course_id)
     if not user.is_authenticated(): return False
     if not (user.id ==  course.organiser_id or user.id == course.instructor_id):

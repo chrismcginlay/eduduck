@@ -5,6 +5,7 @@ from django.shortcuts import (
 )
                               
 from django.template import RequestContext
+from courses.models import Course
 from lesson.models import Lesson
 from interaction.models import (
     UserLearningIntention,
@@ -16,6 +17,12 @@ from .models import LearningIntention, LearningIntentionDetail
 import logging
 logger = logging.getLogger(__name__)
 
+def _user_permitted_to_edit_course(user, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    if not user.is_authenticated(): return False
+    if not (user.id ==  course.organiser_id or user.id == course.instructor_id):
+        return False
+    return True
 
 def learning_intention(request, lesson_id, learning_intention_id):
     """Prepare variables for learning intention template"""
@@ -26,6 +33,8 @@ def learning_intention(request, lesson_id, learning_intention_id):
     learning_intention = get_object_or_404(LearningIntention, 
                                            id=learning_intention_id) 
     context_data = dict()
+    user_can_edit = _user_permitted_to_edit_course(
+        request.user, lesson.course.id)
     if request.user.is_authenticated():
         #Construct two lists of tuples [(lid, condition ulid)] where 
         # lid = learningintentiondetail,
@@ -94,10 +103,18 @@ def learning_intention(request, lesson_id, learning_intention_id):
         #tuples (n complete, n not complete, N, 100% width)
         progressSC = ( rawSC[0], rawSC[1]-rawSC[0], rawSC[1], 100 )
         progressLO = ( rawLO[0], rawLO[1]-rawLO[0], rawLO[1], 100 )
-        context_data.update({
-            'progressSC':  progressSC,
-            'progressLO':  progressLO
-        })
+        if user_can_edit:
+            context_data.update({
+                'progressSC': None,
+                'progressLO': None,
+                'user_can_edit': user_can_edit,
+            })
+        else:
+            context_data.update({
+                'progressSC':  progressSC,
+                'progressLO':  progressLO,
+                'user_can_edit': user_can_edit,
+            })
     else: #not authenticated
         usc_list = [(lid, ULIDConditions[0], None) for lid in 
             learning_intention.learningintentiondetail_set.filter(
@@ -109,7 +126,8 @@ def learning_intention(request, lesson_id, learning_intention_id):
                     'lesson':               lesson,
                     'learning_intention':   learning_intention,
                     'usc_list':             usc_list,
-                    'ulo_list':             ulo_list
+                    'ulo_list':             ulo_list,
+                    'user_can_edit':        user_can_edit,
                     })
     template = 'outcome/outcome_lint.html'
     return render(request, template, context_data)

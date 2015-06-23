@@ -4,6 +4,7 @@ from lesson.models import Lesson
 from profile.models import User, Profile 
 from interaction.models import UserCourse
 from ..models import LearningIntention, LearningIntentionDetail
+from ..views import _user_permitted_to_edit_course
 
 class OutcomeViewTests_new(TestCase):
     """Newer tests for outcome views using fixtures"""
@@ -15,8 +16,14 @@ class OutcomeViewTests_new(TestCase):
         'outcome_lints.json',
         'interactions.json',
     ]
+    
+    def test__user_permitted_to_edit_course(self):
+        self.client.login(username='sven', password='sven')
+        course = Course.objects.get(pk=1)
+        user = User.objects.get(username='sven') 
+        self.assertTrue(_user_permitted_to_edit_course(user, course.id))
 
-    def test_learning_intention_has_correct_context_vars(self):
+    def test_learning_intention_has_correct_context_vars_not_author(self):
         self.client.login(username='gaby', password='gaby5')
         lesson = Lesson.objects.get(pk=1)
         lint = LearningIntentionDetail.objects.get(pk=1)
@@ -38,7 +45,26 @@ class OutcomeViewTests_new(TestCase):
         self.assertEqual(usc_list[0][1], 'red')
         self.assertEqual(ulo_list[0][2], None)
         self.assertEqual(usc_list[0][2], None)
- 
+        self.assertFalse(response.context['user_can_edit'])
+
+    def test_learning_intention_has_correct_context_vars_is_author(self):
+        self.client.login(username='sven', password='sven')
+        lesson = Lesson.objects.get(pk=1)
+        lint = LearningIntentionDetail.objects.get(pk=1)
+        url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
+        response = self.client.get(url1)
+        self.assertIsNone(response.context['progressSC'])               
+        self.assertIsNone(response.context['progressLO'])               
+        self.assertTrue(response.context['user_can_edit'])
+
+    def test_learning_intention_has_edit_button(self):
+        self.client.login(username='gaby', password='gaby5')
+        lesson = Lesson.objects.get(pk=1)
+        lint = LearningIntentionDetail.objects.get(pk=1)
+        url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
+        response = self.client.get(url1)
+        self.assertIn('id_edit_button', response.content)
+
 class OutcomeViewTests(TestCase):
     """Test the outcome specific views"""
     
