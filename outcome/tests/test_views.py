@@ -50,8 +50,9 @@ class OutcomeViewTests_new(TestCase):
     def test_learning_intention_has_correct_context_vars_is_author(self):
         self.client.login(username='sven', password='sven')
         lesson = Lesson.objects.get(pk=1)
-        lint = LearningIntentionDetail.objects.get(pk=1)
+        lint = LearningIntention.objects.get(pk=1)
         url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
+        import pdb; pdb.set_trace()
         response = self.client.get(url1)
         self.assertIsNone(response.context['progressSC'])               
         self.assertIsNone(response.context['progressLO'])               
@@ -60,7 +61,7 @@ class OutcomeViewTests_new(TestCase):
     def test_learning_intention_has_edit_button(self):
         self.client.login(username='gaby', password='gaby5')
         lesson = Lesson.objects.get(pk=1)
-        lint = LearningIntentionDetail.objects.get(pk=1)
+        lint = LearningIntention.objects.get(pk=1)
         url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
         response = self.client.get(url1)
         self.assertIn('id_edit_button', response.content)

@@ -1,4 +1,6 @@
+#outcome/views.py
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import (
     get_object_or_404,
     render
@@ -131,4 +133,7 @@ def learning_intention(request, lesson_id, learning_intention_id):
                     })
     template = 'outcome/outcome_lint.html'
     return render(request, template, context_data)
-   
+
+@login_required
+def edit(request, learning_intention_id):
+    return render()   
