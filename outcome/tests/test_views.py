@@ -63,7 +63,21 @@ class OutcomeViewTests_new(TestCase):
         lint = LearningIntention.objects.get(pk=1)
         url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
         response = self.client.get(url1)
-        self.assertIn('id_edit_lint', response.content)
+        self.assertContains(
+            response, 
+            "<a href='/lesson/1/lint/1/edit/' id='id_edit_lint'"\
+            " class='pure-button pure-button-primary'>"\
+            "Edit Learning Intention</a>",
+            html=True
+        )
+
+    def test_learning_intention_has_no_edit_button_not_author(self):
+        self.client.login(username='gaby', password='gaby5')
+        lesson = Lesson.objects.get(pk=1)
+        lint = LearningIntention.objects.get(pk=1)
+        url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
+        response = self.client.get(url1)
+        self.assertNotIn('id_edit_lint', response.content)
 
 class OutcomeViewTests(TestCase):
     """Test the outcome specific views"""

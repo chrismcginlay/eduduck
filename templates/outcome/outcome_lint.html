@@ -59,9 +59,7 @@ title='{{ lesson }}'>Lesson Home</a></li>
     
     <div class='pure-u-1-5'>
         {% if user_can_edit %}
-            <a  href = "{% url 'lint_edit' 
-            lesson = lesson.id 
-            learning_intention_id=outcome.id %}"
+            <a  href="{% url 'lint_edit' lesson_id=lesson.id learning_intention_id=learning_intention.id %}"
                 id='id_edit_lint'
                 class='pure-button pure-button-primary'>
                     Edit Learning Intention 
