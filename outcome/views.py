@@ -4,6 +4,7 @@ from django.core.exceptions import (
     PermissionDenied,
 )
 from django.contrib.auth.decorators import login_required
+from django.forms.models import inlineformset_factory
 from django.shortcuts import (
     get_object_or_404,
     render
@@ -21,6 +22,11 @@ from .models import LearningIntention, LearningIntentionDetail
 
 import logging
 logger = logging.getLogger(__name__)
+
+SCInlineFormset = inlineformset_factory(
+    LearningIntention, form=SCForm, extra=6)
+LOInlineFormset = inlineformset_factory(
+    LearningIntention, form=LOForm, extra=6)
 
 def _user_permitted_to_edit_course(user, course_id):
     course = get_object_or_404(Course, pk=course_id)

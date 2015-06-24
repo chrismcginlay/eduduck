@@ -109,8 +109,8 @@ class OutcomeViewTests_new(TestCase):
         self.assertIn('sc_formset', response.context)
         self.assertIn('lo_formset', response.context)
 
-    def test_edit_view_uses_correct_formsets(self):
-        self.client.login(username='bertie', password='bertword')
+    def test_edit_view_uses_correct_formsets_if_author(self):
+        self.client.login(username='sven', password='sven')
         response = self.client.get('/lesson/1/lint/1/edit/')
         self.assertIsInstance(
             response.context['sc_formset'], SCInlineFormset)
@@ -122,6 +122,33 @@ class OutcomeViewTests_new(TestCase):
             hasattr(response.context['sc_formset'], 'management_form'))
         self.assertTrue(
             hasattr(response.context['lo_formset'], 'management_form'))
+
+    def test_edit_view_edits_actually_saved_if_author(self):
+        self.client.login(username='sven', password='sven')
+        mod_data = {
+            'learning_intention_form-text': 'Learn up some stuff', 
+            'learning_intention_form-lesson': 1,
+            'sc_formset-TOTAL_FORMS':6,
+            'sc_formset-INITIAL_FORMS':1,
+            'sc_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'sc_formset-0-text':'Boo',
+            'sc_formset-0-lid_type': u'SC',
+            'lo_formset-TOTAL_FORMS':u'6',
+            'lo_formset-INITIAL_FORMS':u'0',
+            'lo_formset-0-id':u'2',
+            'lo_formset-0-text':'Hoo',
+            'lo_formset-0-lid_type':u'6',
+        }
+        ##This should trigger modification of the course
+        response = self.client.post('/lesson/1/lint/1/edit/', mod_data)
+        self.assertRedirects(response, '/lesson/1/lint/1/')
+   
+        ##Then visiting the course should reflect the changes
+        response = self.client.get('/lesson/1/lint/1/')
+        self.assertContains(response, 
+            '<h3>Learn up some stuff</h3>', html=True)
+        self.assertIn('SC Boo', response.content)
+        self.assertIn('LO Hoo', response.content)
 
 
 class OutcomeViewTests(TestCase):
