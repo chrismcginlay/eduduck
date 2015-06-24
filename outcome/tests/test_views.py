@@ -1,10 +1,18 @@
+#outcome/tests/test_views.py
+from django.core.exceptions import PermissionDenied
+from django.http.response import HttpResponseForbidden
 from django.test import TestCase
 from courses.models import Course
 from lesson.models import Lesson
 from profile.models import User, Profile 
 from interaction.models import UserCourse
 from ..models import LearningIntention, LearningIntentionDetail
-from ..views import _user_permitted_to_edit_course
+from ..forms import LearningIntentionForm
+from ..views import (
+    _user_permitted_to_edit_course,
+    SCInlineFormset,
+    LOInlineFormset
+)
 
 class OutcomeViewTests_new(TestCase):
     """Newer tests for outcome views using fixtures"""
@@ -78,6 +86,43 @@ class OutcomeViewTests_new(TestCase):
         url1 = "/lesson/{0}/lint/{1}/".format(lesson.pk,lint.pk)
         response = self.client.get(url1)
         self.assertNotIn('id_edit_lint', response.content)
+
+    #Tests for edit view function
+    def test_edit_HttpForbidden_if_not_author(self):
+        self.client.login(username='gaby', password='gaby5')
+        url1 = "/lesson/1/lint/1/edit/"
+        response = self.client.get(url1)
+        self.assertIsInstance(response, HttpResponseForbidden)
+        
+    def test_edit_uses_correct_template_if_author(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/lesson/1/lint/1/edit/') 
+        self.assertTemplateUsed(response, 'outcome/edit_lint.html')
+
+    def test_edit_has_correct_context_vars_if_author(self):
+        self.client.login(username='sven', password='sven')
+        lesson = Lesson.objects.get(pk=1)
+        lint = LearningIntentionDetail.objects.get(pk=1)
+        url1 = "/lesson/{0}/lint/{1}/edit/".format(lesson.pk,lint.pk)
+        response = self.client.get(url1)
+        self.assertIn('li_form', response.context)
+        self.assertIn('sc_formset', response.context)
+        self.assertIn('lo_formset', response.context)
+
+    def test_edit_view_uses_correct_formsets(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/lesson/1/lint/1/edit/')
+        self.assertIsInstance(
+            response.context['sc_formset'], SCInlineFormset)
+        self.assertIsInstance(
+            response.context['lo_formset'], LOInlineFormset)
+        self.assertIsInstance(
+            response.context['li_form'], LearningIntentionForm)
+        self.assertTrue(
+            hasattr(response.context['sc_formset'], 'management_form'))
+        self.assertTrue(
+            hasattr(response.context['lo_formset'], 'management_form'))
+
 
 class OutcomeViewTests(TestCase):
     """Test the outcome specific views"""

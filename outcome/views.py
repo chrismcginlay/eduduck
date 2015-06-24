@@ -1,5 +1,8 @@
 #outcome/views.py
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import (
+    ObjectDoesNotExist,
+    PermissionDenied,
+)
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import (
     get_object_or_404,
@@ -135,5 +138,21 @@ def learning_intention(request, lesson_id, learning_intention_id):
     return render(request, template, context_data)
 
 @login_required
-def edit(request, learning_intention_id):
-    return render()   
+def edit(request, lesson_id, learning_intention_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    course_id = lesson.course.id
+    if _user_permitted_to_edit_course(request.user, course_id):
+        li_form = None
+        sc_formset = None
+        lo_formset = None
+        t = 'outcome/edit_lint.html'
+        c = {
+            'li_form': li_form,
+            'sc_formset': sc_formset,
+            'lo_formset': lo_formset,
+        }
+        return render(request, t, c)   
+    else:
+        logger.info("Unauthorized attempt to edit "\
+            "learning_intention {0}".format(learning_intention_id))
+        raise PermissionDenied
