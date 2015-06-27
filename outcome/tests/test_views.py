@@ -113,11 +113,11 @@ class OutcomeViewTests_new(TestCase):
         self.client.login(username='sven', password='sven')
         response = self.client.get('/lesson/1/lint/1/edit/')
         self.assertIsInstance(
+            response.context['li_form'], LearningIntentionForm)
+        self.assertIsInstance(
             response.context['sc_formset'], SCInlineFormset)
         self.assertIsInstance(
             response.context['lo_formset'], LOInlineFormset)
-        self.assertIsInstance(
-            response.context['li_form'], LearningIntentionForm)
         self.assertTrue(
             hasattr(response.context['sc_formset'], 'management_form'))
         self.assertTrue(

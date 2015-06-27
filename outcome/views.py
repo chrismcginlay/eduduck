@@ -18,7 +18,7 @@ from interaction.models import (
     UserLearningIntentionDetail, 
     ULIDConditions
 )
-from .forms import SCForm, LOForm
+from .forms import LearningIntentionForm, SCForm, LOForm
 from .models import LearningIntention, LearningIntentionDetail
 
 import logging
@@ -154,12 +154,15 @@ def learning_intention(request, lesson_id, learning_intention_id):
 
 @login_required
 def edit(request, lesson_id, learning_intention_id):
+    learning_intention = get_object_or_404(
+        LearningIntention, 
+        id=learning_intention_id)
     lesson = get_object_or_404(Lesson, id=lesson_id)
     course_id = lesson.course.id
     if _user_permitted_to_edit_course(request.user, course_id):
-        li_form = None
-        sc_formset = None
-        lo_formset = None
+        li_form = LearningIntentionForm(instance=learning_intention) 
+        sc_formset = SCInlineFormset(instance=learning_intention) 
+        lo_formset = LOInlineFormset(instance=learning_intention) 
         t = 'outcome/edit_lint.html'
         c = {
             'li_form': li_form,
