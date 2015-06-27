@@ -157,7 +157,7 @@ def edit(request, lesson_id, learning_intention_id):
     learning_intention = get_object_or_404(
         LearningIntention, 
         id=learning_intention_id)
-    lesson = get_object_or_404(Lesson, id=lesson_id)
+    lesson = learning_intention.lesson
     course_id = lesson.course.id
     if _user_permitted_to_edit_course(request.user, course_id):
         li_form = LearningIntentionForm(instance=learning_intention) 
@@ -165,6 +165,7 @@ def edit(request, lesson_id, learning_intention_id):
         lo_formset = LOInlineFormset(instance=learning_intention) 
         t = 'outcome/edit_lint.html'
         c = {
+            'learning_intention': learning_intention,
             'li_form': li_form,
             'sc_formset': sc_formset,
             'lo_formset': lo_formset,

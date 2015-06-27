@@ -108,6 +108,7 @@ class OutcomeViewTests_new(TestCase):
         self.assertIn('li_form', response.context)
         self.assertIn('sc_formset', response.context)
         self.assertIn('lo_formset', response.context)
+        self.assertIn('learning_intention', response.context)
 
     def test_edit_view_uses_correct_formsets_if_author(self):
         self.client.login(username='sven', password='sven')
@@ -122,6 +123,58 @@ class OutcomeViewTests_new(TestCase):
             hasattr(response.context['sc_formset'], 'management_form'))
         self.assertTrue(
             hasattr(response.context['lo_formset'], 'management_form'))
+
+    def test_edit_view_has_correct_page_title(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/lesson/1/lint/1/edit/')
+        self.assertContains(
+            response,
+            "<h2 id='id_page_title'>Editing: "\
+            "Recognise a range of tasks for w...",
+            html=True
+        )
+
+    def test_edit_view_shows_breadcrumb(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/lesson/1/lint/1/edit/')
+        import pdb; pdb.set_trace()
+        self.assertIn(
+            "<p id='id_breadcrumb'>",
+            response.content
+        ) 
+        self.assertContains(
+            response, 
+            '<a href="/courses/">All Courses</a>',
+            html=True
+        )
+        self.assertContains(
+            response,
+            '<a href="/courses/1/">Blender Home</a>',
+            html=True
+        )
+        self.assertContains(
+            response,
+            '<a href="/courses/1/lesson/1/">Lesson Home</a>',
+            html=True
+        )
+        self.assertContains(
+            response,
+            '<a href="/lesson/1/lint/1/">Learning Intention</a>',
+            html=True
+        )
+        self.assertIn(
+            '&gt; Edit',
+            response.content
+        )
+
+    def test_edit_view_shows_existing_data_for_editing(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/lesson/1/lint/1/edit/')
+        self.assertIn(
+            'Recognise a range of tasks for which Blender could be used',
+            response.content
+        )
+        self.fail("above needs to pick out element")
 
     def test_edit_view_edits_actually_saved_if_author(self):
         self.client.login(username='sven', password='sven')
