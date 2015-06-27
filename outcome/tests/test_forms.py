@@ -4,7 +4,7 @@ from django.test import TestCase
 from ..forms import (
     LearningIntentionForm,
     LOForm,
-    SCFOrm
+    SCForm
 )
 
 class LearningIntentionFormTest(TestCase):
@@ -70,7 +70,8 @@ class LOFormTest(TestCase):
         )
 
     def test_form_renders_correct_fields(self):
-        form = SCForm()
+        form = LOForm()
         self.assertIn('id_learning_outcome_text', form.as_p())
         self.assertIn('size="40"', form.as_p())
+
 

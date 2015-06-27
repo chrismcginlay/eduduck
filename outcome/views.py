@@ -18,15 +18,24 @@ from interaction.models import (
     UserLearningIntentionDetail, 
     ULIDConditions
 )
+from .forms import SCForm, LOForm
 from .models import LearningIntention, LearningIntentionDetail
 
 import logging
 logger = logging.getLogger(__name__)
 
 SCInlineFormset = inlineformset_factory(
-    LearningIntention, form=SCForm, extra=6)
+    LearningIntention,
+    LearningIntentionDetail,
+    form=SCForm,
+    extra=6
+)
 LOInlineFormset = inlineformset_factory(
-    LearningIntention, form=LOForm, extra=6)
+    LearningIntention,
+    LearningIntentionDetail,
+    form=LOForm,
+    extra=6
+)
 
 def _user_permitted_to_edit_course(user, course_id):
     course = get_object_or_404(Course, pk=course_id)
