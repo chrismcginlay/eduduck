@@ -164,17 +164,49 @@ def edit(request, lesson_id, learning_intention_id):
         if request.method=='POST':
             li_form = LearningIntentionForm(
                 request.POST, instance=learning_intention
+            )  
+            sc_formset = SCInlineFormset(
+                request.POST,
+                instance=learning_intention,
+                queryset = LearningIntentionDetail.objects.filter(lid_type='SC'),
+                prefix = 'sc',
             ) 
-            return redirect(learning_intention)
+            lo_formset = LOInlineFormset(
+                request.POST,
+                instance=learning_intention,
+                queryset = LearningIntentionDetail.objects.filter(lid_type='LO'),
+                prefix = 'lo',
+            )
+            if li_form.is_valid():
+                li_form.save()
+            if sc_formset.is_valid():
+                sc_formset.save()
+            if lo_formset.is_valid():
+                lo_formset.save()
+            if (li_form.is_valid() and
+                sc_formset.is_valid() and
+                lo_formset.is_valid()):
+                    return redirect(learning_intention)
+            else:
+                t = 'outcome/edit_lint.html'
+                c = {
+                    'learning_intention': learning_intention,
+                    'li_form': li_form,
+                    'sc_formset': sc_formset,
+                    'lo_formset': lo_formset,
+                }
+                return render(request, t, c)
         else: #not POST
             li_form = LearningIntentionForm(instance=learning_intention) 
             sc_formset = SCInlineFormset(
                 instance=learning_intention,
                 queryset = LearningIntentionDetail.objects.filter(lid_type='SC'),
+                prefix = 'sc',
             ) 
             lo_formset = LOInlineFormset(
                 instance=learning_intention,
                 queryset = LearningIntentionDetail.objects.filter(lid_type='LO'),
+                prefix = 'lo',
             )
             for form in lo_formset.extra_forms:
                 form.initial['lid_type']='LO'

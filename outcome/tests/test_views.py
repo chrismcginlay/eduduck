@@ -206,7 +206,8 @@ class OutcomeViewTests_new(TestCase):
             'lo_formset-0-lid_type':u'6',
         }
         response = self.client.post('/lesson/1/lint/1/edit/', mod_data)
-        self.assertEqual(response.status_code, 200)
+        import pdb; pdb.set_trace()
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(response.context['error messages'], '?')
 
     def test_edit_view_has_3_save_edits_buttons(self):
