@@ -18,17 +18,18 @@ class LearningIntentionForm(forms.ModelForm):
 class SCForm(forms.ModelForm):
     class Meta:
         model = LearningIntentionDetail
-        fields = ['lid_type', 'text']
+        fields = ['text']
     
     def __init__(self, *args, **kwargs):
         super(SCForm, self).__init__(*args, **kwargs)
+        self.initial['lid_type'] = u'SC'
         self.fields['text'].widget.attrs['id'] = 'id_success_criterion_text'
         self.fields['text'].widget.attrs['size'] = '40'
 
 class LOForm(forms.ModelForm):
     class Meta:
         model = LearningIntentionDetail
-        fields = ['lid_type', 'text']
+        fields = ['text']
      
     def __init__(self, *args, **kwargs):
         super(LOForm, self).__init__(*args, **kwargs)

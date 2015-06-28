@@ -124,20 +124,6 @@ class OutcomeViewTests_new(TestCase):
         self.assertTrue(
             hasattr(response.context['lo_formset'], 'management_form'))
 
-    def test_LO_formsets_set_to_lid_type_LO(self):
-        self.client.login(username='sven', password='sven')
-        response = self.client.get('/lesson/1/lint/1/edit/')
-        formset = response.context['lo_formset']
-        for form in formset.forms:
-            self.assertEqual(form.initial['lid_type'], 'LO')       
- 
-    def test_SC_formsets_set_to_lid_type_SC(self):
-        self.client.login(username='sven', password='sven')
-        response = self.client.get('/lesson/1/lint/1/edit/')
-        formset = response.context['sc_formset']
-        for form in formset.forms:
-            self.assertEqual(form.initial['lid_type'], 'SC')       
-
     def test_edit_view_has_correct_page_title(self):
         self.client.login(username='sven', password='sven')
         response = self.client.get('/lesson/1/lint/1/edit/')
@@ -198,15 +184,12 @@ class OutcomeViewTests_new(TestCase):
             'sc_formset-INITIAL_FORMS':1,
             'sc_formset-0-id':u'1', #prevent MultiVal dict key err.
             'sc_formset-0-text':'', #should reject empty string
-            'sc_formset-0-lid_type': u'SC',
             'lo_formset-TOTAL_FORMS':u'6',
-            'lo_formset-INITIAL_FORMS':u'0',
+            'lo_formset-INITIAL_FORMS':u'1',
             'lo_formset-0-id':u'2',
             'lo_formset-0-text':'', #should reject empty string
-            'lo_formset-0-lid_type':u'6',
         }
         response = self.client.post('/lesson/1/lint/1/edit/', mod_data)
-        import pdb; pdb.set_trace()
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.context['error messages'], '?')
 
@@ -244,12 +227,10 @@ class OutcomeViewTests_new(TestCase):
             'sc_formset-INITIAL_FORMS':1,
             'sc_formset-0-id':u'1', #prevent MultiVal dict key err.
             'sc_formset-0-text':'Boo',
-            'sc_formset-0-lid_type': u'SC',
             'lo_formset-TOTAL_FORMS':u'6',
-            'lo_formset-INITIAL_FORMS':u'0',
+            'lo_formset-INITIAL_FORMS':u'1',
             'lo_formset-0-id':u'2',
             'lo_formset-0-text':'Hoo',
-            'lo_formset-0-lid_type':u'6',
         }
         ##This should trigger modification of the course
         response = self.client.post('/lesson/1/lint/1/edit/', mod_data)

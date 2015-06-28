@@ -1,9 +1,14 @@
+#outcome/models.py
 from django.core.urlresolvers import reverse
 from django.db import models
 
 from lesson.models import Lesson
 
+from core.eduduck_exceptions import CheckRepError
+
 import logging
+
+
 logger = logging.getLogger(__name__)
 
 class LearningIntention(models.Model):
@@ -122,10 +127,14 @@ class LearningIntentionDetail(models.Model):
             logger.warn("Recording LID {0} with no text detail".format(
                 self.pk))
             return False
-        if not (self.lid_type in self.LID_DETAIL_CHOICES):
+        if not any(self.lid_type in lid for lid in self.LID_DETAIL_CHOICES):
             logger.warn("LID {0} has invalid type".format(self.pk))
-            return False
+            raise(CheckRepError) 
         return True
+    
+    def save(self, *args, **kwargs):
+        self._checkrep()
+        super(LearningIntentionDetail, self).save(*args, **kwargs)    
 
     def __unicode__(self):
         return self.text

@@ -76,13 +76,19 @@ class OutcomeModelTests(TestCase):
         self.lid1.text = ""
         self.assertFalse(self.lid1._checkrep())
 
-    def test_learningIntentionDetail_checkrep_False_case_lid_type(self):
+    def test_learningIntentionDetail_checkrep_Raises_no_lidtype(self):
         self.lid1.lid_type = None
-        self.assertFalse(self.lid1._checkrep())
+        with self.assertRaises(CheckRepError):
+            self.lid1._checkrep()
 
     def test_learningIntentionDetail_checkrep_Error_case(self):
         with self.assertRaises(ValueError):
             self.lid1.learning_intention = None
+
+    def test_learningIntentionDetail_no_save_without_lidtype(self):
+        self.lid1.lid_type = None
+        with self.assertRaises(CheckRepError):
+            self.lid1.save()
 
     def test_successCriterion_create(self):
         """SuccessCriterion instance attributes are created OK"""
