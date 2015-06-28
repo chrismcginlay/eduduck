@@ -516,13 +516,13 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         edit_button.click()
         self.assertEqual(
             self.browser.current_url, self.server_url+'/lesson/3/lint/3/edit/')
-        LI_text_input = self.browser.find_element_by_id('id_LI_text')
+        LI_text_input = self.browser.find_element_by_id('id_learning_intention_text')
         LI_text_input.send_keys('Learn how to fry fish')
 
         # as well as add new or edit existing success criteria or outcomes.
         # (SCs and LOs being organised into two separate areas).
-        SCarea = self.browser.find_element_by_id('id_SC_edit_area')
-        LOarea = self.browser.find_element_by_id('id_LO_edit_area')
+        SCarea = self.browser.find_element_by_id('id_edit_success_criteria')
+        LOarea = self.browser.find_element_by_id('id_edit_learning_outcomes')
         SC1_text_input = SCarea.find_element_by_id('id_sc_formset-0-text')
         SC2_text_input = SCarea.find_element_by_id('id_sc_formset-1-text')
         LO1_text_input = LOarea.find_element_by_id('id_lo_formset-0-text')

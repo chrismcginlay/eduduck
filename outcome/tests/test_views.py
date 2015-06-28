@@ -124,6 +124,20 @@ class OutcomeViewTests_new(TestCase):
         self.assertTrue(
             hasattr(response.context['lo_formset'], 'management_form'))
 
+    def test_LO_formsets_set_to_lid_type_LO(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/lesson/1/lint/1/edit/')
+        formset = response.context['lo_formset']
+        for form in formset.forms:
+            self.assertEqual(form.initial['lid_type'], 'LO')       
+ 
+    def test_SC_formsets_set_to_lid_type_SC(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/lesson/1/lint/1/edit/')
+        formset = response.context['sc_formset']
+        for form in formset.forms:
+            self.assertEqual(form.initial['lid_type'], 'SC')       
+
     def test_edit_view_has_correct_page_title(self):
         self.client.login(username='sven', password='sven')
         response = self.client.get('/lesson/1/lint/1/edit/')
@@ -137,7 +151,6 @@ class OutcomeViewTests_new(TestCase):
     def test_edit_view_shows_breadcrumb(self):
         self.client.login(username='sven', password='sven')
         response = self.client.get('/lesson/1/lint/1/edit/')
-        import pdb; pdb.set_trace()
         self.assertIn(
             "<p id='id_breadcrumb'>",
             response.content

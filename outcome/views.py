@@ -161,8 +161,18 @@ def edit(request, lesson_id, learning_intention_id):
     course_id = lesson.course.id
     if _user_permitted_to_edit_course(request.user, course_id):
         li_form = LearningIntentionForm(instance=learning_intention) 
-        sc_formset = SCInlineFormset(instance=learning_intention) 
-        lo_formset = LOInlineFormset(instance=learning_intention) 
+        sc_formset = SCInlineFormset(
+            instance=learning_intention,
+            queryset = LearningIntentionDetail.objects.filter(lid_type='SC'),
+        ) 
+        lo_formset = LOInlineFormset(
+            instance=learning_intention,
+            queryset = LearningIntentionDetail.objects.filter(lid_type='LO'),
+        )
+        for form in lo_formset.extra_forms:
+            form.initial['lid_type']='LO'
+        for form in sc_formset.extra_forms:
+            form.initial['lid_type']='SC'
         t = 'outcome/edit_lint.html'
         c = {
             'learning_intention': learning_intention,
