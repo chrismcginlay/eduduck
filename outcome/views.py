@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.forms.models import inlineformset_factory
 from django.shortcuts import (
     get_object_or_404,
-    render
+    redirect,
+    render,
 )
                               
 from django.template import RequestContext
@@ -160,27 +161,33 @@ def edit(request, lesson_id, learning_intention_id):
     lesson = learning_intention.lesson
     course_id = lesson.course.id
     if _user_permitted_to_edit_course(request.user, course_id):
-        li_form = LearningIntentionForm(instance=learning_intention) 
-        sc_formset = SCInlineFormset(
-            instance=learning_intention,
-            queryset = LearningIntentionDetail.objects.filter(lid_type='SC'),
-        ) 
-        lo_formset = LOInlineFormset(
-            instance=learning_intention,
-            queryset = LearningIntentionDetail.objects.filter(lid_type='LO'),
-        )
-        for form in lo_formset.extra_forms:
-            form.initial['lid_type']='LO'
-        for form in sc_formset.extra_forms:
-            form.initial['lid_type']='SC'
-        t = 'outcome/edit_lint.html'
-        c = {
-            'learning_intention': learning_intention,
-            'li_form': li_form,
-            'sc_formset': sc_formset,
-            'lo_formset': lo_formset,
-        }
-        return render(request, t, c)   
+        if request.method=='POST':
+            li_form = LearningIntentionForm(
+                request.POST, instance=learning_intention
+            ) 
+            return redirect(learning_intention)
+        else: #not POST
+            li_form = LearningIntentionForm(instance=learning_intention) 
+            sc_formset = SCInlineFormset(
+                instance=learning_intention,
+                queryset = LearningIntentionDetail.objects.filter(lid_type='SC'),
+            ) 
+            lo_formset = LOInlineFormset(
+                instance=learning_intention,
+                queryset = LearningIntentionDetail.objects.filter(lid_type='LO'),
+            )
+            for form in lo_formset.extra_forms:
+                form.initial['lid_type']='LO'
+            for form in sc_formset.extra_forms:
+                form.initial['lid_type']='SC'
+            t = 'outcome/edit_lint.html'
+            c = {
+                'learning_intention': learning_intention,
+                'li_form': li_form,
+                'sc_formset': sc_formset,
+                'lo_formset': lo_formset,
+            }
+            return render(request, t, c)   
     else:
         logger.info("Unauthorized attempt to edit "\
             "learning_intention {0}".format(learning_intention_id))

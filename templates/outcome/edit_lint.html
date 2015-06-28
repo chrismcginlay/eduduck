@@ -1,0 +1,133 @@
+{% extends "courses/base_course.html" %}
+{% load staticfiles %}
+{% load tz %}
+
+{% block menu_override %}
+    <li class='menu-item-divided'>
+        <a href='{{ learning_intention.lesson.course.get_absolute_url }}'
+        title='{{ learning_intention.lesson.course }}'>
+        {{ learning_intention.lesson.course.name }} Home</a>
+    </li>
+    <li><a href='{{ learning_intention.lesson.get_absolute_url }}'
+        title='{{ learning_intention.lesson }}'>Lesson Home</a>
+    </li>
+{% endblock menu_override %}
+
+{% block breadcrumb %}
+<p id='id_breadcrumb'>
+    <a href="{% url 'courses.views.index' %}">All Courses</a> &gt;
+    <a href='{{ learning_intention.lesson.course.get_absolute_url }}'>
+        {{ learning_intention.lesson.course.name }} Home</a> &gt;
+    <a href='{{ learning_intention.lesson.get_absolute_url }}'>Lesson Home</a> &gt; 
+    <a href='{{ learning_intention.get_absolute_url }}'>Learning Intention</a>
+    &gt; Edit
+</p>
+{% endblock breadcrumb %}
+
+{% block contentheading %}
+    <h2 id='id_page_title'>Editing: {{learning_intention.text|truncatechars:35}}</h2>
+{% endblock contentheading %}
+
+{% block content %}
+    {% if learning_intention_form.errors or sc_formset.errors or lo_formset.errors %}
+        <div class="errorlist">
+            <p>Please correct the following:</p>
+        </div>
+    {% endif %}
+    <form 
+        enctype='multipart/form-data'
+        method='post'
+        action='#' 
+        class='pure-form pure-form-aligned'
+    >
+    {% csrf_token %}
+    {{ sc_formset.management_form }}
+    {{ lo_formset.management_form }}
+    <div id='id_resource_area' class='pure-g-r'>
+        <div id='id_edit_learning_intention' class='pure-u-1-1'>
+            <h3>Learning Intention {{ learning_intention.id }}</h3>
+            {{ li_form }}
+            <div class="pure-controls">
+                <button 
+                    id='id_submit_lilosc_edits'
+                    class='pure-button pure-button-primary'
+                    type='submit'>Save All Edits
+                </button>
+            </div>
+        </div>
+        <hr>
+        <div id='id_edit_learning_outcomes' class='pure-u-1-1'>
+            <h4>Learning Outcomes</h4>
+            <p>LOs can be specific items of knowledge, or they can be skills and capacities.</p>
+            <article>
+            <fieldset id='id_learning_outcome_formset_area'>
+                <table>
+                    {% for form in lo_formset %}
+                        {% for hf in form.hidden_fields %}
+                            {{ hf }}
+                        {% endfor %}
+                        <thead>
+                            {% if forloop.first %}
+                                {% for field in form.visible_fields %}
+                                    <th>{{ field.label_tag }}</th>
+                                {% endfor %}
+                            {% endif %}
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for field in form.visible_fields %}
+                                    <td>{{ field.errors }}{{ field }}</td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+                <div class='pure-controls'>
+                    <button 
+                        id='id_submit_lilosc_edits2'
+                        class='pure-button pure-button-primary'
+                        type='submit'>Save All Edits
+                    </button>
+                </div>
+            </fieldset>
+            </article>
+
+            <hr>
+            <h4>Success Criteria</h4>
+            <p>Success criteria describe how to assess when a student has successfully acquired a certain piece of knowledge, or when they are competent to perform a specific activity. These can be used to structure assessments of students work and give feedback on performance.</p>
+            <article>
+            <fieldset id='id_success_criterion_formset_area'>
+                <table>
+                    {% for form in sc_formset %}
+                        {% for hf in form.hidden_fields %}
+                            {{ hf }}
+                        {% endfor %}
+                        <thead>
+                            {% if forloop.first %}
+                                {% for field in form.visible_fields %}
+                                    <th>{{ field.label_tag }}</th>
+                                {% endfor %}
+                            {% endif %}
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for field in form.visible_fields %}
+                                    <td>{{ field.errors }}{{ field }}</td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+                <div class='pure-controls'>
+                    <button 
+                        id='id_submit_lilosc_edits3'
+                        class='pure-button pure-button-primary'
+                        type='submit'>Save All Edits
+                    </button>
+                </div>
+            </fieldset>
+            </article>
+        </div>
+    </div>
+    </form>
+{% endblock content %}

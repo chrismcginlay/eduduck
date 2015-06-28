@@ -189,6 +189,51 @@ class OutcomeViewTests_new(TestCase):
         )
         self.fail("above needs to pick out element")
 
+    def test_edit_view_form_shows_correct_error_messages(self):
+        self.client.login(username='sven', password='sven')
+        mod_data = {
+            'learning_intention_form-text': '', #Should reject empty string
+            'learning_intention_form-lesson': 1,
+            'sc_formset-TOTAL_FORMS':6,
+            'sc_formset-INITIAL_FORMS':1,
+            'sc_formset-0-id':u'1', #prevent MultiVal dict key err.
+            'sc_formset-0-text':'', #should reject empty string
+            'sc_formset-0-lid_type': u'SC',
+            'lo_formset-TOTAL_FORMS':u'6',
+            'lo_formset-INITIAL_FORMS':u'0',
+            'lo_formset-0-id':u'2',
+            'lo_formset-0-text':'', #should reject empty string
+            'lo_formset-0-lid_type':u'6',
+        }
+        response = self.client.post('/lesson/1/lint/1/edit/', mod_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['error messages'], '?')
+
+    def test_edit_view_has_3_save_edits_buttons(self):
+        self.client.login(username='sven', password='sven')
+        response = self.client.get('/lesson/1/lint/1/edit/')
+        self.assertContains(
+            response, 
+            "<button id='id_submit_lilosc_edits' "\
+            "class='pure-button pure-button-primary' "\
+            "type='submit'>Save All Edits</button>",
+            html=True
+        )
+        self.assertContains(
+            response, 
+            "<button id='id_submit_lilosc_edits2' "\
+            "class='pure-button pure-button-primary' "\
+            "type='submit'>Save All Edits</button>",
+            html=True
+        )
+        self.assertContains(
+            response, 
+            "<button id='id_submit_lilosc_edits3' "\
+            "class='pure-button pure-button-primary' "\
+            "type='submit'>Save All Edits</button>",
+            html=True
+        )
+
     def test_edit_view_edits_actually_saved_if_author(self):
         self.client.login(username='sven', password='sven')
         mod_data = {
