@@ -180,9 +180,15 @@ def edit(request, lesson_id, learning_intention_id):
             if li_form.is_valid():
                 li_form.save()
             if sc_formset.is_valid():
-                sc_formset.save()
+                models = sc_formset.save(commit=False)
+                for i in models:
+                    i.lid_type=u'SC'
+                    i.save()
             if lo_formset.is_valid():
-                lo_formset.save()
+                models = lo_formset.save(commit=False)
+                for i in models:
+                    i.lid_type=u'LO'
+                    i.save()
             if (li_form.is_valid() and
                 sc_formset.is_valid() and
                 lo_formset.is_valid()):

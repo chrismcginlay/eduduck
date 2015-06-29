@@ -22,7 +22,6 @@ class SCForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(SCForm, self).__init__(*args, **kwargs)
-        self.initial['lid_type'] = u'SC'
         self.fields['text'].widget.attrs['id'] = 'id_success_criterion_text'
         self.fields['text'].widget.attrs['size'] = '40'
 
