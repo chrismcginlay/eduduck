@@ -214,10 +214,6 @@ def edit(request, lesson_id, learning_intention_id):
                 queryset = LearningIntentionDetail.objects.filter(lid_type='LO'),
                 prefix = 'lo',
             )
-            for form in lo_formset.extra_forms:
-                form.initial['lid_type']='LO'
-            for form in sc_formset.extra_forms:
-                form.initial['lid_type']='SC'
             t = 'outcome/edit_lint.html'
             c = {
                 'learning_intention': learning_intention,

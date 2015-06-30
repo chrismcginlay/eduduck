@@ -8,7 +8,7 @@ from outcome.models import (
 class LearningIntentionForm(forms.ModelForm):
     class Meta:
         model = LearningIntention
-        fields = ('text',)
+        fields = ['text',]
 
     def __init__(self, *args, **kwargs):
         super(LearningIntentionForm, self).__init__(*args, **kwargs)
