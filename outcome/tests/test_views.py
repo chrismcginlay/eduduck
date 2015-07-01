@@ -169,11 +169,28 @@ class OutcomeViewTests_new(TestCase):
     def test_edit_view_shows_existing_data_for_editing(self):
         self.client.login(username='sven', password='sven')
         response = self.client.get('/lesson/1/lint/1/edit/')
-        self.assertIn(
-            'Recognise a range of tasks for which Blender could be used',
-            response.content
+        self.assertEqual(
+            response.context['li_form']['text'].value(),
+            u'Recognise a range of tasks for which Blender could be used'
         )
-        self.fail("above needs to pick out element")
+        self.assertEqual(
+            response.context['sc_formset'][0]['text'].value(),
+            u'Spot 3D modelling tasks'
+        )
+        self.assertEqual(
+            response.context['sc_formset'][1]['text'].value(),
+            u'Spot video sequencing tasks'
+        )
+        self.assertEqual(
+            response.context['lo_formset'][0]['text'].value(),
+            u'I can correctly identify or reject various tasks '\
+            'as being well suited to Blender' 
+        )
+        self.assertEqual(
+            response.context['lo_formset'][1]['text'].value(),
+            u'I can state whether the main techique of a task involves '\
+            'modelling, sequencing, animating or physics simulation'
+        )
 
     def test_edit_view_form_shows_correct_error_messages(self):
         self.client.login(username='sven', password='sven')
