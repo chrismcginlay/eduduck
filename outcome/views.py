@@ -163,7 +163,9 @@ def edit(request, lesson_id, learning_intention_id):
     if _user_permitted_to_edit_course(request.user, course_id):
         if request.method=='POST':
             li_form = LearningIntentionForm(
-                request.POST, instance=learning_intention
+                request.POST,
+                instance=learning_intention,
+                prefix = 'learning_intention_form'
             )  
             sc_formset = SCInlineFormset(
                 request.POST,

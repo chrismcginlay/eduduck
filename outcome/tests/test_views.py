@@ -233,16 +233,15 @@ class OutcomeViewTests_new(TestCase):
             'lo_formset-0-text':'Hoo',
         }
         ##This should trigger modification of the course
-        import pdb; pdb.set_trace()
         response = self.client.post('/lesson/1/lint/1/edit/', mod_data)
         self.assertRedirects(response, '/lesson/1/lint/1/')
    
         ##Then visiting the course should reflect the changes
         response = self.client.get('/lesson/1/lint/1/')
         self.assertContains(response, 
-            '<h3>Learn up some stuff</h3>', html=True)
-        self.assertIn('SC Boo', response.content)
-        self.assertIn('LO Hoo', response.content)
+            '<p>Learn up some stuff</p>', html=True)
+        self.assertIn('boo', response.content)
+        self.assertIn('Hoo', response.content)
 
 
 class OutcomeViewTests(TestCase):
