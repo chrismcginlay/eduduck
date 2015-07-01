@@ -180,12 +180,12 @@ class OutcomeViewTests_new(TestCase):
         mod_data = {
             'learning_intention_form-text': '', #Should reject empty string
             'learning_intention_form-lesson': 1,
-            'sc_formset-TOTAL_FORMS':6,
-            'sc_formset-INITIAL_FORMS':1,
+            'sc_formset-TOTAL_FORMS':u'6',
+            'sc_formset-INITIAL_FORMS':u'0',
             'sc_formset-0-id':u'1', #prevent MultiVal dict key err.
             'sc_formset-0-text':'', #should reject empty string
             'lo_formset-TOTAL_FORMS':u'6',
-            'lo_formset-INITIAL_FORMS':u'1',
+            'lo_formset-INITIAL_FORMS':u'0',
             'lo_formset-0-id':u'2',
             'lo_formset-0-text':'', #should reject empty string
         }
@@ -223,15 +223,13 @@ class OutcomeViewTests_new(TestCase):
         mod_data = {
             'learning_intention_form-text': 'Learn up some stuff', 
             'learning_intention_form-lesson': 1,
-            'TOTAL_FORMS':'4',
-            'INITIAL_FORMS':'1',
-            'sc_formset-TOTAL_FORMS':u'7',
-            'sc_formset-INITIAL_FORMS':u'1',
-            'sc_formset-0-id':u'1', #prevent multival dict key err.
+            'sc_formset-TOTAL_FORMS':u'6',
+            'sc_formset-INITIAL_FORMS':u'0',
+#            'sc_formset-0-id':u'1', #prevent multival dict key err.
             'sc_formset-0-text':'boo',
-            'lo_formset-TOTAL_FORMS':u'7',
-            'lo_formset-INITIAL_FORMS':u'1',
-            'lo_formset-0-id':u'2',
+            'lo_formset-TOTAL_FORMS':u'6',
+            'lo_formset-INITIAL_FORMS':u'0',
+#            'lo_formset-0-id':u'2',
             'lo_formset-0-text':'Hoo',
         }
         ##This should trigger modification of the course

@@ -169,13 +169,13 @@ def edit(request, lesson_id, learning_intention_id):
                 request.POST,
                 instance=learning_intention,
                 queryset = LearningIntentionDetail.objects.filter(lid_type='SC'),
-                prefix = 'sc',
+                prefix = 'sc_formset',
             ) 
             lo_formset = LOInlineFormset(
                 request.POST,
                 instance=learning_intention,
                 queryset = LearningIntentionDetail.objects.filter(lid_type='LO'),
-                prefix = 'lo',
+                prefix = 'lo_formset',
             )
             if li_form.is_valid():
                 li_form.save()
@@ -207,12 +207,12 @@ def edit(request, lesson_id, learning_intention_id):
             sc_formset = SCInlineFormset(
                 instance=learning_intention,
                 queryset = LearningIntentionDetail.objects.filter(lid_type='SC'),
-                prefix = 'sc',
+                prefix = 'sc_formset',
             ) 
             lo_formset = LOInlineFormset(
                 instance=learning_intention,
                 queryset = LearningIntentionDetail.objects.filter(lid_type='LO'),
-                prefix = 'lo',
+                prefix = 'lo_formset',
             )
             t = 'outcome/edit_lint.html'
             c = {
