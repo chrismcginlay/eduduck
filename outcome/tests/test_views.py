@@ -190,8 +190,11 @@ class OutcomeViewTests_new(TestCase):
             'lo_formset-0-text':'', #should reject empty string
         }
         response = self.client.post('/lesson/1/lint/1/edit/', mod_data)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.context['error messages'], '?')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context['li_form'].errors,
+            {'text': [u'This field is required.']}
+        )
 
     def test_edit_view_has_3_save_edits_buttons(self):
         self.client.login(username='sven', password='sven')
