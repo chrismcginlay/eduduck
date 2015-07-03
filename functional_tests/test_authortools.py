@@ -512,28 +512,34 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         # Since Sven is a course author, he gets an 'Edit' button.
         edit_button = self.browser.find_element_by_id('id_edit_lint')
 
+        import pdb; pdb.set_trace()
         # This leads to an edit page where he can edit the main LI itself,
         edit_button.click()
         self.assertEqual(
             self.browser.current_url, self.server_url+'/lesson/3/lint/3/edit/')
         LI_text_input = self.browser.find_element_by_id('id_learning_intention_text')
+        LI_text_input.clear()
         LI_text_input.send_keys('Learn how to fry fish')
 
         # as well as add new or edit existing success criteria or outcomes.
         # (SCs and LOs being organised into two separate areas).
         SCarea = self.browser.find_element_by_id('id_edit_success_criteria')
         LOarea = self.browser.find_element_by_id('id_edit_learning_outcomes')
-        SC1_text_input = SCarea.find_element_by_id('id_sc_formset-0-text')
-        SC2_text_input = SCarea.find_element_by_id('id_sc_formset-1-text')
-        LO1_text_input = LOarea.find_element_by_id('id_lo_formset-0-text')
-        LO2_text_input = LOarea.find_element_by_id('id_lo_formset-1-text')
+        SC1_text_input = SCarea.find_element_by_xpath(
+            "//input[@name='sc_formset-0-text']")
+        SC2_text_input = SCarea.find_element_by_xpath(
+            "//input[@name='sc_formset-1-text']")
+        LO1_text_input = SCarea.find_element_by_xpath(
+            "//input[@name='lo_formset-0-text']")
+        LO2_text_input = SCarea.find_element_by_xpath(
+            "//input[@name='lo_formset-1-text']") 
         SC1_text_input.send_keys('Test A')
         SC2_text_input.send_keys('Test B')
         LO1_text_input.send_keys('Test C')
         LO2_text_input.send_keys('Test D')
 
         # There is a button to save edits, which he clicks
-        save_button = self.browser.find_element_by_id('id_submit_edits')
+        save_button = self.browser.find_element_by_id('id_submit_lilosc_edits')
         save_button.click()
 
         # This returns him to the learning intention detail page

@@ -96,28 +96,34 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         'All Courses > Blender Home > Lesson Home > Learning Intention')
         
         # The main resource area is split into 3 areas, consisting of 
-        # 2 columns, where the second column has two rows, like: OB
+        # 2 rows, where the second row has two equal columns.
         resource_area = self.browser.find_element_by_id('id_resource_area')
         LI_area = resource_area.find_element_by_id('id_resource_lint')
         LO_area = resource_area.find_element_by_id('id_resource_LO')
         SC_area = resource_area.find_element_by_id('id_resource_SC')
         self.assertEqual(SC_area.size['width'], LO_area.size['width'])
 
-        # Gaby sees that the larger area on the left has a list of learning 
-        # intentions, with a clickable icon next to each.
-        
-        # On clicking the first icon, some detail of the learning intention 
-        # expands vertically and...
-        
-        # the top right content area shows the related outcomes...
-        
-        # whilst the bottom right area shows the related success criteria.
-        
-        # Gaby clicks on another intention, which expands as the old one 
-        # collapses...
-        
-        # ...and the right hand areas show the relevant outcomes/criteria.
-        self.fail("write me")
+        # Gaby sees that the area at the top has detail of the learning 
+        # intention.
+        self.assertEqual(
+            LI_area.find_element_by_tag_name('p').text,
+            'Recognise a range of tasks for which Blender could be used'
+        )
+        # the left content area shows the related outcomes...
+        LOs = LO_area.find_elements_by_class_name('learning_outcome')
+        self.assertEqual(len(LOs), 2)
+        self.assertEqual(
+            LOs[0].text, 
+            'I can correctly identify or reject various tasks as being well '\
+            'suited to Blender'
+        )
+        # whilst the right area shows the related success criteria.
+        SCs = SC_area.find_elements_by_class_name('criterion')
+        self.assertEqual(len(SCs), 4)
+        self.assertEqual(
+            SCs[0].text, 
+            'Spot 3D modelling tasks'
+        )
         
     def test_cycle_learning_intention_details_user_enrolled(self):
         """See that the 'traffic light' device cycles properly"""
