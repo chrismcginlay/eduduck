@@ -205,14 +205,17 @@ def edit(request, lesson_id, learning_intention_id):
                 }
                 return render(request, t, c)
         else: #not POST
-            li_form = LearningIntentionForm(instance=learning_intention) 
+            li_form = LearningIntentionForm(
+                instance = learning_intention,
+                prefix = 'learning_intention_form'
+            ) 
             sc_formset = SCInlineFormset(
-                instance=learning_intention,
+                instance = learning_intention,
                 queryset = LearningIntentionDetail.objects.filter(lid_type='SC'),
                 prefix = 'sc_formset',
             ) 
             lo_formset = LOInlineFormset(
-                instance=learning_intention,
+                instance = learning_intention,
                 queryset = LearningIntentionDetail.objects.filter(lid_type='LO'),
                 prefix = 'lo_formset',
             )
