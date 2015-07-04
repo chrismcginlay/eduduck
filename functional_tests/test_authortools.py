@@ -512,7 +512,6 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         # Since Sven is a course author, he gets an 'Edit' button.
         edit_button = self.browser.find_element_by_id('id_edit_lint')
 
-        import pdb; pdb.set_trace()
         # This leads to an edit page where he can edit the main LI itself,
         edit_button.click()
         self.assertEqual(
@@ -547,9 +546,9 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
             self.browser.current_url, self.server_url+'/lesson/3/lint/3/')
 
         # where he can see the altered and new SCs and LOs.
-        outcomes = self.browser.find_elements_by_class_name('outcome')
+        outcomes = self.browser.find_elements_by_class_name('learning_outcome')
         criteria = self.browser.find_elements_by_class_name('criterion')
-        self.assertIn('Test A', criteria)
-        self.assertIn('Test B', criteria)
-        self.assertIn('Test C', outcome)
-        self.assertIn('Test D', outcome)
+        self.assertTrue(any('Test A' in criterion.text for criterion in criteria))
+        self.assertTrue(any('Test B' in criterion.text for criterion in criteria))
+        self.assertTrue(any('Test C' in outcome.text for outcome in outcomes))
+        self.assertTrue(any('Test D' in outcome.text for outcome in outcomes))
