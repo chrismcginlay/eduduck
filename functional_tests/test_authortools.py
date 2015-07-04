@@ -168,7 +168,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self.assertIn('Camping', title.text) 
         
     def test_can_delete_course(self):
-        self.fail("not implemented")
+        self.fail("not implemented course delete yet")
  
     def test_can_populate_course_with_video_resources(self):
         # sven wants to have a nice intro video on course 3
