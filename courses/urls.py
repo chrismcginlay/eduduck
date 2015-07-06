@@ -1,15 +1,15 @@
-# urls for courses app
-from django.conf.urls import include, patterns, url
+#courses/urls.py
+from django.conf.urls import include, url
 
-urlpatterns = patterns('courses.views',
-    url(r'^$', 'index', name='course_index'),
-    url(r'^(?P<course_id>\d+)/edit/$', 'edit', name='course_edit'),
-    url(r'^(?P<course_id>\d+)/enrol/$', 'enrol', name='course_enrol'),
-    url(r'^(?P<course_id>\d+)/$', 'single', name='course_single'),
-    url(r'^create/$', 'create', name='course_create'),
-)
+from . import views
+import lesson.urls
 
-urlpatterns += patterns('',
-    url(r'^(?P<course_id>\d+)/lesson/', include('lesson.urls')),
-)
+urlpatterns = [
+    url(r'^$', views.index, name='course_index'),
+    url(r'^(?P<course_id>\d+)/edit/$', views.edit, name='course_edit'),
+    url(r'^(?P<course_id>\d+)/enrol/$', views.enrol, name='course_enrol'),
+    url(r'^(?P<course_id>\d+)/$', views.single, name='course_single'),
+    url(r'^create/$', views.create, name='course_create'),
+    url(r'^(?P<course_id>\d+)/lesson/', include(lesson.urls)),
+]
 

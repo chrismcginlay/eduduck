@@ -1,11 +1,11 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.generic import TemplateView
 
-urlpatterns = patterns ('support.views',
-    url(r'^$', 'support', name='support')
-)
+from . import views
 
-urlpatterns += patterns('',
-    url(r'^thanks/$', TemplateView.as_view(
-        template_name ='support/thanks.html')),
-)
+urlpatterns = [
+    url(r'^$', views.support, name='support'),
+    url(
+        r'^thanks/$',
+        TemplateView.as_view(template_name ='support/thanks.html')),
+]

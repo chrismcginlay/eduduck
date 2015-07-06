@@ -1,9 +1,12 @@
+#profile/urls.py
 from django.core.urlresolvers import reverse
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
-urlpatterns = patterns ('profile.views',
-    url(r'^$', 'profile', name='profile'),
-    url(r'^edit/$', 'edit', name='profile_edit'),
-    url(r'^(?P<user_id>\d+)/public/$', 'public', name='profile_public'),
-)
+from . import views
+
+urlpatterns = [
+    url(r'^$', views.profile, name='profile'),
+    url(r'^edit/$', views.edit, name='profile_edit'),
+    url(r'^(?P<user_id>\d+)/public/$', views.public, name='profile_public'),
+]
 

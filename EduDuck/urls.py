@@ -1,25 +1,35 @@
-from django.conf.urls import patterns, include, url
+#EduDuck/urls.py
+from django.conf.urls import include, url
 from django.conf import settings
+from django.contrib import admin
+from django.contrib.staticfiles import views as static_views
 from django.views.generic import TemplateView
 
-from django.contrib import admin
+import attachment.urls
+import courses.urls
+import homepage.views
+import interaction.urls
+import lesson.urls
+import outcome.urls
+import profile.urls
+import support.urls
+
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    url(r'^$', 'homepage.views.home', name='homepage'),
+urlpatterns =  [
+    url(r'^$', homepage.views.home, name='homepage'),
 #    url(r'^search/', include('haystack.urls')),
     url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
-    url(r'^support/', include('support.urls')),
-    url(r'^lesson/(?P<lesson_id>\d+)/lint/', include('outcome.urls')),
-    url(r'^courses/', include('courses.urls')),
-    url(r'^interaction/', include('interaction.urls')),
-    url(r'^accounts/profile/', include('profile.urls')),
+    url(r'^support/', include(support.urls)),
+    url(r'^lesson/(?P<lesson_id>\d+)/lint/', include(outcome.urls)),
+    url(r'^courses/', include(courses.urls)),
+    url(r'^interaction/', include(interaction.urls)),
+    url(r'^accounts/profile/', include(profile.urls)),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    url('', include('social.apps.django_app.urls', 
-        namespace='social')),
+    url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^attachment/', include('attachment.urls')),
-)
+    url(r'^attachment/', include(attachment.urls)),
+]
  
 ##temporary question handler
 #urlpatterns += patterns('quiz.views',
@@ -44,10 +54,16 @@ urlpatterns = patterns('',
 #)
 
 if settings.DEBUG:
-    urlpatterns += patterns('',
-            url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {
-                'document_root': settings.BASE_DIR}),
-            url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-                'document_root': settings.MEDIA_ROOT,}),
-    )
+    urlpatterns.extend([
+        url(
+            r'^static/(?P<path>.*)$',
+            static_views.serve,
+            {'document_root': settings.BASE_DIR}
+        ),
+        url(
+            r'^media/(?P<path>.*)$',
+            static_views.serve,
+            {'document_root': settings.MEDIA_ROOT,}
+        ),
+    ])
 
