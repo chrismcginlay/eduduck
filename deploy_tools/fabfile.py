@@ -187,6 +187,7 @@ def git_update(settings):
     # env.host is not set at global scope, only within a task
     SOURCE_DIR = "{0}/{1}/source".format(SITES_DIR, env.host)
     _get_source(SOURCE_DIR)
+    _run_migrations(SOURCE_DIR, settings, env.host)
     _write_wsgi_file(SOURCE_DIR, settings)
     _update_static_files(SOURCE_DIR, settings)
     _restart_services(env.host, settings)
@@ -194,6 +195,14 @@ def git_update(settings):
 
 
 # Private helper functions, don't call directly.
+
+def _run_migrations(sdir, settings, hostname):
+    sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py migrate --settings=EduDuck.settings.{2} --noinput --pythonpath='{0}/{1}/source'".format(
+        SITES_DIR,
+        env.host,
+        settings
+    )
+    run(sync_cmd)
 
 def _create_dir_tree_if_not_exists(site_name, settings):
     if settings=='dev':
@@ -521,12 +530,8 @@ def _prepare_database(sdir, settings, hostname):
         print(green("Dev box priviliges for testing with mysql"))
         run('mysql -u root -e "{0}"'.format(sql))
 
-    sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py syncdb --settings=EduDuck.settings.{2} --noinput --pythonpath='{0}/{1}/source'".format(
-        SITES_DIR,
-        env.host,
-        settings
-    )
-    run(sync_cmd)
+    _run_migrations(sdir, settings, hostname)
+
     
 def _update_static_files(sdir, settings):
     if settings=='dev':
