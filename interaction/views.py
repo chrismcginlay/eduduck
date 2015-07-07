@@ -79,7 +79,7 @@ def ajax_learningintentiondetail_status(request, lid_id):
 
         result = {'status':status,}
         jresult = json.dumps(result)
-        return HttpResponse(jresult, mimetype="application/json")
+        return HttpResponse(jresult, content_type="application/json")
     else:
         return HttpResponseForbidden()
     
@@ -122,7 +122,7 @@ def userlearningintentiondetail_cycle(request, lid_id):
                 'enrolled':False,
                 'course_pk':course.pk,
             })
-            return HttpResponse(jsonr, mimetype='application/json')
+            return HttpResponse(jsonr, content_type='application/json')
 
         #Need to ensure the interaction object exists for user, LID
 
@@ -148,11 +148,11 @@ def userlearningintentiondetail_cycle(request, lid_id):
             'progress':uli.progress()
         }
         jresult = json.dumps(result)
-        return HttpResponse(jresult, mimetype='application/json')
+        return HttpResponse(jresult, content_type='application/json')
 
     else: #not authenticated
         jsonr = json.dumps({'authenticated': False, 'enrolled':False})
-        return HttpResponse(jsonr, mimetype='application/json')
+        return HttpResponse(jsonr, content_type='application/json')
     
 @login_required
 def userlearningintention_progress_bar(request, lid_id):
@@ -170,7 +170,7 @@ def userlearningintention_progress_bar(request, lid_id):
         'progress update LI id:'+str(li.pk))
     result = {'progress': uli.progress()}
     jresult = json.dumps(result)
-    return HttpResponse(jresult, mimetype='application/json')
+    return HttpResponse(jresult, content_type='application/json')
 
 @login_required
 def attachment_download(request, att_id):
