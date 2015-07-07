@@ -31,16 +31,8 @@ django-admin.py dumpdata --settings=EduDuck.settings --indent=4
 
 Remember to dump auth.User too.
 
-3. Dump the entire database if desired, which can later be used as
- initial_data for auto reload on syncdb. Maybe remove session data
+3. Dump the entire database if desired. Maybe remove session data
 
 django-admin.py dumpdata --settings=EduDuck.settings --indent=4
     eduduck_data_ddmmyy.json --pythonpath='/home/chris/eduduck/'
-
-#Arrange to have the fixtures loaded#
-
-0. This is for data reload with same schema.
-1. Change the symlink under fixtures/initial_data.json to point to the 
-directory/eduduck_ddmmyy.json file required
-2. Run syncdb to stamp on existing data and replace with initial_data
 
