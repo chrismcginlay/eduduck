@@ -136,7 +136,6 @@ INSTALLED_APPS = (
 
     'markdown_deux',
     'social.apps.django_app.default',
-    'south',
 
     #eduduck apps
     'attachment',
