@@ -14,8 +14,6 @@ import outcome.urls
 import profile.urls
 import support.urls
 
-admin.autodiscover()
-
 urlpatterns =  [
     url(r'^$', homepage.views.home, name='homepage'),
 #    url(r'^search/', include('haystack.urls')),
