@@ -11,6 +11,7 @@ ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR = "You haven't specified a file " \
 class AttachmentForm(forms.ModelForm):
     class Meta:
         model = Attachment
+        fields = ['name', 'lesson', 'course', 'desc', 'seq', 'attachment']
         error_messages = {
             'name':{'required':ATTACHMENT_NAME_FIELD_REQUIRED_ERROR},
             'attachment':{

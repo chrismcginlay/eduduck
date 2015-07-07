@@ -10,6 +10,7 @@ class LessonEditForm(forms.ModelForm):
     """A form to edit lessons"""
     class Meta:
         model = Lesson
+        fields = ['name', 'course', 'abstract']
         error_messages = {
             'name': {'required':LESSON_NAME_FIELD_REQUIRED_ERROR},
             'abstract': {'required': LESSON_ABSTRACT_FIELD_REQUIRED_ERROR},

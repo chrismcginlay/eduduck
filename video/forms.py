@@ -10,6 +10,7 @@ VIDEO_URL_FIELD_REQUIRED_ERROR = "Please provide a url for the video."
 class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
+        fields = ['name', 'url']
         error_messages = {
             'name':{'required':VIDEO_NAME_FIELD_REQUIRED_ERROR},
             'url':{

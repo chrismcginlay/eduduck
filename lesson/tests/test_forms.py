@@ -16,6 +16,11 @@ class LessonFormTests(TestCase):
         'lessons.json', 
     ]
     
+    def test_form_include_correct_fields(self):
+        form = LessonEditForm()
+        expected_fields = ['name', 'course', 'abstract']
+        [self.assertIn(field, form.fields) for field in expected_fields]
+
     def test_form_has_correct_field_ids(self):
         """ Correct id attributes for widgets are rendered """
     

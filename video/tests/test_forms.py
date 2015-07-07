@@ -16,6 +16,11 @@ class VideoFormTest(TestCase):
         'videos.json',
     ]
     
+    def test_form_include_correct_fields(self):
+        form = VideoForm()
+        expected_fields = ['name', 'url']
+        [self.assertIn(field, form.fields) for field in expected_fields]
+
     def test_form_has_correct_field_ids(self):
         """ Correct id attributes for widgets are rendered """
 

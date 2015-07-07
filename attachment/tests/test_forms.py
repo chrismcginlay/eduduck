@@ -16,7 +16,12 @@ class AttachmentFormTest(TestCase):
         'lessons.json', 
         'videos.json',
     ]
-    
+   
+    def test_form_include_correct_fields(self):
+        form = AttachmentForm()
+        expected_fields = ['name', 'lesson', 'course', 'desc', 'seq', 'attachment']
+        [self.assertIn(field, form.fields) for field in expected_fields]
+ 
     def test_form_has_correct_field_ids(self):
         """ Correct id attributes for widgets are rendered """
 
