@@ -102,12 +102,6 @@ class ProfileModelTests(TestCase):
             self.user1.pk, self.user1.username)
         self.assertEqual(s, target, "Incorrect __str__ return")
 
-    def test_get_absolute_url(self):
-        url = self.user1.get_absolute_url()
-        target = u"/users/{0}/".format(self.user1.username)
-        self.assertEqual(url, target, "Incorrect get_absolute_url return")
-        
-
     def test_get_profile_url(self):
         url = self.user1.profile.get_profile_url()
         target = u"/accounts/profile/{0}/public/".format(self.user1.id)
