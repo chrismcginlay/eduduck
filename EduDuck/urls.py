@@ -1,6 +1,6 @@
 #EduDuck/urls.py
-from django.conf.urls import include, url
 from django.conf import settings
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.staticfiles import views as static_views
 from django.views.generic import TemplateView

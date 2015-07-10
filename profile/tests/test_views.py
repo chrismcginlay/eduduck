@@ -36,7 +36,7 @@ class ProfileViewTests(TestCase):
         [self.assertTrue(x in response.context, x+' missing') for x in context_vars]
  
 
-    def test_profile_shows_avatar(self):
+    def test_profile_has_element_for_avatar(self):
         """The user avatar is visible"""
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/accounts/profile/')
