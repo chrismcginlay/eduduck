@@ -3,8 +3,10 @@ from base import *
 
 DEBUG = True
 MEDIA_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'media'))
-TEMPLATE_DEBUG = DEBUG
-TEMPLATE_STRING_IF_INVALID = 'INVALID_EXPRESSION: %s'
+TEMPLATES[0]['OPTIONS'].update({
+    'string_if_invalid':'Invalid Expression: %s',
+    'debug':True
+})
 
 #django-registration needs an MTA. For development just use console
 #smtp is the default, so in prod.py, EMAIL_BACKEND is commented out or missing

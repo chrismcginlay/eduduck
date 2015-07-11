@@ -5,8 +5,10 @@ from base import *
 DEBUG = False 
 MEDIA_ROOT = os.path.normpath(os.path.join(BASE_DIR, '../media'))
 STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, '../static'))
-TEMPLATE_DEBUG = False
-TEMPLATE_STRING_IF_INVALID = 'TEMPLATE_ERROR'   #don't expose var names
+TEMPLATES[0]['OPTIONS'].update({
+    'string_if_invalid':'Sorry, there\'s been a template error.',
+    'debug':False
+})
 
 ALLOWED_HOSTS = [
     'staging.eduduck.com',
