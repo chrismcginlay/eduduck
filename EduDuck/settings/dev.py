@@ -27,12 +27,6 @@ INSTALLED_APPS += ("debug_toolbar", )
 #INTERNAL_IPS = ("127.0.0.1", )
 #MIDDLEWARE_CLASSES += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
 
-# Fixture Directory - for development purposes, reloading test data
-# after changes to models.
-FIXTURE_DIRS = (
-    os.path.join(BASE_DIR, 'fixtures/')
-)
-
 SOCIAL_AUTH_PIPELINE += (
     'social.pipeline.debug.debug',
 )
