@@ -2,6 +2,11 @@ EduDuck experimental course delivery platform.
 Coded with Django
 by Chris McGinlay
 
+
+#Security check
+Run this on branched code prior to merge with master
+```python manage.py check --deploy
+
 #Git tag releases
 
 When ready to push a new tag release (e.g MVP0.3) on to production site, tag the codebase as follows

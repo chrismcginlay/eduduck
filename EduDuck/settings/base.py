@@ -92,11 +92,19 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'core.middleware.TimezoneMiddleware',
     'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 )
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+# SESSION_COOKIE_SECURE, _DOMAIN and CSRF_COOKIE_SECURE in staging/production
+# not dev or test. 
+# See http://stackoverflow.com/questions/6671419/django-session-cookie-domain-on-localhost
+X_FRAME_OPTIONS = 'DENY'
 
 ROOT_URLCONF = 'EduDuck.urls'
 
