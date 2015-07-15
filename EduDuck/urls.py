@@ -1,6 +1,7 @@
 #EduDuck/urls.py
 from django.conf import settings
 from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles import views as static_views
 from django.views.generic import TemplateView
@@ -27,8 +28,8 @@ urlpatterns =  [
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^attachment/', include(attachment.urls)),
-]
- 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
+
 ##temporary question handler
 #urlpatterns += patterns('quiz.views',
     #url(r'^questions/$', 'questions'),
@@ -50,18 +51,4 @@ urlpatterns =  [
     #url(r'^quiz_take/(?P<quiz_id>\d+)/$', 'quiz_take'),
     #url(r'^quiz_results/(?P<quiz_id>\d+)/$', 'quiz_results'),
 #)
-
-if settings.DEBUG:
-    urlpatterns.extend([
-        url(
-            r'^static/(?P<path>.*)$',
-            static_views.serve,
-            {'document_root': settings.BASE_DIR}
-        ),
-        url(
-            r'^media/(?P<path>.*)$',
-            static_views.serve,
-            {'document_root': settings.MEDIA_ROOT,}
-        ),
-    ])
 
