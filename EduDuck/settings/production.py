@@ -19,7 +19,6 @@ ALLOWED_HOSTS = [
 #SESSION_COOKIE_SECURE = True
 #SESSION_COOKIE_DOMAIN = '.eduduck.com'
 #CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = True
 
 # Make SECRET_KEY unique, and don't share it with anybody.
 assert 'SECRET_KEY' in os.environ, 'SECRET_KEY missing from environment'
