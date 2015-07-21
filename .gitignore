@@ -13,3 +13,6 @@ media/
 .rope*
 .js~
 *.kate-swp
+deploy_tools/*.key
+deploy_tools/*.csr
+deploy_tools/*.crt
