@@ -51,6 +51,7 @@ cat yourfile.crt COMODORSADomainValidationSecureServerCA.crt COMODORSAAddTrustCA
 Copy to the production server's /etc/ssl/ directory.
 ```
 sudo cp /home/chris/temp/eduduck_c* /etc/ssl/
+sudo chmod 400 /etc/ssl/eduduck_c
 ```
 
 # Nginx configuration
