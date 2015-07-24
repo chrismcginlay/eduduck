@@ -226,25 +226,43 @@ def _get_source(sdir):
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
     #run("cd {0}; git checkout master".format(sdir))    
-    run("cd {0}; git checkout 140-upgrade".format(sdir))
+    run("cd {0}; git checkout 147-ssl".format(sdir))
         
 def _config_nginx(site_name, sdir, settings):
     if settings=='dev':
         return
     sudo("mkdir -p /etc/nginx/conf.d/{0}".format(site_name))
-    
+   
+    if settings=='production':
+        template_name = 'nginx.ssl_template.conf'
+    else if settings=='staging':
+        template_name = 'nginx.http_template.conf'
+    else:
+        warn(yellow(
+            'Not configuring nginx based on settings=={0}'.format(settings)))
+        return 
+
     if not exists("/etc/nginx/sites-available/{0}".format(site_name)):
-        nginx_template_path = sdir + "/deploy_tools/nginx.template.conf"
-        sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee /etc/nginx/sites-available/{0}".format(
-            site_name,
-            nginx_template_path
-        )
+        nginx_template_path = '{0}/deploy_tools/{1}'.format(
+            sdir, template_name)
+        sed_cmd = "sed \"s/SITENAME/{0}/g\" {1} | tee /etc/nginx/sites-avail"\
+            "able/{0}".format(site_name, nginx_template_path)
         sudo(sed_cmd)
     
     if not exists("/etc/nginx/sites-enabled/{0}".format(site_name)):
-        sudo ("ln -s /etc/nginx/sites-available/{0} /etc/nginx/sites-enabled/{0}".format(
-            site_name
-        ))
+        sudo ("ln -s /etc/nginx/sites-available/{0} /etc/nginx/sites-enabl"\
+            "ed/{0}".format(site_name))
+    
+    if setting=='production':
+        _set_up_SSL_key_and_cert(site_name)
+
+def _set_up_SSL_key_and_cert(site_name):
+    warn(yellow('***********************************************') 
+    warn(yellow('Now please install your SSL certificate and key')
+    warn(yellow('***********************************************') 
+    print(green('Place your {0}_com_cert_chain.crt certificate chain and your'\
+        '{0}_com.key key file in /etc/nginx/'.format(site_name)))
+    warn(yellow('***********************************************') 
 
 def _write_gunicorn_upstart_script(site_name, sdir, settings):
     if settings=='dev':
@@ -454,7 +472,7 @@ def _prepare_environment_variables(settings, hostname):
         append(virtenv_activate, export_cmd)
     else:
         warn(yellow(
-            "Just note that the virtualenv/bin/activate already had some exports"))
+            "Just note that the virtualenv/bin/activate already had some exports")) 
         
 def _ready_logfiles():
     sudo("mkdir -p /var/log/eduduck/")
