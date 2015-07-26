@@ -13,6 +13,9 @@ class VisitorDecidesToSignIn(FunctionalTest):
         self.browser.get(self.server_url)
         login_link = self.browser.find_element_by_xpath(
             "//li[@id='id_login']/a[1]")
+
+        # An icon showing Positive SSL Multi Domain is visible
+        seal = self.browser.find_element_by_id('id_ssl_logo')
     
         # He hits the 'login/signup' option
         login_link.click()
@@ -27,6 +30,9 @@ class VisitorDecidesToSignIn(FunctionalTest):
         self.browser.find_element_by_id('id_twitter_oauth2')
         self.browser.find_element_by_id('id_facebook_oauth2')
         
+        # Icon showing Positive SSL Multi Domain is visible on sign up page
+        seal = self.browser.find_element_by_id('id_ssl_logo')
+
         ## CAREFUL - following these 3rd party authentications will have a
         ## side effect if browser is logged in to a service. 
         

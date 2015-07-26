@@ -42,6 +42,11 @@ class ProfileViewTests(TestCase):
         response = self.client.get('/accounts/profile/')
         self.assertIn('id_avatar', response.content, "Avatar missing")
 
+    def test_profile_has_ssl_logo_area_present(self):
+        response = self.client.get('/accounts/profile/')
+        needle = 'id="id_ssl_logo"'
+        self.assertIn(needle, response.content)        
+    
     def test_profile(self):
         """Test response profile.views.profile"""
         

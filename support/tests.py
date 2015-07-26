@@ -48,6 +48,11 @@ class SupportFormViewTests(TestCase):
         response = self.client.get('/support/')
         self.assertEqual(response.status_code, 200)
         
+    def test_ssl_logo_area_present(self):
+        response = self.client.get('/support/')
+        needle = 'id="id_ssl_logo"'
+        self.assertIn(needle, response.content)        
+
     def test_support_thanks(self):
         """Test the presence of the thanks page"""
         response = self.client.get('/support/thanks/')
