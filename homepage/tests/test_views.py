@@ -95,7 +95,7 @@ class HomepageViewTests(TestCase):
         needle = 'id="id_course_create"'
         self.assertIn(needle, response.content)
 
-    def test_ssl_logo_area_present(self):
+    def test_ssl_logo_area_present_in_footer(self):
         response = self.client.get('/')
         needle = 'id="id_ssl_logo"'
         self.assertIn(needle, response.content)        
