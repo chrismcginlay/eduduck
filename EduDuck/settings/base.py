@@ -161,7 +161,8 @@ INSTALLED_APPS = (
     'profile',
     'quiz',
     'support',
-    'video'
+    'video',
+    'checkout',
 )
 
 # See http://django-haystack.readthedocs.org/en/latest/tutorial.html#simple
