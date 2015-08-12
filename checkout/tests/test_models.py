@@ -1,10 +1,10 @@
 from django.test import TestCase
 
-from ..models import Fee
+from ..models import PricedItem 
 
-class FeeModelTests(TestCase):
+class PricedItemModelTests(TestCase):
     """Test the models used to represent fees"""
 
-    def test_fee_create(self):
-        fee = Fee()
-        assert(Fee)
+    def test_PricedItem_create(self):
+        fee = PricedItem()
+        assert(fee)
