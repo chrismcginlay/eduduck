@@ -30,3 +30,5 @@ FIXTURE_DIRS = (os.path.join(BASE_DIR, 'functional_tests/fixtures/'),)
 SOCIAL_AUTH_PIPELINE += (
     'social.pipeline.debug.debug',
 )
+
+INSTALLED_APPS += ('checkout.tests.dummy_app',)
