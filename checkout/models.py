@@ -29,7 +29,17 @@ class PricedItem(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
-    fee_value = models.DecimalField(decimal_places=2, max_digits=7)
-    currency = models.CharField(max_length=3, choices=CURRENCY_CODE_CHOICES, blank=False, default=GBP)
+    fee_value = models.DecimalField(
+        decimal_places=2, 
+        max_digits=7,
+        null=False,
+        blank=False
+    )
+    currency = models.CharField(
+        max_length=3,
+        choices=CURRENCY_CODE_CHOICES,
+        blank=False,
+        default=GBP
+    )
     tax_rate = models.DecimalField(decimal_places=3, max_digits=4)
     notes = models.CharField(max_length=255)

@@ -8,7 +8,12 @@ class DummyModelFactory(factory.Factory):
 
     name = "Fubar Saunders"
 
+class PricedItemFactoryWithDefaults(factory.Factory):
+    class Meta:
+        model = PricedItem
 
+    content_object = factory.SubFactory(DummyModelFactory)
+    
 class PricedItemFactory(factory.Factory):
     class Meta:
         model = PricedItem
@@ -17,3 +22,5 @@ class PricedItemFactory(factory.Factory):
     fee_value = 4.5
     tax_rate = 0.2  
     notes = u"Wibble"
+    currency = PricedItem.USD
+
