@@ -43,12 +43,20 @@ class PricedItemModelTests2(TestCase):
         self.assertTrue(somefee.pk)
         somefee.clean()
     
-    def test_out_of_bounds_raises_exceptions(self):
+    def test_out_of_bounds_fee_value_raises_exceptions(self):
         somefee = PricedItemFactory()
         with self.assertRaises(ValidationError):
             somefee.fee_value = -0.3
             somefee.full_clean()
+
+    def test_out_of_bounds_tax_rate_raises_exceptions(self):
+        somefee = PricedItemFactory()
         with self.assertRaises(ValidationError):
             somefee.tax_rate = -0.3
             somefee.full_clean()
 
+    def test_bogus_currency_raises_exceptions(self):
+        somefee = PricedItemFactory()
+        with self.assertRaises(ValidationError):
+            somefee.currency = 'potatoes'
+            somefee.full_clean()
