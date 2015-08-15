@@ -16,14 +16,15 @@ class PricedItemModelTests1(TransactionTestCase):
     def test_PricedItem_create_and_save(self):
         dummy_instance = DummyModel(name="Florence")
         dummy_instance.save()
-        fee = PricedItem(
+        somefee = PricedItem(
             fee_value=1.2,
             tax_rate = 0.2,
             currency = PricedItem.GBP,
             notes = "Test note",
             content_object = dummy_instance,
         )
-        fee.save()
+        somefee.save()
+        self.assertTrue(somefee.pk)
 
 class PricedItemModelTests2(TestCase):
     """Test models representing fees, with factory_boy"""
@@ -31,6 +32,7 @@ class PricedItemModelTests2(TestCase):
     def test_defaults(self):
         somefee = PricedItemFactoryWithDefaults()
         self.assertEqual(somefee.currency, PricedItem.GBP)
+        self.assertTrue(somefee.pk)
 
     def test_model_with_sane_values(self):
         somefee = PricedItemFactory()
@@ -38,10 +40,11 @@ class PricedItemModelTests2(TestCase):
         self.assertEqual(somefee.notes, u'Wibble')
         self.assertEqual(somefee.currency, PricedItem.USD)
         self.assertEqual(somefee.tax_rate, 0.2)
+        self.assertTrue(somefee.pk)
         somefee.clean()
     
     def test_out_of_bounds_raises_exceptions(self):
-        somefee = PricedItemFactory.create()
+        somefee = PricedItemFactory()
         with self.assertRaises(ValidationError):
             somefee.fee_value = -0.3
             somefee.full_clean()

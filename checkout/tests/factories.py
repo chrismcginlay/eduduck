@@ -10,6 +10,7 @@ class DummyModelFactory(DjangoModelFactory):
     name = "Fubar Saunders"
 
 class PricedItemFactoryWithDefaults(DjangoModelFactory):
+    """Leaves most data members out, triggering model defaults"""
     class Meta:
         model = PricedItem
 
