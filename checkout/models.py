@@ -1,8 +1,13 @@
 #checkout/models.py
 from decimal import Decimal
+from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+
+def validate_positive(value):
+    if value < 0:
+        raise ValidationError('{0} ought not to be negative'.format(value))
 
 class PricedItem(models.Model):
     """A price, fee, or cost to be associated with an instance of any model
@@ -33,7 +38,8 @@ class PricedItem(models.Model):
         decimal_places=2, 
         max_digits=7,
         null=False,
-        blank=False
+        blank=False,
+        validators=[validate_positive],
     )
     currency = models.CharField(
         max_length=3,
@@ -41,5 +47,9 @@ class PricedItem(models.Model):
         blank=False,
         default=GBP
     )
-    tax_rate = models.DecimalField(decimal_places=3, max_digits=4)
+    tax_rate = models.DecimalField(
+        decimal_places=3,
+        max_digits=4,
+        validators=[validate_positive]
+    )
     notes = models.CharField(max_length=255)

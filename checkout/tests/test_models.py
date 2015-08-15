@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase
 from factories import (
     PricedItemFactory, 
@@ -37,3 +38,15 @@ class PricedItemModelTests2(TestCase):
         self.assertEqual(somefee.notes, u'Wibble')
         self.assertEqual(somefee.currency, PricedItem.USD)
         self.assertEqual(somefee.tax_rate, 0.2)
+        somefee.clean()
+    
+    def test_out_of_bounds_raises_exceptions(self):
+        somefee = PricedItemFactory.create()
+        with self.assertRaises(ValidationError):
+            somefee.fee_value = -0.3
+            import pdb; pdb.set_trace()
+            somefee.clean_fields()
+        with self.assertRaises(ValidationError):
+            somefee.tax_rate = -0.3
+            somefee.full_clean()
+
