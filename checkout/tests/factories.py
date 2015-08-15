@@ -1,24 +1,25 @@
-import factory
+from factory.django import DjangoModelFactory
+from factory import SubFactory
 from ..models import PricedItem
 from dummy_app.models import DummyModel
 
-class DummyModelFactory(factory.Factory):
+class DummyModelFactory(DjangoModelFactory):
     class Meta:
         model = DummyModel
 
     name = "Fubar Saunders"
 
-class PricedItemFactoryWithDefaults(factory.Factory):
+class PricedItemFactoryWithDefaults(DjangoModelFactory):
     class Meta:
         model = PricedItem
 
-    content_object = factory.SubFactory(DummyModelFactory)
+    content_object = SubFactory(DummyModelFactory)
     
-class PricedItemFactory(factory.Factory):
+class PricedItemFactory(DjangoModelFactory):
     class Meta:
         model = PricedItem
 
-    content_object = factory.SubFactory(DummyModelFactory)
+    content_object = SubFactory(DummyModelFactory)
     fee_value = 4.5
     tax_rate = 0.2  
     notes = u"Wibble"
