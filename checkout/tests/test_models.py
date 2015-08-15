@@ -44,8 +44,7 @@ class PricedItemModelTests2(TestCase):
         somefee = PricedItemFactory.create()
         with self.assertRaises(ValidationError):
             somefee.fee_value = -0.3
-            import pdb; pdb.set_trace()
-            somefee.clean_fields()
+            somefee.full_clean()
         with self.assertRaises(ValidationError):
             somefee.tax_rate = -0.3
             somefee.full_clean()

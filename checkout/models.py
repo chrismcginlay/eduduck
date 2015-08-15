@@ -40,6 +40,7 @@ class PricedItem(models.Model):
         null=False,
         blank=False,
         validators=[validate_positive],
+        default=1.00
     )
     currency = models.CharField(
         max_length=3,
@@ -50,6 +51,9 @@ class PricedItem(models.Model):
     tax_rate = models.DecimalField(
         decimal_places=3,
         max_digits=4,
+        null=False,
+        blank=False,
+        default=0.0,
         validators=[validate_positive]
     )
     notes = models.CharField(max_length=255)
