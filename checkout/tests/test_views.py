@@ -20,3 +20,17 @@ class PricedItemViewTests(TestCase):
         response = self.client.get('/priced_items/create/')
         self.assertEqual(response.status_code, 200)
 
+    def test_PricedItemCreate_view_fields(self):
+        response = self.client.get('/priced_items/create/')
+        self.assertTrue('content_type' in response.context['form'].fields)
+        self.assertTrue('object_id' in response.context['form'].fields)
+        self.assertTrue('fee_value' in response.context['form'].fields)
+        self.assertTrue('currency' in response.context['form'].fields)
+        self.assertTrue('tax_rate' in response.context['form'].fields)
+        self.assertTrue('notes' in response.context['form'].fields)
+
+    def test_PricedItemCreate_view_has_success_url(self):
+        response = self.client.get('/priced_items/create/')
+        self.faile("does this redirect?")
+        import pdb; pdb.set_trace()
+
