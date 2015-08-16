@@ -16,3 +16,7 @@ class PricedItemViewTests(TestCase):
         self.assertContains(response, 'DummyModel object 4.50 USD')
         self.assertEqual(len(response.context['priceditem_list']), 10)
 
+    def test_PricedItemCreate_view_200_OK(self):
+        response = self.client.get('/priced_items/create/')
+        self.assertEqual(response.status_code, 200)
+

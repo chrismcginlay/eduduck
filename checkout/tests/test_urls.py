@@ -8,3 +8,10 @@ class UrlTests(TestCase):
         self.assertEqual(url, '/priced_items/')
         resolver = resolve(url)
         self.assertEqual(resolver.view_name, 'checkout:priceditem_list')
+
+    def test_PricedItemCreate(self):
+        url = reverse('checkout:priceditem_create')
+        self.assertEqual(url, '/priced_items/create/')
+        resolver = resolve(url)
+        self.assertEqual(resolver.view_name, 'checkout:priceditem_create')
+
