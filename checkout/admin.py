@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from checkout.models import PricedItem
+
+admin.site.register(PricedItem)

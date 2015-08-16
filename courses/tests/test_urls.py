@@ -1,4 +1,4 @@
-# Test the course urls
+#courses/tests/test_urls.py
 from django.core.urlresolvers import reverse, resolve
 from django.test import TestCase
 

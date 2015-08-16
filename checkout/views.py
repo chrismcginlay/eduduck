@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from django.views.generic import ListView
+from checkout.models import PricedItem
 
-# Create your views here.
+class PricedItemList(ListView):
+    model = PricedItem

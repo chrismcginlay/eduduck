@@ -7,6 +7,7 @@ from django.contrib.staticfiles import views as static_views
 from django.views.generic import TemplateView
 
 import attachment.urls
+import checkout.urls
 import courses.urls
 import homepage.views
 import interaction.urls
@@ -19,6 +20,7 @@ urlpatterns =  [
     url(r'^$', homepage.views.home, name='homepage'),
 #    url(r'^search/', include('haystack.urls')),
     url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
+    url(r'^priced_items/', include(checkout.urls, namespace='checkout')),
     url(r'^support/', include(support.urls)),
     url(r'^lesson/(?P<lesson_id>\d+)/lint/', include(outcome.urls)),
     url(r'^courses/', include(courses.urls)),
