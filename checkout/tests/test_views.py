@@ -1,10 +1,10 @@
 #checkout/tests/test_views.py
 from django.test import TestCase
 
-from .factories import PricedItemFactory
+from .factories import PricedItemFactory, PricedItemFactoryWithDefaults
 from ..models import PricedItem 
 
-class PricedItemViewTests(TestCase):
+class PricedItemListViewTests(TestCase):
 
     def test_PricedItemList_view_200_OK(self):
         response = self.client.get('/priced_items/')
@@ -15,6 +15,15 @@ class PricedItemViewTests(TestCase):
         response = self.client.get('/priced_items/')
         self.assertContains(response, 'DummyModel object 4.50 USD')
         self.assertEqual(len(response.context['priceditem_list']), 10)
+
+class PricedItemDetailViewTests(TestCase):
+
+    def test_PricedItemDetail_view_200_OK(self):
+        PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/')
+        self.assertEqual(response.status_code, 200)
+        
+class PricedItemCreateViewTests(TestCase):
 
     def test_PricedItemCreate_view_200_OK(self):
         response = self.client.get('/priced_items/create/')
@@ -30,7 +39,27 @@ class PricedItemViewTests(TestCase):
         self.assertTrue('notes' in response.context['form'].fields)
 
     def test_PricedItemCreate_view_has_success_url(self):
-        response = self.client.get('/priced_items/create/')
-        self.faile("does this redirect?")
-        import pdb; pdb.set_trace()
+        form_data = {
+            'content_type':1,
+            'object_id':1,
+            'fee_value':1.5, 
+            'currency':'GBP',
+            'tax_rate':0.2,
+            'notes':'Wibble'
+        }
+        response = self.client.post('/priced_items/create/', form_data)
+        self.assertRedirects('/priced_items/')
 
+class PricedItemUpdateTests(TestCase):
+
+    def test_PricedItemUpdate_view_200_OK(self):
+        somefee = PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/update/')
+        self.assertEqual(response.status_code, 200)
+
+class PricedItemDeleteTests(TestCase):
+
+    def test_PricedItemDelete_view_200_OK(self):
+        somefee = PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/delete/')
+        self.assertEqual(response.status_code, 200)
