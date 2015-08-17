@@ -11,4 +11,6 @@ class PricedItemCreate(CreateView):
     success_url = '/priced_items/'
     
     def form_valid(self, form):
+        #mess around with form instance values here?
+        #form.instance.currency=PricedItem.GBP
         return super(PricedItemCreate, self).form_valid(form)
