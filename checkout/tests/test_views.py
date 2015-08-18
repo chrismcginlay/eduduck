@@ -10,6 +10,13 @@ class PricedItemListViewTests(TestCase):
         response = self.client.get('/priced_items/')
         self.assertEqual(response.status_code, 200)
 
+    def test_PricedItemList_view_uses_correct_template(self):
+        response = self.client.get('/priced_items/')
+        self.assertTemplateUsed(response, 'priceditem_base.html')
+        self.assertTemplateUsed(response, 'priceditem_list.html')
+        self.assertContains(
+            response, "<h2 id='id_page_title'>", html=True)
+
     def test_PricedItemList_view_shows_items(self):
         items = PricedItemFactory.create_batch(size=10)
         response = self.client.get('/priced_items/')
@@ -48,7 +55,7 @@ class PricedItemCreateViewTests(TestCase):
             'notes':'Wibble'
         }
         response = self.client.post('/priced_items/create/', form_data)
-        self.assertRedirects('/priced_items/')
+        self.assertRedirects(response, '/priced_items/')
 
 class PricedItemUpdateTests(TestCase):
 

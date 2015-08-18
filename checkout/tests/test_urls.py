@@ -21,8 +21,8 @@ class UrlTests(TestCase):
         url = reverse('checkout:priceditem_detail', kwargs={'pk':somefee.pk})
         self.assertEqual(url, '/priced_items/1/')
         resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'checkout:priceditem_create')
-        self.assertEqual(resolver.kwargs, {'pk': somefee.pk})
+        self.assertEqual(resolver.view_name, 'checkout:priceditem_detail')
+        self.assertEqual(resolver.kwargs, {'pk':unicode(somefee.pk)})
 
     def test_PricedItemDelete(self):
         somefee = PricedItemFactoryWithDefaults()
@@ -30,7 +30,7 @@ class UrlTests(TestCase):
         self.assertEqual(url, '/priced_items/1/delete/')
         resolver = resolve(url)
         self.assertEqual(resolver.view_name, 'checkout:priceditem_delete')
-        self.assertEqual(resolver.kwargs, {'pk': somefee.pk})
+        self.assertEqual(resolver.kwargs, {'pk':unicode(somefee.pk)})
 
     def test_PricedItemUpdate(self):
         somefee = PricedItemFactoryWithDefaults()
@@ -38,4 +38,4 @@ class UrlTests(TestCase):
         self.assertEqual(url, '/priced_items/1/update/')
         resolver = resolve(url)
         self.assertEqual(resolver.view_name, 'checkout:priceditem_update')
-        self.assertEqual(resolver.kwargs, {'pk': somefee.pk})
+        self.assertEqual(resolver.kwargs, {'pk':unicode(somefee.pk)})
