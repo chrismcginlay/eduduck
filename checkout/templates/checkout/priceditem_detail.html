@@ -1,0 +1,15 @@
+{% extends "checkout/priceditem_base.html" %}
+
+{% block contentheading %}
+    <h2 id='id_page_title'>Priced Item Details</h2>
+{% endblock contentheading %}
+
+{% block content %}
+    <p>Priced Item ID:{{ object.id }}</p>
+    <p>Type:{{ object.content_type }}</p>
+    <p>Type ID:{{ object.object_id }}</p>
+    <p>Fee Value (gross):{{ object.fee_value }}</p>
+    <p>Currency: {{ object.currency }}</p>
+    <p>Tax Rate: {{ object.tax_rate }}</p>
+    <p>Notes: {{ object.notes }}</p>
+{% endblock content %}

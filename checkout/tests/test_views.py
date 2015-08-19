@@ -23,6 +23,7 @@ class PricedItemListViewTests(TestCase):
         self.assertContains(response, 'DummyModel object 4.50 USD')
         self.assertEqual(len(response.context['priceditem_list']), 10)
 
+
 class PricedItemDetailViewTests(TestCase):
 
     def test_PricedItemDetail_view_200_OK(self):
@@ -30,6 +31,20 @@ class PricedItemDetailViewTests(TestCase):
         response = self.client.get('/priced_items/1/')
         self.assertEqual(response.status_code, 200)
         
+    def test_PricedItemDetail_view_uses_correct_template(self):
+        PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/')
+        self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
+        self.assertTemplateUsed(response, 'checkout/priceditem_detail.html')
+        self.assertContains(
+            response, "<h2 id='id_page_title'>")
+
+    def test_PricedItemDetail_view_has_correct_context(self):
+        pitem = PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/')
+        self.assertEqual(pitem, response.context['priceditem'])
+
+
 class PricedItemCreateViewTests(TestCase):
 
     def test_PricedItemCreate_view_200_OK(self):
