@@ -12,10 +12,10 @@ class PricedItemListViewTests(TestCase):
 
     def test_PricedItemList_view_uses_correct_template(self):
         response = self.client.get('/priced_items/')
-        self.assertTemplateUsed(response, 'priceditem_base.html')
-        self.assertTemplateUsed(response, 'priceditem_list.html')
+        self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
+        self.assertTemplateUsed(response, 'checkout/priceditem_list.html')
         self.assertContains(
-            response, "<h2 id='id_page_title'>", html=True)
+            response, "<h2 id='id_page_title'>")
 
     def test_PricedItemList_view_shows_items(self):
         items = PricedItemFactory.create_batch(size=10)
