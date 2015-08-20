@@ -60,6 +60,12 @@ class PricedItemCreateViewTests(TestCase):
         self.assertTrue('tax_rate' in response.context['form'].fields)
         self.assertTrue('notes' in response.context['form'].fields)
 
+    def test_PricedItemCreate_view_uses_correct_template(self):
+        PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/create/')
+        self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
+        self.assertTemplateUsed(response, 'checkout/priceditem_create.html')
+
     def test_PricedItemCreate_view_has_success_url(self):
         form_data = {
             'content_type':1,
@@ -79,9 +85,37 @@ class PricedItemUpdateTests(TestCase):
         response = self.client.get('/priced_items/1/update/')
         self.assertEqual(response.status_code, 200)
 
+    def test_PricedItemUpdate_view_uses_correct_template(self):
+        PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/update/')
+        self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
+        self.assertTemplateUsed(response, 'checkout/priceditem_update.html')
+
+    def test_PricedItemUpdate_view_submit_button_says_UPDATE(self):
+        somefee = PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/update/')
+        self.assertContains(response, '<input type="submit" value="Update">')
+
 class PricedItemDeleteTests(TestCase):
 
-    def test_PricedItemDelete_view_200_OK(self):
+    def test_PricedItemDelete_view_GET_200_OK(self):
         somefee = PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/delete/')
         self.assertEqual(response.status_code, 200)
+
+    def test_PricedItemDelete_view_GET_uses_correct_template(self):
+        PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/')
+        self.assertEqual(response.status_code, 200) #the object exists
+        response = self.client.get('/priced_items/1/delete/')
+        self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
+        self.assertTemplateUsed(response, 'checkout/priceditem_confirm_delete.html')
+
+    def test_PricedItemDelete_view_POST_deletes(self):
+        PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/')
+        self.assertEqual(response.status_code, 200) # the object exists
+        response = self.client.post('/priced_items/1/delete/')
+        self.assertRedirects(response, '/priced_items/')
+        response = self.client.get('/priced_items/1/')
+        self.assertEqual(response.status_code, 404) # object is gone
