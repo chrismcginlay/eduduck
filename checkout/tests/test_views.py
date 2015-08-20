@@ -64,7 +64,8 @@ class PricedItemCreateViewTests(TestCase):
         PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/create/')
         self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
-        self.assertTemplateUsed(response, 'checkout/priceditem_create.html')
+        self.assertTemplateUsed(response, 'checkout/priceditem_base_form.html')
+        self.assertTemplateUsed(response, 'checkout/priceditem_create_form.html')
 
     def test_PricedItemCreate_view_has_success_url(self):
         form_data = {
@@ -89,12 +90,27 @@ class PricedItemUpdateTests(TestCase):
         PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/update/')
         self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
-        self.assertTemplateUsed(response, 'checkout/priceditem_update.html')
+        self.assertTemplateUsed(response, 'checkout/priceditem_update_form.html')
 
     def test_PricedItemUpdate_view_submit_button_says_UPDATE(self):
         somefee = PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/update/')
         self.assertContains(response, '<input type="submit" value="Update">')
+    
+    def test_PricedItemUpdate_view_POST_redirects(self):
+        PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/update/')
+        self.assertEqual(response.status_code, 200) # the object exists
+        form_data = {
+            'content_type':1,
+            'object_id':1,
+            'fee_value':1.5, 
+            'currency':'GBP',
+            'tax_rate':0.2,
+            'notes':'Wibble'
+        }
+        response = self.client.post('/priced_items/1/update/', form_data)
+        self.assertRedirects(response, '/priced_items/')
 
 class PricedItemDeleteTests(TestCase):
 
