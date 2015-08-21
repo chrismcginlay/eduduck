@@ -1,1 +1,12 @@
-{% extends 'checkout/priceditem_base.html' %}
+{% extends "checkout/priceditem_base.html" %}
+
+{% block contentheading %}
+    <h2 id='id_page_title'>Delete Priced Item</h2>
+{% endblock contentheading %}
+
+{% block content %}
+    <form action="" method="post">{% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <input type="submit" value="Confirm" />
+    </form>
+{% endblock content %}

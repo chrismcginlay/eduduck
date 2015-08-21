@@ -95,7 +95,8 @@ class PricedItemUpdateTests(TestCase):
     def test_PricedItemUpdate_view_submit_button_says_UPDATE(self):
         somefee = PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/update/')
-        self.assertContains(response, '<input type="submit" value="Update">')
+        self.assertContains(
+            response, '<input type="submit" value="Update">', html=True)
     
     def test_PricedItemUpdate_view_POST_redirects(self):
         PricedItemFactoryWithDefaults()
@@ -126,6 +127,12 @@ class PricedItemDeleteTests(TestCase):
         response = self.client.get('/priced_items/1/delete/')
         self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
         self.assertTemplateUsed(response, 'checkout/priceditem_confirm_delete.html')
+
+    def test_PricedItemDelete_view_has_submit_button(self):
+        PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/delete/')
+        self.assertContains(
+            response, '<input type="submit" value="Confirm">', html=True)
 
     def test_PricedItemDelete_view_POST_deletes(self):
         PricedItemFactoryWithDefaults()
