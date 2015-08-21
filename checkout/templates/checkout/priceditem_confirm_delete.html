@@ -6,6 +6,7 @@
 
 {% block content %}
     <form action="" method="post">{% csrf_token %}
+        <p>{{ object.id }};{{ object.content_type }}:{{ object.content_object }} {{ object.fee_value }}{{ object.currency }}</p>
         <p>Are you sure you want to delete "{{ object }}"?</p>
         <input type="submit" value="Confirm" />
     </form>
