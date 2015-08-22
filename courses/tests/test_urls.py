@@ -9,11 +9,11 @@ class UrlTests(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.view_name, 'course_index')
     
-    def test_course_single(self):
-        url = reverse('course_single', args=[1])
+    def test_course_detail(self):
+        url = reverse('course_detail', args=[1])
         self.assertEqual(url, '/courses/1/')
         resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'course_single')
+        self.assertEqual(resolver.view_name, 'course_detail')
         self.assertEqual(resolver.kwargs, {'course_id': '1'})
         
     def test_course_create(self):

@@ -213,7 +213,7 @@ def iterNone():
 
     yield None
 
-def single(request, course_id):
+def detail(request, course_id):
     """View for detail of a single course"""
     
     logger.debug('Course id=' + str(course_id) + ' view')
@@ -299,7 +299,7 @@ def single(request, course_id):
         'uc': uc,
     })
 
-    template = 'courses/course_single.html'
+    template = 'courses/course_detail.html'
     return render(request, template, context) 
 
 def old_single(request, course_id):

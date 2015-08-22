@@ -45,7 +45,7 @@ class Course(models.Model):
     
     def get_absolute_url(self):
         assert self.id >=1
-        return reverse(u"courses.views.single", kwargs= {'course_id': self.id})
+        return reverse(u"courses.views.detail", kwargs= {'course_id': self.id})
 
     def save(self, *args, **kwargs):
         self._checkrep()
