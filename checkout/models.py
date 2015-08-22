@@ -57,3 +57,6 @@ class PricedItem(models.Model):
         validators=[validate_positive]
     )
     notes = models.CharField(max_length=255)
+    
+    def get_absolute_url(self):
+        return u"/priced_items/{0}/".format(self.pk)

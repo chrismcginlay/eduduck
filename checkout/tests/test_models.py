@@ -60,3 +60,9 @@ class PricedItemModelTests2(TestCase):
         with self.assertRaises(ValidationError):
             somefee.currency = 'potatoes'
             somefee.full_clean()
+
+    def test_get_absolute_url(self):
+        somefee = PricedItemFactoryWithDefaults()
+        expected_url = '/priced_items/{0}/'.format(somefee.pk)
+        gau = somefee.get_absolute_url()
+        self.assertEqual(expected_url, gau)

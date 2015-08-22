@@ -7,7 +7,14 @@
 {% block content %}
     <ul>
         {% for item in priceditem_list %}
-            <li>{{ item.pk}} {{ item.content_object }} {{ item.fee_value }} {{ item.currency }}</li>
+            <li>
+                <a href='{{ item.get_absolute_url }}'>{{ item.pk }}</a>&nbsp;
+                <em>
+                {{ item.content_object }}&nbsp;
+                {{ item.fee_value }}&nbsp;
+                {{ item.currency }}&nbsp;
+                </em>
+            </li>
         {% endfor %}
     </ul>
 {% endblock content %}

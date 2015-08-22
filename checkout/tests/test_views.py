@@ -20,9 +20,14 @@ class PricedItemListViewTests(TestCase):
     def test_PricedItemList_view_shows_items(self):
         items = PricedItemFactory.create_batch(size=10)
         response = self.client.get('/priced_items/')
-        self.assertContains(response, 'DummyModel object 4.50 USD')
+        self.assertContains(response, 'DummyModel object')
         self.assertEqual(len(response.context['priceditem_list']), 10)
 
+    def test_PricedItemList_view_each_item_links_to_detail(self):
+        item = PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/')
+        self.assertContains(
+            response, '<a href="/priced_items/1/">1</a>', html=True)
 
 class PricedItemDetailViewTests(TestCase):
 
