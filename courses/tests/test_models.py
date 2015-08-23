@@ -1,24 +1,19 @@
-"""
-Unit tests for courses models
-"""
-
+#courses/tests/test_models.py
 import json
 from datetime import datetime
-from django.test import TestCase
-from django.contrib.auth.models import User
 
-from profile.models import Profile
+from django.contrib.auth.models import User
+from django.test import TestCase
 
 from lesson.models import Lesson
+from profile.models import Profile
+
+from factories import UserFactory, CourseFactory
 from ..models import Course
 
 
 class CourseModelTests(TestCase):
     """Test the models used to represent courses and constituent lessons etc"""
-
-#TODO load data from JSON fixtures if these instances become irksome
-#(in which case some of the assertions outwith loops over dicts 
-#become redundant, which would be a good thing)
 
     course1_data = {
         'code': 'EDU02',
@@ -40,14 +35,16 @@ class CourseModelTests(TestCase):
     }
         
     def setUp(self):
-        self.user1 = User.objects.create_user('bertie', 'bertie@example.com', 'bertword')
-        self.user1.is_active = True
+        self.user1 = UserFactory(
+            username= 'bertie',
+            email = 'bertie@example.com',
+            password = 'bertword'
+        )
         self.user1.save()
         self.user2 = User.objects.create_user('hank', 'hank@example.com', 'hankdo')
         self.user2.is_active = True
         self.user2.save()
         self.profile1 = self.user1.profile
-        self.profile1.accepted_terms = True
         self.profile1.signature_line = 'Learning stuff'
         self.profile1.user_tz = "Europe/Rome"
         self.profile1.save()

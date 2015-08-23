@@ -16,3 +16,4 @@ media/
 deploy_tools/*.key
 deploy_tools/*.csr
 deploy_tools/*.crt
+Testing.db

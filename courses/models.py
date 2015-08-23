@@ -32,8 +32,6 @@ class Course(models.Model):
                                    help_text="This user is providing the instruction")
 
     def __init__(self, *args, **kwargs):
-        """checkrep on instantiation"""
-
         super (Course, self).__init__(*args, **kwargs)
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
