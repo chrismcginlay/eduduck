@@ -35,24 +35,25 @@ class CourseModelTests(TestCase):
     }
         
     def setUp(self):
+        # Prepare two users for each test, Bertie and Hank
         self.user1 = UserFactory(
-            username= 'bertie',
+            username = 'bertie',
             email = 'bertie@example.com',
             password = 'bertword'
         )
         self.user1.save()
-        self.user2 = User.objects.create_user('hank', 'hank@example.com', 'hankdo')
-        self.user2.is_active = True
+        self.user1.profile.user_tz = "Europe/Rome" # vary from factory default
+        self.user1.profile.save()
+
+        self.user2 = UserFactory(
+            username = 'hank',
+            email = 'hank@example.com', 
+            password = 'hankdo'
+        )
         self.user2.save()
-        self.profile1 = self.user1.profile
-        self.profile1.signature_line = 'Learning stuff'
-        self.profile1.user_tz = "Europe/Rome"
-        self.profile1.save()
-        self.profile2 = self.user2.profile
-        self.profile2.accepted_terms = True
-        self.profile2.signature_line = 'Tieing knots'
-        self.profile2.user_tz = 'Atlantic/St_Helena'
-        self.profile2.save()
+        self.user2.profile.signature_line = 'Tieing knots'
+        self.user2.profile.user_tz = 'Atlantic/St_Helena'
+        self.user2.profile.save()
 
         self.course1 = Course(**self.course1_data)
         self.course1.organiser = self.user1
