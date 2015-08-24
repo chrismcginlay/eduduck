@@ -46,4 +46,5 @@ class CourseFactory(DjangoModelFactory):
     code = u'TEST1'
     name = u'Tour Skiing'
     abstract = u'Learn the basics of Nordic tour skiing.'
- 
+    organiser = SubFactory(UserFactory, profile=None) 
+    instructor = organiser

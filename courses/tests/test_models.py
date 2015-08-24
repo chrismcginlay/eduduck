@@ -15,16 +15,6 @@ from ..models import Course
 class CourseModelTests(TestCase):
     """Test the models used to represent courses and constituent lessons etc"""
 
-    course1_data = {
-        'code': 'EDU02',
-        'name': 'A Course of Leeches',
-        'abstract': 'Learn practical benefits of leeches',
-    }
-    course2_data = {
-        'code': 'FBR9',
-        'name': 'Basic Knitting',
-        'abstract': 'Casting on',
-    }
     course3_data = {
         'name': 'Public Speaking',
         'abstract': 'Talking in public',
@@ -55,15 +45,22 @@ class CourseModelTests(TestCase):
         self.user2.profile.user_tz = 'Atlantic/St_Helena'
         self.user2.profile.save()
 
-        self.course1 = Course(**self.course1_data)
-        self.course1.organiser = self.user1
-        self.course1.instructor = self.user2
-        self.course1.save()
-
-        self.course2 = Course(**self.course2_data)
-        self.course2.organiser = self.user1
-        self.course2.instructor = self.user2
-        self.course2.save()
+        # Prepare some courses
+        self.course1 = CourseFactory(
+            code = 'EDU02',
+            name = 'A Course of Leeches',
+            abstract = 'Learn practical benefits of leeches',
+            organiser = self.user1,
+            instructor = self.user2,
+        )
+    
+        self.course2 = CourseFactory(
+            code = u'FBR9',
+            name = u'Basic Knitting',
+            abstract = u'Casting on',
+            organiser = self.user1,
+            instructor = self.user2,
+        )
 
         self.course3 = Course(**self.course3_data)
         self.course3.organiser = self.user1
