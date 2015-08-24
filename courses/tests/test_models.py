@@ -71,10 +71,9 @@ class CourseModelTests(TestCase):
         self.lesson1.save()
 
     def test_course_create(self):
-        """Course instance attributes are created OK"""
-        for key,val in self.course1_data.items():
-            self.assertEqual(self.course1.__dict__[key], val)
-    
+        """A course can be created and saved"""
+        self.assertEqual(self.course1.pk, 1)
+ 
     def test_cannot_create_invalid_course(self):
         with self.assertRaises(AssertionError):
             invalid_course = Course()
