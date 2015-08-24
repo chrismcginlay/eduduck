@@ -46,4 +46,12 @@ class LessonTests(TestCase):
         first = Lesson.objects.get(pk=1)
         second = Lesson.objects.get(pk=2)
         self.assertEqual(first, second.get_prev())
-        
+
+    def test_get_absolute_url(self):
+        """Lesson returns correct get_absolute_url"""
+
+        lesson = Lesson.objects.get(pk=1)
+        url = lesson.get_absolute_url()
+        target = u"/courses/{0}/lesson/{1}/".format(lesson.course.pk,lesson.pk)
+        self.assertEqual(target, url, "lesson URL error")
+

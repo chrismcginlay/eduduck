@@ -15,15 +15,6 @@ from ..models import Course
 class CourseModelTests(TestCase):
     """Test the models used to represent courses and constituent lessons etc"""
 
-    course3_data = {
-        'name': 'Public Speaking',
-        'abstract': 'Talking in public',
-    }
-    lesson1_data = {
-        'name': 'Introduction to Music',
-        'abstract': 'A summary of what we cover',
-    }
-        
     def setUp(self):
         # Prepare two users for each test, Bertie and Hank
         self.user1 = UserFactory(
@@ -62,13 +53,12 @@ class CourseModelTests(TestCase):
             instructor = self.user2,
         )
 
-        self.course3 = Course(**self.course3_data)
-        self.course3.organiser = self.user1
-        self.course3.instructor = self.user2
-        self.course3.save()
-
-        self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
-        self.lesson1.save()
+        self.course3 = CourseFactory(
+            name = u'Public Speaking',
+            abstract = u'Talking in public',
+            organiser = self.user1,
+            instructor = self.user2,
+        )
 
     def test_course_create(self):
         """A course can be created and saved"""
@@ -97,16 +87,3 @@ class CourseModelTests(TestCase):
         target = u"/courses/%s/" % self.course1.pk
         self.assertEqual(target, url, "course URL error")
     
-    def test_lesson_get_absolute_url(self):
-        """Lesson returns correct get_absolute_url"""
-
-        url = self.lesson1.get_absolute_url()
-        target = u"/courses/{0}/lesson/{1}/".format(self.lesson1.course.pk,self.lesson1.pk)
-        self.assertEqual(target, url, "lesson URL error")
-
-    def test_lesson_create(self):
-        """Lesson instance attributes are created OK"""
-        for key,val in self.lesson1_data.items():
-            self.assertEqual(self.lesson1.__dict__[key], val)
-        self.assertEqual(self.lesson1.course, self.course1)
-            
