@@ -86,4 +86,14 @@ class CourseModelTests(TestCase):
         url = self.course1.get_absolute_url()
         target = u"/courses/%s/" % self.course1.pk
         self.assertEqual(target, url, "course URL error")
-    
+   
+    def test_new_course_has_PricedItem_created(self):
+        new_course = CourseFactory(
+            code = u'TEST1',
+            name = u'test course',
+            abstract = u'see the PricedItem instance is created',
+            organiser = self.user1
+            instructor = self.user1
+        )
+        self.assertExists(PricedItem associated)
+        
