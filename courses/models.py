@@ -2,6 +2,8 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.http import Http404
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from checkout.models import PricedItem
 from profile.models import Profile 
 
 
@@ -33,6 +35,7 @@ class Course(models.Model):
 
     def __init__(self, *args, **kwargs):
         super (Course, self).__init__(*args, **kwargs)
+
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:
@@ -46,10 +49,20 @@ class Course(models.Model):
         return reverse(u"courses.views.detail", kwargs= {'course_id': self.id})
 
     def save(self, *args, **kwargs):
-        self._checkrep()
         super(Course, self).save(*args, **kwargs)
+        course_type = ContentType.objects.get_for_model(Course)
+        (pitem, created) = PricedItem.objects.get_or_create(
+            content_type_id = course_type.pk,
+            object_id=self.pk
+        )
+        self._checkrep()
         
     def _checkrep(self):
         assert self.name
         assert self.organiser
         assert self.instructor
+        course_type = ContentType.objects.get_for_model(Course)
+        pitem = PricedItem.objects.get(
+            content_type_id = course_type.pk,
+            object_id=self.pk
+        )

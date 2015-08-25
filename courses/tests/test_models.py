@@ -5,6 +5,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.test import TestCase
 
+from checkout.models import PricedItem
 from lesson.models import Lesson
 from profile.models import Profile
 
@@ -38,9 +39,9 @@ class CourseModelTests(TestCase):
 
         # Prepare some courses
         self.course1 = CourseFactory(
-            code = 'EDU02',
-            name = 'A Course of Leeches',
-            abstract = 'Learn practical benefits of leeches',
+            code = u'EDU02',
+            name = u'A Course of Leeches',
+            abstract = u'Learn practical benefits of leeches',
             organiser = self.user1,
             instructor = self.user2,
         )
@@ -60,6 +61,10 @@ class CourseModelTests(TestCase):
             instructor = self.user2,
         )
 
+    def test___unicode__(self):
+        uni_name = self.course1.__unicode__()
+        self.assertEqual(uni_name, u'A Course of Leeches')
+ 
     def test_course_create(self):
         """A course can be created and saved"""
         self.assertEqual(self.course1.pk, 1)
@@ -92,8 +97,8 @@ class CourseModelTests(TestCase):
             code = u'TEST1',
             name = u'test course',
             abstract = u'see the PricedItem instance is created',
-            organiser = self.user1
+            organiser = self.user1,
             instructor = self.user1
         )
-        self.assertExists(PricedItem associated)
-        
+        pitem = PricedItem.objects.get(object_id = new_course.id)
+ 
