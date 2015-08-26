@@ -24,6 +24,7 @@ class CourseFullFormTest(TestCase):
 
     fixtures = [
         'auth_user.json', 
+        'checkout.json',
         'courses.json', 
     ]
     

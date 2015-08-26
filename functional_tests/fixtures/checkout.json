@@ -1,0 +1,86 @@
+[
+{
+    "fields": {
+        "notes": "",
+        "object_id": 1,
+        "currency": "GBP",
+        "tax_rate": "0.000",
+        "content_type": 13,
+        "fee_value": "1.00"
+    },
+    "model": "checkout.priceditem",
+    "pk": 1
+},
+{
+    "fields": {
+        "notes": "",
+        "object_id": 2,
+        "currency": "GBP",
+        "tax_rate": "0.000",
+        "content_type": 13,
+        "fee_value": "1.00"
+    },
+    "model": "checkout.priceditem",
+    "pk": 2
+},
+{
+    "fields": {
+        "notes": "",
+        "object_id": 3,
+        "currency": "GBP",
+        "tax_rate": "0.000",
+        "content_type": 13,
+        "fee_value": "1.00"
+    },
+    "model": "checkout.priceditem",
+    "pk": 3
+},
+{
+    "fields": {
+        "notes": "",
+        "object_id": 4,
+        "currency": "GBP",
+        "tax_rate": "0.000",
+        "content_type": 13,
+        "fee_value": "1.00"
+    },
+    "model": "checkout.priceditem",
+    "pk": 4
+},
+{
+    "fields": {
+        "notes": "",
+        "object_id": 5,
+        "currency": "GBP",
+        "tax_rate": "0.000",
+        "content_type": 13,
+        "fee_value": "1.00"
+    },
+    "model": "checkout.priceditem",
+    "pk": 5
+},
+{
+    "fields": {
+        "notes": "",
+        "object_id": 6,
+        "currency": "GBP",
+        "tax_rate": "0.000",
+        "content_type": 13,
+        "fee_value": "1.00"
+    },
+    "model": "checkout.priceditem",
+    "pk": 6
+},
+{
+    "fields": {
+        "notes": "",
+        "object_id": 7,
+        "currency": "GBP",
+        "tax_rate": "0.000",
+        "content_type": 13,
+        "fee_value": "1.00"
+    },
+    "model": "checkout.priceditem",
+    "pk": 7
+}
+]

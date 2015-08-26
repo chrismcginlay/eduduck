@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.test import TestCase
 
 from checkout.models import PricedItem
@@ -70,7 +71,7 @@ class CourseModelTests(TestCase):
         self.assertEqual(self.course1.pk, 1)
  
     def test_cannot_create_invalid_course(self):
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(IntegrityError):
             invalid_course = Course()
             invalid_course.save()
             invalid_course.full_clean()

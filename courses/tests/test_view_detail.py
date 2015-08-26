@@ -14,7 +14,8 @@ class CourseViewdetailTests(TestCase):
     """Test courses.views.detail"""
 
     fixtures = [
-        'auth_user.json', 
+        'auth_user.json',
+        'checkout.json',
         'courses.json', 
         'lessons.json', 
         'outcome_lints.json', 
