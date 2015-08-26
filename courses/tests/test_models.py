@@ -74,7 +74,6 @@ class CourseModelTests(TestCase):
         with self.assertRaises(IntegrityError):
             invalid_course = Course()
             invalid_course.save()
-            invalid_course.full_clean()
         
     def test_can_create_a_course_without_course_code(self):
         """ Course code is optional """
