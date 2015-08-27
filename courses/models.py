@@ -62,7 +62,7 @@ class Course(models.Model):
         assert self.organiser
         assert self.instructor
         course_type = ContentType.objects.get_for_model(Course)
-        pitem = PricedItem.objects.get(
+        pitem = PricedItem.objects.get_or_create(
             content_type_id = course_type.pk,
             object_id=self.pk
         )
