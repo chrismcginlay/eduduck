@@ -134,6 +134,16 @@ class CourseViewdetailTests(TestCase):
         self.assertIn('id_enrol_button', response.content)
         self.assertIn('id_enrol_button2', response.content)
 
+    def test_enrol_button_if_not_enrolled_shows_course_fee(self):
+        self.client.login(username='gaby', password='gaby5')
+        response = self.client.get('/courses/1/')
+        self.assertRegexpMatches(
+            response.content,
+            '<button id="id_enrol_button">Enrol &163;1.50</button>')
+        self.assertRegexpMatches(
+            response.content,
+            '<button id="id_enrol_button2">Enrol &163;1.50</button>')
+
     def test_POST_course_enrol_200(self):
         """POSTing form course_enrol reloads page with 200 OK"""
         self.client.login(username='gaby', password='gaby5')
