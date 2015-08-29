@@ -139,10 +139,12 @@ class CourseViewdetailTests(TestCase):
         response = self.client.get('/courses/1/')
         self.assertRegexpMatches(
             response.content,
-            '<button id="id_enrol_button">Enrol &163;1.50</button>')
+            "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;1.50"\
+            "[\S\s]*</button>")
         self.assertRegexpMatches(
             response.content,
-            '<button id="id_enrol_button2">Enrol &163;1.50</button>')
+            "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;1.50"\
+            "[\S\s]*</button>")
 
     def test_POST_course_enrol_200(self):
         """POSTing form course_enrol reloads page with 200 OK"""
