@@ -1,8 +1,11 @@
 import sys
 from urllib import unquote
+from django.contrib.contenttypes.models import ContentType 
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from checkout.models import PricedItem
+from courses.models import Course
 
 class FunctionalTest(LiveServerTestCase):
     
@@ -33,6 +36,14 @@ class FunctionalTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
+
+        #TODO get rid of this once factory_boy has replaced fixtures
+        courses = Course.objects.all()
+        course_type = ContentType.objects.get_for_model(Course)
+        #ensure each course has a corresponding PricedItem
+        for course in courses:
+            priced_item = PricedItem.objects.get_or_create(
+                content_type_id=course_type.id, object_id=course.pk)
 
     def tearDown(self):
         self.browser.quit()

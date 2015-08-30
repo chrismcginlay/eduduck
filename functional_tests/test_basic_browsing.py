@@ -155,7 +155,6 @@ class VisitorBrowsesMenus(FunctionalTest):
         self._logUserIn('urvasi', 'hotel23')
         self.browser.find_element_by_id('id_homelink').click()
         self.browser.find_element_by_id('id_ISS_course').click()
-
         # and notes that the menu changes slightly in the course context
         items_expected = ['Urvasi', 'ISS', 'Intro Videos', 'Lessons', 
             'Assessments', 'Study Group', 'Course Docs', 'Progress']

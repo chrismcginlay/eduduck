@@ -1,6 +1,7 @@
 #courses/views.py
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import (
     ObjectDoesNotExist,
     PermissionDenied,
@@ -20,6 +21,7 @@ from django.utils.html import escape
 
 from attachment.models import Attachment
 from attachment.forms import AttachmentForm
+from checkout.models import PricedItem
 from interaction.models import UserCourse, UserLesson
 from lesson.forms import LessonEditForm
 from lesson.models import Lesson
@@ -218,6 +220,10 @@ def detail(request, course_id):
     
     logger.debug('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
+    course_type = ContentType.objects.get_for_model(Course)
+    priced_item = get_object_or_404(
+        PricedItem, content_type_id=course_type.id, object_id=course_id)
+    fee_value = priced_item.fee_value
     user_can_edit = False
     history = None
     lessons = None
@@ -225,6 +231,7 @@ def detail(request, course_id):
 
     context = {
         'course':course,
+        'fee_value':fee_value,
     }
 
     if request.user.is_authenticated():
@@ -298,7 +305,6 @@ def detail(request, course_id):
         'user_can_edit': user_can_edit,
         'uc': uc,
     })
-
     template = 'courses/course_detail.html'
     return render(request, template, context) 
 

@@ -1,4 +1,5 @@
 #courses/tests/test_view_detail.py
+from decimal import Decimal
 from django.test import TestCase
 from django.utils.html import escape
 
@@ -75,7 +76,6 @@ class CourseViewdetailTests(TestCase):
 
     def test_course_view_200_despite_no_PricedItem(self):
         """Non-existence of priced item for course is OK"""
-        import pdb; pdb.set_trace()
         course1 = Course.objects.get(pk=1)
         priced_item = PricedItem.objects.get(
             content_type_id=13, object_id=course1.pk)
@@ -83,7 +83,7 @@ class CourseViewdetailTests(TestCase):
         priced_item.delete()
         response = self.client.get('/courses/1/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['fee_value'], u'1.00')
+        self.assertEqual(response.context['fee_value'], Decimal(1.00))
 
     def test_no_enrol_buttons_yes_signup_button_if_not_loggedin(self):
         response = self.client.get('/courses/1/')
