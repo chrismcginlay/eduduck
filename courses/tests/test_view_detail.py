@@ -8,6 +8,7 @@ from interaction.models import (
     UserLesson,
 )
 from lesson.models import Lesson
+from checkout.models import PricedItem
 from ..models import Course
 
 class CourseViewdetailTests(TestCase):
@@ -70,7 +71,20 @@ class CourseViewdetailTests(TestCase):
         self.assertEqual('noauth', response.context['status'])
         self.assertEqual(response.context['course'].pk, 1)
         self.assertFalse(response.context['user_can_edit'])
- 
+        self.assertIn('fee_value', response.context)
+
+    def test_course_view_200_despite_no_PricedItem(self):
+        """Non-existence of priced item for course is OK"""
+        import pdb; pdb.set_trace()
+        course1 = Course.objects.get(pk=1)
+        priced_item = PricedItem.objects.get(
+            content_type_id=13, object_id=course1.pk)
+        #deleting priced_item should trigger a new priced_item in detail view
+        priced_item.delete()
+        response = self.client.get('/courses/1/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['fee_value'], u'1.00')
+
     def test_no_enrol_buttons_yes_signup_button_if_not_loggedin(self):
         response = self.client.get('/courses/1/')
         self.assertNotIn('id_enrol_button', response.content)
@@ -115,6 +129,7 @@ class CourseViewdetailTests(TestCase):
         self.assertIsNone(response.context['history'])
         self.assertIsNone(response.context['lessons'])
         self.assertFalse(response.context['user_can_edit'])
+        self.assertIn('fee_value', response.context)
 
     def test_context_attachment_got_something(self):
         self.client.login(username='gaby', password='gaby5')
@@ -139,11 +154,11 @@ class CourseViewdetailTests(TestCase):
         response = self.client.get('/courses/1/')
         self.assertRegexpMatches(
             response.content,
-            "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;1.50"\
+            "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;1.00"\
             "[\S\s]*</button>")
         self.assertRegexpMatches(
             response.content,
-            "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;1.50"\
+            "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;1.00"\
             "[\S\s]*</button>")
 
     def test_POST_course_enrol_200(self):
