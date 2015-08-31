@@ -53,7 +53,7 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
         enrol = self.browser.find_element_by_id('id_enrol_button')
     
         # The enrol button includes the price of the course
-        self.assertEqual(enrol.text, 'Enrol: &#163;1.50')
+        self.assertEqual(enrol.text, u'Enrol \xa31.00')
         course_intro = self.browser.find_element_by_id('id_course_intro_area')
         self.assertTrue(course_intro.find_element_by_id('id_abstract'))
         self.assertTrue(course_intro.find_element_by_tag_name('iframe'))
@@ -73,7 +73,7 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
         enrol2 = progress.find_element_by_id('id_enrol_button2')
 
         # This enrol button also includes the price of the course 
-        self.assertEqual(enrol2.text, 'Enrol: &#163;1.50')
+        self.assertEqual(enrol2.text, u'Enrol \xa31.00')
 
         # On enrolling the page reloads and a welcome message appears in the 
         # progress area, instead of the enrol button
