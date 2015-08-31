@@ -114,7 +114,7 @@ class CasualVisitorArrives(FunctionalTest):
 
         # The footer area shows the current year in the copyright notice
         thisyear = datetime.now().year
-        footeryear = self.browser.find_element_by_id('id_pagefoot').text.split(' ')[2]
+        footeryear = self.browser.find_element_by_id('id_copyright').text.split(' ')[2]
         self.assertEqual(int(footeryear), thisyear)
         
         # Finally, he notices the paypal button
