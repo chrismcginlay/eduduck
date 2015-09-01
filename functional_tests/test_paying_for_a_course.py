@@ -9,10 +9,27 @@ class CanonicalWorkflow(FunctionalTest):
 
     def test_redirect_unpaid_course_fee_to_payment_mechanism(self):
         # Helmi is visiting the course page for 'Blender' but has not paid
+        self.browser.get(self.server_url)
+        self._logUserIn('helmi', 'plate509')
+        self.browser.get(self.server_url+'/courses/1/')
+
         # The Enrol button shows a course fee
-        # She is able to access the first lesson free of charge
+        enrol = self.browser.find_element_by_id('id_enrol_button')
+        self.assertEqual(enrol.text, u'Enrol \xa31.00')
+
+        # She accesses the first lesson free of charge, without enrolling
+        first_lesson = self.browser.find_element_by_id('id_lesson1')
+        first_lesson.click()
+        page_title = self.browser.find_element_by_id('id_page_title')
+        self.assertEqual(page_title.text, 'Lesson 1')
+
         # But the 2nd and later lessons pop up an payment overlay, which she
         # dismisses just now, being redirected to the course homepage.
+        self.browser.get(self.server_url+'/courses/1/')
+        second_lesson = self.browser.find_element_by_id('id_lesson2')
+        second_lesson.click()
+        self.assertRedirects()
+
         # Clicking on Enrol a javascript overlay pops up for Stripe Checkout
         # Helmi pays for the course via Stripe
         # The stripe payment overlay goes away and she returns to course page
