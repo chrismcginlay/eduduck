@@ -20,18 +20,31 @@ class CanonicalWorkflow(FunctionalTest):
         # She accesses the first lesson free of charge, without enrolling
         first_lesson = self.browser.find_element_by_id('id_lesson1')
         first_lesson.click()
-        page_title = self.browser.find_element_by_id('id_page_title')
-        self.assertEqual(page_title.text, 'Lesson 1')
+        page_title = self.browser.find_element_by_id('id_lesson_title')
+        self.assertEqual(page_title.text, u'Lesson: What is Blender for?')
 
         # But the 2nd and later lessons pop up an payment overlay, which she
         # dismisses just now, being redirected to the course homepage.
-        self.browser.get(self.server_url+'/courses/1/')
+        course1_url = "{0}/courses/1/".format(self.server_url)
+        self.browser.get(course1_url)
         second_lesson = self.browser.find_element_by_id('id_lesson2')
         second_lesson.click()
-        self.assertRedirects()
+       
+        overlay = self.browser.find_element_by_id('id_payment_overlay')
+        self.assertTrue(overlay.is_displayed()) 
+        btn_cancel = self.browser.find_element_by_id('id_cancel_payment')
+        btn_cancel.click()
+        self.assertFalse(overlay.is_displayed())
+        self.assertEqual(self.browser.current_url, course1_url)
 
         # Clicking on Enrol a javascript overlay pops up for Stripe Checkout
-        # Helmi pays for the course via Stripe
+        enrol = self.browser.find_element_by_id('id_enrol_button')
+        enrol.click()
+        overlay = self.browser.find_element_by_id('id_payment_overlay')
+        self.assertTrue(overlay.is_displayed()) 
+
+        # Helmi pays for the course via Stripe (in TEST mode!)
+
         # The stripe payment overlay goes away and she returns to course page
         # Now, the Enrol button is gone.
         # And, she can access all the lessons.
