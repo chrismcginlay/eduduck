@@ -54,6 +54,9 @@ def _user_permitted_to_edit_lesson(user, lesson_id):
         return False
     return True
 
+def _user_can_view_lesson(user, lesson):
+    pass
+
 def visit(request, course_id, lesson_id): 
     """Prepare variables for detail of individual lesson"""
 

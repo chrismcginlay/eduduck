@@ -22,6 +22,7 @@ from ..forms import (
     LESSON_ABSTRACT_FIELD_REQUIRED_ERROR,
     )
 from ..views import (
+    _user_can_view_lesson,
     LessonEditForm,
     VideoInlineFormset,
     AttachmentInlineFormset,
@@ -36,7 +37,21 @@ class LessonViewTests(TestCase):
         'courses.json', 
         'lessons.json', 
         ]
-    
+   
+    def test__user_can_view_lesson(self):
+        lesson = Lesson.objects.get(pk=2)
+        lesson_url = lesson.get_absolute_url
+
+        # Gaby hasn't paid
+        user = User.objects.get(pk=3) # gaby in fixture
+        self.client.login(username=user.username, password='gaby5')        
+        self.assertFalse(_user_can_view_lesson(user, lesson))
+
+        # Helmi has paid
+        user = User.objects.get(pk=4)
+        self.client.login(username=user.username, password='plate509')        
+        self.assertTrue(_user_can_view_lesson(user, lesson))
+ 
     def test_lesson_unauth(self):
         """Test view of single lesson for unauthenticated user"""
         
