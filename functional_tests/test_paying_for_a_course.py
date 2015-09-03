@@ -31,7 +31,7 @@ class CanonicalWorkflow(FunctionalTest):
         second_lesson.click()
       
         overlay = self.browser.find_element_by_xpath(
-            "//div[re:test(@class, '(?=overlayView)(?=active)']")
+            "//div[re:test(@class, '(?=overlayView)(?=active)')]")
         self.assertTrue(overlay.is_displayed()) 
         btn_cancel = self.browser.find_element_by_xpath(
             "//a[re:test(@class, '(?=close))]")

@@ -75,6 +75,10 @@ class CourseModelTests(TestCase):
             invalid_course = Course()
             invalid_course.save()
         
+    def test_model_has_meta_permissions(self):
+        perms = Course._meta.permissions
+        self.assertTrue('study_course' in (perm[0] for perm in perms))
+
     def test_can_create_a_course_without_course_code(self):
         """ Course code is optional """
         new_course = Course.objects.create(

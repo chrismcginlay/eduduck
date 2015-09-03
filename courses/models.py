@@ -18,6 +18,11 @@ class Course(models.Model):
         instructor   Foreign key: user providing instruction 
     """
 
+    class Meta:
+        permissions = (
+            ("study_course", "User can enrol and study this course"),
+        )
+    
     code = models.CharField(max_length=10,
                             help_text="optional course code for "\
                             	      "author's reference",
