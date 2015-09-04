@@ -55,7 +55,11 @@ def _user_permitted_to_edit_lesson(user, lesson_id):
     return True
 
 def _user_can_view_lesson(user, lesson):
-    return True 
+    course = lesson.course
+    first_lesson = course.lesson_set.first()
+    if lesson==first_lesson:
+        return True
+    return False 
 
 def visit(request, course_id, lesson_id): 
     """Prepare variables for detail of individual lesson"""
