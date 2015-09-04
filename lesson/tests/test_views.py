@@ -7,6 +7,7 @@ from django.http.response import HttpResponseForbidden
 from django.test import TestCase
 from django.utils.html import escape
 
+from courses.models import Course
 from lesson.models import Lesson
 from interaction.models import UserCourse
 from attachment.forms import (
@@ -37,7 +38,16 @@ class LessonViewTests(TestCase):
         'courses.json', 
         'lessons.json', 
         ]
-   
+  
+    def test__user_can_always_view_lesson_one(self):
+        course = Course.objects.get(pk=1)
+        lessons = course.lesson_set
+        first_lesson = lessons.first()
+        # Gaby hasn't paid, but can still view the first lesson
+        user = User.objects.get(pk=3) # gaby in fixture
+        self.client.login(username=user.username, password='gaby5')        
+        self.assertTrue(_user_can_view_lesson(user, first_lesson))
+ 
     def test__user_can_view_lesson(self):
         lesson = Lesson.objects.get(pk=2)
         lesson_url = lesson.get_absolute_url
