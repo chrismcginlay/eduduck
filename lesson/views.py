@@ -1,7 +1,7 @@
 # Views for lesson app
 from datetime import datetime, timedelta
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import (
     ObjectDoesNotExist,
     PermissionDenied,
@@ -69,8 +69,10 @@ def visit(request, course_id, lesson_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
     course = lesson.course
 
+    if not _user_can_view_lesson(request.user, lesson):
+        return redirect(course)
+    
     #data on user interaction with lesson
-
     ul = None
     if request.user.is_authenticated():
         ul_set = request.user.userlesson_set.filter(lesson=lesson)
@@ -155,7 +157,7 @@ def visit(request, course_id, lesson_id):
         context_data.update({'user_can_edit_lesson': False})
 
     return render(request, template, context_data)
-    
+
 @login_required
 def edit(request, lesson_id, course_id):
     if not(_user_permitted_to_edit_lesson(request.user, lesson_id)):

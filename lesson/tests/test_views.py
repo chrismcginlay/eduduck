@@ -39,7 +39,7 @@ class LessonViewTests(TestCase):
         'lessons.json', 
         ]
   
-    def test__user_can_always_view_lesson_one(self):
+    def test__user_can_view_lesson_Always_allows_lesson_1(self):
         course = Course.objects.get(pk=1)
         lessons = course.lesson_set
         first_lesson = lessons.first()
@@ -48,7 +48,7 @@ class LessonViewTests(TestCase):
         self.client.login(username=user.username, password='gaby5')        
         self.assertTrue(_user_can_view_lesson(user, first_lesson))
  
-    def test__user_can_view_lesson(self):
+    def test__user_can_view_lesson_Checks_paid_status(self):
         lesson = Lesson.objects.get(pk=2)
         lesson_url = lesson.get_absolute_url
 
@@ -61,7 +61,27 @@ class LessonViewTests(TestCase):
         user = User.objects.get(pk=4)
         self.client.login(username=user.username, password='plate509')        
         self.assertTrue(_user_can_view_lesson(user, lesson))
- 
+
+    def test_lesson_visit_requires_payment(self):
+        # Gaby hasn't paid
+        user = User.objects.get(pk=3) # gaby in fixture
+        self.client.login(username=user.username, password='gaby5')        
+        response = self.client.get('/courses/1/lesson/2/')
+        self.assertRedirects(response, '/courses/1/')
+
+        # Helmi has paid
+        user = User.objects.get(pk=4)
+        self.client.login(username=user.username, password='plate509')        
+        response = self.client.get('/courses/1/lesson/2/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_1_always_visible(self):
+        # Gaby hasn't paid
+        user = User.objects.get(pk=3) # gaby in fixture
+        self.client.login(username=user.username, password='gaby5')        
+        response = self.client.get('/courses/1/lesson/1/')
+        self.assertEqual(response.status_code, 200)
+
     def test_lesson_unauth(self):
         """Test view of single lesson for unauthenticated user"""
         
