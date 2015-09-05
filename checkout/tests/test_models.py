@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase
 from factories import (
+    PaymentFactory,
     PricedItemFactory, 
     PricedItemFactoryWithDefaults,
     DummyModelFactory
@@ -66,3 +67,19 @@ class PricedItemModelTests2(TestCase):
         expected_url = '/priced_items/{0}/'.format(somefee.pk)
         gau = somefee.get_absolute_url()
         self.assertEqual(expected_url, gau)
+
+class PaymentModelTests(TestCase):
+
+    def test_model_with_sane_values(self):
+        a_payment = PaymentFactory(user_id=3)
+        self.assertEqual(a_payment.user_id, 3)
+        self.assertEqual(a_payment.for_content_type_id, 16)
+        self.assertEqual(a_payment.for_content_object_id, 2)
+        self.assertEqual(a_payment.value, Decimal(1.00))
+        self.assertEqual(a_payment.currency, u'GBP')
+        self.assertEqual(a_payment.tax_rate, Decimal(0.2))
+        self.assertEqual(a_payment.datestamp, Datetime.datetime(u"26th October 2014"))
+        self.assertEqual(a_payment.method, u'Stripe')
+        self.assertEqual(a_payment.transaction_fee, Decimal(0.20))
+        self.assertEqual(a_payment.test_mode, True)
+

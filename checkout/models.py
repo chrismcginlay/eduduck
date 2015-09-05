@@ -1,6 +1,7 @@
 #checkout/models.py
 from decimal import Decimal
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -60,3 +61,56 @@ class PricedItem(models.Model):
     
     def get_absolute_url(self):
         return u"/priced_items/{0}/".format(self.pk)
+
+
+class Payment(models.Model):
+
+    CNY = 'CNY'
+    GBP = 'GBP'
+    EUR = 'EUR'
+    USD = 'USD'
+    CURRENCY_CODE_CHOICES = (
+        (CNY, 'Chinese yuan'),
+        (GBP, 'Pound sterling'),
+        (EUR, 'Euro'),    
+        (USD, 'United States dollar'),
+    )
+
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
+    fee_value = models.DecimalField(
+        decimal_places=2, 
+        max_digits=7,
+        null=False,
+        blank=False,
+        validators=[validate_positive],
+        default=1.00
+    )
+    currency = models.CharField(
+        max_length=3,
+        choices=CURRENCY_CODE_CHOICES,
+        blank=False,
+        default=GBP
+    )
+    tax_rate = models.DecimalField(
+        decimal_places=3,
+        max_digits=4,
+        null=False,
+        blank=False,
+        default=0.0,
+        validators=[validate_positive]
+    )
+    user_id = models.ForeignKey(User)
+    datestamp = models.DateTimeField()
+    method = models.TextField(default=u'Stripe')  
+    transaction_fee = models.DecimalField(
+        decimal_places=3,
+        max_digits=4,
+        null=False,
+        blank=False,
+        default=0.0,
+        validators=[validate_positive]
+    )
+    test_mode = models.BooleanField()
+ 

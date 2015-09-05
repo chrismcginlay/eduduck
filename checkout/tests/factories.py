@@ -1,6 +1,6 @@
 from factory.django import DjangoModelFactory
 from factory import SubFactory
-from ..models import PricedItem
+from ..models import Payment, PricedItem
 from dummy_app.models import DummyModel
 
 class DummyModelFactory(DjangoModelFactory):
@@ -25,4 +25,9 @@ class PricedItemFactory(DjangoModelFactory):
     tax_rate = 0.2  
     notes = u"Wibble"
     currency = PricedItem.USD
+
+class PaymentFactory(DjangoModelFactory):
+    class Meta:
+        model = Payment
+
 
