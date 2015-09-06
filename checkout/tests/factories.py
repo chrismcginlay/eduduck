@@ -1,4 +1,6 @@
+from datetime import datetime
 from django.contrib.auth.models import User
+from django.utils.timezone import utc
 from factory import Sequence, SubFactory
 from factory.django import DjangoModelFactory
 from ..models import Payment, PricedItem
@@ -39,4 +41,6 @@ class PaymentFactory(DjangoModelFactory):
     class Meta:
         model = Payment
 
-    user = SubFactory(UserFactory)
+    paying_user = SubFactory(UserFactory)
+    content_object = SubFactory(DummyModelFactory)
+    datestamp = datetime.now().replace(tzinfo=utc)
