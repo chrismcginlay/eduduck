@@ -44,3 +44,4 @@ class PaymentFactory(DjangoModelFactory):
     paying_user = SubFactory(UserFactory)
     content_object = SubFactory(DummyModelFactory)
     datestamp = datetime.now().replace(tzinfo=utc)
+

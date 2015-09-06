@@ -1,9 +1,13 @@
+from datetime import datetime
+from decimal import Decimal
 from django.core.exceptions import ValidationError
+from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase, TransactionTestCase
 from factories import (
     PaymentFactory,
     PricedItemFactory, 
     PricedItemFactoryWithDefaults,
+    UserFactory,
     DummyModelFactory
 )
 from dummy_app.models import DummyModel
@@ -71,14 +75,15 @@ class PricedItemModelTests2(TestCase):
 class PaymentModelTests(TestCase):
 
     def test_model_with_sane_values(self):
-        a_payment = PaymentFactory()
-        self.assertEqual(a_payment.paying_user, 3)
-        self.assertEqual(a_payment.for_content_type_id, 16)
-        self.assertEqual(a_payment.for_content_object_id, 2)
-        self.assertEqual(a_payment.value, Decimal(1.00))
+        a_user = UserFactory()
+        a_payment = PaymentFactory(paying_user=a_user, tax_rate=Decimal(0.2))
+        self.assertEqual(a_payment.paying_user, a_user)
+        dummy_model_type = ContentType.objects.get_for_model(DummyModel)
+        self.assertEqual(a_payment.content_type, dummy_model_type)
+        self.assertEqual(a_payment.fee_value, Decimal(1.00))
         self.assertEqual(a_payment.currency, u'GBP')
         self.assertEqual(a_payment.tax_rate, Decimal(0.2))
-        self.assertEqual(a_payment.datestamp, Datetime.datetime(u"26th October 2014"))
+        self.assertEqual(a_payment.datestamp, datetime(2015,09,06,23,26))
         self.assertEqual(a_payment.method, u'Stripe')
         self.assertEqual(a_payment.transaction_fee, Decimal(0.20))
         self.assertEqual(a_payment.test_mode, True)
