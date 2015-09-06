@@ -101,7 +101,7 @@ class Payment(models.Model):
         default=0.0,
         validators=[validate_positive]
     )
-    user = models.ForeignKey(User)
+    paying_user = models.ForeignKey(User)
     datestamp = models.DateTimeField()
     method = models.TextField(default=u'Stripe')  
     transaction_fee = models.DecimalField(
@@ -112,5 +112,9 @@ class Payment(models.Model):
         default=0.0,
         validators=[validate_positive]
     )
-    test_mode = models.BooleanField()
+    test_mode = models.BooleanField(
+        null=False,
+        blank=False,
+        default=True
+    )
  
