@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
+from factory import Sequence, SubFactory
 from factory.django import DjangoModelFactory
-from factory import SubFactory
 from ..models import Payment, PricedItem
 from dummy_app.models import DummyModel
 
@@ -8,6 +9,14 @@ class DummyModelFactory(DjangoModelFactory):
         model = DummyModel
 
     name = "Fubar Saunders"
+
+class UserFactory(DjangoModelFactory):
+    class Meta:
+        model = User
+
+    username = Sequence(lambda n: u"User{0}".format(n, "%03d"))
+    first_name = username
+    last_name = u"Smith"
 
 class PricedItemFactoryWithDefaults(DjangoModelFactory):
     """Leaves most data members out, triggering model defaults"""
@@ -30,4 +39,4 @@ class PaymentFactory(DjangoModelFactory):
     class Meta:
         model = Payment
 
-
+    user = SubFactory(UserFactory)

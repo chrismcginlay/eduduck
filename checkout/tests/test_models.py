@@ -71,8 +71,8 @@ class PricedItemModelTests2(TestCase):
 class PaymentModelTests(TestCase):
 
     def test_model_with_sane_values(self):
-        a_payment = PaymentFactory(user_id=3)
-        self.assertEqual(a_payment.user_id, 3)
+        a_payment = PaymentFactory()
+        self.assertEqual(a_payment.user, 3)
         self.assertEqual(a_payment.for_content_type_id, 16)
         self.assertEqual(a_payment.for_content_object_id, 2)
         self.assertEqual(a_payment.value, Decimal(1.00))
