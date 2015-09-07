@@ -1,7 +1,11 @@
 #checkout/tests/test_views.py
 from django.test import TestCase
 
-from .factories import PricedItemFactory, PricedItemFactoryWithDefaults
+from .factories import (
+    PaymentFactory,
+    PricedItemFactory,
+    PricedItemFactoryWithDefaults
+)
 from ..models import PricedItem 
 
 class PricedItemListViewTests(TestCase):
@@ -147,3 +151,11 @@ class PricedItemDeleteTests(TestCase):
         self.assertRedirects(response, '/priced_items/')
         response = self.client.get('/priced_items/1/')
         self.assertEqual(response.status_code, 404) # object is gone
+
+class PaymentListViewTests(TestCase):
+
+    def test_Payment_list_view_200_OK(self):
+        a_payment = PaymentFactory()
+        response = self.client.get('/priced_items/payment/')
+        self.assertEqual(response.status_code, 200)
+

@@ -6,7 +6,7 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-from checkout.models import PricedItem
+from checkout.models import Payment, PricedItem
 
 class PricedItemList(ListView):
     model = PricedItem
@@ -34,3 +34,7 @@ class PricedItemDelete(DeleteView):
 
 class PricedItemDetail(DetailView):
     model = PricedItem
+
+
+class PaymentList(ListView):
+    model = Payment
