@@ -73,7 +73,7 @@ class PaymentUrlTests(TestCase):
             kwargs={'content_type_id':ctype, 'pk':object_id}
         )
         self.assertEqual(
-            url, '/priced_items/payment/object_type/{0}/object/{1}'.format(
+            url, '/priced_items/payment/object_type/{0}/object/{1}/'.format(
                 ctype, a_payment.object_id
         ))
         resolver = resolve(url)

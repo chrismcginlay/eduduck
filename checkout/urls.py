@@ -43,7 +43,7 @@ urlpatterns = [
         name='payment_list_for_user'
     ),
     url(
-        r'^payment/object_type/(?P<content_type_id>\d+)/object/(?P<pk>\d+)$',
+        r'^payment/object_type/(?P<content_type_id>\d+)/object/(?P<pk>\d+)/$',
         PaymentList.as_view(),
         name='payment_list_for_object'
     ), 
