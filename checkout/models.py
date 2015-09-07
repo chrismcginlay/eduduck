@@ -118,3 +118,5 @@ class Payment(models.Model):
         default=True
     )
  
+    def get_absolute_url(self):
+        return u"/payment/{0}/".format(self.pk)

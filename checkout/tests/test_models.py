@@ -96,3 +96,26 @@ class PaymentModelTests(TestCase):
         self.assertEqual(a_payment.transaction_fee, Decimal(0.20))
         self.assertEqual(a_payment.test_mode, True)
 
+    def test_out_of_bounds_fee_value_raises_exceptions(self):
+        a_payment = PaymentFactory()
+        with self.assertRaises(ValidationError):
+            a_payment.fee_value = -0.3
+            a_payment.full_clean()
+
+    def test_out_of_bounds_tax_rate_raises_exceptions(self):
+        a_payment = PaymentFactory()
+        with self.assertRaises(ValidationError):
+            a_payment.tax_rate = -0.3
+            a_payment.full_clean()
+
+    def test_bogus_currency_raises_exceptions(self):
+        a_payment = PaymentFactory()
+        with self.assertRaises(ValidationError):
+            a_payment.currency = 'potatoes'
+            a_payment.full_clean()
+
+    def test_get_absolute_url(self):
+        a_payment = PaymentFactory()
+        expected_url = '/payment/{0}/'.format(a_payment.pk)
+        gau = a_payment.get_absolute_url()
+        self.assertEqual(expected_url, gau)
