@@ -53,16 +53,13 @@ class PaymentUrlTests(TestCase):
         self.assertEqual(resolver.view_name, 'checkout:payment_list')
 
     def test_PaymentListForUser(self):
+        """List for logged in user"""
         a_payment = PaymentFactory()
         url = reverse(
-            'checkout:payment_list_for_user', kwargs={'pk':a_payment.pk})
-        self.assertEqual(
-            url, 
-            '/priced_items/payment/user/{0}/'.format(a_payment.paying_user.id)
-        )
+            'checkout:payment_list_for_user')
+        self.assertEqual(url, '/priced_items/payment/user/')
         resolver = resolve(url)
         self.assertEqual(resolver.view_name, 'checkout:payment_list_for_user')
-        self.assertEqual(resolver.kwargs, {'pk':unicode(a_payment.pk)})
 
     def test_PaymentListForObject(self):
         a_payment = PaymentFactory()

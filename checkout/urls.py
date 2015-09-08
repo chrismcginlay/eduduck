@@ -38,7 +38,7 @@ urlpatterns = [
         name='payment_list'
     ),
     url(
-        r'^payment/user/(?P<pk>\d+)/$',
+        r'^payment/user/$',
         PaymentList.as_view(),
         name='payment_list_for_user'
     ),

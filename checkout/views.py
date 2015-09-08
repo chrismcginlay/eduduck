@@ -38,3 +38,4 @@ class PricedItemDetail(DetailView):
 
 class PaymentList(ListView):
     model = Payment
+

@@ -162,8 +162,7 @@ class PaymentListViewTests(TestCase):
     def test_Payment_list_for_user_view_200_OK(self):
         a_payment = PaymentFactory()
         payer = a_payment.paying_user
-        response = self.client.get(
-            '/priced_items/payment/user/{0}/'.format(payer.pk))
+        response = self.client.get('/priced_items/payment/user/')
         self.assertEqual(response.status_code, 200)
 
     def test_Payment_list_for_object_view_200_OK(self):
