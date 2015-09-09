@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -39,3 +41,8 @@ class PricedItemDetail(DetailView):
 class PaymentList(ListView):
     model = Payment
 
+class PaymentList_forUser(ListView):
+    def get_queryset(self):
+        self.paying_user = get_object_or_404(User, id=self.request.user.id) 
+
+    template_name = 'checkout/payment_for_user.html'

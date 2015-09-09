@@ -1,0 +1,20 @@
+{% extends "checkout/payment_base.html" %}
+
+{% block contentheading %}
+    <h2 id='id_page_title'>List of Payments Made by You</h2>
+{% endblock contentheading %}
+
+{% block content %}
+    <ul>
+        {% for item in payment_list %}
+            <li>
+                <a href='{{ item.get_absolute_url }}'>{{ item.pk }}</a>&nbsp;
+                <em>
+                {{ item.content_object }}&nbsp;
+                {{ item.fee_value }}&nbsp;
+                {{ item.currency }}&nbsp;
+                </em>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

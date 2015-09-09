@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.utils.timezone import utc
-from factory import Sequence, SubFactory
+from factory import PostGenerationMethodCall, Sequence, SubFactory
 from factory.django import DjangoModelFactory
 from ..models import Payment, PricedItem
 from dummy_app.models import DummyModel
@@ -19,6 +19,7 @@ class UserFactory(DjangoModelFactory):
     username = Sequence(lambda n: u"User{0}".format(n, "%03d"))
     first_name = username
     last_name = u"Smith"
+    password = PostGenerationMethodCall('set_password', 'frog')
 
 class PricedItemFactoryWithDefaults(DjangoModelFactory):
     """Leaves most data members out, triggering model defaults"""
