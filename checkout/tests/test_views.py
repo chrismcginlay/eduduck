@@ -175,3 +175,18 @@ class PaymentListViewTests(TestCase):
                 content_type_id, purchased_object_id
         )) 
         self.assertEqual(response.status_code, 200)
+
+class PaymentCreateViewTests(TestCase):
+    """Test views for payment overlay form
+
+    https://stripe.com/docs/tutorials/checkout
+    """
+
+    def test_Payment_create_step1(self):
+        """Step 1 is to create the overlay form"""
+        self.fail("Write me")
+
+    def test_Payment_create_step2(self):
+        """Step 2 is to charge the card"""
+        self.fail("Write me")
+

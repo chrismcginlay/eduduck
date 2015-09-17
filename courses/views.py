@@ -21,7 +21,7 @@ from django.utils.html import escape
 
 from attachment.models import Attachment
 from attachment.forms import AttachmentForm
-from checkout.models import PricedItem
+from checkout.models import Payment, PricedItem
 from interaction.models import UserCourse, UserLesson
 from lesson.forms import LessonEditForm
 from lesson.models import Lesson
@@ -251,11 +251,42 @@ def detail(request, course_id):
         status = 'noauth'
             
     if request.method == 'POST':
+        if 'stripeToken' in request.POST and status == 'auth_not_enrolled':
+            stripe.api_key = "sk_test_BQokikJOvBiI2HlWgH4olfQ2"
+            try:
+                charge = stripe.Charge.create(
+                    amount=1000, # amount in cents, again
+                    currency="usd",
+                    source=token,
+                    description="Example charge"
+                )
+                import pdb; pdb.set_trace()
+                current_time = datetime.utcnow().replace(tzinfo=timezone.utc)
+                payment = Payment(
+                    content_object=course,
+                    paying_user=request.user,
+                    datestamp=current_time
+                )
+                payment.save()
+            except stripe.error.CardError, e:
+                pass
+        #Now record payment
+
         if 'course_enrol' in request.POST and status == 'auth_not_enrolled':
-            uc = UserCourse(user=request.user, course=course)
-            uc.save()
-            logger.info(str(uc) + 'enrols')
-            status = 'auth_enrolled'
+            content_type = ContentType.objects.get_for_model(Course)
+            try:
+                payment = Payment.objects.get(
+                    paying_user=request.user,
+                    content_type_id=content_type,
+                    object_id = course_id
+                )
+                uc = UserCourse(user=request.user, course=course)
+                uc.save()
+                logger.info(str(uc) + 'enrols')
+                status = 'auth_enrolled'
+            except ObjectDoesNotExist:
+                status = 'auth_not_enrolled' 
+
         if 'course_complete' in request.POST and status == 'auth_enrolled':
             if uc.active:
                 uc.complete()

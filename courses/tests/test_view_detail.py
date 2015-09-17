@@ -1,9 +1,14 @@
 #courses/tests/test_view_detail.py
+from datetime import datetime
 from decimal import Decimal
+from time import mktime 
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils.html import escape
+from django.utils.timezone import utc
 
 from attachment.models import Attachment
+from checkout.models import Payment
 from interaction.models import (
     UserAttachment,
     UserLesson,
@@ -130,6 +135,9 @@ class CourseViewdetailTests(TestCase):
         self.assertIsNone(response.context['lessons'])
         self.assertFalse(response.context['user_can_edit'])
         self.assertIn('fee_value', response.context)
+        self.assertIn('data-key', response.context)
+        self.assertIn('data-description', response.context)
+        self.assertIn('data-email', response.context)
 
     def test_context_attachment_got_something(self):
         self.client.login(username='gaby', password='gaby5')
@@ -160,6 +168,14 @@ class CourseViewdetailTests(TestCase):
             response.content,
             "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;1.00"\
             "[\S\s]*</button>")
+    
+    def test_stripe_Pay_with_Card_visible_if_not_enrolled(self):
+        self.client.login(username='gaby', password='gaby5')
+        response = self.client.get('/courses/1/')
+        self.assertRegexpMatches(
+            response.content, 
+            "<script[\S\s]*src=\"https://checkout.stripe.com/checkout.js\""\
+            " class=\"stripe-button\"")
 
     def test_POST_course_enrol_200(self):
         """POSTing form course_enrol reloads page with 200 OK"""
@@ -175,8 +191,25 @@ class CourseViewdetailTests(TestCase):
         response = self.client.post('/courses/1/', form_data)
         self.assertTemplateUsed(response, 'courses/course_detail.html')
 
-    def test_POST_course_enrol_context(self):
+    def test_POST_course_enrol_context_has_paid(self):
         """POSTing form course_enrol reloads with proper context variables"""
+        
+        #create payment record for gaby on course 1
+        #payment ultimately should obtain its information from a PricedItem
+        import pdb; pdb.set_trace()
+        course1 = Course.objects.get(pk=1)
+        user = User.objects.get(pk=5)
+        priced_item = PricedItem.objects.get(object_id=course1.id)   
+        current_time = datetime.utcnow().replace(tzinfo=utc)
+        payment = Payment(
+            paying_user=user,
+            content_object=course1,
+            fee_value=priced_item.fee_value,
+            datestamp=current_time,
+        )
+        payment.save()
+
+        #presence of payment record should permit enrolment
         self.client.login(username='gaby', password='gaby5')
         form_data = {'course_enrol':'Enrol'}
         response = self.client.post('/courses/1/', form_data)

@@ -56,6 +56,7 @@
                         name='course_enrol'>
                     Enrol &#163;{{ fee_value }}
                 </button>
+                {% include 'checkout/checkout_overlay.html' %}
             </form>
         {% elif status == "auth_enrolled" %}
             <p>You're enrolled on this course</p>
@@ -201,15 +202,16 @@
             <h3>Enrol Here</h3>
             <div id='id_enrol_area'>
                 <form   class='pure-form' 
-                action='' 
-                method='post'>
-                {% csrf_token %}
-                <button id='id_enrol_button2' 
-                class='pure-button pure-button-primary' 
-                type='submit' 
-                name='course_enrol'>
-                Enrol &#163;{{ fee_value }}
-                </button>
+                    action='' 
+                    method='post'>
+                    {% csrf_token %}
+                    <button id='id_enrol_button2' 
+                        class='pure-button pure-button-primary' 
+                        type='submit' 
+                        name='course_enrol'>
+                        Enrol &#163;{{ fee_value }}
+                    </button>
+                    {% include 'checkout/checkout_overlay.html' %}
                 </form>
             </div>
         {% elif status == "anon" %}
