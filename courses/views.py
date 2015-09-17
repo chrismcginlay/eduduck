@@ -232,6 +232,8 @@ def detail(request, course_id):
     context = {
         'course':course,
         'fee_value':fee_value,
+        'fee_value_cents':fee_value*100,
+        'currency':priced_item.currency,
     }
 
     if request.user.is_authenticated():
@@ -255,8 +257,8 @@ def detail(request, course_id):
             stripe.api_key = "sk_test_BQokikJOvBiI2HlWgH4olfQ2"
             try:
                 charge = stripe.Charge.create(
-                    amount=1000, # amount in cents, again
-                    currency="usd",
+                    amount=fee_value, # amount in cents, again
+                    currency=priced_item.currency,
                     source=token,
                     description="Example charge"
                 )
@@ -265,6 +267,8 @@ def detail(request, course_id):
                 payment = Payment(
                     content_object=course,
                     paying_user=request.user,
+                    fee_value=fee_value,
+                    currency=priced_item.currency,
                     datestamp=current_time
                 )
                 payment.save()

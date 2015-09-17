@@ -135,9 +135,8 @@ class CourseViewdetailTests(TestCase):
         self.assertIsNone(response.context['lessons'])
         self.assertFalse(response.context['user_can_edit'])
         self.assertIn('fee_value', response.context)
-        self.assertIn('data-key', response.context)
-        self.assertIn('data-description', response.context)
-        self.assertIn('data-email', response.context)
+        self.assertIn('fee_value_cents', response.context)
+        self.assertIn('currency', response.context)
 
     def test_context_attachment_got_something(self):
         self.client.login(username='gaby', password='gaby5')
@@ -159,15 +158,18 @@ class CourseViewdetailTests(TestCase):
 
     def test_enrol_button_if_not_enrolled_shows_course_fee(self):
         self.client.login(username='gaby', password='gaby5')
+        course1 = Course.objects.get(pk=1)
+        priced_item = PricedItem.objects.get(object_id=course1.id)   
         response = self.client.get('/courses/1/')
+        self.assertEqual(response.context['fee_value'], priced_item.fee_value)
         self.assertRegexpMatches(
             response.content,
-            "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;1.00"\
-            "[\S\s]*</button>")
+            "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;{0}"\
+            "[\S\s]*</button>".format(priced_item.fee_value))
         self.assertRegexpMatches(
             response.content,
-            "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;1.00"\
-            "[\S\s]*</button>")
+            "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;{0}"\
+            "[\S\s]*</button>".format(priced_item.fee_value))
     
     def test_stripe_Pay_with_Card_visible_if_not_enrolled(self):
         self.client.login(username='gaby', password='gaby5')
@@ -196,9 +198,8 @@ class CourseViewdetailTests(TestCase):
         
         #create payment record for gaby on course 1
         #payment ultimately should obtain its information from a PricedItem
-        import pdb; pdb.set_trace()
         course1 = Course.objects.get(pk=1)
-        user = User.objects.get(pk=5)
+        user = User.objects.get(pk=3)   #Gaby
         priced_item = PricedItem.objects.get(object_id=course1.id)   
         current_time = datetime.utcnow().replace(tzinfo=utc)
         payment = Payment(

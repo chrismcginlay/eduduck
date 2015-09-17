@@ -2,9 +2,9 @@
   <script
     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
     data-key="pk_test_f0W2XL7kEQ0RDVY6Ury1uG9l"
-    data-amount="2000"
-    data-name="Demo Site"
-    data-description="2 widgets ($20.00)"
+    data-amount={{ fee_value_cents }}
+    data-name="EduDuck.com"
+    data-description="2 widgets (&#163;{{ fee_value }})"
     data-image="/128x128.png"
     data-locale="auto">
   </script>
