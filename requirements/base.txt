@@ -17,4 +17,5 @@ requests-oauthlib==0.5.0
 simplejson==3.7.3
 six==1.9.0
 sqlparse==0.1.15
+stripe==1.27.0
 wsgiref==0.1.2
