@@ -255,17 +255,18 @@ def detail(request, course_id):
             
     if request.method == 'POST':
         if 'stripeToken' in request.POST and status == 'auth_not_enrolled':
-            stripe.api_key = "sk_test_BQokikJOvBiI2HlWgH4olfQ2"
+            stripe.api_key = "sk_test_RReoTZidLtQ6toyFy5UpF87C"
             token = request.POST['stripeToken']
             try:
+                import pdb; pdb.set_trace()
                 charge = stripe.Charge.create(
-                    amount=fee_value, # amount in cents, again
+                    amount=int(fee_value*100), # amount in cents, again
                     currency=priced_item.currency,
                     source=token,
                     description="Example charge"
                 )
-                import pdb; pdb.set_trace()
                 current_time = datetime.utcnow().replace(tzinfo=timezone.utc)
+                #Now record payment
                 payment = Payment(
                     content_object=course,
                     paying_user=request.user,
@@ -274,24 +275,13 @@ def detail(request, course_id):
                     datestamp=current_time
                 )
                 payment.save()
-            except stripe.error.CardError, e:
-                pass
-        #Now record payment
-
-        if 'course_enrol' in request.POST and status == 'auth_not_enrolled':
-            content_type = ContentType.objects.get_for_model(Course)
-            try:
-                payment = Payment.objects.get(
-                    paying_user=request.user,
-                    content_type_id=content_type,
-                    object_id = course_id
-                )
+                #Enrol the student
                 uc = UserCourse(user=request.user, course=course)
                 uc.save()
-                logger.info(str(uc) + 'enrols')
                 status = 'auth_enrolled'
-            except ObjectDoesNotExist:
-                status = 'auth_not_enrolled' 
+                logger.info(str(uc) + 'enrols')
+            except stripe.error.CardError, e:
+                pass
 
         if 'course_complete' in request.POST and status == 'auth_enrolled':
             if uc.active:
