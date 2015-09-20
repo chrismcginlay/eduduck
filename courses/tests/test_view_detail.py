@@ -181,6 +181,20 @@ class CourseViewdetailTests(TestCase):
 
     def test_POST_course_enrol_200(self):
         """POSTing form course_enrol reloads page with 200 OK"""
+        #create payment record for gaby on course 1
+        #payment ultimately should obtain its information from a PricedItem
+        course1 = Course.objects.get(pk=1)
+        user = User.objects.get(pk=3)   #Gaby
+        priced_item = PricedItem.objects.get(object_id=course1.id)   
+        current_time = datetime.utcnow().replace(tzinfo=utc)
+        payment = Payment(
+            paying_user=user,
+            content_object=course1,
+            fee_value=priced_item.fee_value,
+            datestamp=current_time,
+        )
+        payment.save()
+
         self.client.login(username='gaby', password='gaby5')
         form_data = {'course_enrol':'Enrol'}
         response = self.client.post('/courses/1/', form_data)
@@ -188,6 +202,20 @@ class CourseViewdetailTests(TestCase):
 
     def test_POST_course_enrol_correct_template(self):
         """POSTing form course_enrol reloads page with correct template"""
+        #create payment record for gaby on course 1
+        #payment ultimately should obtain its information from a PricedItem
+        course1 = Course.objects.get(pk=1)
+        user = User.objects.get(pk=3)   #Gaby
+        priced_item = PricedItem.objects.get(object_id=course1.id)   
+        current_time = datetime.utcnow().replace(tzinfo=utc)
+        payment = Payment(
+            paying_user=user,
+            content_object=course1,
+            fee_value=priced_item.fee_value,
+            datestamp=current_time,
+        )
+        payment.save()
+
         self.client.login(username='gaby', password='gaby5')
         form_data = {'course_enrol':'Enrol'}
         response = self.client.post('/courses/1/', form_data)
@@ -225,6 +253,20 @@ class CourseViewdetailTests(TestCase):
         self.assertEqual(response.context['uc'].completed, False)        
     
     def test_POST_course_enrol_no_enrol_buttons(self):
+        #create payment record for gaby on course 1
+        #payment ultimately should obtain its information from a PricedItem
+        course1 = Course.objects.get(pk=1)
+        user = User.objects.get(pk=3)   #Gaby
+        priced_item = PricedItem.objects.get(object_id=course1.id)   
+        current_time = datetime.utcnow().replace(tzinfo=utc)
+        payment = Payment(
+            paying_user=user,
+            content_object=course1,
+            fee_value=priced_item.fee_value,
+            datestamp=current_time,
+        )
+        payment.save()
+
         self.client.login(username='gaby', password='gaby5')
         form_data = {'course_enrol':'Enrol'}
         response = self.client.post('/courses/1/', form_data)

@@ -258,7 +258,6 @@ def detail(request, course_id):
             stripe.api_key = "sk_test_RReoTZidLtQ6toyFy5UpF87C"
             token = request.POST['stripeToken']
             try:
-                import pdb; pdb.set_trace()
                 charge = stripe.Charge.create(
                     amount=int(fee_value*100), # amount in cents, again
                     currency=priced_item.currency,
@@ -283,6 +282,15 @@ def detail(request, course_id):
             except stripe.error.CardError, e:
                 pass
 
+        if 'course_enrol' in request.POST:
+            course_type = ContentType.objects.get_for_model(course)
+            payment = Payment.objects.get(
+                content_type__pk=course_type.id, object_id=course.id, paying_user=request.user)
+            uc = UserCourse(user=request.user, course=course)
+            uc.save()
+            status = 'auth_enrolled'
+            logger.info(str(uc) + 'enrols')
+            
         if 'course_complete' in request.POST and status == 'auth_enrolled':
             if uc.active:
                 uc.complete()
