@@ -23,21 +23,27 @@ class CanonicalWorkflow(FunctionalTest):
         page_title = self.browser.find_element_by_id('id_lesson_title')
         self.assertEqual(page_title.text, u'Lesson: What is Blender for?')
 
-        # But the 2nd and later lessons pop up an payment overlay, which she
-        # dismisses just now, being redirected to the course homepage.
+        # But the 2nd and later lessons redirect to the course homepage.
         course1_url = "{0}/courses/1/".format(self.server_url)
         self.browser.get(course1_url)
         second_lesson = self.browser.find_element_by_id('id_lesson2')
         second_lesson.click()
-      
+        self.assertEqual(self.browser.current_url, course1_url)
+
+        import pdb; pdb.set_trace()      
+        # CLicking on Enrol or Pay and the javascript overlay pops up
+        enrol = self.browser.find_element_by_id('id_enrol_button')
+        enrol.click()
+        # The overlay for payment is in an iframe
+        self.browser.switch_to_frame(2)
         overlay = self.browser.find_element_by_xpath(
-            "//div[re:test(@class, '(?=overlayView)(?=active)')]")
+            "//div[@class='overlayView active']")
         self.assertTrue(overlay.is_displayed()) 
         btn_cancel = self.browser.find_element_by_xpath(
             "//a[re:test(@class, '(?=close))]")
         btn_cancel.click()
+        self.browser.switch_to_default_content()
         self.assertFalse(overlay.is_displayed())
-        self.assertEqual(self.browser.current_url, course1_url)
 
         # Clicking on Enrol the javascript overlay pops up again
         enrol = self.browser.find_element_by_id('id_enrol_button')
