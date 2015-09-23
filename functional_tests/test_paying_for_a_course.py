@@ -30,7 +30,6 @@ class CanonicalWorkflow(FunctionalTest):
         second_lesson.click()
         self.assertEqual(self.browser.current_url, course1_url)
 
-        import pdb; pdb.set_trace()      
         # CLicking on Enrol or Pay and the javascript overlay pops up
         enrol = self.browser.find_element_by_id('id_enrol_button')
         enrol.click()
@@ -40,41 +39,53 @@ class CanonicalWorkflow(FunctionalTest):
             "//div[@class='overlayView active']")
         self.assertTrue(overlay.is_displayed()) 
         btn_cancel = self.browser.find_element_by_xpath(
-            "//a[re:test(@class, '(?=close))]")
+            "//a[@class='close right']")
+        # Cancelling the payment overlay, Helmi returns to the enrol button
         btn_cancel.click()
         self.browser.switch_to_default_content()
-        self.assertFalse(overlay.is_displayed())
-
-        # Clicking on Enrol the javascript overlay pops up again
         enrol = self.browser.find_element_by_id('id_enrol_button')
+
+        import pdb; pdb.set_trace()
+        # Clicking on Enrol the javascript overlay pops up again
         enrol.click()
+        
+        ## Goodness knows why, but the frame number for the overlay seems
+        ## to be 3 at this point.
+        self.browser.switch_to_frame(3)
         overlay = self.browser.find_element_by_xpath(
-            "//div[re:test(@class, '(?=overlayView).*(?=active)']")
+            "//div[@class='overlayView active']")
         self.assertTrue(overlay.is_displayed()) 
 
         # Helmi pays for the course via Stripe (in TEST mode!)
         testmode = self.browser.find_element_by_xpath(
-            "//a[re:test(@class, '(?=testMode)')]")
+            "//a[@class='testMode']")
         self.assertEqual(testmode.text, 'TEST MODE')
-
+        import pdb; pdb.set_trace()
+        email_input = self.browser.find_element_by_xpath(
+            "//input[@id='email']")
         card_number_input = self.browser.find_element_by_xpath(
             "//input[@id='card_number']")
         card_exp_input = self.browser.find_element_by_xpath(
-            "//input[@id='card-exp']")
+            "//input[@id='cc-exp']")
         card_cvc_input = self.browser.find_element_by_xpath(
-            "//input[@id='card-cvc']")
+            "//input[@id='cc-csc']")
         pay_button = self.browser.find_element_by_id('submitButton')
         check_val = pay_button.find_element_by_xpath("//span/span").text
         #verify correct balance to pay:
-        self.assertEqual(check_val, u"\xa31.00")  
+        self.assertEqual(check_val, u'Pay \xa31.00')  
      
-        card_number_input.send_keys("4242424242424242")
-        card_exp_input.send_keys("1217")
+        email_input.send_keys("chris@example.com")
+        card_number_input.send_keys("4242")
+        card_number_input.send_keys("4242")
+        card_number_input.send_keys("4242")
+        card_number_input.send_keys("4242")
+        card_exp_input.send_keys("12")
+        card_exp_input.send_keys("17")
         card_cvc_input.send_keys("123")
         pay_button.click()
  
         # The stripe payment overlay goes away and she returns to course page
-        self.assertFalse(overlay.is_displayed()) 
+        self.browser.switch_to_default_content()
         self.assertEqual(self.browser.current_url, course1_url)
 
         # Now, the Enrol button is gone.
