@@ -179,6 +179,11 @@ class CourseViewdetailTests(TestCase):
             "<script[\S\s]*src=\"https://checkout.stripe.com/checkout.js\""\
             " class=\"stripe-button\"")
 
+    def test_cannot_access_lesson_2_when_not_enrolled(self):
+        self.client.login(username='helmi', password='plate509')
+        response = self.client.get('/courses/3/lesson/2/')
+        self.assertEqual(response.status_code, 302)
+
     def test_POST_course_enrol_200(self):
         """POSTing form course_enrol reloads page with 200 OK"""
         #create payment record for gaby on course 1
@@ -341,6 +346,11 @@ class CourseViewdetailTests(TestCase):
         self.client.login(username='chris', password='chris')
         response = self.client.get('/courses/3/')
         self.assertIn('You\'re enrolled on this course', response.content)
+
+    def test_can_access_lesson_2_when_enrolled(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/3/lesson/2/')
+        self.assertEqual(response.status_code, 200)
 
     def test_POST_withdraw_when_enrolled(self):
         self.client.login(username='chris', password='chris')
