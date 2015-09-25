@@ -7,6 +7,7 @@ from django.test import TestCase
 from django.utils.html import escape
 from django.utils.timezone import utc
 
+from courses.models import Course
 from attachment.models import Attachment
 from checkout.models import Payment
 from interaction.models import (
@@ -269,8 +270,7 @@ class CourseViewdetailTests(TestCase):
             content_object=course1,
             fee_value=priced_item.fee_value,
             datestamp=current_time,
-        )
-        payment.save()
+        ).save()
 
         self.client.login(username='gaby', password='gaby5')
         form_data = {'course_enrol':'Enrol'}
@@ -348,8 +348,19 @@ class CourseViewdetailTests(TestCase):
         self.assertIn('You\'re enrolled on this course', response.content)
 
     def test_can_access_lesson_2_when_enrolled(self):
+        course = Course.objects.get(pk=3)
+        user = User.objects.get(pk=1)
+        lesson2 = course.lesson_set.first().get_next()
         self.client.login(username='chris', password='chris')
-        response = self.client.get('/courses/3/lesson/2/')
+        priced_item = PricedItem.objects.get(object_id=course.id)   
+        current_time = datetime.utcnow().replace(tzinfo=utc)
+        payment = Payment(
+            paying_user=user,
+            content_object=course,
+            fee_value=priced_item.fee_value,
+            datestamp=current_time,
+        ).save()
+        response = self.client.get(lesson2.get_absolute_url())
         self.assertEqual(response.status_code, 200)
 
     def test_POST_withdraw_when_enrolled(self):

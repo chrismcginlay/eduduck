@@ -89,8 +89,7 @@ class LessonViewTests(TestCase):
             content_object=lesson.course,
             fee_value=1,
             datestamp=current_time,
-        )
-        payment.save()
+        ).save()
         self.client.login(username=user.username, password='hotel23')        
         response = self.client.get(lesson_url)
         self.assertEqual(response.status_code, 200)
