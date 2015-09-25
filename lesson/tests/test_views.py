@@ -62,11 +62,6 @@ class LessonViewTests(TestCase):
         # Urvasi has paid
         user = User.objects.get(pk=4)
         current_time = datetime.utcnow().replace(tzinfo=utc)
-        #course_type = ContentType.objects.get_for_object(lesson.course)
-        #priced_item = PricedItem.objects.get(
-        #    content_object_id=course_type, 
-        #    object_id=lesson.course.id
-        #)
         payment = Payment(
             paying_user=user,
             content_object=lesson.course,
@@ -75,34 +70,45 @@ class LessonViewTests(TestCase):
         )
         payment.save()
         self.client.login(username=user.username, password='hotel23')        
-        import pdb; pdb.set_trace()
         self.assertTrue(_user_can_view_lesson(user, lesson))
 
     def test_lesson_visit_requires_payment(self):
+        lesson = Lesson.objects.get(pk=2)
+        lesson_url = lesson.get_absolute_url()
+        course_url = lesson.course.get_absolute_url()
         # Gaby hasn't paid
         user = User.objects.get(pk=3) # gaby in fixture
         self.client.login(username=user.username, password='gaby5')        
-        response = self.client.get('/courses/1/lesson/2/')
-        self.assertRedirects(response, '/courses/1/')
-
+        response = self.client.get(lesson_url)
+        self.assertRedirects(response, course_url) 
         # Urvasi has paid
         user = User.objects.get(pk=4)
+        current_time = datetime.utcnow().replace(tzinfo=utc)
+        payment = Payment(
+            paying_user=user,
+            content_object=lesson.course,
+            fee_value=1,
+            datestamp=current_time,
+        )
+        payment.save()
         self.client.login(username=user.username, password='hotel23')        
-        response = self.client.get('/courses/1/lesson/2/')
+        response = self.client.get(lesson_url)
         self.assertEqual(response.status_code, 200)
 
     def test_lesson_1_always_visible(self):
+        lesson = Lesson.objects.get(pk=1)
+        lesson_url = lesson.get_absolute_url()
         # Gaby hasn't paid
         user = User.objects.get(pk=3) # gaby in fixture
         self.client.login(username=user.username, password='gaby5')        
-        response = self.client.get('/courses/1/lesson/1/')
+        response = self.client.get(lesson_url)
         self.assertEqual(response.status_code, 200)
 
     def test_lesson_unauth(self):
         """Test view of single lesson for unauthenticated user"""
         
         l1 = Lesson.objects.get(pk=1)
-        url1 = '/courses/{0}/lesson/{1}/'.format(l1.course.pk,l1.pk)
+        url1 = l1.get_absolute_url()
         
         self.client.logout()
         response = self.client.get(url1)
@@ -153,15 +159,12 @@ class LessonViewTests(TestCase):
         self.assertEqual(response.context['ul'].completed, False)        
 
     def test_lesson_loggedin_but_not_enrolled_on_course(self):
-
         user = User.objects.get(pk=4) # gaby in fixture
         self.client.login(username=user.username, password='hotel23')        
         l1 = Lesson.objects.get(pk=1)
-        url1 = '/courses/{0}/lesson/{1}/'.format(l1.course.pk, l1.pk)
-        l2 = Lesson.objects.get(pk=8)
-        url2 = '/courses/{0}/lesson/{1}/'.format(l2.course.pk, l2.pk)
+        url1 = l1.get_absolute_url()
 
-        response = self.client.get(url2)
+        response = self.client.get(url1)
         self.assertEqual(response.status_code, 200)
         self.assertIn('attachments', response.context, \
             "Missing template var: attachments")
