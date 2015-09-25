@@ -17,6 +17,7 @@ from django.utils import timezone
 
 from attachment.forms import AttachmentForm
 from attachment.models import Attachment
+from checkout.models import Payment
 from interaction.models import UserLesson
 from outcome.forms import LearningIntentionForm
 from outcome.models import LearningIntention
@@ -59,7 +60,12 @@ def _user_can_view_lesson(user, lesson):
     first_lesson = course.lesson_set.first()
     if lesson==first_lesson:
         return True
-    return False 
+
+    try:
+        payment = Payment.objects.get(object_id=course.pk, paying_user=user)
+        return True
+    except:
+        return False 
 
 def visit(request, course_id, lesson_id): 
     """Prepare variables for detail of individual lesson"""

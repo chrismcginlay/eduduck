@@ -6,7 +6,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http.response import HttpResponseForbidden
 from django.test import TestCase
 from django.utils.html import escape
+from django.utils.timezone import utc
 
+from checkout.models import Payment, PricedItem
 from courses.models import Course
 from lesson.models import Lesson
 from interaction.models import UserCourse
@@ -57,9 +59,23 @@ class LessonViewTests(TestCase):
         self.client.login(username=user.username, password='gaby5')        
         self.assertFalse(_user_can_view_lesson(user, lesson))
 
-        # Helmi has paid
+        # Urvasi has paid
         user = User.objects.get(pk=4)
-        self.client.login(username=user.username, password='plate509')        
+        current_time = datetime.utcnow().replace(tzinfo=utc)
+        #course_type = ContentType.objects.get_for_object(lesson.course)
+        #priced_item = PricedItem.objects.get(
+        #    content_object_id=course_type, 
+        #    object_id=lesson.course.id
+        #)
+        payment = Payment(
+            paying_user=user,
+            content_object=lesson.course,
+            fee_value=1,
+            datestamp=current_time,
+        )
+        payment.save()
+        self.client.login(username=user.username, password='hotel23')        
+        import pdb; pdb.set_trace()
         self.assertTrue(_user_can_view_lesson(user, lesson))
 
     def test_lesson_visit_requires_payment(self):
@@ -69,9 +85,9 @@ class LessonViewTests(TestCase):
         response = self.client.get('/courses/1/lesson/2/')
         self.assertRedirects(response, '/courses/1/')
 
-        # Helmi has paid
+        # Urvasi has paid
         user = User.objects.get(pk=4)
-        self.client.login(username=user.username, password='plate509')        
+        self.client.login(username=user.username, password='hotel23')        
         response = self.client.get('/courses/1/lesson/2/')
         self.assertEqual(response.status_code, 200)
 
