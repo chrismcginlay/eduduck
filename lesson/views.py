@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import (
+    MultipleObjectsReturned,
     ObjectDoesNotExist,
     PermissionDenied,
 )
@@ -63,6 +64,8 @@ def _user_can_view_lesson(user, lesson):
 
     try:
         payment = Payment.objects.get(object_id=course.pk, paying_user=user)
+        return True
+    except MultipleObjectsReturned:
         return True
     except:
         return False 

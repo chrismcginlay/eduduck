@@ -90,7 +90,6 @@ class CanonicalWorkflow(FunctionalTest):
         #    enrol = self.browser.find_element_by_id('id_enrol_button')
     
         # And, she can access all the lessons.
-        import pdb; pdb.set_trace()
         lesson2_url = "{0}/courses/1/lesson/2/".format(self.server_url)
         second_lesson = self.browser.find_element_by_id('id_lesson2')
         second_lesson.click()
