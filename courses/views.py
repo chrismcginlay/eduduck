@@ -1,6 +1,7 @@
 #courses/views.py
 from datetime import datetime, timedelta
 import stripe
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import (
@@ -255,7 +256,7 @@ def detail(request, course_id):
             
     if request.method == 'POST':
         if 'stripeToken' in request.POST and status == 'auth_not_enrolled':
-            stripe.api_key = "sk_test_RReoTZidLtQ6toyFy5UpF87C"
+            stripe.api_key = settings.STRIPE_SECRET_KEY 
             token = request.POST['stripeToken']
             try:
                 charge = stripe.Charge.create(

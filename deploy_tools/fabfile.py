@@ -354,7 +354,7 @@ def _prepare_environment_variables(settings, hostname):
         email_host = 'mailinator.com'
         email_host_password = ''
         email_port = ''
-	email_use_tls = True
+	    email_use_tls = True
 
     else: # Not dev!
         # First the SECRET_KEY
@@ -420,7 +420,25 @@ def _prepare_environment_variables(settings, hostname):
         append(env_config, "EMAIL_HOST_USER={0}".format(email_host_user))
     if not contains(env_config, 'EMAIL_HOST_PASSWORD'):
         append(env_config, "EMAIL_HOST_PASSWORD={0}".format(email_host_password))
-    
+
+    # set up for Stripe payment processing
+    if not contains(env_config, 'STRIPE_SECRET_KEY'):
+        response = prompt("STRIPE_SECRET_KEY = ")
+        if response:
+            stripe_secret_key = response
+        else:
+            stripe_secret_key = 'STRIPE_SECRET_KEY'
+        append(env_config, 
+            "STRIPE_SECRET_KEY={0}".format(stripe_secret_key))
+    if not contains(env_config, 'STRIPE_PUBLISHABLE_KEY'):
+        response = prompt("STRIPE_PUBLISHABLE_KEY = ")
+        if response:
+            stripe_publishable_key = response
+        else:
+            stripe_publishable_key = 'STRIPE_PUBLISHABLE_KEY'
+        append(env_config, 
+            "STRIPE_PUBLISHABLE_KEY={0}".format(stripe_publishable_key))
+
     # set up variables for python-social-auth
     if settings=='production':
         if not contains(env_config, "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY"):

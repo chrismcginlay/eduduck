@@ -40,6 +40,13 @@ EMAIL_PORT = os.environ['EMAIL_PORT']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
 
+#Stripe LIVE keys
+assert 'STRIPE_SECRET_KEY' in os.environ, 'STRIPE_SECRET_KEY missing'
+assert 'STRIPE_PUBLISHABLE_KEY' in os.environ, 'STRIPE_PUBLISHABLE_KEY missing'
+
+STRIPE_SECRET_KEY = os.environ['STRIPE_SECRET_KEY']
+STRIPE_PUBLISHABLE_KEY = os.environ['STRIPE_PUBLISHABLE_KEY']
+
 assert 'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY' in os.environ, 'PSA GOOGLE KEY missing'
 assert 'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET' in os.environ, 'PSA GOOGLE SECRET missing'
 assert 'SOCIAL_AUTH_FACEBOOK_KEY' in os.environ, 'PSA FACEBOOK KEY missing'

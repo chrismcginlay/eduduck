@@ -25,6 +25,10 @@ DATABASES = {
     }
 }
 
+#Test Keys for Stripe
+STRIPE_SECRET_KEY = 'sk_test_RReoTZidLtQ6toyFy5UpF87C'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_f0W2XL7kEQ0RDVY6Ury1uG9l'
+ 
 INSTALLED_APPS += ("debug_toolbar", )
 #INTERNAL_IPS = ("127.0.0.1", )
 #MIDDLEWARE_CLASSES += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
