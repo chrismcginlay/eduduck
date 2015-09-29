@@ -225,8 +225,8 @@ def _get_source(sdir):
     
     #Uncomment the following if you need to checkout and test a branch in staging.
     #run("cd {0}; git checkout NN-your_branch".format(sdir))
-    run("cd {0}; git checkout master".format(sdir))    
-    #run("cd {0}; git checkout 147-ssl".format(sdir))
+    #run("cd {0}; git checkout master".format(sdir))    
+    run("cd {0}; git checkout 148-mystripe".format(sdir))
         
 def _config_nginx(site_name, sdir, settings):
     if settings=='dev':
@@ -235,7 +235,7 @@ def _config_nginx(site_name, sdir, settings):
    
     if settings=='production':
         template_name = 'nginx.ssl_template.conf'
-    else if settings=='staging':
+    elif settings=='staging':
         template_name = 'nginx.http_template.conf'
     else:
         warn(yellow(
@@ -253,16 +253,16 @@ def _config_nginx(site_name, sdir, settings):
         sudo ("ln -s /etc/nginx/sites-available/{0} /etc/nginx/sites-enabl"\
             "ed/{0}".format(site_name))
     
-    if setting=='production':
+    if settings=='production':
         _set_up_SSL_key_and_cert(site_name)
 
 def _set_up_SSL_key_and_cert(site_name):
-    warn(yellow('***********************************************') 
-    warn(yellow('Now please install your SSL certificate and key')
-    warn(yellow('***********************************************') 
+    warn(yellow('***********************************************'))
+    warn(yellow('Now please install your SSL certificate and key'))
+    warn(yellow('***********************************************'))
     print(green('Place your {0}_com_cert_chain.crt certificate chain and your'\
         '{0}_com.key key file in /etc/nginx/'.format(site_name)))
-    warn(yellow('***********************************************') 
+    warn(yellow('***********************************************')) 
 
 def _write_gunicorn_upstart_script(site_name, sdir, settings):
     if settings=='dev':
@@ -354,7 +354,7 @@ def _prepare_environment_variables(settings, hostname):
         email_host = 'mailinator.com'
         email_host_password = ''
         email_port = ''
-	    email_use_tls = True
+        email_use_tls = True
 
     else: # Not dev!
         # First the SECRET_KEY
