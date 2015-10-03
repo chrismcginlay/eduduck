@@ -58,6 +58,10 @@ def _user_permitted_to_edit_lesson(user, lesson_id):
 
 def _user_can_view_lesson(user, lesson):
     course = lesson.course
+    instructor = course.instructor
+    organiser = course.organiser
+    if user==instructor or user==organiser:
+        return True
     first_lesson = course.lesson_set.first()
     if lesson==first_lesson:
         return True

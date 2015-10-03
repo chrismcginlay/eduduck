@@ -94,6 +94,31 @@ class LessonViewTests(TestCase):
         self.client.login(username=user.username, password='hotel23')        
         self.assertTrue(_user_can_view_lesson(user, lesson))
 
+    def test__user_can_view_lesson_Returns_true_if_duplicate_payments(self):
+        """Duplicate payments shouldn't occur, but if they do the user
+        should be able to view the lesson"""
+
+        lesson = Lesson.objects.get(pk=2)
+        # Urvasi has paid twice
+        user = User.objects.get(pk=4)
+        current_time = datetime.utcnow().replace(tzinfo=utc)
+        payment = Payment(
+            paying_user=user,
+            content_object=lesson.course,
+            fee_value=1,
+            datestamp=current_time,
+        )
+        payment.save()
+        payment2 = Payment(
+            paying_user=user,
+            content_object=lesson.course,
+            fee_value=1.1,
+            datestamp=current_time,
+        )
+        payment2.save()
+        self.client.login(username=user.username, password='hotel23')        
+        self.assertTrue(_user_can_view_lesson(user, lesson))
+
     def test_lesson_visit_requires_payment(self):
         lesson = Lesson.objects.get(pk=2)
         lesson_url = lesson.get_absolute_url()
