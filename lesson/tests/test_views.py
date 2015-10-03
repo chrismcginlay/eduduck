@@ -49,7 +49,29 @@ class LessonViewTests(TestCase):
         user = User.objects.get(pk=3) # gaby in fixture
         self.client.login(username=user.username, password='gaby5')        
         self.assertTrue(_user_can_view_lesson(user, first_lesson))
+
+    def test__user_can_view_lesson_Always_allows_instructor(self):
+        """Instructor/organiser can view all lessons on course"""
+        course = Course.objects.get(pk=1)
+        lessons = course.lesson_set
+        instructor = course.instructor
+        organiser = course.organiser
+        user = User.objects.get(pk=6)
+        self.client.login(username=user.username, password='helen')
+        second_lesson = lessons.first().get_next()
+        self.assertTrue(_user_can_view_lesson(user, second_lesson))
  
+    def test__user_can_view_lesson_Always_allows_organiser(self):
+        """Instructor/organiser can view all lessons on course"""
+        course = Course.objects.get(pk=1)
+        lessons = course.lesson_set
+        instructor = course.instructor
+        organiser = course.organiser
+        user = User.objects.get(pk=7)
+        self.client.login(username=user.username, password='sven')
+        second_lesson = lessons.first().get_next()
+        self.assertTrue(_user_can_view_lesson(user, second_lesson))
+
     def test__user_can_view_lesson_Checks_paid_status(self):
         lesson = Lesson.objects.get(pk=2)
         lesson_url = lesson.get_absolute_url
@@ -171,6 +193,30 @@ class LessonViewTests(TestCase):
                          "There should be no history - not enrolled")
         self.assertEqual(response.context['ul'], None, 
                          "There should be no userlesson - not enrolled")  
+
+    def test_lesson_viewable_if_instructor_is_logged_in(self):
+        """Instructor/organiser can view all lessons on course"""
+        course = Course.objects.get(pk=1)
+        lessons = course.lesson_set
+        instructor = course.instructor
+        organiser = course.organiser
+        user = User.objects.get(pk=6)
+        self.client.login(username=user.username, password='helen')
+        second_lesson = lessons.first().get_next()
+        response = self.client.get(second_lesson.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+
+    def test_lesson_viewable_if_organiser_is_logged_in(self):
+        """Instructor/organiser can view all lessons on course"""
+        course = Course.objects.get(pk=1)
+        lessons = course.lesson_set
+        instructor = course.instructor
+        organiser = course.organiser
+        user = User.objects.get(pk=7)
+        self.client.login(username=user.username, password='sven')
+        second_lesson = lessons.first().get_next()
+        response = self.client.get(second_lesson.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
 
     def test_lesson_page_has_edit_button_for_organiser_instructor(self):
         self.client.login(username='sven', password='sven')
