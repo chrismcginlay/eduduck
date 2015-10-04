@@ -4,17 +4,27 @@ from django.test import TestCase
 from .factories import (
     PaymentFactory,
     PricedItemFactory,
-    PricedItemFactoryWithDefaults
+    PricedItemFactoryWithDefaults,
+    UserFactory
 )
 from ..models import PricedItem 
 
 class PricedItemListViewTests(TestCase):
+    def test_PricedItemList_view_302_not_superuser(self):
+        mortaluser = UserFactory(is_active=True)
+        self.client.login(username=mortaluser.username, password='frog')
+        response = self.client.get('/priced_items/')
+        self.assertEqual(response.status_code, 302)
 
-    def test_PricedItemList_view_200_OK(self):
+    def test_PricedItemList_view_200_OK_for_superuser(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         response = self.client.get('/priced_items/')
         self.assertEqual(response.status_code, 200)
 
     def test_PricedItemList_view_uses_correct_template(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         response = self.client.get('/priced_items/')
         self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
         self.assertTemplateUsed(response, 'checkout/priceditem_list.html')
@@ -22,12 +32,16 @@ class PricedItemListViewTests(TestCase):
             response, "<h2 id='id_page_title'>")
 
     def test_PricedItemList_view_shows_items(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         items = PricedItemFactory.create_batch(size=10)
         response = self.client.get('/priced_items/')
         self.assertContains(response, 'DummyModel object')
         self.assertEqual(len(response.context['priceditem_list']), 10)
 
     def test_PricedItemList_view_each_item_links_to_detail(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         item = PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/')
         self.assertContains(
