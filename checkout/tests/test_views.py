@@ -249,3 +249,8 @@ class PaymentListViewTests(TestCase):
         )) 
         self.assertEqual(response.status_code, 200)
 
+class PaymentDetailViewTests(TestCase):
+
+    def test_Payment_detail_view_200_OK(self):
+        self.fail("write")
+

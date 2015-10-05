@@ -80,3 +80,13 @@ class PaymentUrlTests(TestCase):
             resolver.kwargs, 
             {'content_type_id':unicode(ctype),'pk':unicode(object_id)} 
         )
+    
+    def test_PaymentDetail(self):
+        """Detail of an individual payment"""
+
+        a_payment = PaymentFactory()
+        url = reverse(
+            'checkout:payment_detail')
+        self.assertEqual(url, a_payment.get_absolute_url())
+        resolver = resolve(url)
+        self.assertEqual(resolver.view_name, 'checkout:payment_detail')
