@@ -1,0 +1,9 @@
+{% extends "checkout/payment_base.html" %}
+
+{% block contentheading %}
+    <h2 id='id_page_title'>Payment Details</h2>
+{% endblock contentheading %}
+
+{% block content %}
+    <p>Payment ID: {{ object.id }}</p>
+{% endblock %}

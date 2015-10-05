@@ -251,6 +251,24 @@ class PaymentListViewTests(TestCase):
 
 class PaymentDetailViewTests(TestCase):
 
-    def test_Payment_detail_view_200_OK(self):
-        self.fail("write")
+    def test_Payment_detail_view_200_OK_for_paying_user(self):
+        a_payment = PaymentFactory()
+        payer = a_payment.paying_user
+        self.client.login(username=payer.username, password='frog')
+        response = self.client.get(a_payment.get_absolute_url())
+        self.assertEqual(response.status_code, 200) #the object exists
 
+    def test_Payment_detail_view_302_OK_for_other_user(self):
+        someuser=UserFactory()
+        a_payment = PaymentFactory()
+        payer = a_payment.paying_user
+        self.client.login(username=someuser.username, password='frog')
+        response = self.client.get(a_payment.get_absolute_url())
+        self.assertEqual(response.status_code, 302) #the object exists
+
+    def test_Payment_detail_uses_correct_templates(self):
+        a_payment = PaymentFactory()
+        response = self.client.get(a_payment.get_absolute_url())
+        self.assertEqual(response.status_code, 200) #the object exists
+        self.assertTemplateUsed(response, 'checkout/payment_base.html')
+        self.assertTemplateUsed(response, 'checkout/payment_detail.html')

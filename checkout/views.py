@@ -60,3 +60,6 @@ class PaymentList_forUser(LoginRequiredMixin, ListView):
         self.paying_user = get_object_or_404(User, id=self.request.user.id) 
 
     template_name = 'checkout/payment_for_user.html'
+
+class PaymentDetail(LoginRequiredMixin, DetailView):
+    model = Payment

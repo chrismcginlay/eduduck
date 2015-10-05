@@ -116,6 +116,6 @@ class PaymentModelTests(TestCase):
 
     def test_get_absolute_url(self):
         a_payment = PaymentFactory()
-        expected_url = '/payment/{0}/'.format(a_payment.pk)
+        expected_url = '/priced_items/payment/{0}/'.format(a_payment.pk)
         gau = a_payment.get_absolute_url()
         self.assertEqual(expected_url, gau)

@@ -119,4 +119,4 @@ class Payment(models.Model):
     )
  
     def get_absolute_url(self):
-        return u"/payment/{0}/".format(self.pk)
+        return u"/priced_items/payment/{0}/".format(self.pk)
