@@ -49,12 +49,21 @@ class PricedItemListViewTests(TestCase):
 
 class PricedItemDetailViewTests(TestCase):
 
-    def test_PricedItemDetail_view_200_OK(self):
+    def test_PricedItemDetail_view_200_OK_for_logged_in_user(self):
+        mortaluser = UserFactory(is_active=True)
+        self.client.login(username=mortaluser.username, password='frog')
         PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/')
         self.assertEqual(response.status_code, 200)
+
+    def test_PricedItemDetail_view_302_not_logged_in(self):
+        PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/')
+        self.assertEqual(response.status_code, 302)
         
-    def test_PricedItemDetail_view_uses_correct_template(self):
+    def test_PricedItemDetail_view_uses_correct_template_for_logged_in_user(self):
+        mortaluser = UserFactory(is_active=True)
+        self.client.login(username=mortaluser.username, password='frog')
         PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/')
         self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
@@ -63,6 +72,8 @@ class PricedItemDetailViewTests(TestCase):
             response, "<h2 id='id_page_title'>")
 
     def test_PricedItemDetail_view_has_correct_context(self):
+        mortaluser = UserFactory(is_active=True)
+        self.client.login(username=mortaluser.username, password='frog')
         pitem = PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/')
         self.assertEqual(pitem, response.context['priceditem'])
@@ -70,11 +81,21 @@ class PricedItemDetailViewTests(TestCase):
 
 class PricedItemCreateViewTests(TestCase):
 
-    def test_PricedItemCreate_view_200_OK(self):
+    def test_PricedItemCreate_view_200_OK_for_superuser(self):
+        superuser = UserFactory(is_superuser=True,is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         response = self.client.get('/priced_items/create/')
         self.assertEqual(response.status_code, 200)
 
+    def test_PricedItemCreate_view_302_not_superuser(self):
+        mortaluser = UserFactory(is_active=True)
+        self.client.login(username=mortaluser.username, password='frog')
+        response = self.client.get('/priced_items/create/')
+        self.assertEqual(response.status_code, 302)
+
     def test_PricedItemCreate_view_fields(self):
+        superuser = UserFactory(is_superuser=True,is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         response = self.client.get('/priced_items/create/')
         self.assertTrue('content_type' in response.context['form'].fields)
         self.assertTrue('object_id' in response.context['form'].fields)
@@ -85,12 +106,16 @@ class PricedItemCreateViewTests(TestCase):
 
     def test_PricedItemCreate_view_uses_correct_template(self):
         PricedItemFactoryWithDefaults()
+        superuser = UserFactory(is_superuser=True,is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         response = self.client.get('/priced_items/create/')
         self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
         self.assertTemplateUsed(response, 'checkout/priceditem_base_form.html')
         self.assertTemplateUsed(response, 'checkout/priceditem_create_form.html')
 
     def test_PricedItemCreate_view_has_success_url(self):
+        superuser = UserFactory(is_superuser=True,is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         form_data = {
             'content_type':1,
             'object_id':1,
@@ -104,24 +129,32 @@ class PricedItemCreateViewTests(TestCase):
 
 class PricedItemUpdateTests(TestCase):
 
-    def test_PricedItemUpdate_view_200_OK(self):
+    def test_PricedItemUpdate_view_200_OK_for_superuser(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         somefee = PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/update/')
         self.assertEqual(response.status_code, 200)
 
-    def test_PricedItemUpdate_view_uses_correct_template(self):
+    def test_PricedItemUpdate_view_uses_correct_template_for_superuser(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/update/')
         self.assertTemplateUsed(response, 'checkout/priceditem_base.html')
         self.assertTemplateUsed(response, 'checkout/priceditem_update_form.html')
 
-    def test_PricedItemUpdate_view_submit_button_says_UPDATE(self):
+    def test_PricedItemUpdate_view_submit_button_says_UPDATE_for_superuser(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         somefee = PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/update/')
         self.assertContains(
             response, '<input type="submit" value="Update">', html=True)
     
-    def test_PricedItemUpdate_view_POST_redirects(self):
+    def test_PricedItemUpdate_view_POST_redirects_for_superuser(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/update/')
         self.assertEqual(response.status_code, 200) # the object exists
@@ -138,12 +171,23 @@ class PricedItemUpdateTests(TestCase):
 
 class PricedItemDeleteTests(TestCase):
 
-    def test_PricedItemDelete_view_GET_200_OK(self):
+    def test_PricedItemDelete_view_GET_200_OK_for_superuser(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         somefee = PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/delete/')
         self.assertEqual(response.status_code, 200)
 
+    def test_PricedItemDelete_view_GET_302_not_superuser(self):
+        mortaluser = UserFactory(is_active=True)
+        self.client.login(username=mortaluser.username, password='frog')
+        somefee = PricedItemFactoryWithDefaults()
+        response = self.client.get('/priced_items/1/delete/')
+        self.assertEqual(response.status_code, 302)
+
     def test_PricedItemDelete_view_GET_uses_correct_template(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/')
         self.assertEqual(response.status_code, 200) #the object exists
@@ -152,12 +196,16 @@ class PricedItemDeleteTests(TestCase):
         self.assertTemplateUsed(response, 'checkout/priceditem_confirm_delete.html')
 
     def test_PricedItemDelete_view_has_submit_button(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/delete/')
         self.assertContains(
             response, '<input type="submit" value="Confirm">', html=True)
 
     def test_PricedItemDelete_view_POST_deletes(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         PricedItemFactoryWithDefaults()
         response = self.client.get('/priced_items/1/')
         self.assertEqual(response.status_code, 200) # the object exists
@@ -168,10 +216,19 @@ class PricedItemDeleteTests(TestCase):
 
 class PaymentListViewTests(TestCase):
 
-    def test_Payment_list_view_200_OK(self):
+    def test_Payment_list_view_200_OK_for_superuser(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         a_payment = PaymentFactory()
         response = self.client.get('/priced_items/payment/')
         self.assertEqual(response.status_code, 200)
+
+    def test_Payment_list_view_302_not_superuser(self):
+        mortaluser = UserFactory(is_active=True)
+        self.client.login(username=mortaluser.username, password='frog')
+        a_payment = PaymentFactory()
+        response = self.client.get('/priced_items/payment/')
+        self.assertEqual(response.status_code, 302)
 
     def test_Payment_list_for_user_view_200_OK(self):
         a_payment = PaymentFactory()
@@ -181,6 +238,8 @@ class PaymentListViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_Payment_list_for_object_view_200_OK(self):
+        superuser = UserFactory(is_superuser=True, is_active=True)
+        self.client.login(username=superuser.username, password='frog')
         a_payment = PaymentFactory()
         content_type_id = a_payment.content_type_id
         purchased_object_id = a_payment.object_id
