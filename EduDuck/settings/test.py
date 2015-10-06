@@ -26,6 +26,10 @@ DATABASES = {
 #Not very secret SECRET_KEY. Just for dev. Staging and prod. use env var.
 SECRET_KEY = '$9(8c0@dl9^0m@jautyrv&amp;y92!-ae6ymo+sl=&amp;^3ptfiw*ot7j'
 
+#Test Keys for Stripe
+STRIPE_SECRET_KEY = 'sk_test_RReoTZidLtQ6toyFy5UpF87C'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_f0W2XL7kEQ0RDVY6Ury1uG9l'
+
 FIXTURE_DIRS = (os.path.join(BASE_DIR, 'functional_tests/fixtures/'),)
 SOCIAL_AUTH_PIPELINE += (
     'social.pipeline.debug.debug',

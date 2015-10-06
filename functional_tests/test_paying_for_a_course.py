@@ -82,6 +82,7 @@ class CanonicalWorkflow(FunctionalTest):
         card_exp_input.send_keys("17")
         card_cvc_input.send_keys("123")
         pay_button.click()
+        self.browser.implicitly_wait(10)
  
         # The stripe payment overlay goes away and she returns to course page
 
@@ -103,7 +104,7 @@ class CanonicalWorkflow(FunctionalTest):
 
         # On her profile page, she can see which courses she has paid for, 
         # along with how much was paid and when.
-        self.browser.get('/profile/')
+        self.browser.get('{0}/accounts/profile/'.format(self.server_url))
         receipts_area = self.browser.find_element_by_id('id_receipts')
         course_receipt = receipts_area.find_element_by_id('id_receipt_course_1')
         receipt_date = course_receipt.find_element_by_xpath('//span/')

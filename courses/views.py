@@ -219,7 +219,7 @@ def iterNone():
 
 def detail(request, course_id):
     """View for detail of a single course"""
-    
+   
     logger.debug('Course id=' + str(course_id) + ' view')
     course = get_object_or_404(Course, pk=course_id)
     course_type = ContentType.objects.get_for_model(Course)
