@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 
+from checkout.models import Payment
 from courses.models import Course
 from .forms import ProfileEditForm
 
@@ -27,11 +28,12 @@ def profile(request):
     ruid = request.user.id
     taughtcourses = Course.objects.filter(
         Q(organiser__id=ruid) | Q(instructor__id=ruid))
-
+    receipts = Payment.objects.filter(paying_user=request.user)
     context_data = {
         'profile': profile, 
         'usercourses': usercourses,
         'taughtcourses': taughtcourses,
+        'receipts': receipts,
     }
     # Add further context if required:    
     if request.user.is_authenticated():
