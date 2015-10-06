@@ -32,6 +32,7 @@ class ProfileViewTests(TestCase):
             'usercourses',
             'taughtcourses',
             'auth_via',
+            'receipts',
         ]
         [self.assertTrue(x in response.context, x+' missing') for x in context_vars]
  
@@ -71,6 +72,11 @@ class ProfileViewTests(TestCase):
         response = self.client.get('/accounts/profile/')
         self.assertIn('id_courses_enrolled', response.content)
         self.assertIn('id_courses_taught', response.content)
+
+    def test_profile_has_receipts_area(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/accounts/profile/')
+        self.assertIn('id_receipts', response.content)
 
     def test_profile_edit(self):
         """Test response profile.views.edit"""
@@ -136,7 +142,15 @@ class ProfileViewTests(TestCase):
         context_vars = ['timezone', 'webpage', 'description']
         [self.assertTrue(x in response.context, x+' missing')
             for x in context_vars]
-    
+        not_in_context_vars = [
+            'auth_via', 
+            'usercourses', 
+            'taughtcourses', 
+            'receipts'
+        ]
+        [self.assertFalse(x in response.context, x+' ought not to be present')
+            for x in not_in_context_vars]    
+
     def test_password_reset_reachable(self):
         url = "/accounts/password_reset/"
         response = self.client.get(url)
