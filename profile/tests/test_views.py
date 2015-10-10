@@ -3,6 +3,11 @@ from django.test import TestCase
 
 from django.contrib.auth.models import User
 
+from checkout.tests.factories import (
+    PaymentFactory,
+    PricedItemFactoryWithDefaults,
+)
+
 from ..models import Profile
 from ..forms import ProfileEditForm
 
@@ -35,7 +40,6 @@ class ProfileViewTests(TestCase):
             'receipts',
         ]
         [self.assertTrue(x in response.context, x+' missing') for x in context_vars]
- 
 
     def test_profile_has_element_for_avatar(self):
         """The user avatar is visible"""
@@ -77,6 +81,14 @@ class ProfileViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/accounts/profile/')
         self.assertIn('id_receipts', response.content)
+
+    def test_profile_receipts_area_shows_receipts(self):
+        priceditem = PricedItemFactoryWithDefaults()
+        bertie = User.objects.get(username='bertie')
+        payment = PaymentFactory(paying_user=bertie)
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/accounts/profile/')
+        self.assertIn('id_receipt_1', response.content)
 
     def test_profile_edit(self):
         """Test response profile.views.edit"""

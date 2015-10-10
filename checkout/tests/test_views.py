@@ -264,10 +264,12 @@ class PaymentDetailViewTests(TestCase):
         payer = a_payment.paying_user
         self.client.login(username=someuser.username, password='frog')
         response = self.client.get(a_payment.get_absolute_url())
-        self.assertEqual(response.status_code, 302) #the object exists
+        self.assertEqual(response.status_code, 302) 
 
     def test_Payment_detail_uses_correct_templates(self):
         a_payment = PaymentFactory()
+        payer = a_payment.paying_user
+        self.client.login(username=payer.username, password='frog')
         response = self.client.get(a_payment.get_absolute_url())
         self.assertEqual(response.status_code, 200) #the object exists
         self.assertTemplateUsed(response, 'checkout/payment_base.html')

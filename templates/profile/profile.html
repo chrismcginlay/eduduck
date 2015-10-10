@@ -58,13 +58,14 @@ You are currently logged in via {{ auth_via }}.</p>
         <div class='pure-u-1-2' id='id_personal_details'>
             <h3>Your Details</h3>
             <a href="{%url 'profile.views.edit' %}">Edit Details</a>
-            <table class="pure-table pure-table-horizontal" >
+            <table class="pure-table pure-table-horizontal">
+                <tr><th>Field</th><th>Value</th></tr>
                 <tr><td>Name</td><td>{{ user.get_full_name }}</td></tr>
                 <tr><td>Email</td><td>{{ user.email }}</td></tr>
                 <tr><td>Motto</td><td>
                     {{ profile.signature_line|capfirst }}
                 </td></tr>
-                <tr><td>Accepted Terms & Conditions</td><td>
+                <tr><td>Accepted Terms</td><td>
                     {{ profile.accepted_terms }}
                 </td></tr>
                 <tr><td>Timezone</td><td>{{ profile.user_tz }}</td></tr>
@@ -81,7 +82,12 @@ You are currently logged in via {{ auth_via }}.</p>
         </div>
         <div class='pure-u-1-2' id='id_receipts'>
             <h3>Payment Receipts</h3>
-            {{ receipts }}
+                <table class="pure-table pure-table-horizontal">
+                    <tr><th>Receipt #</th><th>Payment</th><th>Currency</th><th>Date</th><th>Description</th></tr>
+                {% for receipt in receipts %}
+                    <tr><td>{{receipt.id}}</td><td>{{receipt.fee_value}}</td><td>{{receipt.currency}}</td><td>{{receipt.datestamp|date:"d M Y"}}</td><td>{{receipt.content_object|truncatechars:10}}</td></tr>
+                {% endfor %}
+                </table>
         </div>
     </div>
 {% endblock content %}
