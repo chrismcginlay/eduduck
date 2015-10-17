@@ -5,5 +5,29 @@
 {% endblock contentheading %}
 
 {% block content %}
-    <p>Payment ID: {{ object.id }}</p>
+    <h3 id='id_receipt'>Receipt for Payment</h3>
+    <p>EduDuck.com - Create or Take an Educational Course</p>
+    <hr>
+    {% if object.test_mode %}
+        <em>TESTING ONLY - THIS IS A SIMULATED PAYMENT ONLY</em>
+        <p>This simulated payment is made with Stripe.com's test mode. No money has changed hands and no services or items have been purchased. If you are seeing this on the live eduduck.com website, then it is an error, but you have not been charged.</p>
+        <hr>
+    {% endif %}
+    <table>
+    <tr><th>Qty</th><th>Item</th><th>Price</th></th></tr>
+    <tr><td>1</td><td> {{ object.content_object }} ({{ object.content_type }})</td>
+    <td>&#163; {{ object.fee_value }}</tr>
+    </table>
+    <hr>
+    <p>Receipt No./Payment ID: {{ object.id }}</p>
+    <p>Payment via: {{ object.method }}</p>
+    <p>Payment recieved: {{ object.datestamp }}</p>
+    {% if object.test_mode %}
+        <hr>
+        <em>TESTING ONLY - THIS IS A SIMULATED PAYMENT ONLY</em>
+        <p>This simulated payment is made with Stripe.com's test mode. No money has changed hands and no services or items have been purchased. If you are seeing this on the live eduduck.com website, then it is an error, but you have not been charged.</p>
+        <hr>
+    {% endif %}
+    <p>Payment recieved from user: {{ object.paying_user }}</p>
+    <em>Thank you for your custom.</em>
 {% endblock %}
