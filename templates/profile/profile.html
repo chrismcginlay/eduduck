@@ -82,10 +82,13 @@ You are currently logged in via {{ auth_via }}.</p>
         </div>
         <div class='pure-u-1-2' id='id_receipts'>
             <h3>Payment Receipts</h3>
+                <p>View a full receipt by selecting any payment</p>
                 <table class="pure-table pure-table-horizontal">
                     <tr><th>Receipt #</th><th>Payment</th><th>Currency</th><th>Date</th><th>Description</th></tr>
                 {% for receipt in receipts %}
-                    <tr id='id_receipt_{{receipt.id}}'><td>{{receipt.id}}</td><td>{{receipt.fee_value}}</td><td>{{receipt.currency}}</td><td>{{receipt.datestamp|date:"d M Y"}}</td><td>{{receipt.content_object|truncatechars:10}}</td></tr>
+                    <tr id='id_receipt_{{receipt.id}}'>
+                        <td><a href='/priced_items/payment/{{receipt.id}}/'>{{receipt.id}}</a></td>
+                        <td>{{receipt.fee_value}}</td><td>{{receipt.currency}}</td><td>{{receipt.datestamp|date:"d M Y"}}</td><td>{{receipt.content_object|truncatechars:10}}</td></tr>
                 {% endfor %}
                 </table>
         </div>

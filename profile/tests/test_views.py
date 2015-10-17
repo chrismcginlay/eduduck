@@ -81,7 +81,11 @@ class ProfileViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/accounts/profile/')
         self.assertIn('id_receipts', response.content)
-
+        self.assertIn(
+            'View a full receipt by selecting any payment',
+            response.content
+        )
+    
     def test_profile_receipts_area_shows_receipts(self):
         priceditem = PricedItemFactoryWithDefaults()
         bertie = User.objects.get(username='bertie')
@@ -89,6 +93,17 @@ class ProfileViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/accounts/profile/')
         self.assertIn('id_receipt_1', response.content)
+
+    def test_profile_receipt_summary_provides_link(self):
+        """A link is provided to view the entire receipt details"""
+        priceditem = PricedItemFactoryWithDefaults()
+        bertie = User.objects.get(username='bertie')
+        payment = PaymentFactory(paying_user=bertie)
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/accounts/profile/')
+        target = '<td><a href=\'/priced_items/payment/{0}/\'>{0}</a></td>'
+        target = target.format(payment.id)
+        self.assertIn(target, response.content)
 
     def test_profile_edit(self):
         """Test response profile.views.edit"""
