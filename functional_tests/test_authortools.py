@@ -1,3 +1,4 @@
+#functional_tests/test_authortools.py
 import os
 from django.core.files.uploadedfile import TemporaryUploadedFile
 from selenium import webdriver
@@ -100,6 +101,12 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
             abstract_box.get_attribute('innerHTML'), 
             u'Being <em>organised</em> is the key to a happy camp'
         )
+
+        # The course is by default 'unpublished' and thus a 'publish' button
+        # is visible
+        publish_button = self.browser.find_element_by_id('id_publish')
+        with self.assertRaises(NoSuchElementException):
+            self.browser.find_element_by_id('id_published_message')
  
         # She notices that there is an 'edit' button on this course page
         btn_edit = self.browser.find_element_by_id('id_edit_course')
@@ -157,8 +164,28 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         
         ## Clean browser instance - no cookie data etc.
         self.browser = webdriver.Firefox()
-        
+
+        # Albert visits the course index, but Urvasi's course isn't there 
+        # because she hasn't published it yet.
+        self.browser.get(self.server_url+'/courses/')
+        courses_area = self.browser.find_element_by_id('id_course_selection') 
+        with self.assertRaises(NoSuchElementException): 
+            self.browser.find_element_by_id('id_Camping_course')
+
+        # So Urvasi then publishes the course
+        self.browser.get(self.server_url)
+        self._logUserIn('urvasi', 'hotel23')
+        target_course = self.browser.find_element_by_id('id_Camping_course')
+        target_course.click()
+        publish_button = self.browser.find_element_by_id('id_publish')
+        publish_button.click()
+        with self.assertRaise(NoSuchElementException):
+            self.browser.find_element_by_id('id_publish')
+        self.browser.find_element_by_id('id_published_message')
+
         # Albert visits the course index. He sees Urvasi's course, visits its page
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
         self.browser.get(self.server_url+'/courses/')
         courses_area = self.browser.find_element_by_id('id_course_selection') 
         target_course = self.browser.find_element_by_id('id_Camping_course')

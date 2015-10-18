@@ -96,6 +96,17 @@ class CourseModelTests(TestCase):
         target = u"/courses/%s/" % self.course1.pk
         self.assertEqual(target, url, "course URL error")
    
+    def test_new_course_is_unpublished_by_default(self):
+        new_course = CourseFactory(
+            code = u'TEST1',
+            name = u'test course',
+            abstract = u'see unpublished by default',
+            organiser = self.user1,
+            instructor = self.user1
+        )
+        new_course.save()
+        self.assertFalse(new_course.published)
+
     def test_new_course_has_PricedItem_created(self):
         new_course = CourseFactory(
             code = u'TEST1',
