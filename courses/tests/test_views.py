@@ -43,21 +43,31 @@ class CourseViewTests(TestCase):
         'code': 'EDU02',
         'name': 'A Course of Leeches',
         'abstract': 'Learn practical benefits of leeches',
+        'published': True,
     }
     course2_data = {
         'code': 'FBR9',
         'name': 'Basic Knitting',
         'abstract': 'Casting on',
+        'published': True,
     }  
     course3_data = {
         'code': 'G3',
         'name': 'Nut Bagging',
         'abstract': 'Put the nuts in the bag',
+        'published': True,
     }
     course4_data = {
         'code': 'W1',
         'name': 'Washing',
         'abstract': 'How to *wash* a cat',
+        'published': True,
+    }
+    course5_data = {
+        'code': 'E1',
+        'name': 'Electronics',
+        'abstract': 'Intro to Electronics',
+        'published': False,
     }
     lesson1_data = {
         'name': 'Introduction to Music',
@@ -97,6 +107,11 @@ class CourseViewTests(TestCase):
         self.course4.organiser = self.user2
         self.course4.instructor = self.user2
         self.course4.save()
+
+        self.course5 = Course(**self.course5_data)
+        self.course5.organiser = self.user2
+        self.course5.instructor = self.user2
+        self.course5.save()
 
         self.lesson1 = Lesson(course=self.course1, **self.lesson1_data)
         self.lesson1.save()
@@ -467,8 +482,8 @@ class CourseViewTests(TestCase):
             'name': 'Test',
             'abstract': 'A test course'
         })
-        self.assertRedirects(response, '/courses/5/', 302, 200)
-        response = self.client.get('/courses/5/')
+        self.assertRedirects(response, '/courses/6/', 302, 200)
+        response = self.client.get('/courses/6/')
         self.assertIn('T01', response.content)
         self.assertIn('Test', response.content)
         self.assertIn('A test course', response.content)
@@ -580,4 +595,10 @@ class CourseViewTests(TestCase):
         self.assertIn('course_count', response.context, \
             "Missing template var: course_count")
         
-
+    def test_course_index_only_shows_published_courses(self):
+        response = self.client.get('/courses/')
+        self.assertIn('A Course of Leeches', response.content)
+        self.assertIn('Basic Knitting', response.content)
+        self.assertIn('Nut Bagging', response.content)
+        self.assertIn('Washing', response.content)
+        self.assertNotIn('Electronics', response.content)
