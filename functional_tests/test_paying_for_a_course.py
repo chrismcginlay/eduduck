@@ -106,9 +106,7 @@ class CanonicalWorkflow(FunctionalTest):
         # along with how much was paid and when.
         self.browser.get('{0}/accounts/profile/'.format(self.server_url))
         receipts_area = self.browser.find_element_by_id('id_receipts')
-        course_receipt = receipts_area.find_element_by_id('id_receipt_course_1')
-        receipt_date = course_receipt.find_element_by_xpath('//span/')
-        receipt_amount = course_receipt.find_element_by_xpath('//span/span/')
+        course_receipt = receipts_area.find_element_by_id('id_receipt_1')
 
     def test_author_reviews_paid_enrolments_for_course(self):
         # Gordon has been organiser/instructor for a couple of courses

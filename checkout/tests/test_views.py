@@ -258,13 +258,13 @@ class PaymentDetailViewTests(TestCase):
         response = self.client.get(a_payment.get_absolute_url())
         self.assertEqual(response.status_code, 200) #the object exists
 
-    def test_Payment_detail_view_302_OK_for_other_user(self):
+    def test_Payment_detail_view_403_OK_for_other_user(self):
         someuser=UserFactory()
         a_payment = PaymentFactory()
         payer = a_payment.paying_user
         self.client.login(username=someuser.username, password='frog')
         response = self.client.get(a_payment.get_absolute_url())
-        self.assertEqual(response.status_code, 302) 
+        self.assertEqual(response.status_code, 403) 
 
     def test_Payment_detail_uses_correct_templates(self):
         a_payment = PaymentFactory()

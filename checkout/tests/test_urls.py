@@ -87,12 +87,12 @@ class PaymentUrlTests(TestCase):
         a_payment = PaymentFactory()
         url = reverse(
             'checkout:payment_detail',
-            kwargs={'pk':a_payment.id}
+            kwargs={'payment_id':a_payment.id}
         )
         self.assertEqual(url, a_payment.get_absolute_url())
         resolver = resolve(url)
         self.assertEqual(resolver.view_name, 'checkout:payment_detail')
         self.assertEqual(
             resolver.kwargs, 
-            {'pk':unicode(a_payment.id),} 
+            {'payment_id':unicode(a_payment.id),} 
         )

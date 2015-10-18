@@ -1,7 +1,8 @@
 #checkout/urls.py
 from django.conf.urls import url
 from checkout.views import (
-    PaymentDetail,
+#    PaymentDetail,
+    payment_detail,
     PaymentList,
     PaymentList_forUser,
     PricedItemCreate,
@@ -45,8 +46,9 @@ urlpatterns = [
         name='payment_list_for_user'
     ),
     url(
-        r'^payment/(?P<pk>\d+)/$',
-        PaymentDetail.as_view(),
+        r'^payment/(?P<payment_id>\d+)/$',
+        payment_detail, 
+#       PaymentDetail.as_view(),
         name='payment_detail',
     ),
     url(

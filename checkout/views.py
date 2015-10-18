@@ -1,5 +1,7 @@
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import (
@@ -61,5 +63,19 @@ class PaymentList_forUser(LoginRequiredMixin, ListView):
 
     template_name = 'checkout/payment_for_user.html'
 
-class PaymentDetail(LoginRequiredMixin, DetailView):
-    model = Payment
+#class PaymentDetail(LoginRequiredMixin, DetailView):
+#    model = Payment
+
+def payment_detail(request, payment_id):
+    payment = get_object_or_404(Payment, pk=payment_id)
+    if request.user.is_authenticated():
+        if payment.paying_user == request.user:
+            context_data = { 
+                'object':   payment,
+            }
+            template = 'checkout/payment_detail.html'
+            return render(request, template, context_data)
+        else:
+            raise PermissionDenied
+    else:
+        return HttpResponseRedirect('/login/') 
