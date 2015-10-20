@@ -602,3 +602,12 @@ class CourseViewTests(TestCase):
         self.assertIn('Nut Bagging', response.content)
         self.assertIn('Washing', response.content)
         self.assertNotIn('Electronics', response.content)
+
+    def test_course_index_shows_unpublished_course_to_author(self):
+        self.client.login(username='hank', password='hankdo')
+        response = self.client.get('/courses/')
+        self.assertIn('A Course of Leeches', response.content)
+        self.assertIn('Basic Knitting', response.content)
+        self.assertIn('Nut Bagging', response.content)
+        self.assertIn('Washing', response.content)
+        self.assertIn('Electronics', response.content)

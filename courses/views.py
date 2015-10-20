@@ -202,8 +202,8 @@ def index(request):
     """Prepare variables for list of all courses"""
 
     logger.info('Course index view')
-    course_list = Course.objects.filter(published=True)
-    course_count = Course.objects.count
+    course_list = Course.objects.filter(published=True) | Course.objects.filter(organiser=request.user.id) | Course.objects.filter(instructor=request.user.id)
+    course_count = course_list.count()
     template = 'courses/course_index.html'
     cn24ths = _courses_n_24ths(course_list)
     c = {
