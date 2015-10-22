@@ -12,7 +12,8 @@ def home(request):
     
     logger.info("Homepage view")
     template = 'homepage/home.html'
-    course_list = Course.objects.all()[:6]
+    #course_list = Course.objects.all()[:6]
+    course_list = Course.objects.filter(published=True) | Course.objects.filter(organiser=request.user.id) | Course.objects.filter(instructor=request.user.id)
     courses_n_24ths = _courses_n_24ths(course_list)
     course_form = CourseNameForm()
     context_data = {

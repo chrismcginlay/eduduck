@@ -7,7 +7,8 @@
     "name": "Blender", 
     "abstract": "An introduction to Blender", 
     "organiser": 6, 
-    "instructor": 7
+    "instructor": 7,
+    "published": "True"
   }
 },
 {
@@ -18,7 +19,8 @@
     "name": "ISS", 
     "abstract": "Systems overview of the International Space Station", 
     "organiser": 6, 
-    "instructor": 6
+    "instructor": 6,
+    "published": "True"
   }
 },
 {
@@ -29,7 +31,8 @@
     "name": "Personal Development", 
     "abstract": "Fostering the 'Growth Mindset' within a student cohort", 
     "organiser": 7, 
-    "instructor": 7
+    "instructor": 7,
+    "published": "True"
   }
 },
 {
@@ -40,7 +43,8 @@
     "name": "Stellar Structure", 
     "abstract": "Structure of main sequence stars, inluding discussion of the relevant fundamental physics", 
     "organiser": 6, 
-    "instructor": 6
+    "instructor": 6,
+    "published": "True"
   }
 },
 {
@@ -51,7 +55,8 @@
     "name": "Line Fishing", 
     "abstract": "Learn about the different rods, lures, line, reels and techniques for sea, loch, and river.", 
     "organiser": 6, 
-    "instructor": 6
+    "instructor": 6,
+    "published": "True"
   }
 },
 {
@@ -62,7 +67,8 @@
     "name": "Contemporary Dance", 
     "abstract": "Overview of the main styles and development of modern dance.", 
     "organiser": 6, 
-    "instructor": 6
+    "instructor": 6,
+    "published": "True"
   }
 },
 {
@@ -73,7 +79,8 @@
     "name": "Field First Aid", 
     "abstract": "Practical first aid for challenging outdoor situations", 
     "organiser": 6, 
-    "instructor": 6
+    "instructor": 6,
+    "published": "False"
   }
 }
 ]

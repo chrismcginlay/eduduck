@@ -99,3 +99,24 @@ class HomepageViewTests(TestCase):
         response = self.client.get('/')
         needle = 'id="id_ssl_logo"'
         self.assertIn(needle, response.content)        
+
+    def test_homepage_only_shows_published_courses(self):
+        response = self.client.get('/')
+        self.assertIn('Blender', response.content)
+        self.assertIn('ISS', response.content)
+        self.assertIn('Personal Development', response.content)
+        self.assertIn('Stellar Structure', response.content)
+        self.assertIn('Line Fishing', response.content)
+        self.assertIn('Contemporary Dance', response.content)
+        self.assertNotIn('Field First Aid', response.content)
+
+    def test_homepage_shows_unpublished_course_to_author(self):
+        self.client.login(username='helen', password='helen')
+        response = self.client.get('/')
+        self.assertIn('Blender', response.content)
+        self.assertIn('ISS', response.content)
+        self.assertIn('Personal Development', response.content)
+        self.assertIn('Stellar Structure', response.content)
+        self.assertIn('Line Fishing', response.content)
+        self.assertIn('Contemporary Dance', response.content)
+        self.assertIn('Field First Aid', response.content)
