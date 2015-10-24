@@ -81,6 +81,10 @@ def _user_permitted_to_edit_course(user, course_id):
     return True
 
 @login_required
+def publish(request, course_id):
+    pass
+
+@login_required
 def edit(request, course_id):
     """View to allow instructor/organiser to edit course"""
     
