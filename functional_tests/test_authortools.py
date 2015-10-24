@@ -104,7 +104,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
 
         # The course is by default 'unpublished' and thus a 'publish' button
         # is visible
-        publish_button = self.browser.find_element_by_id('id_publish')
+        publish_button = self.browser.find_element_by_id('id_publish_button')
         with self.assertRaises(NoSuchElementException):
             self.browser.find_element_by_id('id_published_message')
  

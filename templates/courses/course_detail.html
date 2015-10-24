@@ -43,6 +43,12 @@
                     class='pure-button pure-button-primary'>
                         Edit Course
                 </a>
+                <button id='id_publish_button' 
+                        class='pure-button pure-button-primary' 
+                        type='submit' 
+                        name='course_publish'>
+                    Publish Course
+                </button>
             {% endif %}
             <p>You are involved in running this course.</p>
         {% elif status == "auth_not_enrolled" %}

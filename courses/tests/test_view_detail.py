@@ -110,7 +110,10 @@ class CourseViewdetailTests(TestCase):
         t = '<p>Course instructor <a href="/accounts/profile/{1}/public/">{0}</a>'
         target = t.format(instructor.get_full_name(), instructor.pk)
         self.assertIn(target, resp)
-    
+
+    def test_no_publish_button_when_not_logged_in(self):
+        response = self.client.get('/courses/7/')
+        self.assertNotIn('id_publish_button', response.content)
     #
     # The logged-in but not enrolled situation for non-instructors/organisers
     #
@@ -278,6 +281,11 @@ class CourseViewdetailTests(TestCase):
         self.assertNotIn('id_enrol_button', response.content)
         self.assertNotIn('id_enrol_button2', response.content)
 
+    def test_no_publish_button_when_not_enrolled(self):
+        self.client.login(username='gaby', password='gaby5')
+        response = self.client.get('/courses/7/')
+        self.assertNotIn('id_publish_button', response.content)
+
     #
     # The logged-in and enrolled situation
     #
@@ -397,6 +405,11 @@ class CourseViewdetailTests(TestCase):
         self.assertEqual(response.context['uc'].withdrawn, False)
         self.assertEqual(response.context['uc'].completed, True)        
         self.assertEqual(response.context['status'], 'auth_enrolled')
+    
+    def test_no_publish_button_when_enrolled(self):
+        self.client.login(username='chris', password='chris')
+        response = self.client.get('/courses/7/')
+        self.assertNotIn('id_publish_button', response.content)
 
     #
     # The logged-in but can't enroll situation 'cos instructor/organiser 
@@ -426,8 +439,15 @@ class CourseViewdetailTests(TestCase):
             'You are involved in running this course', response.content)
 
     def test_no_enrol_buttons_when_cant_enrol(self):
-        self.client.login(username='sven', password='sven')
+        #helen is author of course 7
+        self.client.login(username='helen', password='helen')
         response = self.client.get('/courses/1/')
         self.assertNotIn('id_enrol_button', response.content)
         self.assertNotIn('id_enrol_button2', response.content)
+
+    def test_publish_button_present_when_author(self):
+        #helen is author of course 7
+        self.client.login(username='helen', password='helen')
+        response = self.client.get('/courses/7/')
+        self.assertIn('id_publish_button', response.content)
 
