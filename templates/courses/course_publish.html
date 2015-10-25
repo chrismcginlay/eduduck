@@ -1,0 +1,28 @@
+{% extends "courses/base_course.html" %}
+{% load staticfiles %}
+{% load tz %}
+{% load markdown_deux_tags %}
+
+{% block extra_style %}
+    <link rel="stylesheet" href="{% static 'form.css' %}">
+{% endblock extra_style %}
+
+{{% block extra_script %}
+    <script src="{% static 'common.js' %}" ></script>
+{% endblock extra_script %}
+
+{% block breadcrumb %}
+<p id='id_breadcrumb'>
+    <a href="{% url 'courses.views.index' %}">All Courses</a> &gt;
+    <a href="{{ course.get_absolute_url }}">{{ course.name }}</a> &gt; Publish
+</p>
+{% endblock breadcrumb %}
+    
+{% block contentheading %}
+<h2 id='id_page_title'>Publishing: {{ course.name }}</h2>
+{% endblock contentheading %}
+
+{% block content %}
+Confirm publish form
+{% endblock content %}
+

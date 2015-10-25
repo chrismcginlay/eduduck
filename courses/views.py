@@ -80,9 +80,21 @@ def _user_permitted_to_edit_course(user, course_id):
         return False
     return True
 
+def _user_permitted_to_publish_course(user, course_id):
+    return _user_permitted_to_edit_course(user, course_id)
+
 @login_required
 def publish(request, course_id):
-    pass
+    if _user_permitted_to_publish_course(request.user, course_id):
+        course = get_object_or_404(Course, pk=course_id)
+        template = 'courses/course_publish.html'
+        context = {
+                      'course': course,
+        }
+        return render(request, template, context) 
+    else:
+        logger.info("Unauthorized attempt to edit course {0}".format(course_id))
+        raise PermissionDenied
 
 @login_required
 def edit(request, course_id):

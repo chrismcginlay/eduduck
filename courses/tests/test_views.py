@@ -31,6 +31,8 @@ from ..models import Course
 from ..views import (
     CourseFullForm,
     _courses_n_24ths,
+    _user_permitted_to_edit_course,
+    _user_permitted_to_publish_course,
     LessonInlineFormset,
     VideoInlineFormset,
     AttachmentInlineFormset
@@ -49,7 +51,7 @@ class CourseViewTests(TestCase):
         'code': 'FBR9',
         'name': 'Basic Knitting',
         'abstract': 'Casting on',
-        'published': True,
+    'published': True,
     }  
     course3_data = {
         'code': 'G3',
@@ -123,6 +125,24 @@ class CourseViewTests(TestCase):
         if os.path.isfile(testfile):
             os.remove(testfile)
 
+    def test__user_permitted_to_edit_course(self):
+        self.client.login(username='bertie', password='bertword')
+        course = Course.objects.get(pk=1)
+        user = User.objects.get(username='bertie') 
+        self.assertTrue(_user_permitted_to_edit_course(user, course.id))
+
+    def test__user_permitted_to_publish_course(self):
+        self.client.login(username='hank', password='hankdo')
+        course = Course.objects.get(pk=1)
+        user = User.objects.get(username='hank') 
+        self.assertFalse(_user_permitted_to_publish_course(user, course.id))
+        self.client.logout()
+
+        self.client.login(username='bertie', password='bertword')
+        course = Course.objects.get(pk=1)
+        user = User.objects.get(username='bertie') 
+        self.assertTrue(_user_permitted_to_publish_course(user, course.id))
+
     def test_helper__courses_n_24ths_returns_list(self):
         course_list = Course.objects.all()
         cn24 = _courses_n_24ths(course_list)
@@ -178,7 +198,7 @@ class CourseViewTests(TestCase):
         ##This should trigger modification of the course
         response = self.client.post('/courses/1/edit/', mod_data)
         self.assertRedirects(response, '/courses/1/')
-   
+
         ##Then visiting the course should reflect the changes
         response = self.client.get('/courses/1/')
         self.assertContains(response, 
@@ -192,7 +212,7 @@ class CourseViewTests(TestCase):
         self.assertIn('A description of a file', response.content)
         target = "<a href='/interaction/attachment/1/download/'>A test file</a>"
         self.assertIn(target, response.content)
- 
+
     def test_course_edit_redirects_if_not_loggedin(self):
         response = self.client.get('/courses/1/edit/')  
         login_redirect_url = '/accounts/login/?next=/courses/1/edit/'
@@ -207,7 +227,7 @@ class CourseViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/edit/') 
         self.assertEqual(response.status_code, 200)
-    
+
     def test_course_edit_page_has_correct_title_and_breadcrumb(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/edit/')
@@ -289,7 +309,7 @@ class CourseViewTests(TestCase):
         self.assertIn('Please correct the following:', response.content)
         self.assertIn(COURSE_NAME_FIELD_REQUIRED_ERROR, response.content)
         self.assertIn(COURSE_ABSTRACT_FIELD_REQUIRED_ERROR, response.content)
- 
+
         ##Then with missing required fields in lesson formset
         data = {
             'course_form-code': 'T1',
@@ -364,7 +384,7 @@ class CourseViewTests(TestCase):
         self.assertIn('value="A Course of Leeches"', response.content)
         self.assertIn(
             'Learn practical benefits of leeches', response.content)
- 
+
     def test_course_edit_page_has_populated_lesson_area(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/edit/')
@@ -398,7 +418,7 @@ class CourseViewTests(TestCase):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
         self.assertEqual(response.status_code, 200)
-  
+
     def test_course_create_view_uses_correct_template(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/create/')
@@ -474,7 +494,7 @@ class CourseViewTests(TestCase):
             'abstract': ''
         })
         self.assertIsInstance(response.context['form'], CourseFullForm)
-  
+
     def test_course_create_page_can_save_data(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.post('/courses/create/', data={
@@ -492,23 +512,23 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/enrol/')
         login_redirect_url = '/accounts/login/?next=/courses/1/enrol/'
         self.assertRedirects(response, login_redirect_url, 302, 200)
-    
+
     def test_course_enrol_page_200_if_loggedin(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/enrol/')
         self.assertEqual(response.status_code, 200)
- 
+
     def test_course_enrol_page_uses_correct_template(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/1/enrol/')
         self.assertTemplateUsed(response, 'courses/course_enrol.html')
-    
+
     def test_course_enrol_page_has_enrol_button(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/courses/3/enrol/')
         target = "id='id_enrol_button'"
         self.assertIn(target, response.content)
-   
+
     def test_course_enrol_page_no_enrol_button_if_author(self):
         """Course organiser or instructor can't enrol!"""
         self.client.login(username='bertie', password='bertword')

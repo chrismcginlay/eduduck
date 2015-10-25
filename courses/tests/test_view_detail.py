@@ -18,7 +18,7 @@ from lesson.models import Lesson
 from checkout.models import PricedItem
 from ..models import Course
 
-class CourseViewdetailTests(TestCase):
+class CourseViewDetailTests(TestCase):
     """Test courses.views.detail"""
 
     fixtures = [
@@ -114,6 +114,7 @@ class CourseViewdetailTests(TestCase):
     def test_no_publish_button_when_not_logged_in(self):
         response = self.client.get('/courses/7/')
         self.assertNotIn('id_publish_button', response.content)
+
     #
     # The logged-in but not enrolled situation for non-instructors/organisers
     #
