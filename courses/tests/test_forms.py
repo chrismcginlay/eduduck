@@ -11,6 +11,7 @@ from courses.forms import (
 )
 from courses.models import Course
 
+
 class CourseNameFormTest(TestCase):
     """ The homepage sports a quick course create form """
     

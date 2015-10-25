@@ -87,10 +87,25 @@ def _user_permitted_to_publish_course(user, course_id):
 def publish(request, course_id):
     if _user_permitted_to_publish_course(request.user, course_id):
         course = get_object_or_404(Course, pk=course_id)
-        template = 'courses/course_publish.html'
         context = {
-                      'course': course,
+            'course': course,
         }
+        if course.published:
+            context.update({
+                'course_already_published': True,
+            })
+        if request.method=='POST':
+            if 'cancel_publish' in request.POST:
+                context.update({
+                    'publish_cancelled': True,
+                })
+            if 'course_publish' in request.POST:
+                course.published = True
+                course.save()
+        context.update({
+            'course_published': course.published,
+        })
+        template = 'courses/course_publish.html'
         return render(request, template, context) 
     else:
         logger.info("Unauthorized attempt to edit course {0}".format(course_id))

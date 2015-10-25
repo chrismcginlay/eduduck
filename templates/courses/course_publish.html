@@ -23,6 +23,40 @@
 {% endblock contentheading %}
 
 {% block content %}
-Confirm publish form
+{% if publish_cancelled %}
+    <h3>Publication Cancelled</h3>
+    <p>Your course has not been published.</p>
+{% elif course_already_published %}
+    <h3>Already Published</h3>
+    <p>Your course has already been published.</p>
+{% elif course_published %}
+    <h3>Course Published Successfully</h3>
+    <p>Your course has been published.</p>
+{% else %}
+    <p><em>Ready to publish your course?</em> That's great. Just bear in mind the following</p>
+    <ul>
+        <li>Once published, you can't 'unpublish' your course (but you can edit it)</li>
+        <li>Your course should be complete and useable before you publish it.</li>
+        <li>If you are finding that it's too much work to prepare your course, consider splitting it up into two smaller courses.</li>
+        <li>Your course should be compatible with our terms and conditions.</li>
+    </ul>
+    <form method='post' action=''>
+        {% csrf_token %}
+        <button 
+            id="id_course_publish" 
+            type="submit"
+            name="course_publish" 
+            class="pure-button pure-button-primary">
+            Publish Course
+        </button>
+        <button
+            id="id_publish_cancel"
+            type="submit"
+            name="cancel_publish"
+            class="pure-button pure-button-primary">
+            Cancel - Don't Publish Yet
+        </button>
+    </form>
+{% endif %}
 {% endblock content %}
 

@@ -4,6 +4,7 @@ from django.http.response import (
     HttpResponseRedirect
 )
 from django.test import TestCase
+from courses.models import Course
 
 class CourseViewPublishTests(TestCase):
     """Test courses.views.publish"""
@@ -78,27 +79,32 @@ class CourseViewPublishTests(TestCase):
         self.client.login(username='helen', password='helen')
         form_data = {'course_publish':'publish'} 
         response = self.client.post('/courses/7/publish/', form_data)
-        self.assertIn('course is now published', response.content)
+        self.assertEqual(response.context['course_published'], True)
+        self.assertIn('course has been published', response.content)
 
-        course = Courses.objects.get(pk=7)
+        course = Course.objects.get(pk=7)
         self.assertTrue(course.published)
 
     def test_200_OK_post_CANCEL_not_publishes_course(self):
         self.client.login(username='helen', password='helen')
-        form_data = {'course_publish':'cancel'} 
+        form_data = {'cancel_publish':'cancel'} 
         response = self.client.post('/courses/7/publish/', form_data)
-        self.assertIn('course has not bee published', response.content)
+        self.assertEqual(response.context['course_published'], False)
+        self.assertIn('course has not been published', response.content)
 
-        course = Courses.objects.get(pk=7)
+        course = Course.objects.get(pk=7)
         self.assertFalse(course.published)
 
     def test_course_already_published_shows_appropriate_message(self):
         #Course 6 is already published
         self.client.login(username='helen', password='helen')
         response = self.client.get('/courses/6/publish/')
-        self.assertIn('already published', response.content)
+        self.assertEqual(response.context['course_already_published'], True)
+        self.assertEqual(response.context['course_published'], True)
+        self.assertIn('already been published', response.content)
 
         form_data = {'course_publish':'publish'} 
         response = self.client.post('/courses/6/publish/', form_data)
-        self.assertIn('already published', response.content) 
+        self.assertEqual(response.context['course_published'], True)
+        self.assertIn('already been published', response.content) 
 
