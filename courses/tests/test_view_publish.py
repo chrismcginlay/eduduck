@@ -74,8 +74,31 @@ class CourseViewPublishTests(TestCase):
         response = self.client.get('/courses/7/publish/')
         self.assertEqual(response.status_code, 200)
 
-    def test_200_OK_post(self):
-        self.fail("write")
+    def test_200_OK_post_PUBLISH_publishes_course(self):
+        self.client.login(username='helen', password='helen')
+        form_data = {'course_publish':'publish'} 
+        response = self.client.post('/courses/7/publish/', form_data)
+        self.assertIn('course is now published', response.content)
+
+        course = Courses.objects.get(pk=7)
+        self.assertTrue(course.published)
+
+    def test_200_OK_post_CANCEL_not_publishes_course(self):
+        self.client.login(username='helen', password='helen')
+        form_data = {'course_publish':'cancel'} 
+        response = self.client.post('/courses/7/publish/', form_data)
+        self.assertIn('course has not bee published', response.content)
+
+        course = Courses.objects.get(pk=7)
+        self.assertFalse(course.published)
 
     def test_course_already_published_shows_appropriate_message(self):
-        self.fail("write")
+        #Course 6 is already published
+        self.client.login(username='helen', password='helen')
+        response = self.client.get('/courses/6/publish/')
+        self.assertIn('already published', response.content)
+
+        form_data = {'course_publish':'publish'} 
+        response = self.client.post('/courses/6/publish/', form_data)
+        self.assertIn('already published', response.content) 
+
