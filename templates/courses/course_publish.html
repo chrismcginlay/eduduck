@@ -26,12 +26,15 @@
 {% if publish_cancelled %}
     <h3>Publication Cancelled</h3>
     <p>Your course has not been published.</p>
+    <p><a id="id_course_link" href="{{ course.get_absolute_url }}">Return to course Page</a></p>
 {% elif course_already_published %}
     <h3>Already Published</h3>
     <p>Your course has already been published.</p>
+    <p><a id="id_course_link" href="{{ course.get_absolute_url }}">Visit course page</a></p>
 {% elif course_published %}
     <h3>Course Published Successfully</h3>
     <p>Your course has been published.</p>
+    <p><a id="id_course_link" href="{{ course.get_absolute_url }}">Visit course page</a></p>
 {% else %}
     <p><em>Ready to publish your course?</em> That's great. Just bear in mind the following</p>
     <ul>

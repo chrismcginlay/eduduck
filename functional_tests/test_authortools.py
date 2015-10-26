@@ -2,6 +2,7 @@
 import os
 from django.core.files.uploadedfile import TemporaryUploadedFile
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from unittest import skip
 from urllib import unquote
@@ -175,12 +176,23 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         # So Urvasi then publishes the course
         self.browser.get(self.server_url)
         self._logUserIn('urvasi', 'hotel23')
+        self.browser.get(self.server_url+'/courses/')
         target_course = self.browser.find_element_by_id('id_Camping_course')
         target_course.click()
-        publish_button = self.browser.find_element_by_id('id_publish')
+        course_url = self.browser.current_url
+        publish_confirmation_url = "{0}publish/".format(course_url)
+        publish_button = self.browser.find_element_by_id('id_publish_button')
         publish_button.click()
-        with self.assertRaise(NoSuchElementException):
-            self.browser.find_element_by_id('id_publish')
+       
+        self.assertEqual(self.browser.current_url, publish_confirmation_url)
+        publish_button = self.browser.find_element_by_id('id_course_publish')
+        publish_button.click()
+        self.assertEqual(self.browser.current_url, publish_confirmation_url)
+        self.browser.find_element_by_id('id_course_link').click()
+        self.assertEqual(self.browser.current_url, course_url)
+ 
+        with self.assertRaises(NoSuchElementException):
+            self.browser.find_element_by_id('id_publish_button')
         self.browser.find_element_by_id('id_published_message')
 
         # Albert visits the course index. He sees Urvasi's course, visits its page
