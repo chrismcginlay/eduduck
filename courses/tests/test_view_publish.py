@@ -108,3 +108,9 @@ class CourseViewPublishTests(TestCase):
         self.assertEqual(response.context['course_published'], True)
         self.assertIn('already been published', response.content) 
 
+    def test_course_page_doesnt_show_publish_button_when_published(self):
+        self.client.login(username='helen', password='helen')
+        response = self.client.get('/courses/6/')
+        self.assertNotIn('id_publish_button', response.content)
+        self.assertIn('id_published_message', resonse.content)
+
