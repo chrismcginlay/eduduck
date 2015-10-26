@@ -112,5 +112,5 @@ class CourseViewPublishTests(TestCase):
         self.client.login(username='helen', password='helen')
         response = self.client.get('/courses/6/')
         self.assertNotIn('id_publish_button', response.content)
-        self.assertIn('id_published_message', resonse.content)
+        self.assertIn('id_published_message', response.content)
 

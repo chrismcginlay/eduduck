@@ -43,11 +43,15 @@
                     class='pure-button pure-button-primary'>
                         Edit Course
                 </a>
-                <a  href = "{% url 'course_publish' course_id=course.id %}"
-                    id='id_publish_button' 
-                    class='pure-button pure-button-primary'>
-                    Publish Course
-                </a>
+                {% if course.published %}
+                    <p id='id_published_message'>Course Status: Published</p>
+                {% else %}
+                    <a  href = "{% url 'course_publish' course_id=course.id %}"
+                        id='id_publish_button' 
+                        class='pure-button pure-button-primary'>
+                        Publish Course
+                    </a>
+                {% endif %}
             {% endif %}
             <p>You are involved in running this course.</p>
         {% elif status == "auth_not_enrolled" %}
