@@ -161,6 +161,7 @@ INSTALLED_APPS = (
     'profile',
     'quiz',
     'support',
+    'terms',
     'video',
     'checkout',
 )

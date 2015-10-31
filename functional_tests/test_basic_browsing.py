@@ -130,7 +130,7 @@ class VisitorBrowsesMenus(FunctionalTest):
         self.browser.get(self.server_url)
         items_expected = [
             'Courses', 'Login',  
-            'Blog', 'Support', 'About']
+            'Blog', 'Support', 'Terms', 'About']
         self._checkChildItemsPresent(items_expected, 'menu')
 
         # Urvasi is quite methodical and so works her way through each of the
@@ -145,7 +145,7 @@ class VisitorBrowsesMenus(FunctionalTest):
         ##check logout last as clicking it has a side-effect.
         items_expected = [
             'Courses', 'Urvasi', 'Blog', 
-            'Support', 'About', 'Logout']
+            'Support', 'Terms', 'About', 'Logout']
         self._checkChildItemsPresent(items_expected, 'menu')
         self._checkChildLinksWork('menu')
         
@@ -227,5 +227,14 @@ class VisitorBrowsesBreadcrumbs(FunctionalTest):
         # This link also works.
         self._checkChildLinksWork('id_breadcrumb')
         
-            
+    def test_breadcrumb_trail_for_terms_and_conditions(self):
+        self.browser.get(self.server_url+'/terms/')
+        items_expected = [
+            'Privacy',
+            'Browsing', 
+            'Enrolling', 
+            'Creating',
+        ]
+        self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
+        self._checkChildLinksWork('id_breadcrumb')
 

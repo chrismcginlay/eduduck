@@ -15,6 +15,7 @@ import lesson.urls
 import outcome.urls
 import profile.urls
 import support.urls
+import terms.urls
 
 urlpatterns =  [
     url(r'^$', homepage.views.home, name='homepage'),
@@ -22,6 +23,7 @@ urlpatterns =  [
     url(r'^about/$', TemplateView.as_view(template_name = 'about.html')),
     url(r'^priced_items/', include(checkout.urls, namespace='checkout')),
     url(r'^support/', include(support.urls)),
+    url(r'^terms/', include(terms.urls, namespace='terms')),
     url(r'^lesson/(?P<lesson_id>\d+)/lint/', include(outcome.urls)),
     url(r'^courses/', include(courses.urls)),
     url(r'^interaction/', include(interaction.urls)),
