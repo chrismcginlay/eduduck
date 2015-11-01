@@ -10,6 +10,7 @@
     <a href="/accounts/password/change/">Change Password</a>
 
     <h3>Edit Your Details</h3>
+    <p><a id='id_tandc_link' href="{% url 'terms:terms_index' %}">Terms</a></p>
     <form action='' method='post'>{% csrf_token %}
     {% for hf in form.hidden_fields %}
         {{ hf }}

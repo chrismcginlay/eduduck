@@ -65,7 +65,10 @@ You are currently logged in via {{ auth_via }}.</p>
                 <tr><td>Motto</td><td>
                     {{ profile.signature_line|capfirst }}
                 </td></tr>
-                <tr><td>Accepted Terms</td><td>
+                <tr><td>Accepted 
+                    <a id='id_tandc_link' href="{% url 'terms:terms_index' %}">
+                    Terms</a></td>
+                <td>
                     {{ profile.accepted_terms }}
                 </td></tr>
                 <tr><td>Timezone</td><td>{{ profile.user_tz }}</td></tr>

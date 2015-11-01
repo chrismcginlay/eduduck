@@ -1,4 +1,4 @@
-from selenium import websriver
+from selenium import webdriver
 
 from .base import FunctionalTest
 
@@ -40,7 +40,7 @@ class LoggedInUserAcceptsTermsAndConditionsViaProfilePage(FunctionalTest):
         # Following the link provided takes her to the T&C index
         self.browser.get(self.server_url)
         self._logUserIn('helmi', 'plate509')
-        self.browswer.get(self.server_url+'/accounts/profile/')
+        self.browser.get(self.server_url+'/accounts/profile/')
         tandc_link = self.browser.find_element_by_id('id_tandc_link')
         tandc_link.click()
         self.assertEqual(

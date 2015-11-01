@@ -228,13 +228,33 @@ class VisitorBrowsesBreadcrumbs(FunctionalTest):
         self._checkChildLinksWork('id_breadcrumb')
         
     def test_breadcrumb_trail_for_terms_and_conditions(self):
+        # Helmi visits the terms page
         self.browser.get(self.server_url+'/terms/')
-        items_expected = [
-            'Privacy',
-            'Browsing', 
-            'Enrolling', 
-            'Creating',
-        ]
+        items_expected = ['T&C']
+        # The breadcrumb trail is established
+        self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
+    
+        # She visits each of the terms pages and finds all breadcrumbs working
+        self.browser.get(self.server_url+'/terms/privacy')
+        items_expected = ['T&C', 'Privacy']
+        # The breadcrumb trail is established
         self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
         self._checkChildLinksWork('id_breadcrumb')
 
+        self.browser.get(self.server_url+'/terms/browsing')
+        items_expected = ['T&C', 'Browsing']
+        # The breadcrumb trail is established
+        self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
+        self._checkChildLinksWork('id_breadcrumb')
+
+        self.browser.get(self.server_url+'/terms/enrolling')
+        items_expected = ['T&C', 'Enrolling']
+        # The breadcrumb trail is established
+        self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
+        self._checkChildLinksWork('id_breadcrumb')
+
+        self.browser.get(self.server_url+'/terms/creating')
+        items_expected = ['T&C', 'Creating']
+        # The breadcrumb trail is established
+        self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
+        self._checkChildLinksWork('id_breadcrumb')

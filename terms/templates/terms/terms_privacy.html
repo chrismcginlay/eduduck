@@ -1,7 +1,10 @@
 {% extends "terms/terms_base.html" %}
 
 {% block breadcrumb %}
-    <p id='id_breadcrumb'>Terms and Conditions &gt; Privacy</p>
+<p id='id_breadcrumb'>
+    <a href="#">T&amp;C</a> &gt; 
+    <a href="{% url 'terms:terms_privacy' %}">Privacy</a>
+</p>
 {% endblock breadcrumb %}
 
 {% block contentheading %}

@@ -77,6 +77,11 @@ class ProfileViewTests(TestCase):
         self.assertIn('id_courses_enrolled', response.content)
         self.assertIn('id_courses_taught', response.content)
 
+    def test_profile_has_link_to_terms_and_conditions(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/accounts/profile/')
+        self.assertIn('id_tandc_link', response.content)
+
     def test_profile_has_receipts_area(self):
         self.client.login(username='bertie', password='bertword')
         response = self.client.get('/accounts/profile/')
@@ -124,6 +129,9 @@ class ProfileViewTests(TestCase):
         self.assertIn('<a href="/accounts/password/change/">Change Password</a>', 
             response.content, "Password change link missing")
         
+        #Check that the link to the TandC is present
+        self.assertIn('id_tandc_link', response.content)
+
         #Test form with missing data
         response = self.client.post("/accounts/profile/edit/", 
             kwargs={
