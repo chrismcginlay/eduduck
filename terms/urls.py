@@ -7,22 +7,27 @@ from .import views
 urlpatterns = [
     url(
         r'^$', 
-        TemplateView.as_view(template_name='terms/terms_index.html'
-    )),
+        TemplateView.as_view(template_name='terms/terms_index.html'),
+        name = 'terms_index'
+    ),
     url(
         r'privacy/$',
-        TemplateView.as_view(template_name='terms/terms_privacy.html'
-    )),
+        TemplateView.as_view(template_name='terms/terms_privacy.html'),
+        name = 'terms_privacy'
+    ),
     url(
         r'browsing/$', 
-        TemplateView.as_view(template_name='terms/terms_browsing.html'
-    )),
+        TemplateView.as_view(template_name='terms/terms_browsing.html'),
+        name = 'terms_browsing'
+    ),
     url(
         r'enrolling/$', 
-        TemplateView.as_view(template_name='terms/terms_enrolling.html'
-    )),
+        TemplateView.as_view(template_name='terms/terms_enrolling.html'),
+        name = 'terms_enrolling'
+    ),
     url(
         r'creating/$',
-        TemplateView.as_view(template_name='terms/terms_creating.html'
-    )),
+        TemplateView.as_view(template_name='terms/terms_creating.html'),
+        name = 'terms_creating'
+    ),
 ]

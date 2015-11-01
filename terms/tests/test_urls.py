@@ -4,33 +4,33 @@ from django.test import TestCase
 
 class TermsUrlTests(TestCase):
     def test_TermsIndex(self):
-        url = reverse('terms:index')
+        url = reverse('terms:terms_index')
         self.assertEqual(url, '/terms/')
         resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'terms:index')
+        self.assertEqual(resolver.view_name, 'terms:terms_index')
 
     def test_TermsPrivacyPolicy(self):
-        url = reverse('terms:privacy_policy')
-        self.assertEqual(url, '/terms/privacy_policy/')
+        url = reverse('terms:terms_privacy')
+        self.assertEqual(url, '/terms/privacy/')
         resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'terms:privacy_policy')
+        self.assertEqual(resolver.view_name, 'terms:terms_privacy')
 
     def test_TermsBrowsingWebsite(self):
-        url = reverse('terms:browsing')
+        url = reverse('terms:terms_browsing')
         self.assertEqual(url, '/terms/browsing/')
         resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'terms:browsing')
+        self.assertEqual(resolver.view_name, 'terms:terms_browsing')
 
     def test_TermsEnrollingOnCourse(self):
-        url = reverse('terms:enrolling')
+        url = reverse('terms:terms_enrolling')
         self.assertEqual(url, '/terms/enrolling/')
         resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'terms:enrolling')
+        self.assertEqual(resolver.view_name, 'terms:terms_enrolling')
 
     def test_TermsCreatingContent(self):
-        url = reverse('terms:creating')
+        url = reverse('terms:terms_creating')
         self.assertEqual(url, '/terms/creating/')
         resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'terms:creating')
+        self.assertEqual(resolver.view_name, 'terms:terms_creating')
 
 
