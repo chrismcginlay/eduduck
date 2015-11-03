@@ -37,4 +37,4 @@ class TermsUrlTests(TestCase):
         url = reverse('terms:terms_disclaimer')
         self.assertEqual(url, '/terms/disclaimer/')
         resolver = resolve(url)
-        self.assertEqual(resolver.view_name, 'terms:terms_creating')
+        self.assertEqual(resolver.view_name, 'terms:terms_disclaimer')

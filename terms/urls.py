@@ -11,6 +11,11 @@ urlpatterns = [
         name = 'terms_index'
     ),
     url(
+        r'disclaimer/$',
+        TemplateView.as_view(template_name='terms/terms_disclaimer.html'),
+        name = 'terms_disclaimer'
+    ),
+    url(
         r'privacy/$',
         TemplateView.as_view(template_name='terms/terms_privacy.html'),
         name = 'terms_privacy'

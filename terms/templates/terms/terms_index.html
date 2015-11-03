@@ -11,5 +11,12 @@
 {% endblock contentheading %}
 
 {% block content %}
-    TBC
+    <p>Please check the following documents for our terms and conditions and usage disclaimer</p>
+    <ol>
+        <li><a href="{% url 'terms:terms_privacy' %}">Privacy policy</a></li>
+        <li><a href="{% url 'terms:terms_browsing' %}">Browsing EduDuck.com</a></li>
+        <li><a href="{% url 'terms:terms_enrolling' %}">Enrolling on a course</a></li>
+        <li><a href="{% url 'terms:terms_creating' %}">Creating content</a></li>
+        <li><a href="{% url 'terms:terms_disclaimer' %}">Website disclaimer</a></li>
+    </ol>
 {% endblock content %}

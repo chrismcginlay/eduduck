@@ -19,15 +19,15 @@ class TermsViewTests(TestCase):
     def test_index_page_contains_links_to_terms(self):
         response = self.client.get('/terms/')
         self.assertContains(
-            response, "Privacy Policy</a>")
+            response, "Privacy policy</a>")
         self.assertContains(
             response, "Browsing EduDuck.com</a>")
         self.assertContains(
             response, "Enrolling on a course</a>")
         self.assertContains(
-            response, "Creating Content</a>")
+            response, "Creating content</a>")
         self.assertContains(
-            response, "Website Disclaimer</a>")    
+            response, "Website disclaimer</a>")    
 
     def test_disclaimer_page_200_OK(self):
         response = self.client.get('/terms/disclaimer/')
