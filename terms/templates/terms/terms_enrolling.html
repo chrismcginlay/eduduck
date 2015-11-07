@@ -12,5 +12,19 @@
 {% endblock contentheading %}
 
 {% block content %}
-    TBC
+<p>We hope that you will enjoy enrolling on the courses we host on EduDuck.com.</p>
+<p>In addition to the <a href="{% url 'terms:terms_browsing' %}">basic terms and conditions</a>, the following additional terms will apply should you choose to enrol on a course.</p>
+<ol>
+<li>Courses hosted on EduDuck.com may be produced and maintained by EduDuck.com directly or by third party users of the site.</li>
+<li>Whilst we require course authors to produce courses of a good standard, you understand that course authors will necessarily have the ability to publish and edit material directly and without the approval of EduDuck.com. Thus there may be errors, omissions, offensive or misleading information. You are responsible for ensuring that information presented meets your needs, however if you identify errors, omissions, offensive or misleading information we would kindly request that you <a href="{% url 'support' %}">report it</a>. EduDuck.com will then check your report and take whatever action it deems necessary. This may result in deletion of material and suspension of accounts of users creating offensive material.</li>
+<li>If completing any assessment or homework assignments as part of a course, you undertake that any work you submit will be your own.</li>
+<li>If you have purchased access to a course, you can expect that the course will remain active on our system for at least 6 months. Beyond the 6 month timeframe, you accept that we may retire older courses from active availability in order to develop EduDuck.com's software platform and to keep the selection of courses relevant and up-to-date.</li>
+<li>If a course is to be retired from active availability, we would aim to provide a summary and static record of your progress on that course, accessible via <a href="{% url 'profile' %}">your profile.</a></li>
+<li>In the case where EduDuck.com might agree to refund any payment you have made for a course, the maximum refund you are entitled to shall not exceed the total of payments made for that particular course.</li>
+<li>No refund can be paid after 7 days or after you have accessed a reasonable fraction of the course you have paid for.</li>
+<li>EduDuck.com aims to be a polite and respectful shared learning environment. Disruptive or abusive behaviour will not be tolerated and any account used in a negative manner will probably be locked or deleted, resulting in the loss of any paid enrolment fees.</li>
+<li>No course fee refunds will be available to users who engage in disruptive, abusive or hateful behaviour and have their accounts suspended as a result of this behaviour.</li>
+<li>Users should protect their own safety and not give away sensitive personal or location information to other users that they do not know.</li>
+<li>Any account suspension for reasons of abusive, disruptive or hateful behaviour shall be decided by EduDuck.com and may occur without notice to any user engaging in such behaviour. If such behaviour has occurred at a lower level EduDuck.com may attempt to contact the user and ask them to remove any offensive material.</li>
+</ol>
 {% endblock content %}
