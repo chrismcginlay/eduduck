@@ -30,7 +30,7 @@ class VisitorViewsAllTermsAndConditions(FunctionalTest):
         # breadcrumb which takes him back to the eduduck.com homepage
         home = self.browser.find_element_by_id('id_home')
         home.click()
-        self.assertEqual(self.browser.get_current_url, self.server_url) 
+        self.assertEqual(self.browser.current_url, self.server_url) 
         
 class LoggedInUserAcceptsTermsAndConditionsViaProfilePage(FunctionalTest):
     
@@ -44,7 +44,7 @@ class LoggedInUserAcceptsTermsAndConditionsViaProfilePage(FunctionalTest):
         tandc_link = self.browser.find_element_by_id('id_tandc_link')
         tandc_link.click()
         self.assertEqual(
-            self.browser.get_current_url,
+            self.browser.current_url,
             self.server_url+'/terms/'
         )
 
@@ -56,15 +56,16 @@ class UserLogsInAndAcceptsTermsAndConditionsViaTaCIndexPage(FunctionalTest):
         self.browser.get(self.server_url+'/terms/')
         # From here he sees a link to accept terms
         accept_link = self.browser.find_element_by_id('id_accept_terms')
+        accept_link.click()
         # Since he is not logged in, this takes him to login
         self.assertEqual(
-            self.browser.get_current_url,
-            self.server_url+'/accounts/login/'
+            self.browser.current_url,
+            self.server_url+'/accounts/login/?next=/accounts/profile/edit/'
         )
         # He logs in and is taken to the profile/edit page
-        self._logUserIn('chris', 'chris')
+        self._logUserIn('chris', 'chris', next_url='/accounts/profile/edit/')
         # Here he is able to accept/refect the terms and conditions
         self.assertEqual(
-            self.browser.get_current_url,
+            self.browser.current_url,
             self.server_url+'/accounts/profile/edit/'
         )
