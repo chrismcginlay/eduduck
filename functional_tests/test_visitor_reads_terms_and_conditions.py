@@ -16,21 +16,22 @@ class VisitorViewsAllTermsAndConditions(FunctionalTest):
         breadcrumb = self.browser.find_element_by_id('id_breadcrumb')
         # 4 links are listed in the main content area
         items_expected = [
-            'Privacy',
-            'Browsing', 
-            'Enrolling', 
-            'Creating',
+            'Privacy policy',
+            'Browsing EduDuck.com', 
+            'Enrolling on a course', 
+            'Creating content',
+            'Website disclaimer'
         ]
         # Each link takes the user to the corresponding detail page
         # with a suitably updated breadcrumb Home > T&C > Privacy.
         # Selecting T&C takes Fred back to the T&C index.
-        self._checkChildItemsPresent(items_expected, 'id_breadcrumb')
-        self._checkChildLinksWork('id_breadcrumb')
+        self._checkChildItemsPresent(items_expected, 'id_terms_menu')
+        self._checkChildLinksWork('id_terms_menu')
         # After reading everything, Fred selects the Home link in the
         # breadcrumb which takes him back to the eduduck.com homepage
-        home = self.browser.find_element_by_id('id_home')
+        home = self.browser.find_element_by_id('id_homelink')
         home.click()
-        self.assertEqual(self.browser.current_url, self.server_url) 
+        self.assertEqual(self.browser.current_url, self.server_url+'/') 
         
 class LoggedInUserAcceptsTermsAndConditionsViaProfilePage(FunctionalTest):
     

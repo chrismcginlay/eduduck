@@ -13,7 +13,7 @@
 {% block content %}
     <p>Please check the following documents for our terms and conditions and usage disclaimer</p>
     <p>Assuming you are happy with the terms, you can <a id='id_accept_terms' href="{% url 'profile_edit' %}">accept them on your profile page.</a></p>
-    <ol>
+    <ol id='id_terms_menu'>
         <li><a href="{% url 'terms:terms_privacy' %}">Privacy policy</a></li>
         <li><a href="{% url 'terms:terms_browsing' %}">Browsing EduDuck.com</a></li>
         <li><a href="{% url 'terms:terms_enrolling' %}">Enrolling on a course</a></li>
