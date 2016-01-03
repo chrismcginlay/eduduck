@@ -86,9 +86,9 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
         # invitation to enrol see a list of lessons, assessments and resources
         # in the main course resource area
 
-        fishing_course = self.browser.find_element_by_id(
+        pd_course = self.browser.find_element_by_id(
             'id_Personal Development_course')
-        fishing_course.click()
+        pd_course.click()
         self.assertTrue(self.browser.find_element_by_id('id_course_title'))
         enrol = self.browser.find_element_by_id('id_enrol_button')
     
