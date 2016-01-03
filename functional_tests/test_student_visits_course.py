@@ -6,6 +6,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from unittest import skip
 
+#TODO get rid of following three imports once factory_boy replaces fixtures
+from django.contrib.contenttypes.models import ContentType 
+from checkout.models import PricedItem
+from courses.models import Course
+
 from .base import FunctionalTest
 
 class LoggedInUserInteractsWithCourse(FunctionalTest):
@@ -30,11 +35,19 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
                 self.wait_for_element_to_be_invisible(shady_bit))
 
     def test_user_enrols_on_free_course(self):
+
+        #TODO get rid of this once factory_boy has replaced fixtures
+        courses = Course.objects.all()
+        course_type = ContentType.objects.get_for_model(Course)
+        # make the fishing course free
+        fishing_course = PricedItem.objects.get(id=5)
+        fishing_course.fee_value = 0
+        fishing_course.save()
+
         # User Chris logs in.
         self.browser.get(self.server_url)
         self._logUserIn('chris', 'chris')
        
-        import pdb; pdb.set_trace() 
         # he goes back to the homepage
         self.browser.find_element_by_id('id_homelink').click()
         
@@ -47,13 +60,14 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
         # the course is free so he can enrol without any payment overlay
         self.assertEqual(enrol.text, u'Enrol \xa3Free')
         try:
-            progress.find_element_by_class_name('stripe-button-el')
+            self.browser.find_element_by_class_name('stripe-button-el')
         except NoSuchElementException:
             pass
         enrol.click()
 
         # the page reloads and the enrol button is replaced with 'enroled'
-        self.fail("write me")
+        intro = self.browser.find_element_by_id('id_course_intro_area')
+        self.assertIn('You\'re enrolled on this course', intro.text)
 
     def test_user_enrols_on_course(self):
         # User Chris logs in.

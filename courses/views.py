@@ -316,8 +316,9 @@ def detail(request, course_id):
 
         if 'course_enrol' in request.POST:
             course_type = ContentType.objects.get_for_model(course)
-            payment = Payment.objects.get(
-                content_type__pk=course_type.id, object_id=course.id, paying_user=request.user)
+            if not(fee_value == 0):
+                payment = Payment.objects.get(
+                    content_type__pk=course_type.id, object_id=course.id, paying_user=request.user)
             uc = UserCourse(user=request.user, course=course)
             uc.save()
             status = 'auth_enrolled'
