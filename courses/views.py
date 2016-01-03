@@ -215,6 +215,10 @@ def enrol(request,course_id):
     resources. Course instructor or organiser gets error message"""
     
     course = get_object_or_404(Course, pk=course_id)
+    course_type = ContentType.objects.get_for_model(Course)
+    priced_item = get_object_or_404(
+        PricedItem, content_type_id=course_type.id, object_id=course_id)
+    fee_value = priced_item.fee_value
     if request.user.is_authenticated():
         status='auth_notenrolled'
         if request.user.usercourse_set.filter(course=course).exists():
@@ -226,7 +230,11 @@ def enrol(request,course_id):
         status='anon'
 
     t = 'courses/course_enrol.html'
-    c = { 'course': course, 'status': status }
+    c = {
+        'course': course, 
+        'status': status,
+        'fee_value': fee_value,
+    }
     return render(request, t, c) 
 
 def index(request):
