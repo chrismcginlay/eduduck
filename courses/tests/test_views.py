@@ -19,7 +19,8 @@ from attachment.models import Attachment
 from attachment.forms import (
     ATTACHMENT_NAME_FIELD_REQUIRED_ERROR,
     ATTACHMENT_ATTACHMENT_FIELD_REQUIRED_ERROR,
-) 
+)
+from checkout.models import PricedItem 
 from lesson.forms import LESSON_NAME_FIELD_REQUIRED_ERROR
 from lesson.models import Lesson
 from video.utils import VIDEO_URL_FIELD_INVALID_ERROR
@@ -148,7 +149,7 @@ class CourseViewTests(TestCase):
         cn24 = _courses_n_24ths(course_list)
         self.assertIsInstance(cn24, list)
         self.assertIs(type(cn24[0]), tuple)    #entry should be 2-tuple
-        self.assertEqual(len(course_list), len(cn24))
+        self.assertEqual(len(course_list), len(cn24))        
         
     def test_course_page_has_no_enrol_button_for_organiser_instructor(self):
         self.client.login(username='bertie', password='bertword')
@@ -544,6 +545,7 @@ class CourseViewTests(TestCase):
         response = self.client.get('/courses/1/enrol/')
         self.assertIn('course', response.context)
         self.assertIn('status', response.context)
+        self.assertIn('fee_value', response.context)
 
     def test_course_enrol_page_status_auth_enrolled(self):
         """An authenticated and enrolled user status is passed to template"""
@@ -593,6 +595,32 @@ class CourseViewTests(TestCase):
         t = '<p>Course instructor <a href="/accounts/profile/{1}/public/">{0}</a>'
         target = t.format(inst.get_full_name(), inst.pk)
         self.assertIn(target, resp)
+
+    def test_course_enrol_page_shows_free_course_enrol(self):
+        """Free courses allow direct enrolment, no payment overlay"""
+        
+        self.client.login(username='bertie', password='bertword')
+        import pdb; pdb.set_trace()
+        course5 = Course.objects.get(pk=5)
+        priced_item = PricedItem.objects.get(object_id=course5.id)
+        priced_item.fee_value = 0
+        priced_item.save()
+        response = self.client.get('/courses/5/enrol/')
+        self.assertEqual(response.context['fee_value'], priced_item.fee_value)
+        self.assertEqual(priced_item.fee_value, 0)  #testing a free course
+        self.assertRegexpMatches(
+            response.content,
+            "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;Free"\
+            "[\S\s]*<\/button>")
+        self.assertRegexpMatches(
+            response.content,
+            "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;Free"\
+            "[\S\s]*<\/button>")
+
+    def test_course_enrol_stripe_Pay_with_Card_not_visible_free_course(self):
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get('/courses/5/enrol')   #free course
+        self.assertNotIn('stripe-button', response.content)
 
     def test_course_index_not_logged_in(self):
         """Check course index page loads OK and has correct variables"""
