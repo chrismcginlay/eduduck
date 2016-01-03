@@ -200,7 +200,7 @@ class CourseViewDetailTests(TestCase):
             "<script[\S\s]*src=\"https://checkout.stripe.com/checkout.js\""\
             " class=\"stripe-button\"")
 
-    def test_no_stripe_overlay_for_free_course_if_not_enrolled(self):
+    def test__stripe_Pay_with_Card_not_visible_for_free_course(self):
         self.client.login(username='gaby', password='gaby5')
         response = self.client.get('/courses/5/')   #free course
         self.assertNotIn('stripe-button', response.content)

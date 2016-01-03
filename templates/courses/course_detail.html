@@ -55,18 +55,32 @@
             {% endif %}
             <p>You are involved in running this course.</p>
         {% elif status == "auth_not_enrolled" %}
-            <form   class='pure-form' 
-                    action='' 
-                    method='post'>
-                {% csrf_token %}
-                <button id='id_enrol_button' 
-                        class='pure-button pure-button-primary' 
-                        type='submit' 
-                        name='course_enrol'>
-                    Enrol &#163;{{ fee_value }}
-                </button>
-                {% include 'checkout/checkout_overlay.html' %}
-            </form>
+            {% if fee_value_cents == 0 %}
+                <form   class='pure-form' 
+                        action='' 
+                        method='post'>
+                    {% csrf_token %}
+                    <button id='id_enrol_button' 
+                            class='pure-button pure-button-primary' 
+                            type='submit' 
+                            name='course_enrol'>
+                        Enrol &#163;Free
+                    </button>
+                </form>
+            {% else %}
+                <form   class='pure-form' 
+                        action='' 
+                        method='post'>
+                    {% csrf_token %}
+                    <button id='id_enrol_button' 
+                            class='pure-button pure-button-primary' 
+                            type='submit' 
+                            name='course_enrol'>
+                        Enrol &#163;{{ fee_value }}
+                    </button>
+                    {% include 'checkout/checkout_overlay.html' %}
+                </form>
+            {% endif %}
         {% elif status == "auth_enrolled" %}
             <p>You're enrolled on this course</p>
         {% else %}
@@ -210,18 +224,32 @@
         {% elif status == "auth_not_enrolled" %}
             <h3>Enrol Here</h3>
             <div id='id_enrol_area'>
-                <form   class='pure-form' 
-                    action='' 
-                    method='post'>
-                    {% csrf_token %}
-                    <button id='id_enrol_button2' 
-                        class='pure-button pure-button-primary' 
-                        type='submit' 
-                        name='course_enrol'>
-                        Enrol &#163;{{ fee_value }}
-                    </button>
-                    {% include 'checkout/checkout_overlay.html' %}
-                </form>
+                {% if fee_value_cents == 0 %}
+                    <form   class='pure-form' 
+                            action='' 
+                            method='post'>
+                        {% csrf_token %}
+                        <button id='id_enrol_button' 
+                                class='pure-button pure-button-primary' 
+                                type='submit' 
+                                name='course_enrol'>
+                            Enrol &#163;Free
+                        </button>
+                    </form>
+                {% else %}
+                    <form   class='pure-form' 
+                            action='' 
+                            method='post'>
+                        {% csrf_token %}
+                        <button id='id_enrol_button2' 
+                                class='pure-button pure-button-primary' 
+                                type='submit' 
+                                name='course_enrol'>
+                            Enrol &#163;{{ fee_value }}
+                        </button>
+                        {% include 'checkout/checkout_overlay.html' %}
+                    </form>
+                {% endif %}
             </div>
         {% elif status == "anon" %}
             <div id="id_signup_area">
