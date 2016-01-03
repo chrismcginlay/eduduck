@@ -170,11 +170,11 @@ class CourseViewDetailTests(TestCase):
         self.assertRegexpMatches(
             response.content,
             "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;{0}"\
-            "[\S\s]*</button>".format(priced_item.fee_value))
+            "[\S\s]*<\/button>".format(priced_item.fee_value))
         self.assertRegexpMatches(
             response.content,
             "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;{0}"\
-            "[\S\s]*</button>".format(priced_item.fee_value))
+            "[\S\s]*<\/button>".format(priced_item.fee_value))
 
     def test_enrol_button_shows_Free_for_free_course(self):
         self.client.login(username='gaby', password='gaby5')
@@ -186,11 +186,11 @@ class CourseViewDetailTests(TestCase):
         self.assertRegexpMatches(
             response.content,
             "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;Free"\
-            "[\S\s]*</button>")
+            "[\S\s]*<\/button>")
         self.assertRegexpMatches(
             response.content,
             "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;Free"\
-            "[\S\s]*</button>")
+            "[\S\s]*<\/button>")
             
     def test_stripe_Pay_with_Card_visible_if_not_enrolled(self):
         self.client.login(username='gaby', password='gaby5')
