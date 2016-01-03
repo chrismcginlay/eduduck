@@ -54,7 +54,7 @@
         "currency": "GBP",
         "tax_rate": "0.000",
         "content_type": 13,
-        "fee_value": "1.00"
+        "fee_value": "0.00"
     },
     "model": "checkout.priceditem",
     "pk": 5

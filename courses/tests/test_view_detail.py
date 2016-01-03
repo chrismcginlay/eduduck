@@ -175,7 +175,23 @@ class CourseViewDetailTests(TestCase):
             response.content,
             "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;{0}"\
             "[\S\s]*</button>".format(priced_item.fee_value))
-    
+
+    def test_enrol_button_shows_Free_for_free_course(self):
+        self.client.login(username='gaby', password='gaby5')
+        course5 = Course.objects.get(pk=5)
+        priced_item = PricedItem.objects.get(object_id=course5.id)
+        response = self.client.get('/courses/5/')
+        self.assertEqual(response.context['fee_value'], priced_item.fee_value)
+        self.assertEqual(priced_item.fee_value, 0)  #testing a free course
+        self.assertRegexpMatches(
+            response.content,
+            "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;Free"\
+            "[\S\s]*</button>")
+        self.assertRegexpMatches(
+            response.content,
+            "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;Free"\
+            "[\S\s]*</button>")
+            
     def test_stripe_Pay_with_Card_visible_if_not_enrolled(self):
         self.client.login(username='gaby', password='gaby5')
         response = self.client.get('/courses/1/')
@@ -183,6 +199,11 @@ class CourseViewDetailTests(TestCase):
             response.content, 
             "<script[\S\s]*src=\"https://checkout.stripe.com/checkout.js\""\
             " class=\"stripe-button\"")
+
+    def test_no_stripe_overlay_for_free_course_if_not_enrolled(self):
+        self.client.login(username='gaby', password='gaby5')
+        response = self.client.get('/courses/5/')   #free course
+        self.assertNotIn('stripe-button', response.content)
 
     def test_cannot_access_lesson_2_when_not_enrolled(self):
         self.client.login(username='helmi', password='plate509')

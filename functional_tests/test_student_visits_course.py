@@ -29,6 +29,32 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
             element = WebDriverWait(self.browser, 10).until(
                 self.wait_for_element_to_be_invisible(shady_bit))
 
+    def test_user_enrols_on_free_course(self):
+        # User Chris logs in.
+        self.browser.get(self.server_url)
+        self._logUserIn('chris', 'chris')
+       
+        import pdb; pdb.set_trace() 
+        # he goes back to the homepage
+        self.browser.find_element_by_id('id_homelink').click()
+        
+        # and decides to enrol on the line fishing course        
+        fishing_course = self.browser.find_element_by_id(
+            'id_Line Fishing_course')
+        fishing_course.click()
+        enrol = self.browser.find_element_by_id('id_enrol_button')
+        
+        # the course is free so he can enrol without any payment overlay
+        self.assertEqual(enrol.text, u'Enrol \xa3Free')
+        try:
+            progress.find_element_by_class_name('stripe-button-el')
+        except NoSuchElementException:
+            pass
+        enrol.click()
+
+        # the page reloads and the enrol button is replaced with 'enroled'
+        self.fail("write me")
+
     def test_user_enrols_on_course(self):
         # User Chris logs in.
         self.browser.get(self.server_url)
