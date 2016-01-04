@@ -600,7 +600,6 @@ class CourseViewTests(TestCase):
         """Free courses allow direct enrolment, no payment overlay"""
         
         self.client.login(username='bertie', password='bertword')
-        import pdb; pdb.set_trace()
         course5 = Course.objects.get(pk=5)
         priced_item = PricedItem.objects.get(object_id=course5.id)
         priced_item.fee_value = 0
@@ -611,10 +610,6 @@ class CourseViewTests(TestCase):
         self.assertRegexpMatches(
             response.content,
             "<button id=\\\'id_enrol_button\\\'[\s\S]*Enrol &#163;Free"\
-            "[\S\s]*<\/button>")
-        self.assertRegexpMatches(
-            response.content,
-            "<button id=\\\'id_enrol_button2\\\'[\s\S]*Enrol &#163;Free"\
             "[\S\s]*<\/button>")
 
     def test_course_enrol_stripe_Pay_with_Card_not_visible_free_course(self):

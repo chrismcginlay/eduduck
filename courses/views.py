@@ -220,14 +220,59 @@ def enrol(request,course_id):
         PricedItem, content_type_id=course_type.id, object_id=course_id)
     fee_value = priced_item.fee_value
     if request.user.is_authenticated():
-        status='auth_notenrolled'
-        if request.user.usercourse_set.filter(course=course).exists():
-            status='auth_enrolled'
-        if (request.user == course.organiser or 
-                request.user == course.instructor):
-            status='auth_bar_enrol'         
+        try:
+            uc = request.user.usercourse_set.get(course__id = course_id)
+            status = 'auth_enrolled'
+        except ObjectDoesNotExist:
+            uc = None
+            if (request.user == course.organiser or 
+                    request.user == course.instructor):
+                status = 'auth_bar_enrol'
+                user_can_edit = True
+            else:
+                status = 'auth_not_enrolled'
     else:
-        status='anon'
+        uc = None
+        status = 'noauth'
+            
+    if request.method == 'POST':
+        if 'stripeToken' in request.POST and status == 'auth_not_enrolled':
+            stripe.api_key = settings.STRIPE_SECRET_KEY 
+            token = request.POST['stripeToken']
+            try:
+                charge = stripe.Charge.create(
+                    amount=int(fee_value*100), # amount in cents, again
+                    currency=priced_item.currency,
+                    source=token,
+                    description="Example charge"
+                )
+                current_time = datetime.utcnow().replace(tzinfo=timezone.utc)
+                #Now record payment
+                payment = Payment(
+                    content_object=course,
+                    paying_user=request.user,
+                    fee_value=fee_value,
+                    currency=priced_item.currency,
+                    datestamp=current_time
+                )
+                payment.save()
+                #Enrol the student
+                uc = UserCourse(user=request.user, course=course)
+                uc.save()
+                status = 'auth_enrolled'
+                logger.info(str(uc) + 'enrols')
+            except stripe.error.CardError, e:
+                pass
+
+        if 'course_enrol' in request.POST:
+            course_type = ContentType.objects.get_for_model(course)
+            if not(fee_value == 0):
+                payment = Payment.objects.get(
+                    content_type__pk=course_type.id, object_id=course.id, paying_user=request.user)
+            uc = UserCourse(user=request.user, course=course)
+            uc.save()
+            status = 'auth_enrolled'
+            logger.info(str(uc) + 'enrols')
 
     t = 'courses/course_enrol.html'
     c = {

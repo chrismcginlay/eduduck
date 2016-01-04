@@ -33,7 +33,7 @@
             {% if status == "auth_bar_enrol" %}
                 <p>You've been redirected here, since probably you tried to access a course resource requiring enrollment.</p>
                 <p>However, you can't enrol since you are involved in running this course.</p>
-            {% elif status == "auth_notenrolled" %}
+            {% elif status == "auth_not_enrolled" %}
                 <p>You've been redirected here, encouraging you to enrol on this course</p>
                 <p>Probably, you tried to access a course resource which requires you to be enrolled!</p>
             {% elif status == "auth_enrolled" %}
@@ -43,19 +43,33 @@
             {% endif %}
     </div>
     <div class='pure-u-1-5'>
-       {% if status == "auth_notenrolled" %}
-           <form   class='pure-form' 
-                    action='{{ course.get_absolute_url }}' 
-                    method='post'>
-                {% csrf_token %}
-                <button id='id_enrol_button' 
-                        class='pure-button pure-button-primary' 
-                        type='submit' 
-                        name='course_enrol'>
-                    Enrol
-                </button>
-                {% include 'checkout/checkout_overlay.html' %}
-            </form>
+       {% if status == "auth_not_enrolled" %}
+            {% if fee_value == 0 %}
+                <form   class='pure-form' 
+                        action='' 
+                        method='post'>
+                    {% csrf_token %}
+                    <button id='id_enrol_button' 
+                            class='pure-button pure-button-primary' 
+                            type='submit' 
+                            name='course_enrol'>
+                        Enrol &#163;Free
+                    </button>
+                </form>
+            {% else %}
+                <form   class='pure-form' 
+                        action='' 
+                        method='post'>
+                    {% csrf_token %}
+                    <button id='id_enrol_button' 
+                            class='pure-button pure-button-primary' 
+                            type='submit' 
+                            name='course_enrol'>
+                        Enrol &#163;{{ fee_value }}
+                    </button>
+                    {% include 'checkout/checkout_overlay.html' %}
+                </form>
+            {% endif %}
         {% endif %}
     </div>
     
