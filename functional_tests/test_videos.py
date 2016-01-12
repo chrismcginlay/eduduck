@@ -15,8 +15,11 @@ class VideoIntegration(FunctionalTest):
 
         # At this point he can see an embedded intro video 
         # (probably outlining the course)
-        self.browser.find_element_by_xpath("//div[@id='id_intro_video']/iframe")
-        
+        intro_video = self.browser.find_element_by_xpath("//div[@id='id_intro_video']/iframe")
+
+        # This video is using the https protocol
+        self.assertEqual(intro_video.get_attribute('src')[:8], u'https://')
+
         # as well as further video embedded down the page 
         # (including the intro video)
         self.browser.find_element_by_xpath("//div[@id='id_resource_videos']/iframe")
