@@ -40,6 +40,7 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
         courses = Course.objects.all()
         course_type = ContentType.objects.get_for_model(Course)
         # make the fishing course free
+        ## Problem: need to use factory boy as id's change with large number of tests    
         fishing_course = PricedItem.objects.get(id=5)
         fishing_course.fee_value = 0
         fishing_course.save()
