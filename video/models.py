@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from courses.models import Course
 from lesson.models import Lesson
-from video.utils import validate_youtube_url
+from video.utils import force_https, validate_youtube_url
 
 from core.eduduck_exceptions import CheckRepError
 
@@ -42,6 +42,12 @@ class Video(models.Model):
         if self.url == "":
             logger.warning("Video {0} lacks url".format(self.id))
             return False
+        # Convert any http:// protocols to https://
+        if self.url[:7] == "http://":
+            self.url = force_https(self.url)
+            logger.info("Rewriting https protocol on video {0}".format(self.id))
+            self.save()
+
         # At least one of these should not be zero:
         if not (self.course or self.lesson): 
             logger.error("Orphaned video")
@@ -52,6 +58,10 @@ class Video(models.Model):
         """Run _checkrep on instantiation"""
         super(Video, self).__init__(*args, **kwargs)
         
+        # Convert any http:// protocols to https://
+        if self.url[:7] == "http://":
+            self.url = force_https(self.url)
+
         #When adding a new instance (e.g. in admin), their will be no 
         #datamembers, so only check existing instances eg. from db load.
         if self.pk != None:

@@ -97,6 +97,11 @@ class VideoTests(TestCase):
             name = 'Test',
             url = 'https://www.youtube.com/watch?v=-Hl74zWStxs', 
             course = None, lesson = lesson)
+        v_http = Video.objects.create(
+            name = 'Test',
+            url = 'http://www.youtube.com/watch?v=-Hl74zWStxs',
+            course = course, lesson = None)
+        self.assertEqual(v_http.url[:8], 'https://')
         with self.assertRaises(CheckRepError) as cm:
             vDud1 = Video.objects.create(
                 name = 'Test',
