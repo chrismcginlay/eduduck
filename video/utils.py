@@ -4,8 +4,18 @@ import re
 from django.core.exceptions import ValidationError
 from urlparse import parse_qs, urlparse
 
+import logging
+logger = logging.getLogger(__name__)
+
 VIDEO_URL_FIELD_INVALID_ERROR = "Please check your video URL," \
     " it seems invalid."
+
+def force_https(url):
+    # Convert any http:// protocols to https://
+    if url[:7] == "http://":
+        url = url[:4]+'s'+url[4:]
+        logger.info("Rewriting https protocol on video {0}".format(url))
+    return url
 
 def get_youtube_id_from_url(url):
     """Extract the video ID code from various youtube URLs"""
