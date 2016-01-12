@@ -111,3 +111,17 @@ class VideoTests(TestCase):
             vDud3 = Video.objects.create(
                 name = 'Test', url = '', course = course, lesson = None)
         
+    def test_emitted_url_always_uses_https_protocol(self):
+        #Regardless of any user-provided protocol, video.url emits https:// 
+
+        course = Course.objects.get(pk=1)
+        v_http = Video.objects.create(
+            name = 'Test',
+            url = 'http://www.youtube.com/watch?v=-Hl74zWStxs',
+            course = course, lesson = None)
+        v_https = Video.objects.create(
+            name = 'Test',
+            url = 'https://www.youtube.com/watch?v=-Hl74zWStxs', 
+            course = course, lesson = None)
+        self.assertEqual(v_http.url[:8], 'https://')
+        self.assertEqual(v_https.url[:8], 'https://')  
