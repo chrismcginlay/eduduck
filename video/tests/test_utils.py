@@ -3,7 +3,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from ..utils import get_youtube_id_from_url, validate_youtube_url
+from ..utils import force_https, get_youtube_id_from_url, validate_youtube_url
 
 class VideoUtilTest(TestCase):
 
@@ -66,4 +66,7 @@ class VideoUtilTest(TestCase):
         for url in urls_2_pass:
             validate_youtube_url(url)
 
-
+    def test_force_https(self):
+        http_url = "http://youtube.com"
+        https_url = force_https(http_url)
+        self.assertEqual(https_url[:8], 'https://')
