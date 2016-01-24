@@ -293,6 +293,9 @@ class LessonViewTests(TestCase):
             '<h3>New Lesson Name</h3>', html=True)
         self.assertContains(response, '<p>A new abstract</p>', html=True)
         self.assertIn(escape('Cmdr Hadfield\'s Soda'), response.content)
+        
+        ##There is a list of attachments
+        self.assertIn('id_attachment_list', response.content) 
         self.assertIn('EJiUWBiM8HE', response.content) #youtube video
         self.assertIn('A test file', response.content)
 
