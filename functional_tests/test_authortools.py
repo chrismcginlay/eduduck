@@ -529,7 +529,6 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         btn_submit = self.browser.find_element_by_id(
             'id_submit_learning_intention_edits')
         btn_submit.click()
-
         # He is able to save the LIs and view the lesson page
         self.assertEqual(
             self.browser.current_url, self.server_url+'/courses/1/lesson/3/')
