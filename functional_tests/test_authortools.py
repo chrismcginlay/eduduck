@@ -303,13 +303,13 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self.assertEqual(url, self.server_url+'/courses/4/')
         attachment_list = self.browser.find_element_by_id('id_attachment_list')
         first_attachment = attachment_list.find_element_by_tag_name('a')
-        self.assertIn('A test file', first_attachment)
+        self.assertEqual('A test file', first_attachment.text)
 
         # Helen is able to download the attachment, just 'cos she wants to.
-        response = requests.head(first_attachment)
+        response = requests.head(first_attachment.get_attribute('href'))
         self.assertEqual(response.status_code, 301)
-        import pdb; pdb.set_trace()
 
+        import pdb; pdb.set_trace()
         # Helen then revisits the edit page, uploads a second attachment.
         self.browser.get(self.server_url+'/courses/4/')
         with TemporaryUploadedFile('atest2.txt', 'text.plain', None, None) as fp2:
@@ -504,12 +504,42 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self.assertEqual(info.text, 'Use Markdown!')
 
         # He uploads a lesson summary (maybe a PDF).
-        self.fail("Write this test, if it's possible")
+        with TemporaryUploadedFile('atest.txt', 'text/plain', None, None) as fp:
+            fp.write("Write some bytes")
+            fp.flush()
+            attachment_file_widget.send_keys(fp.temporary_file_path())
+            attachment_name_widget.send_keys("A test file")
+            attachment_desc_widget.send_keys("A **test** description")
+            btn=self.browser.find_element_by_id('id_submit_attachment_edits')
+            btn.click()
+        
+        attachment_desc =  self.browser.find_element_by_xpath(
+            "//div[@id='id_resource_attachments']")
+        # The abstract correctly displays markdown
+        self.assertIn(
+            u'A <strong>test</strong> description',
+            attachment_desc.get_attribute('outerHTML'), 
+        )
+
         # This is scanned for virus payload, clear.
         #TODO scan
         
         # Having saved the edits, the lesson page reloads, showing the attachment
         # This downloads successfully.
+        
+        url = self.browser.current_url
+        self.assertEqual(url, self.server_url+'/courses/1/3/')
+        attachment_list = self.browser.find_element_by_id('id_attachment_list')
+        first_attachment = attachment_list.find_element_by_tag_name('a')
+        self.assertIn('A test file', first_attachment)
+
+        # Helen is able to download the attachment, just 'cos she wants to.
+        response = requests.head(first_attachment)
+        self.assertEqual(response.status_code, 301)
+        attachment_list = self.browser.find_element_by_id('id_attachment_list')
+        first_attachment = attachment_list.find_element_by_tag_name('a')
+        self.assertIn('A test file', first_attachment)
+
         self.fail("Write the virus payload scan test referred above")
 
     def test_author_can_populate_lesson_with_outcomes_etc(self):

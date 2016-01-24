@@ -83,7 +83,7 @@
     </div>
     <div id='id_resource_attachments' class='pure-u-1-2'>
         <h4 class="attachments">Documents Attached</h4>
-        <ol>
+        <ol id='id_attachment_list'>
         {% for a in attachments %}
         <li>{{ a.1.pk}}
         {% if a.0 %}
