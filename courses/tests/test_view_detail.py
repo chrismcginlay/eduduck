@@ -115,6 +115,10 @@ class CourseViewDetailTests(TestCase):
         response = self.client.get('/courses/7/')
         self.assertNotIn('id_publish_button', response.content)
 
+    def test_list_of_attachments_present(self):
+        response = self.client.get('/courses/1/')
+        self.assertIn('id_attachment_list', response.content)
+
     #
     # The logged-in but not enrolled situation for non-instructors/organisers
     #
