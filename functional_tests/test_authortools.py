@@ -1,5 +1,6 @@
 #functional_tests/test_authortools.py
 import os
+import requests
 from django.core.files.uploadedfile import TemporaryUploadedFile
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -262,7 +263,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self._logUserIn('helen', 'helen')
         self.browser.get(self.server_url+'/courses/4/edit/')
 
-        # On the edit page he sees an area for adding attachments.
+        # On the edit page she sees an area for adding attachments.
         afs = self.browser.find_element_by_id('id_attachment_formset_area')
         attachment_name_widget = afs.find_element_by_name(
             'attachment_formset-0-name')
@@ -295,12 +296,19 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         )
         
         # This is scanned for virus payload, clear.
-        self.fail("Write me")
+        # self.fail("Scan attachments for viruses at commented line above")
 
         # The course page reloads, showing the attachment
         url = self.browser.current_url
         self.assertEqual(url, self.server_url+'/courses/4/')
-        self.assertIn('A test file', self.browser.page_source)
+        attachment_list = self.browser.find_element_by_id('id_attachment_list')
+        first_attachment = attachment_list.find_element_by_tag_name('a')
+        self.assertIn('A test file', first_attachment)
+
+        # Helen is able to download the attachment, just 'cos she wants to.
+        response = requests.head(first_attachment)
+        self.assertEqual(response.status_code, 301)
+        import pdb; pdb.set_trace()
 
         # Helen then revisits the edit page, uploads a second attachment.
         self.browser.get(self.server_url+'/courses/4/')
@@ -327,6 +335,8 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self.browser.get(self.server_url+'/courses/4/')
         self.assertNotIn('Another test file', self.browser.page_source)
         self.assertIn('A test file', self.browser.page_source)
+
+        self.fail("Scan attachments for viruses at commented line above")
 
         
 class AuthorCreatesAndEditsLessons(FunctionalTest):
