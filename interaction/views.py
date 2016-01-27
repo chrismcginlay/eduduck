@@ -183,8 +183,9 @@ def attachment_download(request, att_id):
     #Some implementation notes:
     #3 use cases:
     #   1. User not logged in. Forbidden. 
-    #   2. User logged in but not enrolled on course. Redirect to enrol page 
-    #   3. User logged in and enrollled. Download, log it.
+    #   2. User logged in and is author/instructor. Download, log it.
+    #   3. User logged in but not enrolled on course. Redirect to enrol page 
+    #   4. User logged in and enrollled. Download, log it.
 
     attachment = get_object_or_404(Attachment, id=att_id)    
     try:

@@ -404,6 +404,26 @@ class UserAttachmentViewTests(TestCase):
         self.assertRedirects(response, url2_r, 302, 200)
         self.assertRaises(ObjectDoesNotExist, UserAttachment.objects.get, id=a2)
 
+    def test_attachment_download_author(self):
+        """Course author can download attachments"""
+        a1 = self.att1.id   #attached to course
+        a2 = self.att2.id   #attached to lesson
+        url1 = '/interaction/attachment/{0}/download/'.format(a1)
+        url1_r = '/media/attachments/{0}/download/'.format(self.att1.id)
+        url2 = '/interaction/attachment/{0}/download/'.format(a2)
+        url2_r = '/media/attachments/{0}/download/'.format(self.att2.id)
+
+        #First, try attachment linked to course page
+        self.client.login(username='bertie', password='bertword')
+        response = self.client.get(url1)
+        self.assertEqual(response.status_code, 302)      
+        self.assertRedirects(response, url1_r, 302, 200)
+
+        #Second, try attachment linked to lesson page
+        response = self.client.get(url2)
+        self.assertEqual(response.status_code, 302)      
+        self.assertRedirects(response, url2_r, 302, 200)
+
     def test_attachment_download_loggedin_but_not_enrolled(self):
         """Not enrolled visitor - redirect to enrol page"""
         a1 = self.att1.id

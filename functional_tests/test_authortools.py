@@ -306,10 +306,30 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         self.assertEqual('A test file', first_attachment.text)
 
         # Helen is able to download the attachment, just 'cos she wants to.
-        response = requests.head(first_attachment.get_attribute('href'))
-        self.assertEqual(response.status_code, 301)
+        # get the sessionid from the Selenium browser session and borrow it for
+        # log in via requests.
+        cookies = self.browser.get_cookies() 
+        ssid = filter(lambda cookie: cookie['name'] == 'sessionid', cookies)[0]['value']
+        s = requests.Session()
+        response = s.head(
+            first_attachment.get_attribute('href'),
+            allow_redirects=True,
+            cookies={'sessionid':ssid}
+        )
 
-        import pdb; pdb.set_trace()
+        #should redirect to download resource
+        self.assertEqual(response.history[0].status_code, 302)
+        self.assertIn(
+            'interaction/attachment/10/download/',
+            response.history[0].url
+        )
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            '/media/attachments/',
+            response.url
+        )
+
         # Helen then revisits the edit page, uploads a second attachment.
         self.browser.get(self.server_url+'/courses/4/')
         with TemporaryUploadedFile('atest2.txt', 'text.plain', None, None) as fp2:
