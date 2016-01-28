@@ -188,6 +188,7 @@ def attachment_download(request, att_id):
     #   4. User logged in and enrollled. Download, log it.
 
     attachment = get_object_or_404(Attachment, id=att_id)    
+    course = attachment.course or attachment.lesson.course
     try:
         course_record = request.user.usercourse_set.get(course=attachment.course)
     except AttributeError:
@@ -203,12 +204,10 @@ def attachment_download(request, att_id):
         #newly created record will automatically record download
         if (uad[1]==False): uad[0].record_download()
         redir_link = uad[0].attachment.get_absolute_url()               
+    elif request.user==course.instructor or request.user==course.organiser:
+        redir_link = attachment.get_absolute_url()
     else:
-        try:
-            parent_course_id = attachment.course.id
-        except AttributeError:
-            parent_course_id = attachment.lesson.course.id
-        redir_link = '/courses/{0}/enrol/'.format(parent_course_id)
+        redir_link = '/courses/{0}/enrol/'.format(course.id)
     logger.debug('Absolute download URI for redirect is ' + redir_link)	
     return HttpResponseRedirect(redir_link)
 
