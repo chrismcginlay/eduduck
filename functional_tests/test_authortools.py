@@ -331,10 +331,17 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         )
 
         # Helen then revisits the edit page, uploads a second attachment.
-        self.browser.get(self.server_url+'/courses/4/')
+        self.browser.get(self.server_url+'/courses/4/edit/')
+        afs = self.browser.find_element_by_id('id_attachment_formset_area')
+        attachment_name_widget = afs.find_element_by_name(
+            'attachment_formset-1-name')
+        attachment_file_widget = afs.find_element_by_name(
+            'attachment_formset-1-attachment')
+        attachment_desc_widget = afs.find_element_by_id(
+            'id_attachment_formset-1-desc')
         with TemporaryUploadedFile('atest2.txt', 'text.plain', None, None) as fp2:
             fp2.write("Write some bytes")
-            fp.flush()
+            fp2.flush()
             attachment_file_widget.send_keys(fp2.temporary_file_path())
             attachment_name_widget.send_keys("Another test file")
             btn=self.browser.find_element_by_id('id_submit_attachment_edits')
@@ -353,8 +360,8 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         # It no longer shows up on the course page but the second attachment 
         # is still there.
         self.browser.get(self.server_url+'/courses/4/')
-        self.assertNotIn('Another test file', self.browser.page_source)
-        self.assertIn('A test file', self.browser.page_source)
+        self.assertIn('Another test file', self.browser.page_source)
+        self.assertNotIn('A test file', self.browser.page_source)
 
         self.fail("Scan attachments for viruses at commented line above")
 

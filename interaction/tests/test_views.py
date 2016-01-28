@@ -423,6 +423,7 @@ class UserAttachmentViewTests(TestCase):
         response = self.client.get(url2)
         self.assertEqual(response.status_code, 302)      
         #self.assertRedirects(response, url2_r, 302, 200)
+        #import pdb; pdb.set_trace() #att1.attachment.url is wrong in test only
 
     def test_attachment_download_loggedin_but_not_enrolled(self):
         """Not enrolled visitor - redirect to enrol page"""
