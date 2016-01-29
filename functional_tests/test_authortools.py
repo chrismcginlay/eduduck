@@ -523,6 +523,8 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
             'attachment_formset-0-name')
         attachment_file_widget = afs.find_element_by_name(
             'attachment_formset-0-attachment')
+        attachment_desc_widget = afs.find_element_by_name(
+            'attachment_formset-0-desc')
         afs.find_element_by_id('id_attachment_formset-0-desc')
 
         # There is a message indicating Markdown can be used on descriptions 
@@ -555,17 +557,18 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         # This downloads successfully.
         
         url = self.browser.current_url
-        self.assertEqual(url, self.server_url+'/courses/1/3/')
+        self.assertEqual(url, self.server_url+'/courses/1/lesson/3/')
         attachment_list = self.browser.find_element_by_id('id_attachment_list')
         first_attachment = attachment_list.find_element_by_tag_name('a')
-        self.assertIn('A test file', first_attachment)
+        self.assertIn('A test file', first_attachment.text)
 
         # Helen is able to download the attachment, just 'cos she wants to.
-        response = requests.head(first_attachment)
-        self.assertEqual(response.status_code, 301)
+        import pdb; pdb.set_trace()
+        response = requests.head(first_attachment.get_attribute('href'))
+        self.assertEqual(response.status_code, 302)
         attachment_list = self.browser.find_element_by_id('id_attachment_list')
         first_attachment = attachment_list.find_element_by_tag_name('a')
-        self.assertIn('A test file', first_attachment)
+        self.assertIn('A test file', first_attachment.text)
 
         self.fail("Write the virus payload scan test referred above")
 
