@@ -563,7 +563,6 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self.assertIn('A test file', first_attachment.text)
 
         # Helen is able to download the attachment, just 'cos she wants to.
-        import pdb; pdb.set_trace()
         response = requests.head(first_attachment.get_attribute('href'))
         self.assertEqual(response.status_code, 302)
         attachment_list = self.browser.find_element_by_id('id_attachment_list')

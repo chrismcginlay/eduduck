@@ -4,6 +4,7 @@ Unit tests for Interaction views
 
 import json
 from django.test import TestCase
+#from django.test.utils import override_settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -348,13 +349,13 @@ class UserAttachmentViewTests(TestCase):
         'name': 'Reading List',
         'desc': 'Useful stuff you might need',
         'seq': 3,
-        'attachment': 'empty_attachment_test.txt',
+        'attachment': 'attachments/empty_attachment_test.txt',
     }
     att2_data = {
         'name': 'Grammer Guide',
         'desc': 'How do you even spell grammer?',
         'seq': 2,
-        'attachment': 'empty_attachment_test.txt',
+        'attachment': 'attachments/empty_attachment_test.txt',
     }
 
     def setUp(self):
@@ -384,6 +385,8 @@ class UserAttachmentViewTests(TestCase):
         #att2 attached to lesson
         self.att2 = Attachment(lesson=self.lesson1, **self.att1_data)
         self.att2.save()   
+        with open('media/attachments/empty_attachment_test.txt', 'w') as f:
+            f.write('test')
 
     def test_attachment_download_not_logged_in(self):
         """Casual visitor - download not permitted, redirect to login"""
@@ -404,6 +407,7 @@ class UserAttachmentViewTests(TestCase):
         self.assertRedirects(response, url2_r, 302, 200)
         self.assertRaises(ObjectDoesNotExist, UserAttachment.objects.get, id=a2)
 
+#    @override_settings(DEBUG=True)
     def test_attachment_download_author(self):
         """Course author can download attachments"""
         a1 = self.att1.id   #attached to course
@@ -416,14 +420,15 @@ class UserAttachmentViewTests(TestCase):
         #First, try attachment linked to course page
         self.client.login(username='bertie', password='bertword')
         response = self.client.get(url1)
-        self.assertEqual(response.status_code, 302)      
+        self.assertEqual(response.status_code, 302)
+        #having to comment out redirect tests as can't get TestClient to
+        #server STATIC content
         #self.assertRedirects(response, url1_r, 302, 200)
 
         #Second, try attachment linked to lesson page
         response = self.client.get(url2)
         self.assertEqual(response.status_code, 302)      
         #self.assertRedirects(response, url2_r, 302, 200)
-        #import pdb; pdb.set_trace() #att1.attachment.url is wrong in test only
 
     def test_attachment_download_loggedin_but_not_enrolled(self):
         """Not enrolled visitor - redirect to enrol page"""

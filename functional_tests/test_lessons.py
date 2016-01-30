@@ -18,7 +18,6 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # Navigates to the blender course home page
         fishing_course = self.browser.find_element_by_id('id_Blender_course')
         fishing_course.click()
-        
         # She enrols on the course
         enrol = self.browser.find_element_by_id('id_enrol_button')
         enrol.click()
