@@ -17,6 +17,13 @@ $.ajaxSetup({
 
 $(document).ready(function(){    
     $( ".shadable" ).prepend('<span class="shade" title="Show/Hide">&darr;</span>');
+
+    // slide up all shadeable elements
+    $( ".shade" ).each( function( idx, element ) {
+        $( this ).parent().next().slideUp( 1 );
+        $( this ).html( '&darr;');
+    });
+
     $( ".shade" ).click(function(){
         // bbs variable is border-bottom-style
         var bbs = $( this ).parent().css('border-bottom-style');

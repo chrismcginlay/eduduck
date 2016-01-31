@@ -13,32 +13,43 @@
         <article>
             <p>Some content to shade</p>
         </article>
+        <p id="chris">Chris</p>
     </div>    
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="qunit.js"></script>
-    <script src="../static/common.js"></script>
+    <script src="../../static/common.js"></script>
     <script>
 
-/*global $, test, equal */
 QUnit.module("Shading Tests");
-QUnit.test("Shadable prepends span", function ( assert ) {
-    assert.ok( $( 'span.shade').length, "Shade span exists");
+QUnit.test("Shadable element exists", function( assert ) {
+    assert.ok( $( '.shadable').length, "Shadable control element exists" );
+    assert.ok( $( '.shadable + article').length, "Shadable target article exists" );
 });
-QUnit.test("Toggle shade up and down", function ( assert ) {
-    var spanshade = $( 'span.shade' );
-    var shadedbit = spanshade.parent().next();
+QUnit.test("chris, visible", function( assert ) {
+    assert.ok( $( '#chris' ).length, "Chris exists" );
+    assert.equal( $( '#chris' ).is( ':visible' ), true, "Chris is visible" );
+});
+$( '#chris' ).slideToggle( "fast" );
+QUnit.test("chris, visible", function( assert ) {
+    debugger;
+    assert.ok( $( '#chris' ).length, "Chris exists" );
+    assert.equal( $( '#chris' ).is( ':visible' ), true, "Chris is visible" );
+});
+QUnit.test("Toggle shade up and down", function( assert ) {
+    var shade_control = $( '.shadable' );
+    var shadedbit = shade_control.parent().next();
     var isVis = false;
-    spanshade.click();
-    shadedbit.promise().done(function (arg1) {
-        isVis = arg1.parent().next().is(':visible');
+    shade_control.click();
+    shadedbit.promise().done( function( arg1 ) {
+        isVis = arg1.parent().next().is( ':visible' );
     });
     assert.equal( isVis, false, "Article shades up");
     
-    spanshade.click();
-    shadedbit.promise().done(function (arg1) {
-        isVis = arg1.parent().next().is(':visible');
+    shade_control.click();
+    shadedbit.promise().done( function( arg1 ) {
+        isVis = arg1.parent().next().is( ':visible' );
     });
-    assert.equal( isVis, true, "Article shades down")
+    assert.equal( isVis, true, "Article shades down" )
 });
     </script>
 </body>
