@@ -9,7 +9,7 @@
 <body>
     <div id="qunit"></div>
     <div id="qunit-fixture">
-        <!-- The following span will prepend .shadable: 
+        <!-- The following span will prepend .shadable's text: 
         <span class="shade" title="Show/Hide">&darr;</span> -->
         <h3 class='shadable'>Intro Video(s)</h3>
         <article>
@@ -24,7 +24,8 @@
 
 QUnit.module("shading Tests");
 
-QUnit.test("Shadable and target, exists", function( assert ) {
+QUnit.test("shadeControl and shadeTarget, exist", function( assert ) {
+    assert.expect( 2 );
     var done1 = assert.async();
     $( document ).promise().done( function() {
         assert.ok(
@@ -37,7 +38,7 @@ QUnit.test("Shadable and target, exists", function( assert ) {
 
 QUnit.test( "shade, shadeAllUp", function( assert ) {
     assert.expect( 5 );
-    assert.ok( shadeAllUp() );   // function exists
+    assert.ok( shadeAllUp );   // function exists
     var done1 = assert.async();
     var done2 = assert.async();
     var shadeControl = $( ".shade" );
@@ -70,28 +71,29 @@ QUnit.test( "shade, shadeAllUp", function( assert ) {
 });
 
 QUnit.test( "shadable, not showing by default", function( assert ) {
-    var shade_control = $( '.shade' );
-    var shade_marker = $( '.shadable' );
-    var shade_target = shade_marker.parent().next();
+    assert.expect( 2 );
     var done1 = assert.async();
-    shade_target.promise().done( function() {
-        assert.ok( $( shade_target ).length, 'Shade target exists in DOM');
+    var shadeControl = $( ".shade" );
+    var shadeTarget = $( ".shadable" ).next();
+    var done1 = assert.async();
+    shadeTarget.promise().done( function() {
+        assert.ok( $( shadeTarget ).length, "shadeTarget exists in DOM");
         assert.equal(
-            $( shade_target ) .css( 'display' ), 'none', 'Not showing');
+            $( shadeTarget ) .css( "display" ), "none", "Target not showing");
         done1();
     });
 });
 
-QUnit.test("shadable, showing after slideToggle", function ( assert ) {
-    var shade_control = $( '.shade' );
-    var shade_marker = $( '.shadable' );
-    var shade_target = shade_marker.parent().next();
+QUnit.test("shadable, showing after activating control", function ( assert ) {
+    assert.expect( 2 );
+    var shadeControl = $( ".shade" );
+    var shadeTarget = $( ".shadable" ).next();
     var done1 = assert.async();
-    shade_control.click();
-    shade_target.promise().done( function() {
-        assert.ok( shade_target.length, "shadetarget exists");
+    shadeControl.click();
+    shadeTarget.promise().done( function() {
+        assert.ok( shadeTarget.length, "shadeTarget exists in DOM");
         assert.notEqual(
-            shade_target.css( 'display' ), 'none', 'Div showing');
+            shadeTarget.css( "display" ), "none", "Target showing");
         done1();
     });
 });

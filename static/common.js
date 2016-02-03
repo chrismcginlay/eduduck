@@ -16,6 +16,11 @@ $.ajaxSetup({
 });
 
 function shadeAllUp() {
+    // slide up all shadeable elements
+    $( ".shade" ).each( function( idx, element ) {
+        $( this ).parent().next().slideUp( 1 );
+        $( this ).html( '&darr;');
+    });
     return true;
 }
 
@@ -23,10 +28,7 @@ $(document).ready(function(){
     $( ".shadable" ).prepend('<span class="shade" title="Show/Hide">&darr;</span>');
 
     // slide up all shadeable elements
-    $( ".shade" ).each( function( idx, element ) {
-        $( this ).parent().next().slideUp( 1 );
-        $( this ).html( '&darr;');
-    });
+    shadeAllUp();
 
     $( ".shade" ).click(function(){
         // bbs variable is border-bottom-style
