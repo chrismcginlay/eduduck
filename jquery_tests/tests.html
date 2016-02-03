@@ -9,47 +9,91 @@
 <body>
     <div id="qunit"></div>
     <div id="qunit-fixture">
+        <!-- The following span will prepend .shadable: 
+        <span class="shade" title="Show/Hide">&darr;</span> -->
         <h3 class='shadable'>Intro Video(s)</h3>
         <article>
             <p>Some content to shade</p>
         </article>
-        <p id="chris">Chris</p>
     </div>    
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="qunit.js"></script>
-    <script src="../../static/common.js"></script>
+    <script src="https://code.jquery.com/qunit/qunit-1.21.0.js"></script>
+    <script src="../static/jQplugins/carhartl-jquery-cookie-fedc4cb/jquery.cookie.js"></script>
+    <script src="../static/common.js"></script>
     <script>
 
-QUnit.module("Shading Tests");
-QUnit.test("Shadable element exists", function( assert ) {
-    assert.ok( $( '.shadable').length, "Shadable control element exists" );
-    assert.ok( $( '.shadable + article').length, "Shadable target article exists" );
+QUnit.module("shading Tests");
+
+QUnit.test("Shadable and target, exists", function( assert ) {
+    var done1 = assert.async();
+    $( document ).promise().done( function() {
+        assert.ok(
+            $( ".shade" ).length, "Shade control element exists" );
+        assert.ok(
+            $( ".shadable + article" ).length, "Shadable target article exists" );
+        done1();
+    });    
 });
-QUnit.test("chris, visible", function( assert ) {
-    assert.ok( $( '#chris' ).length, "Chris exists" );
-    assert.equal( $( '#chris' ).is( ':visible' ), true, "Chris is visible" );
-});
-$( '#chris' ).slideToggle( "fast" );
-QUnit.test("chris, visible", function( assert ) {
-    debugger;
-    assert.ok( $( '#chris' ).length, "Chris exists" );
-    assert.equal( $( '#chris' ).is( ':visible' ), true, "Chris is visible" );
-});
-QUnit.test("Toggle shade up and down", function( assert ) {
-    var shade_control = $( '.shadable' );
-    var shadedbit = shade_control.parent().next();
-    var isVis = false;
-    shade_control.click();
-    shadedbit.promise().done( function( arg1 ) {
-        isVis = arg1.parent().next().is( ':visible' );
+
+QUnit.test( "shade, shadeAllUp", function( assert ) {
+    assert.expect( 5 );
+    assert.ok( shadeAllUp() );   // function exists
+    var done1 = assert.async();
+    var done2 = assert.async();
+    var shadeControl = $( ".shade" );
+    var shadeTarget = $( ".shadable" ).next();
+    assert.ok( $( shadeControl.length ), "Shade control in DOM" );
+    assert.ok( $( shadeTarget.length ), "Shade target in DOM" );
+    // Force the shadeTarget to slideDown, ignoring arrow indicators
+    shadeTarget.slideDown();
+
+    // Just check it has slid down 
+    shadeTarget.promise().done( function() {
+        assert.notEqual(
+            $( shadeTarget ).css( "display" ),
+            "none",
+            "Shade target displayed"
+        );     
+        done1();
     });
-    assert.equal( isVis, false, "Article shades up");
-    
-    shade_control.click();
-    shadedbit.promise().done( function( arg1 ) {
-        isVis = arg1.parent().next().is( ':visible' );
+
+    // Now run shadeAllUp() and test
+    shadeAllUp();
+    shadeTarget.promise().done( function() {
+        assert.equal(
+            $( shadeTarget ).css( "display" ),
+            "none",
+            "Shade target not displayed"
+        );
+        done2();
     });
-    assert.equal( isVis, true, "Article shades down" )
+});
+
+QUnit.test( "shadable, not showing by default", function( assert ) {
+    var shade_control = $( '.shade' );
+    var shade_marker = $( '.shadable' );
+    var shade_target = shade_marker.parent().next();
+    var done1 = assert.async();
+    shade_target.promise().done( function() {
+        assert.ok( $( shade_target ).length, 'Shade target exists in DOM');
+        assert.equal(
+            $( shade_target ) .css( 'display' ), 'none', 'Not showing');
+        done1();
+    });
+});
+
+QUnit.test("shadable, showing after slideToggle", function ( assert ) {
+    var shade_control = $( '.shade' );
+    var shade_marker = $( '.shadable' );
+    var shade_target = shade_marker.parent().next();
+    var done1 = assert.async();
+    shade_control.click();
+    shade_target.promise().done( function() {
+        assert.ok( shade_target.length, "shadetarget exists");
+        assert.notEqual(
+            shade_target.css( 'display' ), 'none', 'Div showing');
+        done1();
+    });
 });
     </script>
 </body>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Shading tests</title>
+    <link rel="stylesheet" href="qunit.css">
+</head>
+
+<body>
+        <div id="shade">
+            <p>Some text to test</p>
+        </div>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script>
+    alert( 'Ready to start') ;
+    var length = $( '#shade' ).length;
+    var height = $( '#shade' ).css( 'height' );
+    var display = $( '#shade' ).css( 'display' );
+
+    $( '#shade' ).slideToggle( "3000" );
+    $( '#shade' ).promise().done( function() {
+        debugger;
+        length = $( '#shade' ).length;
+        height = $( '#shade' ).css( 'height' );
+        display = $( '#shade' ).css( 'display' );
+        document.writeln(length);
+        document.writeln(height);
+        document.writeln(display);
+    });
+
+    </script>
+</body>
+</html>

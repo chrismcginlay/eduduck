@@ -15,6 +15,10 @@ $.ajaxSetup({
     }
 });
 
+function shadeAllUp() {
+    return true;
+}
+
 $(document).ready(function(){    
     $( ".shadable" ).prepend('<span class="shade" title="Show/Hide">&darr;</span>');
 

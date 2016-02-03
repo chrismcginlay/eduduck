@@ -14,22 +14,31 @@
         </div>
     </div>    
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="qunit.js"></script>
+    <script src="https://code.jquery.com/qunit/qunit-1.21.0.js"></script>
     <script>
 
+function initial_roll_up() {
+    return;
+}
+
 QUnit.module("Shading Tests");
+QUnit.test("shade, initial_roll_up", function(assert) {
+    assert.ok( initial_roll_up );
+});
 QUnit.test("shade, visible", function( assert ) {
     assert.ok( $( '#shade' ).length, "div exists" );
     assert.ok( $( '#shade' ).css( 'height' ) > '0px', "div has height" );
     assert.notEqual( $( '#shade' ).css( 'display' ), 'none', "div displayed");
 });
-$( '#shade' ).slideToggle( "3000" );
-$( '#shade' ).promise().done( function() {
-    alert( 'Done with slideToggle');
-    QUnit.test("shade, not visible", function( assert ) {
+
+QUnit.test("shade, not visible", function( assert ) {
+    var done1 = assert.async();
+    $( '#shade' ).slideToggle( 1000 );
+    $( '#shade' ).promise().done( function() {
         assert.ok( $( '#shade' ).length, "div exists" );
         assert.equal(
             $( '#shade' ).css( 'display' ), 'none', "div not displayed");
+        done1();
     });
 });
     </script>
