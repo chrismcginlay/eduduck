@@ -22,17 +22,41 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
         def __call__(self, driver):
             return not(self.element.is_displayed())
 
+    class wait_for_element_to_be_visible(object):
+        def __init__(self, element):
+            self.element = element
+ 
+        def __call__(self, driver):
+            return self.element.is_displayed()
+
     def test_collapsible_blocks_expand_or_collapse(self):
         self.browser.get(self.server_url+'/courses/1/')
         shadables = self.browser.find_elements_by_class_name('shade')
         for shadable in shadables:
             ## parent, then sibling element (*)
             shady_bit = shadable.find_element_by_xpath('../following-sibling::*')
+            shadable.click()
             element = WebDriverWait(self.browser, 10).until(
                 EC.visibility_of(shady_bit))
             shadable.click()
             element = WebDriverWait(self.browser, 10).until(
                 self.wait_for_element_to_be_invisible(shady_bit))
+    
+    def test_expand_all_blocks(self):
+        import pdb; pdb.set_trace()
+        self.browser.get(self.server_url+'/courses/1/')
+        shadables = self.browser.find_elements_by_class_name('shade')
+        first_shadable = shadables[0]
+        shade_target = first_shadable.find_element_by_xpath('../following-sibling::*')
+        spanderclapser = first_shadable.find_element_by_xpath(
+            'parent::span[attribute::class="spanderclapser"')
+        element = WebDriverWait(self.browser, 10).until(
+            EC.visibility_of(shade_target))
+        spanderclapser.click()
+        for shadable in shadables:
+            shade_target = shadable.find_element_by_xpath('../following-sibling::*')
+            element = WebDriverWait(self.browser, 10).until(
+                self.wait_for_element_to_be_visible(shade_target))
 
     def test_user_enrols_on_free_course(self):
 
