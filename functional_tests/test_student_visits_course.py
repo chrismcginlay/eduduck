@@ -43,13 +43,13 @@ class LoggedInUserInteractsWithCourse(FunctionalTest):
                 self.wait_for_element_to_be_invisible(shady_bit))
     
     def test_expand_all_blocks(self):
-        import pdb; pdb.set_trace()
         self.browser.get(self.server_url+'/courses/1/')
         shadables = self.browser.find_elements_by_class_name('shade')
         first_shadable = shadables[0]
         shade_target = first_shadable.find_element_by_xpath('../following-sibling::*')
+        import pdb; pdb.set_trace()
         spanderclapser = first_shadable.find_element_by_xpath(
-            'parent::span[attribute::class="spanderclapser"')
+            '../preceding-sibling::span[attribute::class="spanderclapser"]')
         element = WebDriverWait(self.browser, 10).until(
             EC.visibility_of(shade_target))
         spanderclapser.click()

@@ -24,6 +24,23 @@
 
 QUnit.module("shading Tests");
 
+QUnit.test("spanderclapser, inserted into DOM", function( assert ) {
+// See that exand all/collapse all widget added to shadable elements
+    assert.expect( 2 );
+    var done1 = assert.async();
+    $( document ).promise().done( function() {
+        assert.ok(
+            $( ".spanderclapser" ).length, "Exander/collapser exists");
+        $( ".spanderclapser" ).click()
+        assert.notEqual(
+            $( ".shadable" ).css( "display" ),
+            "none",
+            "shadeTarget displayed"
+        );
+        done1();
+    });
+});
+
 QUnit.test("shadeControl and shadeTarget, exist", function( assert ) {
     assert.expect( 2 );
     var done1 = assert.async();
