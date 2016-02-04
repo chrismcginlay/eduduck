@@ -45,43 +45,39 @@ QUnit.test( "shade, shadeAllUp", function( assert ) {
     var shadeTarget = $( ".shadable" ).next();
     assert.ok( $( shadeControl.length ), "Shade control in DOM" );
     assert.ok( $( shadeTarget.length ), "Shade target in DOM" );
-    // Force the shadeTarget to slideDown, ignoring arrow indicators
-    shadeTarget.slideDown();
+
+    // Force the shadeTarget to slideDown
+    shadeControl.click();
 
     // Just check it has slid down 
-    shadeTarget.promise().done( function() {
+    setTimeout(function() {
         assert.notEqual(
             $( shadeTarget ).css( "display" ),
             "none",
             "Shade target displayed"
-        );     
+        );
         done1();
-    });
+    }, 500 );
 
     // Now run shadeAllUp() and test
     shadeAllUp();
-    shadeTarget.promise().done( function() {
+    setTimeout( function() {
         assert.equal(
             $( shadeTarget ).css( "display" ),
             "none",
             "Shade target not displayed"
         );
         done2();
-    });
+    }, 500 );
 });
 
 QUnit.test( "shadable, not showing by default", function( assert ) {
     assert.expect( 2 );
-    var done1 = assert.async();
     var shadeControl = $( ".shade" );
     var shadeTarget = $( ".shadable" ).next();
-    var done1 = assert.async();
-    shadeTarget.promise().done( function() {
-        assert.ok( $( shadeTarget ).length, "shadeTarget exists in DOM");
-        assert.equal(
-            $( shadeTarget ) .css( "display" ), "none", "Target not showing");
-        done1();
-    });
+    assert.ok( $( shadeTarget ).length, "shadeTarget exists in DOM");
+    assert.equal(
+        $( shadeTarget ) .css( "display" ), "none", "Target not showing");
 });
 
 QUnit.test("shadable, showing after activating control", function ( assert ) {
