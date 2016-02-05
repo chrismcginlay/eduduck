@@ -24,6 +24,16 @@ function shadeAllUp() {
     return true;
 }
 
+function expandCollapseAll() {
+need to record static toggle state var    
+// slideToggle everything and toggle arrows
+    $( ".shade" ).each( function() {
+        $( this ).parent().next().slideUp(1);
+        $( this ).html( "&darr;" );
+    });
+    return true;
+}
+
 $(document).ready(function(){    
     $( ".shadable" ).prepend('<span class="shade" title="Show/Hide">&darr;</span>');
 
