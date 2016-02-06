@@ -118,4 +118,9 @@ class FunctionalTest(LiveServerTestCase):
             self.browser.switch_to_window(start_window)
             if len(open_windows)>1:
                 self.browser.close()  #close extra windows
-      
+
+    def _expand_all_collapsible_blocks(self):
+        shades = self.browser.find_elements_by_xpath("//span[@class]['shade']")
+        for shade in shades:
+            shade.click()
+              

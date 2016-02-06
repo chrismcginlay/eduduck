@@ -400,6 +400,8 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         new_lesson_abstract = self.browser.find_element_by_xpath(
             "//textarea[@name='lesson_formset-3-abstract']")
 
+        self._expand_all_collapsible_blocks() 
+
         # sven decides to add a lesson called 'Materials'
         # with a suitable abstract.
         new_lesson_name.send_keys('Materials')
@@ -589,7 +591,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         li_text1_widget = lifs.find_element_by_name(
             'learning_intention_formset-1-text')
         # Sven puts in a couple of key areas (learning intentions)
-        li_text0_widget.find_elements_by_xpath("//preceding::span[@class]['shade']")[3].click()
+        self._expand_all_collapsible_blocks()
         li_text0_widget.clear()
         li_text1_widget.clear()
         li_text0_widget.send_keys('Learn about average speed')
