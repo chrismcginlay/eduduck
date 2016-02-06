@@ -224,6 +224,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
 
         # sven thinks that he has the desired url in clipboard and pastes 
         # but unfortunately the clipboard just pastes garbage which he submits
+        self._expand_all_collapsible_blocks()
         video_name_widget.send_keys("My Intro Video")
         video_url_widget.send_keys("httttp://yotub.com/notvalid")
         btn_submit = vfs.find_element_by_id('id_submit_video_edits')
@@ -235,6 +236,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         vfs = self.browser.find_element_by_id('id_video_formset_area')
         video_name_widget = vfs.find_element_by_name('video_formset-0-name')
         video_name_widget.clear()
+        self._expand_all_collapsible_blocks()
         video_name_widget.send_keys("My Intro Video")
         video_url_widget = vfs.find_element_by_id('id_video_formset-0-url')
         video_url_widget.clear()
@@ -436,6 +438,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self._logUserIn('sven', 'sven')
         self.browser.get(self.server_url+'/courses/1/lesson/1/edit/')
 
+        self._expand_all_collapsible_blocks()
         basics_area = self.browser.find_element_by_id(
             'id_lesson_basics_area')
         abstract_text_box = self.browser.find_element_by_id(
@@ -479,6 +482,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
 
         # sven tries to add a video to the lesson page, 
         # but he enters a duff url.
+        self._expand_all_collapsible_blocks()
         video_name_widget = self.browser.find_element_by_xpath(
             "//input[@name='video_formset-0-name']")
         video_url_widget = self.browser.find_element_by_xpath(
@@ -494,6 +498,7 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
         self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, self.browser.page_source)
 
         # On fixing the error, the edits save properly and the video is embedded
+        self._expand_all_collapsible_blocks()
         video_url_widget = self.browser.find_element_by_xpath(
             "//input[@name='video_formset-0-url']")
         video_url_widget.clear()

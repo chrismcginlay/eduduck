@@ -28,6 +28,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
             len(lessons.find_elements_by_class_name('pure-paginator')),1)        
         
         # Gaby selects the first lesson and is taken to the lesson page
+        self._expand_all_collapsible_blocks()
         lessons.find_element_by_id('id_lesson1').click()
         lesson_page_title = self.browser.find_element_by_id('id_lesson_title')
         self.assertEqual(
@@ -176,9 +177,11 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         self.assertTrue('tl-red' in device.get_attribute('class'))
 
     def test_peruse_lesson_when_not_enrolled(self):
-        # Helmi has previously visited the site and knows that she can go 
+        # Gaby knows that she can jump
         # directly to a lesson in one of the courses:
-        self.browser.get(join(self.server_url,'courses/1/lesson/1'))
+        self.browser.get(self.server_url)
+        self._logUserIn('gaby', 'gaby5')
+        self.browser.get(join(self.server_url,'courses/1/lesson/1/'))
         
         # She sees the site title, breadcrumb, and lesson title text
         self.assertEqual(self.browser.find_element_by_xpath("//div[@class='header']//h1").text, 'EduDuck')
@@ -191,8 +194,11 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # shows an 'enrol' button instead of any progress information.
         pa = self.browser.find_element_by_id('id_resource_progress')
         pa.find_element_by_id('id_enrol')
-        
-        # Helmi wishes to advance to the next lesson in the course. She does
+
+        # It's a free course so she enrols to gain access to subsequent lessons
+        enrol = self.browser.find_element_by_id('id_enrol_button')
+        enrol.click()
+        # Gaby wishes to advance to the next lesson in the course. She does
         # so by clicking on the 'next lesson' navigation (back < curr > next)
         first_url = self.browser.current_url
         self.browser.find_element_by_id('id_nav_next').click()
@@ -200,7 +206,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
         # The next lesson has a different url from the first
         second_url = self.browser.current_url
         self.assertNotEqual(first_url, second_url)
-        # and Helmi sees that the lesson navigation updates to show links to 
+        # and Gaby sees that the lesson navigation updates to show links to 
         # both the previous lesson as well as a third lesson. 
         # The previous lesson link refers to the former url
         linkforw = self.browser.find_element_by_xpath(

@@ -11,7 +11,8 @@ class CanonicalWorkflow(FunctionalTest):
         # Helmi is visiting the course page for 'Blender' but has not paid
         self.browser.get(self.server_url)
         self._logUserIn('helmi', 'plate509')
-        self.browser.get(self.server_url+'/courses/1/')
+        course_url = "{0}/courses/2/".format(self.server_url)
+        self.browser.get(course_url)
 
         # The Enrol button shows a course fee
         enrol = self.browser.find_element_by_id('id_enrol_button')
@@ -21,22 +22,21 @@ class CanonicalWorkflow(FunctionalTest):
         first_lesson = self.browser.find_element_by_id('id_lesson1')
         first_lesson.click()
         page_title = self.browser.find_element_by_id('id_lesson_title')
-        self.assertEqual(page_title.text, u'Lesson: What is Blender for?')
+        self.assertEqual(page_title.text, u'Lesson: Structural Overview')
 
         # But the 2nd and later lessons redirect to the course homepage.
-        course1_url = "{0}/courses/1/".format(self.server_url)
-        self.browser.get(course1_url)
+        self.browser.get(course_url)
         second_lesson = self.browser.find_element_by_id('id_lesson2')
         second_lesson.click()
-        self.assertEqual(self.browser.current_url, course1_url)
+        self.assertEqual(self.browser.current_url, course_url)
 
         # CLicking on Enrol or Pay and the javascript overlay pops up
         enrol = self.browser.find_element_by_id('id_enrol_button')
         enrol.click()
         # The overlay for payment is in an iframe
-        self.browser.switch_to_frame(2)
-        overlay = self.browser.find_element_by_xpath(
-            "//div[@class='overlayView active']")
+        self.browser.switch_to_frame(1)
+        overlay = self.browser.find_element_by_class_name(
+            "stripeInFrame")
         self.assertTrue(overlay.is_displayed()) 
         btn_cancel = self.browser.find_element_by_xpath(
             "//a[@class='close right']")
@@ -46,20 +46,20 @@ class CanonicalWorkflow(FunctionalTest):
         enrol = self.browser.find_element_by_id('id_enrol_button')
         
         # Clicking on Enrol the javascript overlay pops up again
-        enrol.click()
+        self.browser.implicitly_wait(10)
         enrol.click()
         
-        ## Goodness knows why, but the frame number for the overlay seems
-        ## to be 3 at this point.
-        self.browser.switch_to_frame(3)
-        overlay = self.browser.find_element_by_xpath(
-            "//div[@class='overlayView active']")
-        self.assertTrue(overlay.is_displayed()) 
-
         # Helmi pays for the course via Stripe (in TEST mode!)
+        self.browser.switch_to_frame(2)    
         testmode = self.browser.find_element_by_xpath(
             "//a[@class='testMode']")
         self.assertEqual(testmode.text, 'TEST MODE')
+
+        self.browser.switch_to_default_content() # back to main page
+        self.browser.switch_to_frame(1)
+        overlay = self.browser.find_element_by_xpath(
+            "//body[@class='stripeInFrame appView iframe desktop']")
+        self.assertTrue(overlay.is_displayed()) 
         email_input = self.browser.find_element_by_xpath(
             "//input[@id='email']")
         card_number_input = self.browser.find_element_by_xpath(
