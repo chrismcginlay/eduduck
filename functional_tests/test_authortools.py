@@ -230,6 +230,7 @@ class AuthorUsesCourseAuthoringTools(FunctionalTest):
         btn_submit = vfs.find_element_by_id('id_submit_video_edits')
         btn_submit.click()
 
+        self._expand_all_collapsible_blocks()
         # The invalid url is picked up and an error message is displayed.
         self.assertIn(VIDEO_URL_FIELD_INVALID_ERROR, self.browser.page_source)
         # sven now puts in the correct url and resubmits.

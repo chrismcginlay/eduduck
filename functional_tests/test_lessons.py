@@ -176,7 +176,7 @@ class RegisteredUserInteractsWithLesson(FunctionalTest):
             u'0px 0px')
         self.assertTrue('tl-red' in device.get_attribute('class'))
 
-    def test_peruse_lesson_when_not_enrolled(self):
+    def test_peruse_lesson_when_enrolled(self):
         # Gaby knows that she can jump
         # directly to a lesson in one of the courses:
         self.browser.get(self.server_url)
