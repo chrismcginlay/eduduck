@@ -588,8 +588,8 @@ class AuthorCreatesAndEditsLessons(FunctionalTest):
             'learning_intention_formset-0-text')
         li_text1_widget = lifs.find_element_by_name(
             'learning_intention_formset-1-text')
-
         # Sven puts in a couple of key areas (learning intentions)
+        li_text0_widget.find_elements_by_xpath("//preceding::span[@class]['shade']")[3].click()
         li_text0_widget.clear()
         li_text1_widget.clear()
         li_text0_widget.send_keys('Learn about average speed')
