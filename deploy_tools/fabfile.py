@@ -1,9 +1,10 @@
 # Fabfile.py based on "Test Driven Web Development with Python, H. Percival, pp 144"
 from fabric.contrib.files import append, exists, sed, contains
-from fabric.api import env, local, run, sudo, warn
+from fabric.api import get, env, local, run, sudo, warn
 from fabric.colors import yellow, green, red
 from fabric.operations import prompt
 import random
+from StringIO import StringIO
 import os, sys
 
 REPO_URL = "https://github.com/chrismcginlay/eduduck.git"
@@ -111,6 +112,8 @@ def deploy(settings):
     _config_nginx(env.host, SOURCE_DIR, settings)
     _update_virtualenv(SOURCE_DIR, settings)
     _prepare_environment_variables(settings, env.host)
+    if settings=='production':
+        _replace_stripe_key(settings, env.host)
     _write_gunicorn_upstart_script(env.host, SOURCE_DIR, settings)
     _ready_logfiles()
     _write_wsgi_file(SOURCE_DIR, settings)
@@ -196,6 +199,25 @@ def git_update(settings):
 
 # Private helper functions, don't call directly.
 
+def _replace_stripe_key(settings, hostname):
+    # Run this after _prepare_environment_variables
+    assert(settings=='production')
+    env_config = "{0}/{1}/virtualenv/bin/virtualenv_envvars.txt".format(SITES_DIR, hostname)
+    file_descriptor = StringIO()
+    get(env_config, file_descriptor)
+    settings_list = list(file_descriptor.getvalue().split('\n'))
+    for setting in settings_list:
+        if 'STRIPE_PUBLISHABLE_KEY' in setting:
+            stripe_publishable_key = setting.split('=')[1].strip()
+    assert(len(stripe_publishable_key)==32)
+    # replace any pk_test key in the stripe payment overlay
+    overlay_template = "{0}/{1}/source/checkout/templates/checkout/checkout_overlay.html".format(SITES_DIR, hostname)
+    awk_gsub = '{gsub("pk_test_[a-zA-z0-9]{24}"'
+    awk_cmd_fragment = "cat {1} | awk '/data-key=/{2}, \"{0}\")".format(stripe_publishable_key, overlay_template, awk_gsub)
+    awk_cmd = awk_cmd_fragment + "};{print}'" + r" - > {0}.tmp".format(overlay_template)
+    run(awk_cmd)
+    run("mv {0}.tmp {0}".format(overlay_template))
+ 
 def _run_migrations(sdir, settings, hostname):
     sync_cmd = "source {0}/{1}/virtualenv/bin/activate; django-admin.py migrate --settings=EduDuck.settings.{2} --noinput --pythonpath='{0}/{1}/source'".format(
         SITES_DIR,
