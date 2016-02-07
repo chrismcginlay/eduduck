@@ -8,7 +8,7 @@ from .base import FunctionalTest
 class CanonicalWorkflow(FunctionalTest):
 
     def test_redirect_unpaid_course_fee_to_payment_mechanism(self):
-        # Helmi is visiting the course page for 'Blender' but has not paid
+        # Helmi is visiting the course page for 'ISS' but has not paid
         self.browser.get(self.server_url)
         self._logUserIn('helmi', 'plate509')
         course_url = "{0}/courses/2/".format(self.server_url)
@@ -37,7 +37,10 @@ class CanonicalWorkflow(FunctionalTest):
         self.browser.switch_to_frame(1)
         overlay = self.browser.find_element_by_class_name(
             "stripeInFrame")
-        self.assertTrue(overlay.is_displayed()) 
+        self.assertTrue(overlay.is_displayed())
+        # The name of the course is used as the payment description
+        self.assertIn('ISS', self.browser.page_source)
+
         btn_cancel = self.browser.find_element_by_xpath(
             "//a[@class='close right']")
         # Cancelling the payment overlay, Helmi returns to the enrol button
@@ -51,6 +54,7 @@ class CanonicalWorkflow(FunctionalTest):
         
         # Helmi pays for the course via Stripe (in TEST mode!)
         self.browser.switch_to_frame(2)    
+########Failing to find TEST MODE when run without debugger        
         testmode = self.browser.find_element_by_xpath(
             "//a[@class='testMode']")
         self.assertEqual(testmode.text, 'TEST MODE')
@@ -60,6 +64,8 @@ class CanonicalWorkflow(FunctionalTest):
         overlay = self.browser.find_element_by_xpath(
             "//body[@class='stripeInFrame appView iframe desktop']")
         self.assertTrue(overlay.is_displayed()) 
+
+########Failing to find email_input when step through test with debugger
         email_input = self.browser.find_element_by_xpath(
             "//input[@id='email']")
         card_number_input = self.browser.find_element_by_xpath(
