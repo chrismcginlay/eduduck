@@ -1,13 +1,19 @@
 EduDuck experimental course delivery platform.
-Coded with Django
+Coded with Python/Django
 by Chris McGinlay
 
+**This project provides the rudiments of an Online Course Delivery Platform**.
+- Several elements of such a platform are missing, such as assessment tools. If you want to use it, you'll really need to be prepared to contribute back to it, which is of course exactly what I would like to see, having brought the project to version 0.4 on my own.
+- There are still many references to my particular installation setup under my workstation user name of 'chris'.
+- There is an automated installer for development boxes, staging and production.
 
-#Security check
+See the install.txt file for install instructions.
+
+#Security check#
 Run this on branched code prior to merge with master
 ```python manage.py check --deploy
 
-#Git tag releases
+#Git tag releases#
 
 When ready to push a new tag release (e.g MVP0.3) on to production site, tag the codebase as follows
 
@@ -19,9 +25,9 @@ When ready to push a new tag release (e.g MVP0.3) on to production site, tag the
 5. git push origin :refs/tags/LIVE #delete LIVE tag from remote repo
 6. git push origin LIVE $TAG $MVPTAG
 
-#Create Fixtures with DumpData#
+#Need to Create Fixtures?#
+We're still using some test fixtures, although some tests use FactoryBoy which is better.
 
-Do it thusly:
 
 1. Store sets of fixtures together in a directory under fixtures. Could be 
 sensible to name directories by date ddmmyy.
